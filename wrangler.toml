@@ -1,0 +1,10 @@
+name = "luvnote-api"
+main = "worker/index.js"
+compatibility_date = "2025-01-01"
+workers_dev = true
+routes = [{ pattern = "api.luvnote.fun", custom_domain = true }]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "luvnote"
+database_id = "__D1_ID__" # filled in by the deploy workflow

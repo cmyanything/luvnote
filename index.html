@@ -349,6 +349,9 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:10px 0 30px}
 <script>
 /* ===== Set after publishing: the artifact's public link ===== */
 var BASE_URL = "";
+/* card storage API (Cloudflare Worker). Short links look like luvnote.fun/#k8x2pq7 */
+var API = "https://api.luvnote.fun";
+var SHORT_ID = /^[a-z0-9]{7}$/;
 var REDUCED = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ===== decorations (inline SVG) ===== */
@@ -499,15 +502,17 @@ var current={t:"rose",to:"",msg:"",from:"",secret:"",img:null}, lastHash="";
 function imgURL(bytes){return bytes?URL.createObjectURL(new Blob([bytes],{type:"image/jpeg"})):"";}
 
 /* photo: crop to square, shrink until small enough to ride inside the link */
-function shrinkPhoto(im){
-  var steps=[[360,.7],[320,.62],[280,.55],[240,.5],[210,.45],[180,.4]], side=Math.min(im.naturalWidth,im.naturalHeight);
+function b64(bytes){var s="";for(var i=0;i<bytes.length;i+=8192)s+=String.fromCharCode.apply(null,bytes.subarray(i,i+8192));return btoa(s);}
+function shrinkPhoto(im,steps,limit){
+  steps=steps||[[360,.7],[320,.62],[280,.55],[240,.5],[210,.45],[180,.4]]; limit=limit||12500;
+  var side=Math.min(im.naturalWidth,im.naturalHeight);
   var sx=(im.naturalWidth-side)/2, sy=(im.naturalHeight-side)/2, bin="";
   for(var i=0;i<steps.length;i++){
     var c=document.createElement("canvas"); c.width=c.height=steps[i][0];
     var g=c.getContext("2d"); g.fillStyle="#fff"; g.fillRect(0,0,c.width,c.height);
     g.drawImage(im,sx,sy,side,side,0,0,c.width,c.height);
     bin=atob(c.toDataURL("image/jpeg",steps[i][1]).split(",")[1]);
-    if(bin.length<=12500)break;
+    if(bin.length<=limit)break;
   }
   var b=new Uint8Array(bin.length); for(var k=0;k<bin.length;k++)b[k]=bin.charCodeAt(k);
   return b;
@@ -516,7 +521,11 @@ document.getElementById("photo").addEventListener("change",function(){
   var f=this.files&&this.files[0], err=document.getElementById("err"); if(!f)return;
   var u=URL.createObjectURL(f), im=new Image();
   im.onload=function(){
-    try{ current.img=shrinkPhoto(im); err.textContent=""; showPhoto(); }
+    try{
+      current.img=shrinkPhoto(im); /* tiny copy, only used if the API is down */
+      current.imgBig=shrinkPhoto(im,[[900,.82],[760,.78],[640,.72],[520,.68]],380000); /* sharp copy for the API */
+      err.textContent=""; showPhoto();
+    }
     catch(e){ err.textContent="ใช้รูปนี้ไม่ได้ ลองเลือกรูปอื่นนะ"; }
     URL.revokeObjectURL(u);
   };
@@ -537,7 +546,7 @@ function popOpen(card,d,t){
   var x=sr.left-rc.left+sr.width/2, y=sr.top-rc.top+sr.height*.3;
   setTimeout(function(){
     if(t.id!=="letter")burst(card,t.id,x,y);
-    var note=d.secret||(d.img?"":"♡ รักนะ ♡"), url=imgURL(d.img);
+    var url=d.imgSrc||imgURL(d.img), note=d.secret||(url?"":"♡ รักนะ ♡");
     var p=document.createElement("div"); p.className="pop";
     p.innerHTML='<div class="paper">'+(url?'<img src="'+url+'" alt="">':'')+
       (note?'<div class="p-note">'+esc(note)+'</div>':'')+
@@ -595,15 +604,31 @@ document.getElementById("form").addEventListener("submit",function(e){
   var err=document.getElementById("err");
   if(!current.to||!current.msg.trim()||!current.from){err.textContent="กรอกให้ครบทั้ง ถึง ข้อความ และ จาก นะ ♡";return;}
   err.textContent="";
-  lastHash=encode({t:current.t,to:current.to,msg:current.msg.trim(),from:current.from,secret:current.secret,img:current.img});
-  var link=(BASE_URL||"")+"#"+lastHash;
-  document.getElementById("linkBox").textContent=BASE_URL?link:"(ลิงก์จะใช้ได้หลังเว็บเผยแพร่)";
-  document.getElementById("donePreview").innerHTML=cardHTML(current);
-  document.getElementById("copyNote").textContent=current.img?"มีรูปแนบอยู่ในลิงก์ ลิงก์เลยยาวกว่าปกติ ส่งได้ตามปกติเลย":"";
-  show("done");
+  var btn=this.querySelector("button[type=submit]"), label=btn.textContent;
+  btn.disabled=true; btn.textContent="กำลังสร้างการ์ด…";
+  var card={t:current.t,to:current.to,msg:current.msg.trim(),from:current.from,secret:current.secret};
+  var body=JSON.stringify({t:card.t,to:card.to,msg:card.msg,from:card.from,secret:card.secret,img:current.imgBig?b64(current.imgBig):""});
+  var ctrl=window.AbortController?new AbortController():null, timer=setTimeout(function(){if(ctrl)ctrl.abort();},15000);
+  fetch(API+"/cards",{method:"POST",headers:{"Content-Type":"application/json"},body:body,signal:ctrl?ctrl.signal:undefined})
+    .then(function(r){if(!r.ok)throw new Error("api "+r.status);return r.json();})
+    .then(function(j){if(!j.id||!SHORT_ID.test(j.id))throw new Error("bad id");finish(j.id,"");})
+    .catch(function(){
+      /* API unreachable: fall back to a self-contained (long) link */
+      card.img=current.img;
+      finish(encode(card),"ระบบลิงก์สั้นมีปัญหาชั่วคราว เลยใช้ลิงก์แบบยาวแทน ส่งได้ตามปกติเลย");
+    });
+  function finish(hash,note){
+    clearTimeout(timer); btn.disabled=false; btn.textContent=label;
+    lastHash=hash;
+    document.getElementById("linkBox").textContent=cardLink();
+    document.getElementById("donePreview").innerHTML=cardHTML(current);
+    document.getElementById("copyNote").textContent=note;
+    show("done");
+  }
 });
+function cardLink(){return (BASE_URL||location.href.split("#")[0])+"#"+lastHash;}
 document.getElementById("copyBtn").onclick=function(){
-  var link=(BASE_URL||location.href.split("#")[0])+"#"+lastHash, note=document.getElementById("copyNote");
+  var link=cardLink(), note=document.getElementById("copyNote");
   function fallback(){
     var r=document.createRange(),box=document.getElementById("linkBox");
     r.selectNodeContents(box); var s=getSelection(); s.removeAllRanges(); s.addRange(r);
@@ -616,7 +641,7 @@ document.getElementById("copyBtn").onclick=function(){
 document.getElementById("openBtn").onclick=function(){setHash(lastHash);route();};
 document.getElementById("newBtn").onclick=function(){
   ["to","msg","from","secret"].forEach(function(id){document.getElementById(id).value="";});
-  current.img=null; showPhoto(); readForm();
+  current.img=null; current.imgBig=null; showPhoto(); readForm();
   setHash(""); show("home");
 };
 document.getElementById("backBtn").onclick=function(){show("home");};
@@ -651,8 +676,36 @@ function openCard(d){
   };
   show("card");
 }
+var routeToken=0;
 function route(){
-  var h=(location.hash||"").slice(1), d=decode(h);
+  var h=(location.hash||"").slice(1), my=++routeToken;
+  if(SHORT_ID.test(h)){
+    /* short link: load the card from the API */
+    var env=document.getElementById("env"), tap=document.getElementById("tap");
+    document.getElementById("cardOut").classList.remove("on");
+    document.getElementById("cardActions").classList.remove("on");
+    env.classList.remove("open"); env.style.display=""; env.onclick=null;
+    document.getElementById("envTo").textContent="กำลังโหลดการ์ด…";
+    tap.style.display=""; tap.textContent="รอสักครู่นะ ♡";
+    show("card");
+    fetch(API+"/cards/"+h)
+      .then(function(r){if(r.status===404)throw new Error("404");if(!r.ok)throw new Error("api");return r.json();})
+      .then(function(d){
+        if(my!==routeToken)return;
+        tap.textContent="แตะซองเพื่อเปิดการ์ด";
+        if(d.hasImg){d.imgSrc=API+"/cards/"+h+"/img"; new Image().src=d.imgSrc;}
+        openCard(d);
+      })
+      .catch(function(e){
+        if(my!==routeToken)return;
+        document.getElementById("envTo").textContent="";
+        tap.textContent=e.message==="404"?"ไม่พบการ์ดนี้ ลองเช็กลิงก์อีกครั้งนะ":"โหลดการ์ดไม่ได้ ลองรีเฟรชอีกครั้งนะ";
+        document.getElementById("fxHint").innerHTML="";
+        document.getElementById("cardActions").classList.add("on");
+      });
+    return;
+  }
+  var d=decode(h);
   if(d)openCard(d); else show("home");
 }
 window.addEventListener("hashchange",route);

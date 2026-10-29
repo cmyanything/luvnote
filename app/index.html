@@ -706,6 +706,8 @@ function route(){
       });
     return;
   }
+  var tm=h.match(/^tpl-(rose|bunny|velvet|letter)$/);
+  if(tm){startCreate(tm[1]);return;}
   var d=decode(h);
   if(d)openCard(d); else show("home");
 }

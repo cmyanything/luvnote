@@ -510,7 +510,7 @@ let envOpened=false;
 enter[0]=()=>every(()=>{const[x,y]=center($('#env'));burst(x+(Math.random()-.5)*200,y+60,1,{types:['heart'],speed:1,g:-.03,size:6,decay:.006})},450);
 $('#env').addEventListener('click',()=>{if(envOpened)return;envOpened=true;vib(30);startMusic();$('#vinyl').classList.add('show');$('#env').classList.add('open');
   setTimeout(()=>{const[x,y]=center($('#env'));burst(x,y-60,100,{up:true,speed:10});$('#flash').classList.add('go')},1500);
-  setTimeout(()=>go(1),3100)});
+  if(!AUTO)setTimeout(()=>go(1),3100)});
 
 /* 1 gift */
 let taps=0;
@@ -591,7 +591,7 @@ $('#paper').addEventListener('click',()=>{const p=$('#paper');
     setTimeout(type,1100);return}
   if(typer){clearTimeout(typer);finishType()}});
 function type(){const T=CARD.letter,el=$('#typed');el.textContent=T.slice(0,++ti);
-  if(ti<T.length)typer=setTimeout(type,T[ti-1]==='\n'?380:42);else finishType()}
+  if(ti<T.length)typer=setTimeout(type,AUTO?(T[ti-1]==='\n'?120:16):(T[ti-1]==='\n'?380:42));else finishType()}
 function finishType(){typer=null;$('#typed').textContent=CARD.letter;$('#typed').classList.add('fin');$('#sign').classList.add('show');
   $('#letterHint').textContent='';if(!next.classList.contains('show'))setTimeout(()=>done('ไขความลับกัน','🔐'),600)}
 
@@ -643,29 +643,33 @@ if(location.hash==='#preview'){
   setTimeout(()=>{if(!$('.js-to').textContent)fill()},1500);
 }else fill();
 
-/* ============ โหมดเล่นอัตโนมัติ (ใช้ในหน้าแคตตาล็อก) ============ */
+/* ============ โหมดเล่นอัตโนมัติ (ใช้ในหน้าแคตตาล็อก) — เร็ว ไม่ต้องรอ ============ */
 if(AUTO){
   const wait=ms=>new Promise(r=>setTimeout(r,ms));
-  const nextBtn=()=>{if(next.classList.contains('show'))next.click()};
+  const to=async i=>{go(i);await wait(700)};
   (async()=>{
-    await wait(1800);$('#env').click();
-    await wait(4600);for(let i=0;i<3;i++){$('#gift').click();await wait(550)}
-    await wait(2600);nextBtn();
-    await wait(1900);for(const c of candles){c.click();await wait(500)}
-    await wait(3600);nextBtn();
-    await wait(1800);for(let i=0;i<CARD.photos.length;i++){const el=$(`.polar[data-i="${i}"]`);if(el)fly(el,i%2?-1:1);await wait(1300)}
-    await wait(2200);nextBtn();
-    await wait(1600);$('#paper').click();
-    await wait(4200);$('#paper').click();
-    await wait(2600);nextBtn();
-    await wait(1500);initScratch();
-    const r=sc.getBoundingClientRect();let y=18,dir=1;
-    await new Promise(res=>{const iv=setInterval(()=>{sx.beginPath();const x0=dir>0?10:r.width-10,x1=dir>0?r.width-10:10;
-      sx.moveTo(x0,y);sx.lineTo(x1,y+14);sx.stroke();y+=26;dir*=-1;if(y>r.height+10){clearInterval(iv);res()}},140)});
+    try{
+    await wait(900);$('#env').click();
+    await wait(2000);await to(1);
+    await wait(300);for(let i=0;i<3;i++){$('#gift').click();await wait(330)}
+    await wait(1700);await to(2);
+    await wait(500);for(const c of candles){c.click();await wait(260)}
+    await wait(2600);await to(CARD.photos.length?3:4);
+    if(CARD.photos.length){await wait(300);for(let i=0;i<CARD.photos.length;i++){const el=$(`.polar[data-i="${i}"]`);if(el)fly(el,i%2?-1:1);await wait(650)}
+      await wait(1500);await to(4);}
+    await wait(200);$('#paper').click();
+    await wait(2600);if(typer){clearTimeout(typer);finishType()}
+    await wait(1100);await to(5);
+    await wait(200);initScratch();
+    const r=sc.getBoundingClientRect();let y=16,dir=1;
+    await new Promise(res=>{const iv=setInterval(()=>{sx.beginPath();const x0=dir>0?8:r.width-8,x1=dir>0?r.width-8:8;
+      sx.moveTo(x0,y);sx.lineTo(x1,y+12);sx.stroke();y+=24;dir*=-1;if(y>r.height+10){clearInterval(iv);res()}},70)});
     sc.classList.add('gone');unlocked();
-    await wait(3000);nextBtn();
-    await wait(1500);for(let i=0;i<6;i++){burst(W*(.25+Math.random()*.5),H*(.35+Math.random()*.3),14,{types:['heart'],speed:5,g:-.05});await wait(450)}
-    await wait(3000);location.reload();
+    await wait(1700);await to(6);
+    for(let i=0;i<5;i++){await wait(420);burst(W*(.25+Math.random()*.5),H*(.35+Math.random()*.3),14,{types:['heart'],speed:5,g:-.05})}
+    await wait(1600);
+    }catch(e){}
+    location.reload();
   })();
 }
 </script>

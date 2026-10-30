@@ -712,16 +712,16 @@ main{padding-bottom:84px!important}
 /* ===== live demo inside the preview phone ===== */
 .pv iframe.demo{position:absolute;left:0;top:0;border:0;transform-origin:0 0;pointer-events:none;display:block}
 /* ===== Pink Coquette thumb ===== */
-.a-coq{gap:5%;background:repeating-linear-gradient(0deg,rgba(255,255,255,.5) 0 7px,transparent 7px 14px),repeating-linear-gradient(90deg,rgba(255,255,255,.5) 0 7px,transparent 7px 14px),#FFD6E4}
-.a-coq .cbow{width:44%;animation:bob 3s ease-in-out infinite;filter:drop-shadow(0 3px 4px rgba(217,102,143,.35))}
-.a-coq .hb{font:500 italic clamp(13px,12cqw,30px)/1 var(--serif);color:#D9668F;text-shadow:0 2px 0 #fff}
-.a-coq .ck{width:52%;display:flex;flex-direction:column;align-items:center}
-.a-coq .cn{display:flex;gap:16%;width:60%;justify-content:center;height:18px}
-.a-coq .cn i{width:5px;height:100%;border-radius:2px;background:repeating-linear-gradient(-45deg,#fff 0 3px,#F48FB1 3px 6px);position:relative}
-.a-coq .cn i::before{content:'';position:absolute;left:50%;top:-9px;width:7px;height:10px;margin-left:-3.5px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(ellipse at 50% 75%,#fff 0 20%,#FFD27A 45%,#FFB347 70%);animation:flk .2s infinite alternate}
+.a-coq{gap:4cqh;padding:6cqh 6cqw 0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.5) 0 4cqw,transparent 4cqw 8cqw),repeating-linear-gradient(90deg,rgba(255,255,255,.5) 0 4cqw,transparent 4cqw 8cqw),#FFD6E4}
+.a-coq .cbow{width:46cqw;animation:bob 3s ease-in-out infinite;filter:drop-shadow(0 1cqw 1.5cqw rgba(217,102,143,.35))}
+.a-coq .hb{font:500 italic 12.5cqw/1.02 var(--serif);color:#D9668F;text-align:center;text-shadow:0 .6cqw 0 #fff}
+.a-coq .ck{width:60cqw;display:flex;flex-direction:column;align-items:center;margin-top:1cqh}
+.a-coq .cn{display:flex;gap:9cqw;justify-content:center;height:8cqh}
+.a-coq .cn i{width:2.6cqw;height:100%;border-radius:1cqw;background:repeating-linear-gradient(-45deg,#fff 0 1.4cqw,#F48FB1 1.4cqw 2.8cqw);position:relative}
+.a-coq .cn i::before{content:'';position:absolute;left:50%;top:-4.4cqw;width:3.6cqw;height:5cqw;margin-left:-1.8cqw;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(ellipse at 50% 75%,#fff 0 20%,#FFD27A 45%,#FFB347 70%);animation:flk .2s infinite alternate}
 @keyframes flk{to{transform:scale(.9,1.1)}}
-.a-coq .t1,.a-coq .t2{border-radius:8px 8px 6px 6px;background:radial-gradient(circle at 6px 3px,#fff 5px,transparent 5.5px) 0 0/12px 10px repeat-x,linear-gradient(#F8BBD0,#F4A6C1)}
-.a-coq .t1{width:62%;height:22px}.a-coq .t2{width:100%;height:30px;margin-top:-1px}
+.a-coq .t1,.a-coq .t2{border-radius:3cqw 3cqw 2cqw 2cqw;background:radial-gradient(circle at 2.5cqw 1cqw,#fff 2.2cqw,transparent 2.4cqw) 0 0/5cqw 4cqw repeat-x,linear-gradient(#F8BBD0,#F4A6C1)}
+.a-coq .t1{width:62%;height:9cqh}.a-coq .t2{width:100%;height:12cqh;margin-top:-1px}
 </style>
 </head>
 <body>
@@ -933,7 +933,7 @@ function art(id,big){
   case "velvet": return '<div class="art a-velvet wine-bg">'+[[16,22,0],[78,18,-.8],[70,64,-1.5],[20,70,-.4]].map(function(p){return '<svg class="tw" viewBox="0 0 24 24" style="left:'+p[0]+'%;top:'+p[1]+'%;animation-delay:'+p[2]+'s"><use href="#twinkle"/></svg>';}).join("")+'<div class="box"><div class="body"></div><div class="rib"></div><div class="lid"></div>'+use("bow","bw","0 0 100 74")+'</div><div class="lbl">for you</div></div>';
   case "letter": return '<div class="art a-letter lines-bg"><div class="paper"><div class="tape"></div><div class="to" style="align-self:flex-start;margin-left:8%">my dearest,</div>'+(big?'<p class="typed" style="font:400 13px/1.6 var(--cute);color:var(--ink);text-align:left;width:100%;padding:0 8%;min-height:5em"></p>':'<i class="tl" style="--w:78%"></i><i class="tl" style="--w:64%"></i><i class="tl" style="--w:46%"></i>')+use("kiss","kiss","0 0 40 26")+'</div></div>';
   case "anniv": return '<div class="art a-anniv" style="background:var(--cream)"><div class="polaroid">'+use("bow","bw","0 0 100 74")+'<div class="ph">'+use("mochi","","0 0 100 90")+'</div><span>ปีแรกของเรา ♡</span></div><svg class="i rings"><use href="#rings"/></svg></div>';
-  case "coquette": return '<div class="art a-coq"><svg class="cbow" viewBox="0 0 100 80"><path fill="#F7A8C4" stroke="#E07AA0" stroke-width="1.5" d="M47 36 L35 76 L42 70 L46 78 L50 38Z M53 36 L65 76 L58 70 L54 78 L50 38Z M50 32 C30 4 4 10 9 30 C13 46 35 43 50 36Z M50 32 C70 4 96 10 91 30 C87 46 65 43 50 36Z"/><ellipse fill="#F48FB1" stroke="#E07AA0" stroke-width="1.5" cx="50" cy="34" rx="7.5" ry="8.5"/></svg><div class="hb">Happy Birthday</div><div class="ck"><div class="cn"><i></i><i></i><i></i></div><div class="t1"></div><div class="t2"></div></div></div>';
+  case "coquette": return '<div class="art a-coq"><svg class="cbow" viewBox="0 0 100 80"><path fill="#F7A8C4" stroke="#E07AA0" stroke-width="1.5" d="M47 36 L35 76 L42 70 L46 78 L50 38Z M53 36 L65 76 L58 70 L54 78 L50 38Z M50 32 C30 4 4 10 9 30 C13 46 35 43 50 36Z M50 32 C70 4 96 10 91 30 C87 46 65 43 50 36Z"/><ellipse fill="#F48FB1" stroke="#E07AA0" stroke-width="1.5" cx="50" cy="34" rx="7.5" ry="8.5"/></svg><div class="hb">Happy<br>Birthday</div><div class="ck"><div class="cn"><i></i><i></i><i></i></div><div class="t1"></div><div class="t2"></div></div></div>';
   case "bday": return '<div class="art a-bday dots"><div class="bub">ตื่นยัง?</div><div class="bub out">ตื่นแล้ว มีอะไรเหรอ</div><div class="bub">สุขสันต์วันเกิดนะ 🎂</div><div class="bub">ขอให้ปีนี้ดีที่สุดเลย</div>'+use("cake","cake","0 0 100 90")+'</div>';
   case "sorry": return '<div class="art a-sorry" style="background:var(--cream)">'+use("wax","seal-big","0 0 60 60")+'<div class="q">I\'m sorry</div><div style="font-size:11px;color:var(--ink2);margin-top:4px">ยกโทษให้เค้าได้มั้ย?</div>'+(big?'<div class="yn"><button class="y" type="button">ได้สิ</button><button class="n" type="button">ไม่</button></div>':'<div class="yn"><i class="y">ได้สิ</i><i class="n">ไม่</i></div>')+'</div>';
   }

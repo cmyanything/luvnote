@@ -895,7 +895,7 @@ var use=function(id,cls,vb){return '<svg class="'+(cls||"")+'" viewBox="'+(vb||"
 /* ===== catalog: edit here to add cards ===== */
 var COMMON=["ใส่ชื่อ ข้อความ รูป และข้อความลับในซอง","ได้ลิงก์ทันที ส่งทาง LINE, IG หรือ SMS"];
 var CARDS=[
-  {id:"coquette", chip:"🎀 แกะกล่อง เป่าเทียน", price:99, en:"Pink Coquette", th:"วันเกิด · โบว์ชมพูละมุน", short:"แกะกล่อง เป่าเทียน", type:"custom", cats:["bday"], page:"themes/pink-coquette/",
+  {id:"coquette", chip:"🎀 แกะกล่อง เป่าเทียน", price:99, en:"Pink Coquette", th:"วันเกิด · โบว์ชมพูละมุน", short:"แกะกล่อง เป่าเทียน", type:"custom", cats:["bday"], page:"themes/pink-coquette/",ver:4,
    fx:["ซองผูกโบว์ › แกะกล่องของขวัญ › เป่าเทียนบนเค้ก","อัลบั้มรูปโพลารอยด์ จดหมายรัก และข้อความลับแบบขูด/ใส่รหัส","ใส่เพลงจาก YouTube ได้ เล่นตอนเปิดซอง"], hint:"แตะการ์ดเพื่อโปรยโบว์ 🎀", burst:"heart"},
   {id:"rose", chip:"🌹 กลีบกุหลาบโปรย", price:39,  en:"Rosé",   th:"เรียบหรู มินิมอล", short:"กลีบกุหลาบโปรย", type:"free", cats:["love","anniv"],
    fx:["แตะซองเพื่อเปิดดูข้างใน","แตะการ์ดแล้วกลีบกุหลาบโปรยลงมา"], hint:"แตะการ์ดเพื่อโปรยกลีบกุหลาบ 🌹", burst:"petal"},
@@ -923,7 +923,7 @@ var CATS=[
 function inCat(c,cat){return c.cats.indexOf(cat)>-1;}
 
 /* ===== video: put a vertical 9:16 MP4 at videos/<id>.mp4 and set  video:"videos/<id>.mp4"  on the card ===== */
-function screen(c,big){if(big&&c.page)return '<iframe class="demo" src="'+c.page+'card.html#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe>';return c.video?'<video src="'+c.video+'" muted loop playsinline preload="metadata"'+(big?' autoplay':'')+'></video>':art(c.id,big);}
+function screen(c,big){if(big&&c.page)return '<iframe class="demo" src="'+c.page+'card.html?v='+(c.ver||1)+'#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe>';return c.video?'<video src="'+c.video+'" muted loop playsinline preload="metadata"'+(big?' autoplay':'')+'></video>':art(c.id,big);}
 /* ===== card art ===== */
 function petals(n){var h='<div class="petals">';for(var i=0;i<n;i++){h+='<i class="petal" style="left:'+(5+Math.random()*85)+'%;animation-duration:'+(4+Math.random()*3)+'s;animation-delay:'+(-Math.random()*6)+'s;transform:scale('+(.6+Math.random()*.6)+')"></i>';}return h+'</div>';}
 function art(id,big){
@@ -1035,7 +1035,7 @@ function openSheet(id){
       '<p class="thd">'+c.th+'</p>'+
       '<div class="p-row">'+('<span class="price">'+baht(c)+'</span><small>ต่อ 1 ใบ</small>')+'</div>'+
       '<ul class="fx">'+fxList(c)+'</ul>'+
-      '<div class="actions">'+(c.page?'<a class="btn primary" href="'+c.page+'">'+use("heart","i")+'สร้างการ์ดนี้</a><a class="btn ghost" href="'+c.page+'card.html">ดูตัวอย่างเต็มจอ</a>':'<a class="btn primary" href="'+LINE+'" target="_blank" rel="noopener">'+use("chat","i")+'สั่งการ์ดนี้ ทาง LINE</a>')+
+      '<div class="actions">'+(c.page?'<a class="btn primary" href="'+c.page+'?v='+(c.ver||1)+'">'+use("heart","i")+'สร้างการ์ดนี้</a><a class="btn ghost" href="'+c.page+'card.html?v='+(c.ver||1)+'">ดูตัวอย่างเต็มจอ</a>':'<a class="btn primary" href="'+LINE+'" target="_blank" rel="noopener">'+use("chat","i")+'สั่งการ์ดนี้ ทาง LINE</a>')+
       '<button class="btn ghost" type="button" data-close>ดูแบบอื่น</button></div>'+
     '</div>';
   sheet.setAttribute("aria-hidden","false");

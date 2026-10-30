@@ -162,6 +162,10 @@ textarea{resize:none;line-height:1.6}
 .startrow{display:flex;align-items:center;gap:10px;margin-top:10px}
 .startrow label{margin:0;flex:1}
 .startrow input{width:96px!important;flex:none;text-align:center;font-family:'Fredoka'!important}
+.price{display:flex;align-items:center;gap:8px;margin-top:8px}
+.pp{display:inline-flex;align-items:baseline;gap:2px;background:#fff;border-radius:20px;padding:3px 11px 4px;box-shadow:0 3px 10px rgba(128,0,32,.1)}
+.pp b{font-family:'Fredoka';font-weight:600;font-size:17px;color:var(--wine);letter-spacing:.3px}
+.pp i{font-style:normal;font-family:'Fredoka';font-weight:500;font-size:12px;color:#D9668F}
 </style>
 </head>
 <body>
@@ -172,12 +176,12 @@ textarea{resize:none;line-height:1.6}
 
 <div class="wrap">
   <div class="hero">
-    <div class="phone" id="heroPhone" role="button" aria-label="ดูการ์ดตัวอย่าง"><div class="screen"><iframe id="heroDemo" src="card.html#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe></div></div>
+    <div class="phone" id="heroPhone" role="button" aria-label="ดูการ์ดตัวอย่าง"><div class="screen"><iframe id="heroDemo" src="card.html?v=4#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe></div></div>
     <div class="hero-t">
       <span class="chip">🎂 วันเกิด</span>
       <h1>Pink Coquette</h1>
       <p>การ์ดวันเกิดโทนชมพูโบว์ละมุน เปิดซอง แกะกล่อง เป่าเทียน ครบจบในลิงก์เดียว</p>
-      <div class="price"><span class="en">99 ฿</span> <small>ต่อ 1 ใบ</small></div>
+      <div class="price"><span class="pp"><b>99</b><i>฿</i></span><small>ต่อ 1 ใบ</small></div>
     </div>
   </div>
   <div class="feats"><span>🎀 ซองผูกโบว์</span><span>🎁 แกะกล่องของขวัญ</span><span>🎂 เป่าเทียน</span><span>📸 อัลบั้มรูป</span><span>💌 จดหมายรัก</span><span>🔒 ข้อความลับ</span><span>🎵 เพลงประกอบ</span></div>
@@ -377,7 +381,7 @@ function validate(){const bad=[];
 
 /* preview */
 let pending=null;
-function openPreview(card){pending=card;$('#frame').src='card.html#preview';$('#ov').classList.add('show');document.body.style.overflow='hidden'}
+function openPreview(card){pending=card;$('#frame').src='card.html?v=4#preview';$('#ov').classList.add('show');document.body.style.overflow='hidden'}
 addEventListener('message',e=>{if(e.data&&e.data.type==='luvnote-ready'&&pending){$('#frame').contentWindow.postMessage({type:'luvnote-card',card:pending},'*')}});
 $('#closePv').onclick=()=>{$('#ov').classList.remove('show');$('#frame').src='about:blank';document.body.style.overflow=''};
 $('#demoBtn').onclick=()=>openPreview({});

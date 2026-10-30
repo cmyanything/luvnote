@@ -197,6 +197,7 @@ h1{font-size:40px}h2{font-size:27px}
 .polar p{font-family:'Mitr';font-weight:400;font-size:16px;padding:11px 4px;color:var(--deep);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .polar .bow{position:absolute;width:64px;top:-26px;left:50%;margin-left:-32px}
 .polar.fly{transition:transform .6s ease-in,opacity .6s}
+.polar.fan p{opacity:0}
 .polar.fan{transition:transform .9s cubic-bezier(.2,.9,.3,1.3),opacity .5s;pointer-events:none}
 .counter{font-family:'Fredoka';font-weight:500;font-size:14px;color:var(--rose)}
 
@@ -285,6 +286,13 @@ h1{font-size:40px}h2{font-size:27px}
 #vinyl.need{animation:needp 1s ease-in-out infinite!important}
 #vinyl.need::after{content:'แตะเพื่อฟังเพลง';position:absolute;right:58px;top:50%;transform:translateY(-50%);white-space:nowrap;font-family:'Athiti';font-weight:600;font-size:13px;color:#fff;background:var(--rose);padding:5px 10px;border-radius:20px;box-shadow:0 4px 10px rgba(156,61,99,.3)}
 @keyframes needp{50%{transform:scale(1.12);box-shadow:0 0 0 8px rgba(244,143,177,.35)}}
+#gate{position:absolute;inset:0;z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:30px;
+  background:radial-gradient(ellipse at 50% 40%,#fff,rgba(255,255,255,0) 70%),var(--bg)}
+#gate.show{display:flex}
+#gate .gh{width:46px;height:42px;background:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 90'%3E%3Cpath d='M50 84 C18 64 4 48 4 30 C4 14 16 4 30 4 C40 4 46 10 50 17 C54 10 60 4 70 4 C84 4 96 14 96 30 C96 48 82 64 50 84Z' fill='%23E77FA4'/%3E%3C/svg%3E") center/contain no-repeat;animation:hbeat2 1s ease-in-out infinite}
+@keyframes hbeat2{0%,100%{transform:scale(1)}30%{transform:scale(1.2)}50%{transform:scale(.95)}}
+#gate p{font-family:'Athiti';font-weight:600;font-size:17px;color:var(--deep);line-height:1.5}
+#gate a{font-family:'Mitr';font-size:14px;color:#fff;background:var(--rose);border-radius:30px;padding:10px 20px;text-decoration:none}
 </style>
 </head>
 <body>
@@ -413,6 +421,7 @@ h1{font-size:40px}h2{font-size:27px}
   <div id="wipe"><svg viewBox="0 0 100 80"><use href="#bow"/></svg></div>
   <div id="flash"></div>
   <canvas id="fx"></canvas>
+  <div id="gate"><div class="gh"></div><p id="gateTxt">กำลังเปิดการ์ด…</p></div>
 </div>
 
 <script>
@@ -533,7 +542,7 @@ let envOpened=false;
 enter[0]=()=>every(()=>{const[x,y]=center($('#env'));burst(x+(Math.random()-.5)*200,y+60,1,{types:['heart'],speed:1,g:-.03,size:6,decay:.006})},450);
 $('#env').addEventListener('click',()=>{if(envOpened)return;envOpened=true;vib(30);startMusic();$('#vinyl').classList.add('show');$('#env').classList.add('open');
   setTimeout(()=>{const[x,y]=center($('#env'));burst(x,y-60,100,{up:true,speed:10});$('#flash').classList.add('go')},1500);
-  if(!AUTO)setTimeout(()=>go(1),3100)});
+  if(!AUTO){setTimeout(()=>{if(cur===0)done('แกะของขวัญกัน','🎁')},2800);setTimeout(()=>{if(cur===0)go(1)},10000)}});
 
 /* 1 gift */
 let taps=0;
@@ -664,6 +673,13 @@ if(location.hash==='#preview'){
   addEventListener('message',e=>{if(e.data&&e.data.type==='luvnote-card'){CARD=Object.assign({},DEMO,e.data.card);fill()}});
   try{parent.postMessage({type:'luvnote-ready'},'*')}catch(e){}
   setTimeout(()=>{if(!$('.js-to').textContent)fill()},1500);
+}else if(/^#[a-z0-9]{7}$/.test(location.hash)){
+  const gate=$('#gate');gate.classList.add('show');
+  fetch('https://api.luvnote.fun/v2/cards/'+location.hash.slice(1)).then(r=>r.json().then(j=>[r.status,j])).then(([st,j])=>{
+    if(st===200&&j.data){CARD=Object.assign({},DEMO,j.data,{expires:j.expires});fill();gate.classList.remove('show')}
+    else{gate.querySelector('.gh').style.animation='none';$('#gateTxt').innerHTML=st===410?'การ์ดใบนี้หมดอายุแล้ว 🥺<br>ขอบคุณที่แวะมานะ':'ไม่พบการ์ดใบนี้<br>ลองเช็กลิงก์อีกครั้งนะ';
+      gate.insertAdjacentHTML('beforeend','<a href="https://luvnote.fun/">สร้างการ์ดของคุณที่ LuvNote</a>')}
+  }).catch(()=>{$('#gateTxt').innerHTML='เน็ตสะดุดนิดหน่อย<br>ลองรีเฟรชอีกครั้งนะ'});
 }else fill();
 
 /* ============ โหมดเล่นอัตโนมัติ (ใช้ในหน้าแคตตาล็อก) — เร็ว ไม่ต้องรอ ============ */

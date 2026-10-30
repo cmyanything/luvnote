@@ -2,6 +2,8 @@
 // POST /cards            {t,to,msg,from,secret,img(base64 jpeg)} -> {id}
 // GET  /cards/:id        -> {t,to,msg,from,secret,hasImg}
 // GET  /cards/:id/img    -> image/jpeg
+// POST /v2/cards         {theme, data}  -> {id, expires}   (theme cards, photos inline as data:image/jpeg)
+// GET  /v2/cards/:id     -> {theme, data, expires}  (410 when expired)
 
 const ORIGINS = [
   "https://luvnote.fun",
@@ -108,12 +110,83 @@ async function getImage(req, env, id) {
   });
 }
 
+/* ---------- theme cards (v2) ---------- */
+const THEMES = ["pink-coquette"];
+const V2_MAX = 1900000; // bytes of JSON body
+const DAY = 864e5;
+const LIFE_DAYS = 15;
+
+function cleanV2(d) {
+  const s = (v, n) => (typeof v === "string" ? v.slice(0, n) : "");
+  const photos = Array.isArray(d.photos) ? d.photos.slice(0, 5) : [];
+  const out = {
+    to: s(d.to, 40).trim(), from: s(d.from, 40).trim(),
+    age: Number.isFinite(+d.age) && +d.age > 0 && +d.age < 130 ? Math.round(+d.age) : null,
+    letter: s(d.letter, 700), secret: s(d.secret, 140), endMsg: s(d.endMsg, 140),
+    effect: ["bows", "hearts", "pearls"].includes(d.effect) ? d.effect : "bows",
+    lock: { type: d.lock && d.lock.type === "code" ? "code" : "scratch",
+            code: d.lock && /^\d{4}$/.test(d.lock.code || "") ? d.lock.code : "",
+            hint: s(d.lock && d.lock.hint, 60) },
+    music: d.music && d.music.type === "youtube" && /^[\w-]{11}$/.test(d.music.id || "")
+      ? { type: "youtube", id: d.music.id, start: Math.max(0, Math.min(36000, Math.round(+d.music.start || 0))) }
+      : { type: "demo" },
+    photos: [],
+  };
+  for (const p of photos) {
+    if (!p || typeof p.src !== "string" || !/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(p.src)) continue;
+    out.photos.push({ src: p.src, cap: s(p.cap, 40) });
+  }
+  return out;
+}
+
+async function createV2(req, env) {
+  const len = Number(req.headers.get("Content-Length") || 0);
+  if (len > V2_MAX) return json(req, { error: "too_large" }, 413);
+  let body;
+  try { const txt = await req.text(); if (txt.length > V2_MAX) return json(req, { error: "too_large" }, 413); body = JSON.parse(txt); }
+  catch { return json(req, { error: "bad_json" }, 400); }
+  const theme = String(body.theme || "");
+  if (!THEMES.includes(theme)) return json(req, { error: "bad_theme" }, 400);
+  const data = cleanV2(body.data || {});
+  if (!data.to || !data.from || !data.letter) return json(req, { error: "missing" }, 400);
+  const now = Date.now(), exp = now + LIFE_DAYS * DAY;
+  for (let i = 0; i < 5; i++) {
+    const id = newId();
+    try {
+      await env.DB.prepare("INSERT INTO theme_cards (id, theme, data, created_at, expires_at) VALUES (?, ?, ?, ?, ?)")
+        .bind(id, theme, JSON.stringify(data), now, exp).run();
+      return json(req, { id, expires: exp }, 201);
+    } catch (e) {
+      if (!String(e && e.message).includes("UNIQUE")) throw e;
+    }
+  }
+  return json(req, { error: "id_collision" }, 500);
+}
+
+async function getV2(req, env, id) {
+  const row = await env.DB.prepare("SELECT theme, data, expires_at FROM theme_cards WHERE id = ?").bind(id).first();
+  if (!row) return json(req, { error: "not_found" }, 404);
+  if (row.expires_at < Date.now()) return json(req, { error: "expired", expires: row.expires_at }, 410);
+  return json(req, { theme: row.theme, data: JSON.parse(row.data), expires: row.expires_at }, 200, { "Cache-Control": "public, max-age=120" });
+}
+
 export default {
   async fetch(req, env) {
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(req) });
 
     const url = new URL(req.url);
     if (url.pathname === "/" || url.pathname === "/health") return json(req, { ok: true, service: "luvnote-api" });
+
+    const v2 = url.pathname.match(/^\/v2\/cards(?:\/([a-z0-9]{7}))?\/?$/);
+    if (v2) {
+      try {
+        if (req.method === "POST" && !v2[1]) return await createV2(req, env);
+        if (req.method === "GET" && v2[1]) return await getV2(req, env, v2[1]);
+        return json(req, { error: "method_not_allowed" }, 405);
+      } catch (e) {
+        return json(req, { error: "server_error" }, 500);
+      }
+    }
 
     const m = url.pathname.match(/^\/cards(?:\/([a-z0-9]{7})(\/img)?)?\/?$/);
     if (!m) return json(req, { error: "not_found" }, 404);

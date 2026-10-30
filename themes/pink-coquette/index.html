@@ -141,7 +141,8 @@ textarea{resize:none;line-height:1.6}
 .share{display:flex;gap:10px}
 .share a,.share button{flex:1;font-family:'Mitr';font-weight:400;font-size:15px;text-decoration:none;border-radius:14px;padding:12px;cursor:pointer}
 .line{background:#06C755;color:#fff;border:none}
-.share button{background:#fff;color:var(--wine);border:1.5px solid var(--wine)}
+.share button,.share .open{background:#fff;color:var(--wine);border:1.5px solid var(--wine)}
+.share a{text-align:center}
 #qr{display:inline-block;margin:14px auto 6px;padding:10px;border-radius:16px;border:1px solid var(--line)}
 #qr img,#qr canvas{display:block;width:130px;height:130px}
 .expn{font-family:'Athiti';font-weight:600;font-size:14px;color:var(--mute)}
@@ -167,6 +168,7 @@ textarea{resize:none;line-height:1.6}
 .pp b{font-family:'Fredoka';font-weight:600;font-size:17px;color:var(--wine);letter-spacing:.3px}
 .pp i{font-style:normal;font-family:'Fredoka';font-weight:500;font-size:12px;color:#D9668F}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 </head>
 <body>
 <header>
@@ -176,7 +178,7 @@ textarea{resize:none;line-height:1.6}
 
 <div class="wrap">
   <div class="hero">
-    <div class="phone" id="heroPhone" role="button" aria-label="ดูการ์ดตัวอย่าง"><div class="screen"><iframe id="heroDemo" src="card.html?v=5#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe></div></div>
+    <div class="phone" id="heroPhone" role="button" aria-label="ดูการ์ดตัวอย่าง"><div class="screen"><iframe id="heroDemo" src="card.html?v=6#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe></div></div>
     <div class="hero-t">
       <span class="chip">🎂 วันเกิด</span>
       <h1>Pink Coquette</h1>
@@ -254,17 +256,19 @@ textarea{resize:none;line-height:1.6}
   </div>
 </div>
 
-<div class="bar"><div class="in"><button class="btn sec2" id="pvBtn">👀 ดูตัวอย่าง</button><button class="btn pri" id="mkBtn">สั่งการ์ดนี้ ♡</button></div></div>
+<div class="bar"><div class="in"><button class="btn sec2" id="pvBtn">👀 ดูตัวอย่าง</button><button class="btn pri" id="mkBtn">สร้างลิงก์ ♡</button></div></div>
 
 <div class="ov" id="ov"><div class="pv"><iframe id="frame" title="ตัวอย่างการ์ด" allow="autoplay"></iframe></div><button class="close" id="closePv">✕ ปิดตัวอย่าง</button></div>
 
 <div class="sheet" id="sheet">
   <div class="grab"></div>
   <div class="okheart">💝</div>
-  <h3>เกือบเสร็จแล้ว!</h3>
-  <p class="sub">ระบบสร้างลิงก์อัตโนมัติจะเปิดเร็วๆ นี้<br>ตอนนี้สั่งผ่าน LINE ได้เลย ทางร้านทำให้</p>
-  <ol class="steps"><li><b>1</b>กด <u>คัดลอกรายละเอียด</u> ด้านล่าง</li><li><b>2</b>ทัก LINE ร้าน วางข้อความ แล้วส่งรูปตามไปได้เลย</li><li><b>3</b>โอนชำระ แล้วรับลิงก์การ์ดไปส่งให้ <span id="sTo"></span></li></ol>
-  <div class="share"><button id="copy">คัดลอกรายละเอียด</button><a class="line" href="https://line.me/ti/p/~yingchonstom39" target="_blank" rel="noopener">ทัก LINE ร้าน</a></div>
+  <h3>การ์ดของคุณพร้อมแล้ว!</h3>
+  <p class="sub">ส่งลิงก์นี้ให้ <span id="sTo"></span> ได้เลย</p>
+  <div class="link"><span id="lnk"></span><button id="copy">คัดลอก</button></div>
+  <div class="share"><a class="line" id="lineBtn" href="#" target="_blank" rel="noopener">ส่งทาง LINE</a><a class="open" id="openBtn" href="#" target="_blank" rel="noopener">เปิดดูการ์ด</a></div>
+  <div id="qr"></div>
+  <p class="expn" id="expn"></p>
   <button class="again" id="again">กลับไปแก้ไข</button>
 </div>
 <div class="toast" id="toast"></div>
@@ -381,7 +385,7 @@ function validate(){const bad=[];
 
 /* preview */
 let pending=null;
-function openPreview(card){pending=card;$('#frame').src='card.html?v=5#preview';$('#ov').classList.add('show');document.body.style.overflow='hidden'}
+function openPreview(card){pending=card;$('#frame').src='card.html?v=6#preview';$('#ov').classList.add('show');document.body.style.overflow='hidden'}
 addEventListener('message',e=>{if(e.data&&e.data.type==='luvnote-ready'&&pending){$('#frame').contentWindow.postMessage({type:'luvnote-card',card:pending},'*')}});
 $('#closePv').onclick=()=>{$('#ov').classList.remove('show');$('#frame').src='about:blank';document.body.style.overflow=''};
 $('#demoBtn').onclick=()=>openPreview({});
@@ -394,11 +398,28 @@ function summary(d){const L=['🎀 สั่งการ์ด Pink Coquette (�
   'รูป: '+d.photos.length+' รูป'+(d.photos.some(p=>p.cap)?' | คำบรรยาย: '+d.photos.map((p,i)=>(i+1)+'.'+(p.cap||'-')).join(' '):''),
   'จดหมาย:\n'+d.letter,'ข้อความลับ: '+d.secret+(d.lock.type==='code'?' (รหัส '+d.lock.code+(d.lock.hint?' คำใบ้: '+d.lock.hint:'')+')':' (แบบขูด)'),
   'เพลง: '+(d.music.type==='youtube'?'https://youtu.be/'+d.music.id+(d.music.start?' (เริ่มที่ '+fmt(d.music.start)+')':''):'-'),'เอฟเฟกต์: '+({bows:'ริบบิ้น',hearts:'หัวใจ',pearls:'ไข่มุก'}[d.effect]),'คำปิดท้าย: '+d.endMsg];return L.join('\n')}
-$('#mkBtn').onclick=()=>{if(!validate())return;const d=data();$('#sTo').textContent=d.to;$('#sheet').dataset.txt=summary(d);
-  $('#sheet').classList.add('show');confetti(innerWidth/2,innerHeight*.45)};
+function reJpeg(src,max,q){return new Promise(res=>{const im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');
+  c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',q))};im.onerror=()=>res(null);im.src=src})}
+let busy=false;
+$('#mkBtn').onclick=async()=>{if(busy||!validate())return;busy=true;const btn=$('#mkBtn'),lab=btn.textContent;btn.textContent='กำลังสร้างลิงก์…';btn.style.opacity=.75;
+  try{const d=data();delete d.expires;
+    d.photos=(await Promise.all(d.photos.map(async p=>({src:await reJpeg(p.src,900,.78),cap:p.cap})))).filter(p=>p.src);
+    let body=JSON.stringify({theme:'pink-coquette',data:d});
+    if(body.length>1850000){d.photos=(await Promise.all(d.photos.map(async p=>({src:await reJpeg(p.src,700,.7),cap:p.cap}))));body=JSON.stringify({theme:'pink-coquette',data:d})}
+    const r=await fetch('https://api.luvnote.fun/v2/cards',{method:'POST',headers:{'Content-Type':'application/json'},body});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||!j.id)throw new Error(j.error||('http '+r.status));
+    const url='https://luvnote.fun/#p'+j.id;
+    $('#lnk').textContent='luvnote.fun/#p'+j.id;$('#sTo').textContent=d.to;$('#openBtn').href=url;
+    $('#lineBtn').href='https://line.me/R/msg/text/?'+encodeURIComponent('มีการ์ดวันเกิดส่งถึง '+d.to+' 🎀 แตะเปิดเลย '+url);
+    $('#expn').textContent='ลิงก์เปิดได้ถึง '+new Date(j.expires).toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'});
+    $('#qr').innerHTML='';$('#qr').style.display='';try{new QRCode($('#qr'),{text:url,width:260,height:260,colorDark:'#800020',colorLight:'#ffffff'})}catch(err){$('#qr').style.display='none'}
+    $('#sheet').dataset.url=url;$('#sheet').classList.add('show');confetti(innerWidth/2,innerHeight*.45);
+  }catch(e){toast(String(e.message).includes('too_large')?'รูปใหญ่เกินไป ลองลดจำนวนรูปนะ':'สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ')}
+  finally{busy=false;btn.textContent=lab;btn.style.opacity=''}};
 $('#again').onclick=()=>$('#sheet').classList.remove('show');
-$('#copy').onclick=async()=>{const t=$('#sheet').dataset.txt;try{await navigator.clipboard.writeText(t);toast('คัดลอกแล้ว ไปวางในแชท LINE ได้เลย ♡')}
-  catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('คัดลอกแล้ว ♡')}catch(_){toast('คัดลอกไม่ได้ ลองใหม่อีกครั้งนะ')}ta.remove()}};
+$('#copy').onclick=async()=>{const t=$('#sheet').dataset.url;try{await navigator.clipboard.writeText(t);toast('คัดลอกลิงก์แล้ว ♡')}
+  catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('คัดลอกลิงก์แล้ว ♡')}catch(_){toast('กดค้างที่ลิงก์เพื่อคัดลอกนะ')}ta.remove()}};
 
 /* tiny fx */
 function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2200)}

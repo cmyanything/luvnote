@@ -498,7 +498,7 @@ header{position:absolute;top:0;left:0;right:0;z-index:40;display:flex;justify-co
 #page0.on{opacity:1}
 #page0 .p0bunt{top:4px;opacity:1!important;height:54px}
 #page0 .p0cake{width:165px;margin-top:18px}
-#page0 .p0n{font-size:40px}
+#page0 .p0n{font-size:40px;margin:30px 0 4px}
 #page0 .p0bal{bottom:70px}
 #s0.full .awrap{opacity:0;transform:scale(1.12);transition:opacity .7s,transform .8s}
 .blowb{font-family:'Mali';font-weight:700;font-size:15px;color:#fff;background:var(--wine);border:none;border-radius:24px;padding:9px 22px;cursor:pointer;
@@ -509,7 +509,13 @@ header{position:absolute;top:0;left:0;right:0;z-index:40;display:flex;justify-co
 #h1:empty{display:none}
 #h1.after{margin-top:0;background:none;box-shadow:none}
 #s2{gap:8px}
-.sbox{height:292px!important}.mode-code .sbox{height:360px!important}
+.sbox{height:292px!important}.mode-code .sbox{height:400px!important}
+.mode-code .lockb{gap:10px}.mode-code .codehint{font-size:14px;line-height:1.5}
+#s4.mode-code #h4{margin-top:6px}
+#cpol.hop{animation:hop 1.3s cubic-bezier(.3,0,.3,1) both}
+@keyframes hop{0%{translate:0 0;rotate:0deg}18%{translate:0 10px;scale:1.04 .94}38%{translate:0 -46px;scale:1.06;rotate:-4deg}58%{translate:0 0;scale:1.03 .96;rotate:2deg}74%{translate:0 -14px;scale:1;rotate:-1deg}100%{translate:0 0;rotate:0deg;scale:1}}
+#cpol.hop .cake{animation:cakeJ 1.3s ease both}
+@keyframes cakeJ{38%{transform:scale(1.06)}58%{transform:scale(.98)}}
 /* notebook frame: every scene is a page */
 #nbc,#nb,#pflip{position:absolute;left:12px;right:14px;top:64px;bottom:86px;pointer-events:none;opacity:0;transition:opacity .6s}
 #nbc{z-index:4;left:6px;right:6px;top:58px;bottom:80px;border-radius:8px 18px 18px 8px;
@@ -894,7 +900,9 @@ $('#cpol').addEventListener('click',()=>{if(devDone)blowCandle()});
 let wished=false;
 function blowCandle(){if(wished)return;wished=true;$('#s1').classList.remove('ready');vib([40,30,80]);$('#cpol').classList.add('wished');$('#cpolIm .cake').classList.add('blown');$('#h1').textContent='';$('#h1').classList.remove('b');
   const[x,y]=center($('#cpol'));setTimeout(()=>{flash();burst(x,y-40,140,{up:true,speed:12});rain(50);$('#camSub').innerHTML='<span class="wg">wish granted ✨</span><span class="wt">ขอให้สมหวังทุกอย่างนะ</span>'},500);
-  setTimeout(()=>{if(cur===1)CARD.photos.length?done('เปิดอัลบั้มความทรงจำ','📒'):done('เปิดการ์ดในซอง','💌')},2200)}
+  setTimeout(()=>{const c=$('#cpol');c.classList.add('hop');setTimeout(()=>{const[a,b]=center(c);burst(a,b-60,70,{up:true,speed:10,types:['heart','star','dot']})},380);vib([20,60,20])},1700);
+  setTimeout(()=>{if(cur===1)CARD.photos.length?done('เปิดอัลบั้มความทรงจำ','📒'):done('เปิดการ์ดในซอง','💌')},3300);
+  setTimeout(()=>{if(cur===1&&!AUTO)go(CARD.photos.length?2:3)},5600)}
 
 /* ---------- 2 album pages ---------- */
 const LAY={1:[[165,246,-3,190]],2:[[100,166,-5,144],[220,334,4,144]],3:[[96,156,-5,128],[236,182,4,128],[160,344,-2,128]]};

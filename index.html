@@ -9,12 +9,12 @@
 (function(){var h=location.hash.slice(1);
 if(/^p[a-z0-9]{7}$/.test(h)){location.replace("themes/pink-coquette/card.html?v=6#"+h.slice(1));return;}
 if(/^d[a-z0-9]{7}$/.test(h)){location.replace("themes/coquette-dream/card.html?v=3#"+h.slice(1));return;}
-if(/^m[a-z0-9]{7}$/.test(h)){location.replace("themes/little-memories/card.html?v=2#"+h.slice(1));return;}
+if(/^m[a-z0-9]{7}$/.test(h)){location.replace("themes/little-memories/card.html?v=3#"+h.slice(1));return;}
 if((/^[a-z0-9]{7}$/.test(h)&&h!=="pricing"&&h!=="contact")||/^[cd]-[0-9a-v]+$/.test(h))location.replace("app/#"+h);})();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Mali:wght@600;700&family=Mitr:wght@400;500&family=Athiti:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Fredoka:wght@400;500;600;700&family=Mali:wght@600;700&family=Mitr:wght@400;500&family=Athiti:wght@500;600&display=swap" rel="stylesheet">
 <style>
 /* LuvNote catalog v2 — layout like a mini card shop:
    centered logo header, icon category tabs, 2-col picture grid with "ดูตัวอย่าง" pills, floating "วิธีสั่งทำ".
@@ -725,13 +725,35 @@ main{padding-bottom:84px!important}
 .a-drm .pr{width:70%;height:3.4cqw;background:radial-gradient(circle at 40% 35%,#fff 0 .5cqw,#F7EAE6 1cqw,#DCC6C3 1.6cqw,transparent 1.75cqw) 0 0/3.6cqw 3.4cqw repeat-x}
 .a-drm .rs{position:absolute;right:-9cqw;bottom:-5cqh;width:30cqw;z-index:2}
 /* ===== Pink Coquette thumb ===== */
-.a-mem{display:grid;place-items:center;background:radial-gradient(circle,rgba(154,127,118,.18) 1px,transparent 1.4px) 0 0/5cqw 5cqw,#FFF8F6}
-.a-mem .nb{width:66cqw;height:80cqh;border-radius:2cqw 4cqw 4cqw 2cqw;background:linear-gradient(135deg,#F0D8D0,#E3BDB3);padding:3cqw;box-shadow:0 2cqw 4cqw rgba(91,64,56,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4cqh;animation:bob 3s ease-in-out infinite}
-.a-mem .tl{display:flex;gap:1.5cqw}.a-mem .tl b{width:11cqw;height:12cqw;border-radius:1.5cqw;display:grid;place-items:center;font:700 7cqw/1 sans-serif;color:#fff;box-shadow:0 .8cqw 0 rgba(91,64,56,.15)}
-.a-mem .tl b:nth-child(2){color:#B8475A;transform:rotate(-6deg)}.a-mem .tl b:nth-child(3){transform:rotate(5deg)}
-.a-mem .pl{width:36cqw;background:#fff;padding:2cqw 2cqw 6cqw;transform:rotate(-5deg);box-shadow:0 1cqw 2cqw rgba(91,64,56,.2);position:relative}
-.a-mem .pl i{display:block;height:28cqw;background:linear-gradient(135deg,#FDE3E1,#FFF4D6 60%,#DDEFF7)}
-.a-mem .pl span{position:absolute;left:0;right:0;bottom:.5cqw;text-align:center;color:#B8475A;font-size:5cqw}
+.a-mem{position:relative;display:grid;place-items:center;background:radial-gradient(circle,rgba(154,127,118,.18) .6cqw,transparent .8cqw) 0 0/6cqw 6cqw,#FFF8F6;overflow:hidden}
+.a-mem .cv{position:relative;width:86cqw;height:84cqh;border-radius:2cqw 5cqw 5cqw 2cqw;animation:mFloat 4s ease-in-out infinite;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.12) 0 .4cqw,transparent .4cqw 1.2cqw),repeating-linear-gradient(90deg,rgba(150,100,90,.08) 0 .4cqw,transparent .4cqw 1.2cqw),linear-gradient(135deg,#F0D8D0,#E3BDB3);
+  box-shadow:2cqw 2cqw 0 -1cqw #fff,2.4cqw 2.4cqw 0 -1cqw #EADFD9,0 3cqw 6cqw rgba(91,64,56,.25)}
+@keyframes mFloat{50%{transform:translateY(-1.5cqh) rotate(1deg)}}
+.a-mem .sp{position:absolute;left:0;top:0;bottom:0;width:7cqw;border-radius:2cqw 0 0 2cqw;background:linear-gradient(90deg,#D3A89D,#E6C3BA)}
+.a-mem .st{position:absolute;inset:2.4cqw 2.4cqw 2.4cqw 9cqw;border:.5cqw dashed rgba(255,255,255,.75);border-radius:1cqw 3.5cqw 3.5cqw 1cqw}
+.a-mem .lb{position:absolute;left:10cqw;right:7cqw;top:15cqh;bottom:20cqh;background:#FFFDF9;border-radius:1.5cqw;transform:rotate(-2deg);box-shadow:0 1.5cqw 3cqw rgba(91,64,56,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1cqw;padding-top:1cqh}
+.a-mem .lb::before{content:'';position:absolute;inset:2cqw;border:.5cqw dashed #F0C9C6;border-radius:1cqw}
+.a-mem .tl{display:flex;gap:.5cqw;position:relative;height:9cqw;align-items:center}.a-mem .tl+.tl{margin-top:2cqw}
+.a-mem .tl b{width:7cqw;height:8.4cqw;border-radius:1.2cqw;display:grid;place-items:center;font:700 5.2cqw/1 Fredoka,sans-serif;color:#fff;box-shadow:0 .5cqw 0 rgba(91,64,56,.15);animation:mBob 2.4s ease-in-out calc(var(--i)*.12s) infinite}
+.a-mem .tl b:nth-child(odd){rotate:-5deg}.a-mem .tl b:nth-child(even){rotate:4deg}
+@keyframes mBob{50%{transform:translateY(-1cqw)}}
+.a-mem .k1{font:600 3.6cqw/1 Fredoka,sans-serif;letter-spacing:.35em;padding-left:.35em;color:#9A7F76;position:relative}
+.a-mem .k2{font:700 13cqw/1 Caveat,'Mali',cursive;color:#B8475A;position:relative;text-shadow:.5cqw .5cqw 0 #FBE1DE;margin-top:.5cqh}
+.a-mem .k3{font-size:3.4cqw;letter-spacing:1cqw;color:#EC8F98;position:relative}
+.a-mem .ck{width:44cqw;margin-top:2cqh;position:relative}
+.a-mem .ck .fl{transform-box:fill-box;transform-origin:50% 100%;animation:mFl .5s ease-in-out infinite alternate}
+@keyframes mFl{to{transform:scaleY(1.15) rotate(3deg)}}
+.a-mem .tp{position:absolute;width:20cqw;height:5.5cqw;opacity:.88}
+.a-mem .tp.a{left:-5cqw;top:-1cqw;transform:rotate(-30deg);background:radial-gradient(circle,rgba(255,255,255,.8) .5cqw,transparent .7cqw) 0 0/2.4cqw 2.4cqw,#F7E3A3}
+.a-mem .tp.b{right:-5cqw;bottom:0;transform:rotate(-28deg);background:repeating-linear-gradient(45deg,rgba(255,255,255,.5) 0 1cqw,transparent 1cqw 2cqw),#C2DAEA}
+.a-mem .hs{position:absolute;right:11cqw;bottom:6cqh;font-size:11cqw;color:#EC8F98;text-shadow:0 0 0 #fff,.5cqw .5cqw 0 #fff;transform:rotate(12deg);animation:mBeat 1.6s ease-in-out infinite}
+@keyframes mBeat{50%{transform:rotate(12deg) scale(1.15)}}
+.a-mem .sv{position:absolute;left:12cqw;top:3cqh;font-size:6cqw;color:#F7E3A3;text-shadow:0 0 .6cqw #fff;animation:mTw 2s ease-in-out infinite}
+@keyframes mTw{50%{opacity:.3;transform:scale(.7) rotate(40deg)}}
+.a-mem .bd{position:absolute;right:2.5cqw;top:-1cqh;bottom:-1cqh;width:3.6cqw;border-radius:1cqw;background:linear-gradient(90deg,#9E3449,#C9586B 45%,#A33A4F)}
+.a-mem .rb{position:absolute;left:34cqw;bottom:2cqh;width:4cqw;height:9cqh;background:linear-gradient(90deg,#E8A1A9,#F6C3C1 50%,#E8A1A9);clip-path:polygon(0 0,100% 0,100% 100%,50% 80%,0 100%);transform-origin:50% 0;animation:mSw 2.6s ease-in-out infinite}
+@keyframes mSw{50%{transform:rotate(6deg)}}
 .a-coq{gap:4cqh;padding:6cqh 6cqw 0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.5) 0 4cqw,transparent 4cqw 8cqw),repeating-linear-gradient(90deg,rgba(255,255,255,.5) 0 4cqw,transparent 4cqw 8cqw),#FFD6E4}
 .a-coq .cbow{width:46cqw;animation:bob 3s ease-in-out infinite;filter:drop-shadow(0 1cqw 1.5cqw rgba(217,102,143,.35))}
 .a-coq .hb{font:500 italic 12.5cqw/1.02 var(--serif);color:#D9668F;text-align:center;text-shadow:0 .6cqw 0 #fff}
@@ -919,7 +941,7 @@ var CARDS=[
    fx:["ซองผูกโบว์ › แกะกล่องของขวัญ › เป่าเทียนบนเค้ก","อัลบั้มรูปโพลารอยด์ จดหมายรัก และข้อความลับแบบขูด/ใส่รหัส","ใส่เพลงจาก YouTube ได้ เล่นตอนเปิดซอง"], hint:"แตะการ์ดเพื่อโปรยโบว์ 🎀", burst:"heart"},
   {id:"dream", chip:"🤍 แกะริบบิ้น ไข่มุก", price:99, en:"Coquette Dream", th:"วันเกิด · ลูกไม้ไข่มุก", short:"แกะริบบิ้น ไข่มุก", type:"custom", cats:["bday"], page:"themes/coquette-dream/",ver:3,
    fx:["แกะริบบิ้นซาติน › เปิดกล่องฝันไข่มุก › เป่าเทียนเค้กวินเทจ","อัลบั้มรูปกรอบลูกไม้ จดหมายรัก และล็อกเก็ตลับแบบขูด/ใส่รหัส","ใส่เพลงจาก YouTube ได้ เล่นตอนแกะริบบิ้น"], hint:"แตะการ์ดเพื่อโปรยไข่มุก 🤍", burst:"heart"},
-  {id:"mem", chip:"📒 อัลบั้ม กล้องถ่ายรูป", price:99, en:"Our Little Memories", th:"วันเกิด · สมุดอัลบั้มพาสเทล", short:"อัลบั้ม กล้องถ่ายรูป", type:"custom", cats:["bday"], page:"themes/little-memories/",ver:2,
+  {id:"mem", chip:"📒 อัลบั้ม กล้องถ่ายรูป", price:99, en:"Our Little Memories", th:"วันเกิด · สมุดอัลบั้มพาสเทล", short:"อัลบั้ม กล้องถ่ายรูป", type:"custom", cats:["bday"], page:"themes/little-memories/",ver:3,
    fx:["เปิดปกอัลบั้ม › กล้องดิจิทัลถ่ายรูปเค้ก › เป่าเทียนอธิษฐาน","แปะรูปโพลารอยด์ลงสมุด จดหมายในซอง และการ์ดข้อความลับแบบแตะตรา/ใส่รหัส","พลิกหน้ากระดาษไปทีละหน้า ใส่เพลงจาก YouTube ได้"], hint:"แตะการ์ดเพื่อโปรยหัวใจ 💗", burst:"heart"},
   {id:"rose", chip:"🌹 กลีบกุหลาบโปรย", price:39,  en:"Rosé",   th:"เรียบหรู มินิมอล", short:"กลีบกุหลาบโปรย", type:"free", cats:["love","anniv"],
    fx:["แตะซองเพื่อเปิดดูข้างใน","แตะการ์ดแล้วกลีบกุหลาบโปรยลงมา"], hint:"แตะการ์ดเพื่อโปรยกลีบกุหลาบ 🌹", burst:"petal"},
@@ -959,7 +981,7 @@ function art(id,big){
   case "anniv": return '<div class="art a-anniv" style="background:var(--cream)"><div class="polaroid">'+use("bow","bw","0 0 100 74")+'<div class="ph">'+use("mochi","","0 0 100 90")+'</div><span>ปีแรกของเรา ♡</span></div><svg class="i rings"><use href="#rings"/></svg></div>';
   case "coquette": return '<div class="art a-coq"><svg class="cbow" viewBox="0 0 100 80"><path fill="#F7A8C4" stroke="#E07AA0" stroke-width="1.5" d="M47 36 L35 76 L42 70 L46 78 L50 38Z M53 36 L65 76 L58 70 L54 78 L50 38Z M50 32 C30 4 4 10 9 30 C13 46 35 43 50 36Z M50 32 C70 4 96 10 91 30 C87 46 65 43 50 36Z"/><ellipse fill="#F48FB1" stroke="#E07AA0" stroke-width="1.5" cx="50" cy="34" rx="7.5" ry="8.5"/></svg><div class="hb">Happy<br>Birthday</div><div class="ck"><div class="cn"><i></i><i></i><i></i></div><div class="t1"></div><div class="t2"></div></div></div>';
   case "dream": return '<div class="art a-drm"><div class="lc"><svg class="dbow" viewBox="0 0 120 100"><path fill="#F2B8C7" stroke="#DC8AA2" stroke-width="1.5" d="M56 46 C50 60 40 74 26 94 L34 90 L38 99 C50 82 58 64 61 50Z M64 46 C72 60 84 72 98 90 L89 88 L87 97 C74 82 64 64 59 50Z M58 42 C44 14 10 6 6 26 C3 44 30 54 58 48Z M62 42 C76 14 110 6 114 26 C117 44 90 54 62 48Z"/><path d="M50 36 C38 20 22 14 14 22" fill="none" stroke="#fff" stroke-width="3" opacity=".7" stroke-linecap="round"/><rect x="51" y="37" width="18" height="15" rx="7" fill="#EBA0B4" stroke="#DC8AA2" stroke-width="1.5"/></svg><div class="hb">Happy<br>Birthday</div><div class="pr"></div><svg class="rs" viewBox="0 0 60 50"><ellipse cx="12" cy="36" rx="12" ry="5" fill="#AFC6A1" transform="rotate(-25 12 36)"/><ellipse cx="50" cy="20" rx="10" ry="4" fill="#AFC6A1" transform="rotate(-40 50 20)"/><circle cx="36" cy="30" r="15" fill="#F6C3D0" stroke="#E594AB"/><path d="M36 30 m-2 0 a2 2 0 1 1 4 0 a4.5 4.5 0 1 1 -9 0 a7 7 0 1 1 14 0 a9.5 9.5 0 1 1 -19 0" fill="none" stroke="#DA7F99" stroke-width="1.3"/><circle cx="18" cy="22" r="10" fill="#F8CFD9" stroke="#E594AB"/><path d="M18 22 m-1.5 0 a1.5 1.5 0 1 1 3 0 a3.5 3.5 0 1 1 -7 0 a5.5 5.5 0 1 1 11 0" fill="none" stroke="#DA7F99" stroke-width="1.2"/></svg></div></div>';
-  case "mem": return '<div class="art a-mem"><div class="nb"><div class="tl">'+["H","B","D"].map(function(l,i){return '<b style="background:'+["#EC8F98","#F7E3A3","#C2DAEA"][i]+'">'+l+'</b>';}).join("")+'</div><div class="pl"><i></i><span>♡</span></div></div></div>';
+  case "mem": return '<div class="art a-mem"><div class="cv"><i class="sp"></i><i class="st"></i><div class="lb"><p class="k1">OUR LITTLE</p><p class="k2">Memories</p><p class="k3">♥ ♥ ♥</p><svg class="ck" viewBox="0 -10 120 112"><rect x="18" y="66" width="84" height="30" rx="8" fill="#F6C3C1"/><path d="M18 74 q7 9 14 0 q7 9 14 0 q7 9 14 0 q7 9 14 0 q7 9 14 0 q7 9 14 0 V70 H18Z" fill="#fff"/><rect x="32" y="40" width="56" height="30" rx="7" fill="#FFF7F2"/><path d="M32 47 q5 8 9.3 0 q5 8 9.3 0 q5 8 9.3 0 q5 8 9.3 0 q5 8 9.3 0 q5 8 9.3 0 V44 H32Z" fill="#EC8F98"/><circle cx="44" cy="38" r="4" fill="#E05273"/><circle cx="76" cy="38" r="4" fill="#E05273"/><rect x="57" y="16" width="6" height="24" rx="2" fill="#C2DAEA"/><g class="fl"><path d="M60 -6 C61 0 66.5 4 66.5 9.5 C66.5 13.5 63.5 16 60 16 C56.5 16 53.5 13.5 53.5 9.5 C53.5 4 59 0 60 -6Z" fill="#FFAA3B"/><path d="M60 3 C60.6 6.5 63.4 8.5 63.4 11.3 C63.4 13.4 61.9 14.6 60 14.6 C58.1 14.6 56.6 13.4 56.6 11.3 C56.6 8.5 59.4 6.5 60 3Z" fill="#FFF2B3"/></g></svg><i class="tp a"></i><i class="tp b"></i></div><span class="hs">♥</span><span class="sv">✦</span><i class="bd"></i></div><i class="rb"></i></div>';
   case "bday": return '<div class="art a-bday dots"><div class="bub">ตื่นยัง?</div><div class="bub out">ตื่นแล้ว มีอะไรเหรอ</div><div class="bub">สุขสันต์วันเกิดนะ 🎂</div><div class="bub">ขอให้ปีนี้ดีที่สุดเลย</div>'+use("cake","cake","0 0 100 90")+'</div>';
   case "sorry": return '<div class="art a-sorry" style="background:var(--cream)">'+use("wax","seal-big","0 0 60 60")+'<div class="q">I\'m sorry</div><div style="font-size:11px;color:var(--ink2);margin-top:4px">ยกโทษให้เค้าได้มั้ย?</div>'+(big?'<div class="yn"><button class="y" type="button">ได้สิ</button><button class="n" type="button">ไม่</button></div>':'<div class="yn"><i class="y">ได้สิ</i><i class="n">ไม่</i></div>')+'</div>';
   }

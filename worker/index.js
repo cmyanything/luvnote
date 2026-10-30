@@ -111,7 +111,7 @@ async function getImage(req, env, id) {
 }
 
 /* ---------- theme cards (v2) ---------- */
-const THEMES = ["pink-coquette", "coquette-dream"];
+const THEMES = ["pink-coquette", "coquette-dream", "little-memories"];
 const V2_MAX = 1900000; // bytes of JSON body
 const DAY = 864e5;
 const LIFE_DAYS = 15;

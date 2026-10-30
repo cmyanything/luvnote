@@ -107,6 +107,10 @@ textarea{resize:none;line-height:1.6}
 .fx.on{border-color:var(--wine);background:#FFF5F8;box-shadow:0 6px 16px rgba(139,10,46,.12)}
 .fx.on::after{content:'✓';position:absolute;top:6px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--wine);color:#fff;font-size:11px;display:grid;place-items:center}
 
+.cov{display:flex;align-items:center;gap:10px}.cov .x{width:36px;height:36px;flex-shrink:0;border-radius:50%;border:1.5px solid var(--line);background:#fff;color:var(--wine);font-size:15px;cursor:pointer}
+.cvb{flex:1;display:flex;align-items:center;gap:12px;border:1.5px dashed var(--line);border-radius:14px;padding:10px;cursor:pointer;margin:0;font-family:'Mitr';font-weight:400;font-size:14px;color:var(--wine)}
+.cvb img{width:64px;height:48px;border-radius:8px;object-fit:cover;background:var(--soft);display:none}
+.cov.has .cvb img{display:block}
 /* bottom bar */
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
 .bar .in{max-width:448px;margin:0 auto;display:flex;gap:10px}
@@ -178,7 +182,7 @@ textarea{resize:none;line-height:1.6}
 
 <div class="wrap">
   <div class="hero">
-    <div class="phone" id="heroPhone" role="button" aria-label="ดูการ์ดตัวอย่าง"><div class="screen"><iframe id="heroDemo" src="card.html?v=3#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe></div></div>
+    <div class="phone" id="heroPhone" role="button" aria-label="ดูการ์ดตัวอย่าง"><div class="screen"><iframe id="heroDemo" src="card.html?v=4#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe></div></div>
     <div class="hero-t">
       <span class="chip">🎂 วันเกิด</span>
       <h1>Our Little Memories</h1>
@@ -203,6 +207,9 @@ textarea{resize:none;line-height:1.6}
   <div class="sec" data-k="photos">
     <div class="sh"><div class="num">2</div><h2>รูปความทรงจำ</h2><span class="opt"><span class="en" id="pc">0</span>/5 รูป</span></div>
     <div class="photos" id="photos"><label class="add" id="addBtn"><b>+</b>เพิ่มรูป <span class="en" style="opacity:.6;font-size:13px">(สูงสุด 5)</span><input type="file" id="file" accept="image/*" multiple hidden></label></div>
+    <label style="margin-top:14px">รูปเจ้าของวันเกิด (โชว์ในกล้องหน้าแรก)</label>
+    <div class="cov" id="cov"><label class="cvb" id="covBtn"><img id="covImg" alt=""><span id="covTxt">📷 แตะเพื่อเลือกรูป</span><input type="file" id="covFile" accept="image/*" hidden></label><button class="x" id="covX" aria-label="ลบรูป" style="display:none">✕</button></div>
+    <p class="help">ถ้าไม่ใส่ จะใช้รูปแรกในอัลบั้มแทน</p>
     <p class="help">ใส่คำบรรยายใต้รูปได้ · ถ้าไม่ใส่รูป การ์ดจะข้ามฉากอัลบั้มไปเอง</p>
   </div>
 
@@ -350,6 +357,9 @@ function renderPhotos(){const box=$('#photos');$$('#photos .ph').forEach(p=>p.re
     d.querySelector('.x').onclick=()=>{st.photos.splice(i,1);renderPhotos();refresh()};box.insertBefore(d,$('#addBtn'))});
   $('#addBtn').style.display=st.photos.length>=5?'none':'';$('#pc').textContent=st.photos.length}
 
+/* cover photo */
+$('#covFile').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{st.cover=await shrink(f,900);$('#covImg').src=st.cover;$('#cov').classList.add('has');$('#covTxt').textContent='เปลี่ยนรูป';$('#covX').style.display=''}catch(err){toast('อ่านรูปนี้ไม่ได้ ลองรูปอื่นนะ')}});
+$('#covX').onclick=()=>{st.cover=null;$('#cov').classList.remove('has');$('#covTxt').textContent='📷 แตะเพื่อเลือกรูป';$('#covX').style.display='none'};
 /* keyboard: กด Done แล้วปิดคีย์บอร์ด / แตะที่ว่างเพื่อปิด */
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('input')){e.preventDefault();e.target.blur()}});
 document.addEventListener('touchstart',e=>{const a=document.activeElement;if(a&&a.matches('input,textarea')&&!e.target.closest('input,textarea,button,label,.seg,.fx,.tpls'))a.blur()},{passive:true});
@@ -360,7 +370,7 @@ fitHero();addEventListener('resize',fitHero);addEventListener('load',fitHero);
 $('#heroPhone').onclick=()=>openPreview({});
 
 /* data */
-function data(){return{to:$('#to').value.trim(),from:$('#from').value.trim(),age:$('#age').value?+$('#age').value:null,
+function data(){return{cover:st.cover||null,to:$('#to').value.trim(),from:$('#from').value.trim(),age:$('#age').value?+$('#age').value:null,
   photos:st.photos.map(p=>({src:p.src,cap:p.cap.trim()})),letter:$('#letter').value.trim(),secret:$('#secret').value.trim(),
   lock:{type:st.lock,code:$('#code').value,hint:$('#hint').value.trim()},endMsg:$('#endMsg').value.trim()||'ขอบคุณที่เป็นความทรงจำที่ดีที่สุด\nของทุกปีนะ',
   effect:st.effect,music:ytId($('#yt').value)&&!$('#ytS').classList.contains('bad')?{type:'youtube',id:ytId($('#yt').value),start:secOf($('#ytStart').value)}:{type:'demo'},expires:new Date(Date.now()+15*864e5).toISOString()}}
@@ -385,7 +395,7 @@ function validate(){const bad=[];
 
 /* preview */
 let pending=null;
-function openPreview(card){pending=card;$('#frame').src='card.html?v=3#preview';$('#ov').classList.add('show');document.body.style.overflow='hidden'}
+function openPreview(card){pending=card;$('#frame').src='card.html?v=4#preview';$('#ov').classList.add('show');document.body.style.overflow='hidden'}
 addEventListener('message',e=>{if(e.data&&e.data.type==='luvnote-ready'&&pending){$('#frame').contentWindow.postMessage({type:'luvnote-card',card:pending},'*')}});
 $('#closePv').onclick=()=>{$('#ov').classList.remove('show');$('#frame').src='about:blank';document.body.style.overflow=''};
 $('#demoBtn').onclick=()=>openPreview({});
@@ -403,7 +413,7 @@ function reJpeg(src,max,q){return new Promise(res=>{const im=new Image();im.onlo
 let busy=false;
 $('#mkBtn').onclick=async()=>{if(busy||!validate())return;busy=true;const btn=$('#mkBtn'),lab=btn.textContent;btn.textContent='กำลังสร้างลิงก์…';btn.style.opacity=.75;
   try{const d=data();delete d.expires;
-    d.photos=(await Promise.all(d.photos.map(async p=>({src:await reJpeg(p.src,900,.78),cap:p.cap})))).filter(p=>p.src);
+    d.photos=(await Promise.all(d.photos.map(async p=>({src:await reJpeg(p.src,900,.78),cap:p.cap})))).filter(p=>p.src);if(d.cover)d.cover=await reJpeg(d.cover,700,.78);
     let body=JSON.stringify({theme:'little-memories',data:d});
     if(body.length>1850000){d.photos=(await Promise.all(d.photos.map(async p=>({src:await reJpeg(p.src,700,.7),cap:p.cap}))));body=JSON.stringify({theme:'little-memories',data:d})}
     const r=await fetch('https://api.luvnote.fun/v2/cards',{method:'POST',headers:{'Content-Type':'application/json'},body});

@@ -9,7 +9,7 @@
 (function(){var h=location.hash.slice(1);
 if(/^p[a-z0-9]{7}$/.test(h)){location.replace("themes/pink-coquette/card.html?v=6#"+h.slice(1));return;}
 if(/^d[a-z0-9]{7}$/.test(h)){location.replace("themes/coquette-dream/card.html?v=3#"+h.slice(1));return;}
-if(/^m[a-z0-9]{7}$/.test(h)){location.replace("themes/little-memories/card.html?v=3#"+h.slice(1));return;}
+if(/^m[a-z0-9]{7}$/.test(h)){location.replace("themes/little-memories/card.html?v=4#"+h.slice(1));return;}
 if((/^[a-z0-9]{7}$/.test(h)&&h!=="pricing"&&h!=="contact")||/^[cd]-[0-9a-v]+$/.test(h))location.replace("app/#"+h);})();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -941,7 +941,7 @@ var CARDS=[
    fx:["ซองผูกโบว์ › แกะกล่องของขวัญ › เป่าเทียนบนเค้ก","อัลบั้มรูปโพลารอยด์ จดหมายรัก และข้อความลับแบบขูด/ใส่รหัส","ใส่เพลงจาก YouTube ได้ เล่นตอนเปิดซอง"], hint:"แตะการ์ดเพื่อโปรยโบว์ 🎀", burst:"heart"},
   {id:"dream", chip:"🤍 แกะริบบิ้น ไข่มุก", price:99, en:"Coquette Dream", th:"วันเกิด · ลูกไม้ไข่มุก", short:"แกะริบบิ้น ไข่มุก", type:"custom", cats:["bday"], page:"themes/coquette-dream/",ver:3,
    fx:["แกะริบบิ้นซาติน › เปิดกล่องฝันไข่มุก › เป่าเทียนเค้กวินเทจ","อัลบั้มรูปกรอบลูกไม้ จดหมายรัก และล็อกเก็ตลับแบบขูด/ใส่รหัส","ใส่เพลงจาก YouTube ได้ เล่นตอนแกะริบบิ้น"], hint:"แตะการ์ดเพื่อโปรยไข่มุก 🤍", burst:"heart"},
-  {id:"mem", chip:"📒 อัลบั้ม กล้องถ่ายรูป", price:99, en:"Our Little Memories", th:"วันเกิด · สมุดอัลบั้มพาสเทล", short:"อัลบั้ม กล้องถ่ายรูป", type:"custom", cats:["bday"], page:"themes/little-memories/",ver:3,
+  {id:"mem", chip:"📒 อัลบั้ม กล้องถ่ายรูป", price:99, en:"Our Little Memories", th:"วันเกิด · สมุดอัลบั้มพาสเทล", short:"อัลบั้ม กล้องถ่ายรูป", type:"custom", cats:["bday"], page:"themes/little-memories/",ver:4,
    fx:["เปิดปกอัลบั้ม › กล้องดิจิทัลถ่ายรูปเค้ก › เป่าเทียนอธิษฐาน","แปะรูปโพลารอยด์ลงสมุด จดหมายในซอง และการ์ดข้อความลับแบบแตะตรา/ใส่รหัส","พลิกหน้ากระดาษไปทีละหน้า ใส่เพลงจาก YouTube ได้"], hint:"แตะการ์ดเพื่อโปรยหัวใจ 💗", burst:"heart"},
   {id:"rose", chip:"🌹 กลีบกุหลาบโปรย", price:39,  en:"Rosé",   th:"เรียบหรู มินิมอล", short:"กลีบกุหลาบโปรย", type:"free", cats:["love","anniv"],
    fx:["แตะซองเพื่อเปิดดูข้างใน","แตะการ์ดแล้วกลีบกุหลาบโปรยลงมา"], hint:"แตะการ์ดเพื่อโปรยกลีบกุหลาบ 🌹", burst:"petal"},

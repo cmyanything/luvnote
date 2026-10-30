@@ -709,6 +709,8 @@ main{padding-bottom:84px!important}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.item.enter{opacity:1;transform:none}}
 
+/* ===== live demo inside the preview phone ===== */
+.pv iframe.demo{position:absolute;left:0;top:0;border:0;transform-origin:0 0;pointer-events:none;display:block}
 /* ===== Pink Coquette thumb ===== */
 .a-coq{gap:5%;background:repeating-linear-gradient(0deg,rgba(255,255,255,.5) 0 7px,transparent 7px 14px),repeating-linear-gradient(90deg,rgba(255,255,255,.5) 0 7px,transparent 7px 14px),#FFD6E4}
 .a-coq .cbow{width:44%;animation:bob 3s ease-in-out infinite;filter:drop-shadow(0 3px 4px rgba(217,102,143,.35))}
@@ -921,7 +923,7 @@ var CATS=[
 function inCat(c,cat){return c.cats.indexOf(cat)>-1;}
 
 /* ===== video: put a vertical 9:16 MP4 at videos/<id>.mp4 and set  video:"videos/<id>.mp4"  on the card ===== */
-function screen(c,big){return c.video?'<video src="'+c.video+'" muted loop playsinline preload="metadata"'+(big?' autoplay':'')+'></video>':art(c.id,big);}
+function screen(c,big){if(big&&c.page)return '<iframe class="demo" src="'+c.page+'card.html#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe>';return c.video?'<video src="'+c.video+'" muted loop playsinline preload="metadata"'+(big?' autoplay':'')+'></video>':art(c.id,big);}
 /* ===== card art ===== */
 function petals(n){var h='<div class="petals">';for(var i=0;i<n;i++){h+='<i class="petal" style="left:'+(5+Math.random()*85)+'%;animation-duration:'+(4+Math.random()*3)+'s;animation-delay:'+(-Math.random()*6)+'s;transform:scale('+(.6+Math.random()*.6)+')"></i>';}return h+'</div>';}
 function art(id,big){
@@ -1020,12 +1022,12 @@ function openSheet(id){
   var c=CARDS.filter(function(x){return x.id===id;})[0];if(!c)return;
   openId=id;
   body.innerHTML=
-    '<div class="pv'+(c.video?' opened':'')+'" id="pv"><div class="phone"><div class="scr">'+
+    '<div class="pv'+(c.video||c.page?' opened':'')+'" id="pv"><div class="phone"><div class="scr">'+
       '<div class="inner">'+screen(c,true)+'</div>'+
-      (c.video?'':'<div class="env" id="env" role="button" aria-label="เปิดซอง"><div class="back"></div><div class="front"></div><div class="flap"></div>'+use("wax","wx","0 0 60 60")+'<div class="to">ถึง คนพิเศษ</div></div>')+
+      (c.video||c.page?'':'<div class="env" id="env" role="button" aria-label="เปิดซอง"><div class="back"></div><div class="front"></div><div class="flap"></div>'+use("wax","wx","0 0 60 60")+'<div class="to">ถึง คนพิเศษ</div></div>')+
       '<div class="burst-layer" id="bl"></div></div></div>'+'<div class="tws">'+[[10,20,0],[86,14,-.6],[90,58,-1.2],[6,70,-.3],[50,4,-1.5]].map(function(p){return '<svg viewBox="0 0 24 24" style="left:'+p[0]+'%;top:'+p[1]+'%;width:'+(10+Math.random()*8)+'px;animation-delay:'+p[2]+'s"><use href="#twinkle"/></svg>';}).join('')+'</div>'+'<span class="peek"><svg viewBox="0 0 100 90"><use href="#mochi"/></svg></span><span class="peek l"><svg viewBox="0 0 100 90"><use href="#mochi"/></svg></span>'+
       '<button class="replay" id="replay" type="button">'+use("replay","i")+'เล่นอีกครั้ง</button>'+
-      '<p class="pv-hint" id="pvHint">'+(c.video?'ตัวอย่างการ์ดจริง ♡':'แตะซองเพื่อเปิด 💌')+'</p>'+
+      '<p class="pv-hint" id="pvHint">'+(c.page?'ตัวอย่างเล่นอัตโนมัติ ♡':c.video?'ตัวอย่างการ์ดจริง ♡':'แตะซองเพื่อเปิด 💌')+'</p>'+
     '</div>'+
     '<div class="info">'+
       '<span class="kicker">'+"LuvNote card"+'</span>'+
@@ -1060,8 +1062,12 @@ function typeIt(){
   (function step(){if(!el.isConnected)return;el.textContent=t.slice(0,++i);if(i<t.length)typeT=setTimeout(step,reduced?0:70);})();
   el.style.whiteSpace="pre-line";
 }
+function fitDemo(){var f=$("#pv iframe.demo");if(!f)return;var scr=f.parentElement.parentElement,w=scr.clientWidth,h=scr.clientHeight;if(!w)return;var k=w/390;
+  f.style.width="390px";f.style.height=(h/k)+"px";f.style.transform="scale("+k+")";}
+window.addEventListener("resize",fitDemo);
 function wire(c){
   var pv=$("#pv"),env=$("#env");
+  if(c.page){fitDemo();setTimeout(fitDemo,60);setTimeout(fitDemo,500);$("#replay").addEventListener("click",function(){var f=$("#pv iframe.demo");if(f){try{f.contentWindow.location.reload();}catch(e){f.src=f.src;}}});return;}
   if(c.video){var rp=$("#replay");rp.addEventListener("click",function(){var v=$("video",pv);if(v){v.currentTime=0;v.play();}});return;}
   env.addEventListener("click",function(){openEnv(c);});
   autoT=setTimeout(function(){openEnv(c);},reduced?200:1500);

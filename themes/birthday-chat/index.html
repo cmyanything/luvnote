@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>สร้างการ์ด Birthday Chat · LuvNote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Mali:wght@600;700&family=Mitr:wght@300;400;500&family=Athiti:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--wine:#800020;--wine2:#A3123A;--soft:#FBEFF2;--cream:#FFF8EC;--ink:#3B1220;--mute:#8C6A75;--line:#F0DDE3;--pink:#F4A6C1}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Mitr',sans-serif;font-weight:300;color:var(--ink);background:#fff}
+.en{font-family:'Fredoka',sans-serif}
+.wrap{max-width:480px;margin:0 auto;padding:0 16px 140px}
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hd{max-width:480px;margin:0 auto;display:flex;align-items:center;justify-content:center;height:56px;position:relative}
+.hd a{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--wine);text-decoration:none;font-size:26px;width:40px;height:40px;display:grid;place-items:center}
+.logo{font-family:'Fredoka';font-weight:600;font-size:22px;color:var(--wine);letter-spacing:.3px}
+.logo span{display:inline-block;animation:beat 1.6s infinite}
+@keyframes beat{0%,60%,100%{transform:scale(1)}30%{transform:scale(1.25)}}
+.prog{height:3px;background:var(--line)}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--wine),var(--pink));transition:width .5s}
+
+
+/* chat editor */
+.ced{border-radius:18px;padding:12px 10px;display:flex;flex-direction:column;gap:8px;
+  background:radial-gradient(circle,rgba(255,255,255,.95) 2px,transparent 2.4px) 0 0/20px 20px,linear-gradient(180deg,#FCEFF3,#F9E2EA)}
+.ced .hd2{display:flex;align-items:center;gap:8px;font-family:'Athiti';font-weight:600;font-size:13px;color:var(--mute);padding:0 2px 4px}
+.ced .hd2 b{font-family:'Mitr';font-weight:400;color:var(--ink);font-size:14px}
+.cr{display:flex;align-items:center;gap:6px;max-width:92%;animation:popin .3s}
+.cr.f,.cr.oops,.cr.stk,.cr.pic{align-self:flex-start}
+.cr.t{align-self:flex-end;flex-direction:row-reverse}
+.cr .bb{flex:1;min-width:0;border-radius:18px 18px 18px 6px;background:#fff;box-shadow:0 2px 8px rgba(128,0,32,.08);padding:2px 4px;position:relative}
+.cr.t .bb{border-radius:18px 18px 6px 18px;background:linear-gradient(135deg,#B8174A,#800020)}
+.cr.oops .bb{background:#fff;border:1.5px dashed var(--pink)}
+.cr .bb input{border:none!important;background:transparent!important;box-shadow:none!important;padding:8px 10px!important;font-size:15.5px!important;min-width:150px}
+.cr.t .bb input{color:#fff}.cr.t .bb input::placeholder{color:rgba(255,255,255,.6)}
+.cr .tag{position:absolute;top:-9px;left:10px;font-family:'Athiti';font-weight:600;font-size:11px;background:var(--wine);color:#fff;border-radius:10px;padding:0 7px;line-height:17px}
+.cr.t .tag{left:auto;right:10px;background:#fff;color:var(--wine);border:1px solid var(--pink)}
+.cr.oops .tag{background:#F4A6C1;color:var(--wine)}
+.cr .ctl{display:flex;flex-direction:column;gap:3px;flex:none}
+.cr .ctl button{width:24px;height:18px;border:none;border-radius:8px;background:rgba(255,255,255,.85);color:var(--wine);font-size:11px;cursor:pointer;line-height:1}
+.cr .ctl button.del{color:#c0392b}
+.stks{display:flex;gap:4px;padding:6px}
+.stks button{width:46px;height:46px;border-radius:12px;border:2px solid transparent;background:var(--soft);font-size:24px;cursor:pointer;padding:0}
+.stks button.on{border-color:var(--wine);background:#fff}
+.picrow{padding:10px 12px;font-family:'Mitr';font-weight:400;font-size:14px;color:var(--wine)}
+.adds{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.adds button{font-family:'Mitr';font-weight:400;font-size:13px;border:1.5px dashed var(--pink);background:#fff;color:var(--wine);border-radius:20px;padding:7px 12px;cursor:pointer}
+.adds button:active{transform:scale(.95)}
+.adds button[disabled]{opacity:.4}
+
+/* hero */
+.hero{margin:18px 0 10px;border-radius:24px;padding:18px;display:flex;gap:16px;align-items:center;
+  background:linear-gradient(135deg,#FFF0F4,#FFE3EC);position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.5)}
+.phone{width:96px;height:172px;border-radius:20px;background:#2a1622;padding:5px;flex-shrink:0;box-shadow:0 12px 24px rgba(139,10,46,.25);animation:fl 3.4s ease-in-out infinite;position:relative;z-index:1}
+@keyframes fl{50%{transform:translateY(-6px) rotate(-1.5deg)}}
+.screen{position:relative;width:100%;height:100%;border-radius:16px;overflow:hidden;display:grid;place-items:center;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.4) 0 6px,transparent 6px 12px),repeating-linear-gradient(90deg,rgba(255,255,255,.4) 0 6px,transparent 6px 12px),#FFDCE7}
+.screen svg{width:58px;animation:wob 2s ease-in-out infinite}
+@keyframes wob{50%{transform:rotate(-8deg) scale(1.08)}}
+.hero-t{position:relative;z-index:1}
+.chip{display:inline-block;font-family:'Mitr';font-weight:400;font-size:12px;color:var(--wine);background:#fff;border-radius:20px;padding:3px 10px}
+.hero h1{font-family:'Fredoka';font-weight:600;font-size:26px;color:var(--wine);margin:6px 0 2px;line-height:1.1}
+.hero p{font-family:'Athiti';font-weight:600;font-size:15px;color:var(--mute);line-height:1.4}
+.price{font-family:'Fredoka';font-weight:600;font-size:16px;color:var(--wine);margin-top:6px}
+.price small{font-family:'Athiti';font-size:12px;color:var(--mute);font-weight:500}
+.feats{display:flex;gap:6px;overflow-x:auto;padding:4px 0 2px;scrollbar-width:none}
+.feats::-webkit-scrollbar{display:none}
+.feats span{flex-shrink:0;font-size:12.5px;font-weight:400;background:var(--soft);color:var(--wine);border-radius:20px;padding:6px 11px}
+.demo-btn{width:100%;margin:12px 0 4px;font-family:'Mitr';font-weight:400;font-size:15px;color:var(--wine);background:#fff;border:1.5px solid var(--wine);border-radius:14px;padding:11px;cursor:pointer}
+
+/* sections */
+.sec{margin-top:16px;border:1px solid var(--line);border-radius:20px;padding:18px 16px;background:#fff;transition:box-shadow .3s,border-color .3s;opacity:0;transform:translateY(16px)}
+.sec.in{opacity:1;transform:none;transition:opacity .6s,transform .6s,box-shadow .3s,border-color .3s}
+.sec:focus-within{border-color:#E9B8C8;box-shadow:0 8px 24px rgba(139,10,46,.08)}
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.num{width:30px;height:30px;border-radius:50%;background:var(--soft);color:var(--wine);display:grid;place-items:center;font-family:'Fredoka';font-weight:600;font-size:15px;flex-shrink:0;transition:.3s}
+.sec.ok .num{background:var(--wine);color:#fff}
+.sh h2{font-family:'Mali';font-weight:700;font-size:18px;color:var(--wine)}
+.sh .opt{margin-left:auto;font-family:'Athiti';font-weight:600;font-size:13px;color:var(--mute)}
+label{display:block;font-family:'Athiti';font-weight:600;font-size:15px;color:var(--ink);margin:10px 0 5px}
+label .req{color:var(--wine2)}
+input[type=text],input[type=number],input[type=url],input[type=tel],textarea{width:100%;font-family:'Mitr';font-weight:300;font-size:16px;color:var(--ink);
+  border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;background:#FFFCFD;outline:none;transition:.2s;-webkit-appearance:none}
+input:focus,textarea:focus{border-color:var(--wine);background:#fff;box-shadow:0 0 0 4px rgba(139,10,46,.08)}
+textarea{resize:none;line-height:1.6}
+.err input,.err textarea{border-color:var(--wine2);animation:shk .4s}
+@keyframes shk{25%,75%{transform:translateX(-6px)}50%{transform:translateX(6px)}}
+.emsg{display:none;font-family:'Athiti';font-weight:600;font-size:13px;color:var(--wine2);margin-top:4px}
+.err .emsg{display:block}
+.row{display:flex;gap:10px}.row>div{flex:1}
+.cnt{text-align:right;font-family:'Fredoka';font-size:12px;color:var(--mute);margin-top:4px}
+.help{font-family:'Athiti';font-weight:500;font-size:14px;color:var(--mute);line-height:1.45;margin-top:6px}
+
+/* photos */
+.photos{display:flex;flex-direction:column;gap:10px}
+.ph{display:flex;align-items:center;gap:10px;padding:8px;border-radius:16px;background:var(--soft);animation:popin .4s cubic-bezier(.2,.9,.3,1.4)}
+.ph .th{position:relative;width:64px;height:64px;flex-shrink:0;border-radius:12px;overflow:hidden}
+.ph .th img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .no{position:absolute;top:3px;left:3px;font-family:'Fredoka';font-size:11px;background:#fff;color:var(--wine);border-radius:10px;padding:0 6px}
+.ph input{flex:1;min-width:0;font-size:16px!important;padding:11px 12px!important;background:#fff!important}
+.ph .x{width:36px;height:36px;flex-shrink:0;border-radius:50%;border:none;background:#fff;color:var(--wine);font-size:15px;cursor:pointer}
+.add{height:64px;border-radius:16px;border:2px dashed #E9B8C8;background:#FFFAFB;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--wine);cursor:pointer;font-size:15px;font-weight:400;transition:.2s}
+.add b{font-size:26px;font-weight:300;line-height:1}
+.add:active{transform:scale(.98)}
+.add.busy b{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* templates & segmented */
+.tpls{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tpls button,.seg button{font-family:'Mitr';font-weight:400;font-size:13px;border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:20px;padding:6px 12px;cursor:pointer;transition:.2s}
+.tpls button:active{transform:scale(.95)}
+.seg{display:flex;background:var(--soft);border-radius:14px;padding:4px;gap:4px;margin-top:4px}
+.seg button{flex:1;border:none;border-radius:11px;background:transparent;padding:9px}
+.seg button.on{background:#fff;color:var(--wine);box-shadow:0 2px 8px rgba(139,10,46,.12)}
+.codebox{display:none;margin-top:4px}.codebox.show{display:block;animation:popin .3s}
+
+/* music */
+.yt{display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;border-radius:14px;background:var(--soft);font-family:'Athiti';font-weight:600;font-size:14px;color:var(--mute);transition:.3s}
+.yt .disc{width:34px;height:34px;border-radius:50%;flex-shrink:0;background:repeating-radial-gradient(circle,#3a2030 0 2px,#4a2a3c 2px 4px);position:relative}
+.yt .disc::after{content:'';position:absolute;inset:11px;border-radius:50%;background:var(--pink)}
+.yt.ok{background:#EFF8F1;color:#2E7D4F}.yt.ok .disc{animation:spin 2.4s linear infinite}
+.yt.bad{background:#FFF0F2;color:var(--wine2)}
+
+/* effects */
+.fxs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.fx{border:1.5px solid var(--line);border-radius:16px;padding:12px 6px 10px;text-align:center;cursor:pointer;background:#fff;transition:.25s;position:relative;overflow:hidden}
+.fx .ic{height:44px;position:relative}
+.fx .ic span{position:absolute;font-size:16px;animation:drift 2.6s linear infinite;opacity:0}
+.fx .ic span:nth-child(1){left:18%;animation-delay:0s}.fx .ic span:nth-child(2){left:46%;animation-delay:.9s;font-size:20px}.fx .ic span:nth-child(3){left:70%;animation-delay:1.7s}
+@keyframes drift{0%{top:-10px;opacity:0;transform:rotate(0)}20%{opacity:1}100%{top:40px;opacity:0;transform:rotate(40deg)}}
+.fx p{font-family:'Mitr';font-weight:400;font-size:14px}
+.fx.on{border-color:var(--wine);background:#FFF5F8;box-shadow:0 6px 16px rgba(139,10,46,.12)}
+.fx.on::after{content:'✓';position:absolute;top:6px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--wine);color:#fff;font-size:11px;display:grid;place-items:center}
+
+.cov{display:flex;align-items:center;gap:10px}.cov .x{width:36px;height:36px;flex-shrink:0;border-radius:50%;border:1.5px solid var(--line);background:#fff;color:var(--wine);font-size:15px;cursor:pointer}
+.cvb{flex:1;display:flex;align-items:center;gap:12px;border:1.5px dashed var(--line);border-radius:14px;padding:10px;cursor:pointer;margin:0;font-family:'Mitr';font-weight:400;font-size:14px;color:var(--wine)}
+.cvb img{width:64px;height:48px;border-radius:8px;object-fit:cover;background:var(--soft);display:none}
+.cov.has .cvb img{display:block}
+/* bottom bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.bar .in{max-width:448px;margin:0 auto;display:flex;gap:10px}
+.btn{font-family:'Mitr';font-weight:500;font-size:16px;border-radius:16px;padding:14px;cursor:pointer;border:none;transition:.15s}
+.btn:active{transform:scale(.97)}
+.btn.sec2{flex:1;background:#fff;color:var(--wine);border:1.5px solid var(--wine)}
+.btn.pri{flex:1.4;color:#fff;background:linear-gradient(135deg,var(--wine2),var(--wine));box-shadow:0 8px 20px rgba(139,10,46,.3);position:relative;overflow:hidden}
+.btn.pri::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);animation:shine 2.8s infinite}
+@keyframes shine{0%,60%{left:-60%}100%{left:130%}}
+
+/* preview */
+.ov{position:fixed;inset:0;z-index:50;background:rgba(40,10,22,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:14px}
+.ov.show{display:flex;animation:fade .3s}
+@keyframes fade{from{opacity:0}}
+.pv{width:min(390px,100%);height:min(780px,calc(100dvh - 80px));border-radius:32px;overflow:hidden;background:#000;border:6px solid #2a1622;box-shadow:0 30px 60px rgba(0,0,0,.4);animation:up .45s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes up{from{transform:translateY(40px) scale(.95);opacity:0}}
+.pv iframe{width:100%;height:100%;border:0;display:block}
+.close{font-family:'Mitr';font-weight:400;font-size:15px;color:#fff;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:30px;padding:9px 22px;cursor:pointer}
+
+/* success sheet */
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;max-width:480px;margin:0 auto;background:#fff;border-radius:28px 28px 0 0;padding:14px 20px calc(24px + env(safe-area-inset-bottom));
+  transform:translateY(105%);visibility:hidden;transition:transform .55s cubic-bezier(.2,.9,.3,1.1),visibility 0s .55s;text-align:center;box-shadow:0 -10px 40px rgba(0,0,0,.15)}
+.sheet.show{transform:none;visibility:visible;transition:transform .55s cubic-bezier(.2,.9,.3,1.1)}
+.grab{width:40px;height:5px;border-radius:5px;background:var(--line);margin:0 auto 14px}
+.okheart{font-size:54px;display:inline-block;animation:hb 1s cubic-bezier(.3,1.6,.5,1)}
+@keyframes hb{0%{transform:scale(0) rotate(-30deg)}60%{transform:scale(1.25)}}
+.sheet h3{font-family:'Mali';font-weight:700;font-size:22px;color:var(--wine);margin:4px 0}
+.sheet .sub{font-family:'Athiti';font-weight:600;font-size:15px;color:var(--mute)}
+.link{display:flex;align-items:center;gap:8px;margin:14px 0 10px;border:1.5px dashed #E9B8C8;border-radius:14px;padding:10px 12px;background:#FFFAFB}
+.link span{flex:1;text-align:left;font-family:'Fredoka';font-weight:500;font-size:16px;color:var(--wine);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.link button{font-family:'Mitr';font-size:14px;border:none;background:var(--wine);color:#fff;border-radius:10px;padding:8px 14px;cursor:pointer}
+.share{display:flex;gap:10px}
+.share a,.share button{flex:1;font-family:'Mitr';font-weight:400;font-size:15px;text-decoration:none;border-radius:14px;padding:12px;cursor:pointer}
+.line{background:#06C755;color:#fff;border:none}
+.share button,.share .open{background:#fff;color:var(--wine);border:1.5px solid var(--wine)}
+.share a{text-align:center}
+#qr{display:inline-block;margin:14px auto 6px;padding:10px;border-radius:16px;border:1px solid var(--line)}
+#qr img,#qr canvas{display:block;width:130px;height:130px}
+.expn{font-family:'Athiti';font-weight:600;font-size:14px;color:var(--mute)}
+.note{margin-top:8px;font-family:'Athiti';font-weight:500;font-size:12px;color:#B39AA3}
+.steps{list-style:none;text-align:left;margin:16px 0 14px;display:flex;flex-direction:column;gap:10px}
+.steps li{display:flex;gap:10px;align-items:flex-start;font-family:'Athiti';font-weight:600;font-size:15px;line-height:1.45;color:var(--ink)}
+.steps b{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--soft);color:var(--wine);display:grid;place-items:center;font-family:'Fredoka';font-size:13px}
+.again{margin-top:12px;background:none;border:none;font-family:'Mitr';font-size:14px;color:var(--mute);text-decoration:underline;cursor:pointer}
+.toast{position:fixed;left:50%;top:70px;transform:translate(-50%,-20px);opacity:0;z-index:80;background:var(--ink);color:#fff;font-size:14px;border-radius:30px;padding:9px 18px;transition:.3s;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.burst{position:fixed;pointer-events:none;z-index:70;font-size:18px;animation:bz 1.1s ease-out forwards}
+@keyframes bz{to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}}
+#heroDemo{position:absolute;left:0;top:0;border:0;transform-origin:0 0;pointer-events:none}
+.phone{cursor:pointer;width:104px;height:196px}
+.ytbox{margin-top:10px;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:#2a1622;display:none}
+.ytbox.show{display:block;animation:popin .35s}
+.ytbox iframe,.ytbox>div{width:100%;height:100%;border:0;display:block}
+.startrow{display:flex;align-items:center;gap:10px;margin-top:10px}
+.startrow label{margin:0;flex:1}
+.startrow input{width:96px!important;flex:none;text-align:center;font-family:'Fredoka'!important}
+.price{display:flex;align-items:center;gap:8px;margin-top:8px}
+.pp{display:inline-flex;align-items:baseline;gap:2px;background:#fff;border-radius:20px;padding:3px 11px 4px;box-shadow:0 3px 10px rgba(128,0,32,.1)}
+.pp b{font-family:'Fredoka';font-weight:600;font-size:17px;color:var(--wine);letter-spacing:.3px}
+.pp i{font-style:normal;font-family:'Fredoka';font-weight:500;font-size:12px;color:#D9668F}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+</head>
+<body>
+<header>
+  <div class="hd"><a href="../../" aria-label="กลับ">‹</a><div class="logo">LuvNote <span>♡</span></div></div>
+  <div class="prog"><i id="prog"></i></div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="phone" id="heroPhone" role="button" aria-label="ดูการ์ดตัวอย่าง"><div class="screen"><iframe id="heroDemo" src="card.html?v=1#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe></div></div>
+    <div class="hero-t">
+      <span class="chip">🎂 วันเกิด</span>
+      <h1>Birthday Chat</h1>
+      <p>การ์ดวันเกิดแบบแชทมือถือ ข้อความเด้งทีละบับเบิล ผู้รับกดตอบเอง มีวิดีโอคอลเป่าเทียน กวนๆ น่ารักๆ</p>
+      <div class="price"><span class="pp"><b>69</b><i>฿</i></span><small>ต่อ 1 ใบ</small></div>
+    </div>
+  </div>
+  <div class="feats"><span>🔔 แจ้งเตือนเด้งหน้าจอล็อก</span><span>💬 แชทเด้งทีละบับเบิล</span><span>👆 ผู้รับกดตอบเอง</span><span>🙊 ข้อความแกล้งยกเลิก</span><span>📸 ส่งรูปในแชท</span><span>📹 วิดีโอคอลเป่าเทียน</span><span>😝 ปุ่มปฏิเสธหนีนิ้ว</span><span>💌 จดหมาย</span><span>✨ ข้อความลับแบบถู</span><span>🎵 เพลงประกอบ</span></div>
+  <button class="demo-btn" id="demoBtn">▶ ดูการ์ดตัวอย่างก่อน</button>
+
+  <!-- 1 names -->
+  <div class="sec" data-k="names">
+    <div class="sh"><div class="num">1</div><h2>ส่งถึงใคร จากใคร</h2></div>
+    <div class="f" id="f-to"><label>ชื่อผู้รับ <span class="req">*</span></label><input type="text" id="to" maxlength="30" placeholder="เช่น น้องพลอย"><p class="emsg">ใส่ชื่อผู้รับด้วยนะ</p></div>
+    <div class="row">
+      <div class="f" id="f-from"><label>ชื่อผู้ส่ง <span class="req">*</span></label><input type="text" id="from" maxlength="30" placeholder="เช่น พี่ต้นข้าว"><p class="emsg">ใส่ชื่อผู้ส่งด้วยนะ</p></div>
+      <div style="flex:.55"><label>ครบกี่ปี</label><input type="number" id="age" inputmode="numeric" min="1" max="120" placeholder="ไม่ใส่ก็ได้"></div>
+    </div>
+  </div>
+
+
+  <!-- 2 chat -->
+  <div class="sec" data-k="chat">
+    <div class="sh"><div class="num">2</div><h2>บทแชท</h2><span class="opt"><span class="en" id="cc">0</span>/16</span></div>
+    <div class="tpls" id="ctpls"><button data-t="0">💗 แฟน</button><button data-t="1">😆 เพื่อนกวนๆ</button><button data-t="2">🥹 ครอบครัว</button></div>
+    <div class="ced" id="ced"></div>
+    <div class="adds" id="adds">
+      <button data-a="f">+ ข้อความคุณ</button><button data-a="t">+ ผู้รับตอบ</button><button data-a="stk">+ สติกเกอร์</button><button data-a="oops">+ ข้อความแกล้ง 🙊</button><button data-a="pic">+ จุดส่งรูป</button>
+    </div>
+    <p class="help">นี่คือหน้าจอที่ผู้รับจะเห็น · บับเบิลขาว = คุณพิมพ์ส่ง · บับเบิลแดง = ผู้รับต้องแตะเพื่อตอบกลับเอง · ข้อความแกล้งจะโชว์แป๊บนึงแล้วถูกยกเลิก · หลังแชทจบ จะมีวิดีโอคอลเป่าเทียน จดหมาย และข้อความลับต่ออัตโนมัติ</p>
+  </div>
+
+  <!-- 3 photos -->
+  <div class="sec" data-k="photos">
+    <div class="sh"><div class="num">3</div><h2>รูปส่งในแชท</h2><span class="opt"><span class="en" id="pc">0</span>/5 รูป</span></div>
+    <div class="photos" id="photos"><label class="add" id="addBtn"><b>+</b>เพิ่มรูป <span class="en" style="opacity:.6;font-size:13px">(สูงสุด 5)</span><input type="file" id="file" accept="image/*" multiple hidden></label></div>
+    <label style="margin-top:14px">รูปโปรไฟล์แชทของคุณ (ผู้ส่ง)</label>
+    <div class="cov" id="cov"><label class="cvb" id="covBtn"><img id="covImg" alt=""><span id="covTxt">📷 แตะเพื่อเลือกรูป</span><input type="file" id="covFile" accept="image/*" hidden></label><button class="x" id="covX" aria-label="ลบรูป" style="display:none">✕</button></div>
+    <p class="help">ถ้าไม่ใส่ จะเป็นน้องหัวใจน่ารักแทน · รูปนี้โชว์ในแชทและตอนวิดีโอคอล</p>
+    <p class="help">รูปจะถูกส่งในแชทตรง “จุดส่งรูป” แตะดูรูปใหญ่พร้อมคำบรรยายได้ · ไม่ใส่รูปก็ได้</p>
+  </div>
+
+  <!-- 3 letter -->
+  <div class="sec" data-k="letter">
+    <div class="sh"><div class="num">4</div><h2>จดหมายอวยพร</h2></div>
+    <div class="tpls" id="tpls"><button data-t="0">💗 หวานๆ</button><button data-t="1">🥹 ซึ้งๆ</button><button data-t="2">😆 ขำๆ</button><button data-t="3">👫 ถึงเพื่อน</button></div>
+    <div class="f" id="f-letter"><textarea id="letter" rows="6" maxlength="600" placeholder="พิมพ์ข้อความที่อยากบอก หรือกดเลือกข้อความตัวอย่างด้านบน"></textarea><p class="emsg">เขียนจดหมายสักหน่อยนะ</p></div>
+    <p class="cnt"><span id="lc">0</span>/600</p>
+  </div>
+
+  <!-- 4 secret -->
+  <div class="sec" data-k="secret">
+    <div class="sh"><div class="num">5</div><h2>ข้อความลับ</h2></div>
+    <div class="f" id="f-secret"><textarea id="secret" rows="2" maxlength="120" placeholder="เช่น ของขวัญชิ้นจริงรออยู่ใต้หมอนแล้ว 🤫"></textarea><p class="emsg">ใส่ข้อความลับด้วยนะ</p></div>
+    <p class="cnt"><span id="sc">0</span>/120</p>
+    <label>วิธีปลดล็อก</label>
+    <div class="seg" id="lockSeg"><button class="on" data-v="scratch">✨ ใช้นิ้วถูเปิด</button><button data-v="code">🔐 ใส่รหัส</button></div>
+    <div class="codebox" id="codebox">
+      <div class="row">
+        <div class="f" id="f-code"><label>รหัส 4 หลัก</label><input type="tel" id="code" maxlength="4" inputmode="numeric" placeholder="เช่น 1402"><p class="emsg">ใส่ตัวเลข 4 หลัก</p></div>
+        <div style="flex:1.4"><label>คำใบ้</label><input type="text" id="hint" maxlength="40" placeholder="เช่น วันครบรอบเรา"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 music -->
+  <div class="sec" data-k="music">
+    <div class="sh"><div class="num">6</div><h2>เพลงประกอบ</h2><span class="opt">ไม่ใส่ก็ได้</span></div>
+    <input type="url" id="yt" placeholder="วางลิงก์เพลงจาก YouTube">
+    <div class="yt" id="ytS"><div class="disc"></div><span id="ytT">คัดลอกลิงก์จากแอป YouTube (กดแชร์ › คัดลอกลิงก์)</span></div>
+    <div class="ytbox" id="ytBox"><div id="ytPrev"></div></div>
+    <div class="startrow"><label for="ytStart">ให้เพลงเริ่มที่ (นาที:วินาที)<br><span class="help" style="margin:0">เช่น ข้ามอินโทรไปเริ่มท่อนฮุคเลย</span></label><input type="text" id="ytStart" inputmode="numeric" maxlength="5" placeholder="0:00"></div>
+    <p class="help">แนะนำคลิปแบบ Lyrics หรือ Audio เพราะ MV ของค่ายเพลงบางเพลงไม่อนุญาตให้เล่นบนเว็บอื่น เพลงจะเริ่มเมื่อผู้รับแตะแจ้งเตือนเปิดแชท</p>
+  </div>
+
+  <!-- 6 effect -->
+  <div class="sec" data-k="fx">
+    <div class="sh"><div class="num">7</div><h2>เอฟเฟกต์ลอยบนการ์ด</h2></div>
+    <div class="fxs" id="fxs">
+      <div class="fx on" data-v="hearts"><div class="ic"><span>💗</span><span>🤍</span><span>💛</span></div><p>หัวใจพาสเทล</p></div>
+      <div class="fx" data-v="confetti"><div class="ic"><span>🎊</span><span>🎉</span><span>🎊</span></div><p>คอนเฟตติ</p></div>
+      <div class="fx" data-v="stars"><div class="ic"><span>⭐</span><span>✨</span><span>⭐</span></div><p>ดาวกระพริบ</p></div>
+    </div>
+  </div>
+
+  <!-- 7 end -->
+  <div class="sec" data-k="end">
+    <div class="sh"><div class="num">8</div><h2>คำปิดท้าย</h2><span class="opt">ไม่ใส่ก็ได้</span></div>
+    <textarea id="endMsg" rows="2" maxlength="120" placeholder="ขอบคุณที่เกิดมานะ ปีนี้ต้องเป็นปีของเธอแน่นอน"></textarea>
+  </div>
+</div>
+
+<div class="bar"><div class="in"><button class="btn sec2" id="pvBtn">👀 ดูตัวอย่าง</button><button class="btn pri" id="mkBtn">สร้างลิงก์ ♡</button></div></div>
+
+<div class="ov" id="ov"><div class="pv"><iframe id="frame" title="ตัวอย่างการ์ด" allow="autoplay"></iframe></div><button class="close" id="closePv">✕ ปิดตัวอย่าง</button></div>
+
+<div class="sheet" id="sheet">
+  <div class="grab"></div>
+  <div class="okheart">💝</div>
+  <h3>การ์ดของคุณพร้อมแล้ว!</h3>
+  <p class="sub">ส่งลิงก์นี้ให้ <span id="sTo"></span> ได้เลย</p>
+  <div class="link"><span id="lnk"></span><button id="copy">คัดลอก</button></div>
+  <div class="share"><a class="line" id="lineBtn" href="#" target="_blank" rel="noopener">ส่งทาง LINE</a><a class="open" id="openBtn" href="#" target="_blank" rel="noopener">เปิดดูการ์ด</a></div>
+  <div id="qr"></div>
+  <p class="expn" id="expn"></p>
+  <button class="again" id="again">กลับไปแก้ไข</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const st={photos:[],lock:'scratch',effect:'hearts',chat:[]};
+const TPL=[
+ "สุขสันต์วันเกิดนะคนเก่ง 🎂\nขอบคุณที่เกิดมาเป็นคนน่ารักแบบนี้ ขอบคุณที่อยู่ข้างกันทั้งวันที่ดีและวันที่เหนื่อย\nปีนี้ขอให้เธอได้เจอแต่เรื่องดีๆ ยิ้มได้ทุกวัน\nรักเธอที่สุดเลยนะ 💗",
+ "อีกปีแล้วที่ได้อยู่ข้างๆ เธอ\nขอบคุณที่ทำให้ทุกวันธรรมดากลายเป็นวันพิเศษ\nขอให้ปีนี้ใจดีกับเธอ เหมือนที่เธอใจดีกับทุกคน\nไม่ว่าจะเกิดอะไรขึ้น เราจะอยู่ตรงนี้เสมอนะ",
+ "HBD นะ! 🎉 แก่ขึ้นอีกปีแล้วนะเรา 😆\nขอให้รวย สวย/หล่อ ขึ้นเรื่อยๆ กินไม่อ้วน นอนไม่ตื่นสาย\nแล้วอย่าลืมเลี้ยงข้าวด้วยล่ะ 🍰",
+ "สุขสันต์วันเกิดนะเพื่อนรัก 🥳\nขอบคุณที่อยู่ด้วยกันมาตลอด ทั้งวันบ้าๆ บอๆ และวันที่ร้องไห้\nขอให้ปีนี้ปังทุกเรื่อง สมหวังทุกอย่างที่ตั้งใจนะ"];
+
+
+/* ===== chat editor ===== */
+const CTPL=[
+ [{w:'f',x:'ตื่นยัง?'},{w:'t',x:'ตื่นแล้ว มีอะไรเหรอ'},{w:'f',x:'ไม่มีไรหรอก'},{w:'oops',x:'แก่แล้วนะเรา 👵'},{w:'f',x:'เอ้ย พิมพ์ผิด 🙊'},{w:'f',x:'สุขสันต์วันเกิดนะ 🎂'},{w:'stk',s:'cake'},{w:'t',x:'จำได้ด้วยหรอ 🥹'},{w:'f',x:'จำได้ทุกปีแหละ ดูนี่ดิ 📸'},{w:'pic'},{w:'f',x:'ขอให้ปีนี้ดีที่สุดเลยนะ'}],
+ [{w:'f',x:'เฮ้ย'},{w:'t',x:'อะไร'},{w:'f',x:'วันนี้วันอะไรรู้ป่ะ'},{w:'t',x:'วันศุกร์?'},{w:'oops',x:'วันที่แกแก่ขึ้นอีกปีไง 555'},{w:'f',x:'เอ้ย หมายถึงวันเกิดแกไง 🎉'},{w:'stk',s:'gift'},{w:'f',x:'เลี้ยงหมูกระทะด้วยนะ 🐷'},{w:'t',x:'ฝันไปเถอะ 😤'},{w:'pic'},{w:'f',x:'HBD นะเพื่อนรัก ขอให้รวยๆ'}],
+ [{w:'f',x:'ลูกกก'},{w:'t',x:'คะ/ครับ?'},{w:'f',x:'กินข้าวยัง'},{w:'t',x:'กินแล้ว ทำไมเหรอ'},{w:'f',x:'สุขสันต์วันเกิดนะลูก 🎂'},{w:'stk',s:'heart'},{w:'pic'},{w:'f',x:'โตขึ้นทุกปีเลยนะ'},{w:'t',x:'ขอบคุณนะ 🥹'},{w:'f',x:'รักที่สุดเลย'}]];
+const STKS={heart:'💗',cake:'🎂',gift:'🎁',hug:'🫶'};
+const LAB={f:'คุณ',t:'ผู้รับแตะตอบ',oops:'แกล้งแล้วยกเลิก 🙊',stk:'สติกเกอร์',pic:'ส่งรูป'};
+function renderChat(){const box=$('#ced');box.innerHTML='<div class="hd2">💬 แชทกับ <b>'+esc($('#from').value.trim()||'คุณ')+'</b></div>';
+  st.chat.forEach((r,i)=>{const d=document.createElement('div');d.className='cr '+r.w;
+    let inner;
+    if(r.w==='stk')inner='<div class="stks">'+Object.keys(STKS).map(k=>'<button type="button" data-s="'+k+'" class="'+(r.s===k?'on':'')+'">'+STKS[k]+'</button>').join('')+'</div>';
+    else if(r.w==='pic')inner='<div class="picrow">📸 ส่งรูป <span class="en">'+st.photos.length+'</span> รูปตรงนี้'+(st.photos.length?'':' (ยังไม่ได้เพิ่มรูป)')+'</div>';
+    else inner='<input type="text" maxlength="100" enterkeyhint="done" placeholder="'+(r.w==='t'?'คำตอบของผู้รับ…':r.w==='oops'?'ข้อความแกล้ง เช่น แก่แล้วนะเรา 👵':'พิมพ์ข้อความ…')+'">';
+    d.innerHTML='<div class="bb"><span class="tag">'+LAB[r.w]+'</span>'+inner+'</div><div class="ctl"><button type="button" data-m="-1" aria-label="ขึ้น">▲</button><button type="button" data-m="1" aria-label="ลง">▼</button><button type="button" class="del" aria-label="ลบ">✕</button></div>';
+    const inp=d.querySelector('input');if(inp){inp.value=r.x||'';inp.oninput=()=>{r.x=inp.value;refresh()}}
+    d.querySelectorAll('.stks button').forEach(b=>b.onclick=()=>{r.s=b.dataset.s;renderChat();refresh()});
+    d.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const j=i+ +b.dataset.m;if(j<0||j>=st.chat.length)return;[st.chat[i],st.chat[j]]=[st.chat[j],st.chat[i]];renderChat();refresh()});
+    d.querySelector('.del').onclick=()=>{st.chat.splice(i,1);renderChat();refresh()};
+    box.appendChild(d)});
+  $('#cc').textContent=st.chat.length;
+  $$('#adds button').forEach(b=>b.disabled=st.chat.length>=16||(b.dataset.a==='pic'&&st.chat.some(r=>r.w==='pic')))}
+$('#adds').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const w=b.dataset.a;
+  st.chat.push(w==='stk'?{w,s:'heart'}:w==='pic'?{w}:{w,x:''});renderChat();refresh();
+  const last=$('#ced').lastElementChild;last.scrollIntoView({behavior:'smooth',block:'center'});const inp=last.querySelector('input');if(inp)setTimeout(()=>inp.focus(),250)});
+$('#ctpls').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;st.chat=JSON.parse(JSON.stringify(CTPL[b.dataset.t]));renderChat();refresh();pop(b)});
+$('#from').addEventListener('input',()=>{const h=$('#ced .hd2 b');if(h)h.textContent=$('#from').value.trim()||'คุณ'});
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function cleanChat(){return st.chat.filter(r=>r.w==='stk'||r.w==='pic'||(r.x||'').trim()).map(r=>r.w==='stk'?{w:'stk',s:r.s}:r.w==='pic'?{w:'pic'}:{w:r.w,x:r.x.trim()})}
+
+/* sections reveal */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+$$('.sec').forEach(s=>io.observe(s));
+
+/* progress + ok marks */
+function refresh(){
+  const ok={names:$('#to').value.trim()&&$('#from').value.trim(),chat:cleanChat().some(r=>r.w==='f'),photos:st.photos.length>0,letter:$('#letter').value.trim(),
+    secret:$('#secret').value.trim()&&(st.lock==='scratch'||/^\d{4}$/.test($('#code').value)),music:ytId($('#yt').value),fx:true,end:$('#endMsg').value.trim()};
+  $$('.sec').forEach(s=>s.classList.toggle('ok',!!ok[s.dataset.k]));
+  const n=Object.values(ok).filter(Boolean).length;$('#prog').style.width=(n/8*100)+'%';
+  $('#lc').textContent=$('#letter').value.length;$('#sc').textContent=$('#secret').value.length;
+  save();
+}
+$$('input,textarea').forEach(el=>el.addEventListener('input',()=>{el.closest('.f')?.classList.remove('err');refresh()}));
+
+/* templates */
+$('#tpls').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const el=$('#letter');el.value=TPL[b.dataset.t];
+  el.closest('.f').classList.remove('err');refresh();pop(b)});
+
+/* lock */
+$('#lockSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;st.lock=b.dataset.v;
+  $$('#lockSeg button').forEach(x=>x.classList.toggle('on',x===b));$('#codebox').classList.toggle('show',st.lock==='code');refresh()});
+$('#code').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,4)});
+
+/* effect */
+$('#fxs').addEventListener('click',e=>{const f=e.target.closest('.fx');if(!f)return;st.effect=f.dataset.v;$$('.fx').forEach(x=>x.classList.toggle('on',x===f));pop(f);refresh()});
+
+/* youtube */
+function ytId(u){u=(u||'').trim();const m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/)|music\.youtube\.com\/watch\?(?:.*&)?v=)([\w-]{11})/);return m?m[1]:null}
+function ytT(u){const m=(u||'').match(/[?&]t=(?:(\d+)m)?(\d+)s?/);return m?(+(m[1]||0))*60+(+m[2]):0}
+function secOf(v){v=(v||'').trim();if(!v)return 0;const p=v.split(':').map(Number);if(p.some(isNaN))return 0;return p.length>1?p[0]*60+p[1]:p[0]}
+const fmt=t=>Math.floor(t/60)+':'+String(t%60).padStart(2,'0');
+let ytApi=null,ytP=null,ytFor=null;
+function loadYT(){if(ytApi)return ytApi;ytApi=new Promise(res=>{window.onYouTubeIframeAPIReady=()=>res();const sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';sc.onerror=()=>res();document.head.appendChild(sc);setTimeout(res,7000)});return ytApi}
+function ytStatus(cls,txt){const s=$('#ytS');s.classList.remove('ok','bad');if(cls)s.classList.add(cls);$('#ytT').textContent=txt}
+async function checkYT(id){
+  ytFor=id;ytStatus('','กำลังตรวจเพลง…');$('#ytBox').classList.add('show');
+  try{await loadYT()}catch(e){}
+  if(ytFor!==id)return;
+  if(!window.YT||!YT.Player){ytStatus('ok','✓ ลิงก์ถูกต้อง เพลงจะเล่นเมื่อเปิดซอง');return}
+  if(ytP){try{ytP.cueVideoById({videoId:id,startSeconds:secOf($('#ytStart').value)})}catch(e){}ytStatus('ok','✓ ใช้เพลงนี้ได้ กดเล่นในกรอบเพื่อลองฟังได้');return}
+  ytP=new YT.Player('ytPrev',{videoId:id,playerVars:{playsinline:1,rel:0,start:secOf($('#ytStart').value)},
+    events:{onReady:()=>{if(ytFor===id)ytStatus('ok','✓ ใช้เพลงนี้ได้ กดเล่นในกรอบเพื่อลองฟังได้')},
+            onError:e=>{if([101,150,153].includes(e.data))ytStatus('bad','คลิปนี้เจ้าของไม่ให้เล่นบนเว็บอื่น ลองค้นเพลงเดียวกันแบบ Lyrics หรือ Audio นะ');
+                        else ytStatus('bad','เปิดคลิปนี้ไม่ได้ ลองลิงก์อื่นนะ')}}})}
+$('#yt').addEventListener('input',()=>{const v=$('#yt').value.trim(),id=ytId(v);
+  if(!v){ytStatus('','คัดลอกลิงก์จากแอป YouTube (กดแชร์ › คัดลอกลิงก์)');$('#ytBox').classList.remove('show');ytFor=null;if(ytP)try{ytP.stopVideo()}catch(e){};return}
+  if(!id){ytStatus('bad','ลิงก์นี้ไม่ใช่ลิงก์ YouTube ลองคัดลอกใหม่อีกครั้ง');$('#ytBox').classList.remove('show');return}
+  const t=ytT(v);if(t&&!$('#ytStart').value)$('#ytStart').value=fmt(t);
+  if(id!==ytFor)checkYT(id)});
+$('#ytStart').addEventListener('input',e=>{e.target.value=e.target.value.replace(/[^\d:]/g,'')});
+
+/* photos */
+$('#file').addEventListener('change',async e=>{const files=[...e.target.files].slice(0,5-st.photos.length);e.target.value='';
+  if(!files.length){toast('ใส่ได้สูงสุด 5 รูปนะ');return}
+  $('#addBtn').classList.add('busy');
+  for(const f of files){try{st.photos.push({src:await shrink(f,1080),cap:''})}catch(err){toast('อ่านรูปนี้ไม่ได้ ลองรูปอื่นนะ')}}
+  $('#addBtn').classList.remove('busy');renderPhotos();renderChat();refresh()});
+function shrink(file,max){return new Promise((res,rej)=>{const url=URL.createObjectURL(file),img=new Image();
+  img.onload=()=>{const k=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);res(c.toDataURL('image/jpeg',.82))};img.onerror=rej;img.src=url})}
+function renderPhotos(){const box=$('#photos');$$('#photos .ph').forEach(p=>p.remove());
+  st.photos.forEach((p,i)=>{const d=document.createElement('div');d.className='ph';
+    d.innerHTML=`<div class="th"><img src="${p.src}" alt=""><span class="no en">${i+1}</span></div><input type="text" maxlength="30" enterkeyhint="done" placeholder="พิมพ์คำบรรยายรูป…"><button class="x" aria-label="ลบรูป">✕</button>`;
+    const inp=d.querySelector('input');inp.value=p.cap;inp.oninput=()=>{p.cap=inp.value};
+    d.querySelector('.x').onclick=()=>{st.photos.splice(i,1);renderPhotos();renderChat();refresh()};box.insertBefore(d,$('#addBtn'))});
+  $('#addBtn').style.display=st.photos.length>=5?'none':'';$('#pc').textContent=st.photos.length}
+
+/* cover photo */
+$('#covFile').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{st.cover=await shrink(f,900);$('#covImg').src=st.cover;$('#cov').classList.add('has');$('#covTxt').textContent='เปลี่ยนรูป';$('#covX').style.display=''}catch(err){toast('อ่านรูปนี้ไม่ได้ ลองรูปอื่นนะ')}});
+$('#covX').onclick=()=>{st.cover=null;$('#cov').classList.remove('has');$('#covTxt').textContent='📷 แตะเพื่อเลือกรูป';$('#covX').style.display='none'};
+/* keyboard: กด Done แล้วปิดคีย์บอร์ด / แตะที่ว่างเพื่อปิด */
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('input')){e.preventDefault();e.target.blur()}});
+document.addEventListener('touchstart',e=>{const a=document.activeElement;if(a&&a.matches('input,textarea')&&!e.target.closest('input,textarea,button,label,.seg,.fx,.tpls,.ced'))a.blur()},{passive:true});
+
+/* hero live demo */
+function fitHero(){const f=$('#heroDemo'),sc=f.parentElement,w=sc.clientWidth,h=sc.clientHeight;if(!w)return;const k=w/390;f.style.width='390px';f.style.height=(h/k)+'px';f.style.transform='scale('+k+')'}
+fitHero();addEventListener('resize',fitHero);addEventListener('load',fitHero);
+$('#heroPhone').onclick=()=>openPreview({});
+
+/* data */
+function data(){return{cover:st.cover||null,chat:cleanChat(),to:$('#to').value.trim(),from:$('#from').value.trim(),age:$('#age').value?+$('#age').value:null,
+  photos:st.photos.map(p=>({src:p.src,cap:p.cap.trim()})),letter:$('#letter').value.trim(),secret:$('#secret').value.trim(),
+  lock:{type:st.lock,code:$('#code').value,hint:$('#hint').value.trim()},endMsg:$('#endMsg').value.trim()||'ขอบคุณที่เกิดมานะ\nปีนี้ต้องเป็นปีของเธอแน่นอน',
+  effect:st.effect,music:ytId($('#yt').value)&&!$('#ytS').classList.contains('bad')?{type:'youtube',id:ytId($('#yt').value),start:secOf($('#ytStart').value)}:{type:'demo'},expires:new Date(Date.now()+15*864e5).toISOString()}}
+
+/* draft (เก็บไว้ในเครื่อง ไม่รวมรูป) */
+const KEY='luvnote-draft-birthday-chat';
+function save(){try{localStorage.setItem(KEY,JSON.stringify({to:$('#to').value,from:$('#from').value,age:$('#age').value,letter:$('#letter').value,secret:$('#secret').value,
+  code:$('#code').value,hint:$('#hint').value,yt:$('#yt').value,yts:$('#ytStart').value,end:$('#endMsg').value,lock:st.lock,effect:st.effect,chat:st.chat}))}catch(e){}}
+(function load(){st.chat=JSON.parse(JSON.stringify(CTPL[0]));try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d)return;if(Array.isArray(d.chat)&&d.chat.length)st.chat=d.chat;
+  ['to','from','age','letter','secret','code','hint','yt'].forEach(k=>{if(d[k])$('#'+k).value=d[k]});if(d.end)$('#endMsg').value=d.end;if(d.yts)$('#ytStart').value=d.yts;
+  if(d.lock)$(`#lockSeg [data-v="${d.lock}"]`)?.click();if(d.effect)$(`.fx[data-v="${d.effect}"]`)?.click();$('#yt').dispatchEvent(new Event('input'))}catch(e){}})();
+renderChat();refresh();
+
+/* validate */
+function validate(){const bad=[];
+  if(!$('#to').value.trim())bad.push('f-to');if(!$('#from').value.trim())bad.push('f-from');
+  if(!$('#letter').value.trim())bad.push('f-letter');if(!cleanChat().some(r=>r.w==='f')){toast('ใส่ข้อความในแชทอย่างน้อย 1 ข้อความนะ');$('#ced').scrollIntoView({behavior:'smooth',block:'center'});return false}if(!$('#secret').value.trim())bad.push('f-secret');
+  if(st.lock==='code'&&!/^\d{4}$/.test($('#code').value))bad.push('f-code');
+  bad.forEach(id=>{const f=$('#'+id);f.classList.remove('err');void f.offsetWidth;f.classList.add('err')});
+  if(bad.length){$('#'+bad[0]).scrollIntoView({behavior:'smooth',block:'center'});toast('ยังกรอกไม่ครบ ลองดูช่องสีแดงนะ')}
+  return!bad.length}
+
+/* preview */
+let pending=null;
+function openPreview(card){pending=card;$('#frame').src='card.html?v=1#preview';$('#ov').classList.add('show');document.body.style.overflow='hidden'}
+addEventListener('message',e=>{if(e.data&&e.data.type==='luvnote-ready'&&pending){$('#frame').contentWindow.postMessage({type:'luvnote-card',card:pending},'*')}});
+$('#closePv').onclick=()=>{$('#ov').classList.remove('show');$('#frame').src='about:blank';document.body.style.overflow=''};
+$('#demoBtn').onclick=()=>openPreview({});
+$('#pvBtn').onclick=()=>{const d=data();
+  if(!d.to||!d.from){validate();return}
+  openPreview(Object.assign(d,{letter:d.letter||'(ยังไม่ได้เขียนจดหมาย)',secret:d.secret||'(ยังไม่ได้ใส่ข้อความลับ)'}))};
+
+/* create */
+function summary(d){const L=['💬 สั่งการ์ด Birthday Chat (วันเกิด)','ผู้รับ: '+d.to+(d.age?' (ครบ '+d.age+' ปี)':''),'ผู้ส่ง: '+d.from,
+  'รูป: '+d.photos.length+' รูป'+(d.photos.some(p=>p.cap)?' | คำบรรยาย: '+d.photos.map((p,i)=>(i+1)+'.'+(p.cap||'-')).join(' '):''),
+  'แชท:\n'+d.chat.map(r=>(r.w==='stk'?'[สติกเกอร์ '+r.s+']':r.w==='pic'?'[รูป]':(r.w==='t'?'ผู้รับ: ':r.w==='oops'?'(แกล้ง) ':'')+r.x)).join('\n'),'จดหมาย:\n'+d.letter,'ข้อความลับ: '+d.secret+(d.lock.type==='code'?' (รหัส '+d.lock.code+(d.lock.hint?' คำใบ้: '+d.lock.hint:'')+')':' (แบบใช้นิ้วถู)'),
+  'เพลง: '+(d.music.type==='youtube'?'https://youtu.be/'+d.music.id+(d.music.start?' (เริ่มที่ '+fmt(d.music.start)+')':''):'-'),'เอฟเฟกต์: '+({hearts:'หัวใจพาสเทล',confetti:'คอนเฟตติ',stars:'ดาวกระพริบ'}[d.effect]),'คำปิดท้าย: '+d.endMsg];return L.join('\n')}
+function reJpeg(src,max,q){return new Promise(res=>{const im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');
+  c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',q))};im.onerror=()=>res(null);im.src=src})}
+let busy=false;
+$('#mkBtn').onclick=async()=>{if(busy||!validate())return;busy=true;const btn=$('#mkBtn'),lab=btn.textContent;btn.textContent='กำลังสร้างลิงก์…';btn.style.opacity=.75;
+  try{const d=data();delete d.expires;
+    d.photos=(await Promise.all(d.photos.map(async p=>({src:await reJpeg(p.src,900,.78),cap:p.cap})))).filter(p=>p.src);if(d.cover)d.cover=await reJpeg(d.cover,700,.78);
+    let body=JSON.stringify({theme:'birthday-chat',data:d});
+    if(body.length>1850000){d.photos=(await Promise.all(d.photos.map(async p=>({src:await reJpeg(p.src,700,.7),cap:p.cap}))));body=JSON.stringify({theme:'birthday-chat',data:d})}
+    const r=await fetch('https://api.luvnote.fun/v2/cards',{method:'POST',headers:{'Content-Type':'application/json'},body});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||!j.id)throw new Error(j.error||('http '+r.status));
+    const url='https://luvnote.fun/#c'+j.id;
+    $('#lnk').textContent='luvnote.fun/#c'+j.id;$('#sTo').textContent=d.to;$('#openBtn').href=url;
+    $('#lineBtn').href='https://line.me/R/msg/text/?'+encodeURIComponent('มีแชทวันเกิดส่งถึง '+d.to+' 💬 แตะเปิดเลย '+url);
+    $('#expn').textContent='ลิงก์เปิดได้ถึง '+new Date(j.expires).toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'});
+    $('#qr').innerHTML='';$('#qr').style.display='';try{new QRCode($('#qr'),{text:url,width:260,height:260,colorDark:'#800020',colorLight:'#ffffff'})}catch(err){$('#qr').style.display='none'}
+    $('#sheet').dataset.url=url;$('#sheet').classList.add('show');confetti(innerWidth/2,innerHeight*.45);
+  }catch(e){toast(String(e.message).includes('too_large')?'รูปใหญ่เกินไป ลองลดจำนวนรูปนะ':'สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ')}
+  finally{busy=false;btn.textContent=lab;btn.style.opacity=''}};
+$('#again').onclick=()=>$('#sheet').classList.remove('show');
+$('#copy').onclick=async()=>{const t=$('#sheet').dataset.url;try{await navigator.clipboard.writeText(t);toast('คัดลอกลิงก์แล้ว ♡')}
+  catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('คัดลอกลิงก์แล้ว ♡')}catch(_){toast('กดค้างที่ลิงก์เพื่อคัดลอกนะ')}ta.remove()}};
+
+/* tiny fx */
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2200)}
+function pop(el){const r=el.getBoundingClientRect();confetti(r.left+r.width/2,r.top+r.height/2,8)}
+function confetti(x,y,n=26){const em=['💗','🎀','✨','💕','🤍'];for(let i=0;i<n;i++){const s=document.createElement('span');s.className='burst';s.textContent=em[i%em.length];
+  s.style.left=x+'px';s.style.top=y+'px';const a=Math.random()*Math.PI*2,d=60+Math.random()*(n>10?160:60);
+  s.style.setProperty('--x',Math.cos(a)*d+'px');s.style.setProperty('--y',Math.sin(a)*d-40+'px');s.style.setProperty('--r',(Math.random()*120-60)+'deg');
+  document.body.appendChild(s);setTimeout(()=>s.remove(),1200)}}
+</script>
+</body>
+</html>

@@ -111,7 +111,8 @@ async function getImage(req, env, id) {
 }
 
 /* ---------- theme cards (v2) ---------- */
-const THEMES = ["pink-coquette", "coquette-dream", "little-memories"];
+const THEMES = ["pink-coquette", "coquette-dream", "little-memories", "birthday-chat"];
+const STICKERS = ["heart", "cake", "gift", "hug"];
 const V2_MAX = 1900000; // bytes of JSON body
 const DAY = 864e5;
 const LIFE_DAYS = 15;
@@ -123,7 +124,7 @@ function cleanV2(d) {
     to: s(d.to, 40).trim(), from: s(d.from, 40).trim(),
     age: Number.isFinite(+d.age) && +d.age > 0 && +d.age < 130 ? Math.round(+d.age) : null,
     letter: s(d.letter, 700), secret: s(d.secret, 140), endMsg: s(d.endMsg, 140),
-    effect: ["bows", "hearts", "pearls"].includes(d.effect) ? d.effect : "bows",
+    effect: ["bows", "hearts", "pearls", "confetti", "stars"].includes(d.effect) ? d.effect : "bows",
     lock: { type: d.lock && d.lock.type === "code" ? "code" : "scratch",
             code: d.lock && /^\d{4}$/.test(d.lock.code || "") ? d.lock.code : "",
             hint: s(d.lock && d.lock.hint, 60) },
@@ -132,6 +133,16 @@ function cleanV2(d) {
       : { type: "demo" },
     photos: [],
   };
+  if (typeof d.cover === "string" && d.cover.length < 400000 && /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(d.cover)) out.cover = d.cover;
+  if (Array.isArray(d.chat)) {
+    out.chat = d.chat.slice(0, 20).map((r) => {
+      if (!r || typeof r !== "object") return null;
+      if (r.w === "stk") return { w: "stk", s: STICKERS.includes(r.s) ? r.s : "heart" };
+      if (r.w === "pic") return { w: "pic" };
+      if (["f", "t", "oops"].includes(r.w)) { const x = s(r.x, 120).trim(); return x ? { w: r.w, x } : null; }
+      return null;
+    }).filter(Boolean);
+  }
   for (const p of photos) {
     if (!p || typeof p.src !== "string" || !/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(p.src)) continue;
     out.photos.push({ src: p.src, cap: s(p.cap, 40) });

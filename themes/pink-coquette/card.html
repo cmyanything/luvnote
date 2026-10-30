@@ -280,6 +280,11 @@ h1{font-size:40px}h2{font-size:27px}
 .hb.down::before{content:'';position:absolute;left:50%;top:50%;width:360px;height:170px;margin:-85px 0 0 -180px;z-index:-1;border-radius:50%;
   background:radial-gradient(ellipse,rgba(255,255,255,.95) 0,rgba(255,255,255,.7) 40%,rgba(255,255,255,0) 70%);pointer-events:none}
 .cake{transform-origin:50% 100%;transition:translate 1s cubic-bezier(.3,1.3,.5,1),scale 1s cubic-bezier(.3,1.3,.5,1)}
+#vinyl .ytwrap{position:absolute;inset:14px;border-radius:50%;overflow:hidden;z-index:1;pointer-events:none;box-shadow:0 0 0 2px #F4A6C1}
+#vinyl .ytwrap iframe{width:200px;height:200px;border:0;transform:scale(.12);transform-origin:0 0}
+#vinyl.need{animation:needp 1s ease-in-out infinite!important}
+#vinyl.need::after{content:'แตะเพื่อฟังเพลง';position:absolute;right:58px;top:50%;transform:translateY(-50%);white-space:nowrap;font-family:'Athiti';font-weight:600;font-size:13px;color:#fff;background:var(--rose);padding:5px 10px;border-radius:20px;box-shadow:0 4px 10px rgba(156,61,99,.3)}
+@keyframes needp{50%{transform:scale(1.12);box-shadow:0 0 0 8px rgba(244,143,177,.35)}}
 </style>
 </head>
 <body>
@@ -483,10 +488,28 @@ function note(m,t,dur,vol=.22){const f=440*Math.pow(2,(m-69)/12);
 function playMelody(){let t0=actx.currentTime+.15,t=t0;MEL.forEach(([m,b])=>{note(m,t,b*BEAT);t+=b*BEAT});
   [[48,0],[55,3],[55,6],[48,9],[53,12],[48,15],[55,18],[48,21]].forEach(([m,b])=>note(m,t0+(b+1)*BEAT,2*BEAT,.08));
   setTimeout(playMelody,(t-actx.currentTime+1.8)*1000)}
-function startMusic(){if(AUTO){$('#vinyl').classList.add('play');return}try{if(!actx){actx=new(window.AudioContext||window.webkitAudioContext)();master=actx.createGain();master.gain.value=.8;
+function startBox(){try{if(!actx){actx=new(window.AudioContext||window.webkitAudioContext)();master=actx.createGain();master.gain.value=.8;
   const dl=actx.createDelay();dl.delayTime.value=.28;const fb=actx.createGain();fb.gain.value=.28;master.connect(actx.destination);master.connect(dl);dl.connect(fb);fb.connect(dl);dl.connect(actx.destination);playMelody()}
   actx.resume();playing=true;$('#vinyl').classList.add('play')}catch(e){}}
-$('#vinyl').addEventListener('click',e=>{e.stopPropagation();if(!actx){startMusic();return}
+/* ---- YouTube ---- */
+let yt=null,ytReady=false,ytWant=false,ytFailed=false;
+const useYT=()=>!AUTO&&!ytFailed&&CARD.music&&CARD.music.type==='youtube'&&CARD.music.id;
+function initYT(){if(!useYT()||yt)return;yt=1;
+  const w=document.createElement('div');w.className='ytwrap';w.innerHTML='<div id="ytPlayer"></div>';$('#vinyl').appendChild(w);
+  window.onYouTubeIframeAPIReady=()=>{yt=new YT.Player('ytPlayer',{width:200,height:200,videoId:CARD.music.id,
+    playerVars:{playsinline:1,controls:0,disablekb:1,rel:0,fs:0,iv_load_policy:3,start:CARD.music.start||0,loop:1,playlist:CARD.music.id},
+    events:{onReady:()=>{ytReady=true;$('#vinyl').classList.add('show');if(ytWant)ytPlay()},
+      onError:()=>{ytFailed=true;w.remove();$('#vinyl').classList.remove('need');if(ytWant)startBox()},
+      onStateChange:e=>{const v=$('#vinyl');if(e.data===1){playing=true;v.classList.add('play');v.classList.remove('need')}
+        else if(e.data===2||e.data===0){playing=false;v.classList.remove('play')}}}})};
+  const fail=()=>{if(ytReady)return;ytFailed=true;w.remove()};const sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';sc.onerror=fail;document.head.appendChild(sc);setTimeout(fail,9000)}
+function ytPlay(){try{yt.playVideo()}catch(e){}setTimeout(()=>{if(!playing)$('#vinyl').classList.add('need')},1800)}
+function startMusic(){if(AUTO){$('#vinyl').classList.add('play');return}
+  if(useYT()){ytWant=true;if(ytReady)ytPlay();else setTimeout(()=>{if(!playing&&useYT())$('#vinyl').classList.add('need')},2500);return}
+  startBox()}
+$('#vinyl').addEventListener('click',e=>{e.stopPropagation();
+  if(useYT()){ytWant=true;if(!ytReady)return;if(playing){try{yt.pauseVideo()}catch(_){}}else{try{yt.playVideo()}catch(_){}}return}
+  if(!actx){startBox();return}
   if(playing){actx.suspend();playing=false;$('#vinyl').classList.remove('play')}else{actx.resume();playing=true;$('#vinyl').classList.add('play')}});
 
 /* ============ scene control ============ */
@@ -635,7 +658,7 @@ function fill(){
   const exp=CARD.expires?new Date(CARD.expires):new Date(Date.now()+15*864e5);
   $('#exp').textContent='การ์ดนี้เปิดดูได้ถึง '+exp.toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'});
   if(CARD.lock&&CARD.lock.type==='code'&&CARD.lock.code){$('#secScene').classList.add('mode-code');$('#codehint').textContent=CARD.lock.hint?('คำใบ้: '+CARD.lock.hint):'ใส่รหัส 4 หลัก'}
-  ambType=CARD.effect||'bows';initAmb();buildPhotos();enter[0]();
+  ambType=CARD.effect||'bows';initAmb();buildPhotos();enter[0]();initYT();
 }
 if(location.hash==='#preview'){
   addEventListener('message',e=>{if(e.data&&e.data.type==='luvnote-card'){CARD=Object.assign({},DEMO,e.data.card);fill()}});

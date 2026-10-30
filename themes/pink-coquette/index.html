@@ -28,7 +28,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdro
 .hero::after{content:'';position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.5)}
 .phone{width:96px;height:172px;border-radius:20px;background:#2a1622;padding:5px;flex-shrink:0;box-shadow:0 12px 24px rgba(139,10,46,.25);animation:fl 3.4s ease-in-out infinite;position:relative;z-index:1}
 @keyframes fl{50%{transform:translateY(-6px) rotate(-1.5deg)}}
-.screen{width:100%;height:100%;border-radius:16px;overflow:hidden;display:grid;place-items:center;
+.screen{position:relative;width:100%;height:100%;border-radius:16px;overflow:hidden;display:grid;place-items:center;
   background:repeating-linear-gradient(0deg,rgba(255,255,255,.4) 0 6px,transparent 6px 12px),repeating-linear-gradient(90deg,rgba(255,255,255,.4) 0 6px,transparent 6px 12px),#FFDCE7}
 .screen svg{width:58px;animation:wob 2s ease-in-out infinite}
 @keyframes wob{50%{transform:rotate(-8deg) scale(1.08)}}
@@ -36,7 +36,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdro
 .chip{display:inline-block;font-family:'Mitr';font-weight:400;font-size:12px;color:var(--wine);background:#fff;border-radius:20px;padding:3px 10px}
 .hero h1{font-family:'Fredoka';font-weight:600;font-size:26px;color:var(--wine);margin:6px 0 2px;line-height:1.1}
 .hero p{font-family:'Athiti';font-weight:600;font-size:15px;color:var(--mute);line-height:1.4}
-.price{font-family:'Fredoka';font-weight:600;font-size:20px;color:var(--wine);margin-top:6px}
+.price{font-family:'Fredoka';font-weight:600;font-size:16px;color:var(--wine);margin-top:6px}
 .price small{font-family:'Athiti';font-size:12px;color:var(--mute);font-weight:500}
 .feats{display:flex;gap:6px;overflow-x:auto;padding:4px 0 2px;scrollbar-width:none}
 .feats::-webkit-scrollbar{display:none}
@@ -154,6 +154,14 @@ textarea{resize:none;line-height:1.6}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .burst{position:fixed;pointer-events:none;z-index:70;font-size:18px;animation:bz 1.1s ease-out forwards}
 @keyframes bz{to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}}
+#heroDemo{position:absolute;left:0;top:0;border:0;transform-origin:0 0;pointer-events:none}
+.phone{cursor:pointer;width:104px;height:196px}
+.ytbox{margin-top:10px;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:#2a1622;display:none}
+.ytbox.show{display:block;animation:popin .35s}
+.ytbox iframe,.ytbox>div{width:100%;height:100%;border:0;display:block}
+.startrow{display:flex;align-items:center;gap:10px;margin-top:10px}
+.startrow label{margin:0;flex:1}
+.startrow input{width:96px!important;flex:none;text-align:center;font-family:'Fredoka'!important}
 </style>
 </head>
 <body>
@@ -164,12 +172,12 @@ textarea{resize:none;line-height:1.6}
 
 <div class="wrap">
   <div class="hero">
-    <div class="phone"><div class="screen"><svg viewBox="0 0 100 80"><path fill="#F7A8C4" stroke="#E07AA0" stroke-width="1.5" d="M47 36 L35 76 L42 70 L46 78 L50 38Z M53 36 L65 76 L58 70 L54 78 L50 38Z M50 32 C30 4 4 10 9 30 C13 46 35 43 50 36Z M50 32 C70 4 96 10 91 30 C87 46 65 43 50 36Z"/><ellipse fill="#F48FB1" stroke="#E07AA0" stroke-width="1.5" cx="50" cy="34" rx="7.5" ry="8.5"/></svg></div></div>
+    <div class="phone" id="heroPhone" role="button" aria-label="ดูการ์ดตัวอย่าง"><div class="screen"><iframe id="heroDemo" src="card.html#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe></div></div>
     <div class="hero-t">
       <span class="chip">🎂 วันเกิด</span>
       <h1>Pink Coquette</h1>
       <p>การ์ดวันเกิดโทนชมพูโบว์ละมุน เปิดซอง แกะกล่อง เป่าเทียน ครบจบในลิงก์เดียว</p>
-      <div class="price"><span class="en">฿99</span> <small>ต่อ 1 ใบ</small></div>
+      <div class="price"><span class="en">99 ฿</span> <small>ต่อ 1 ใบ</small></div>
     </div>
   </div>
   <div class="feats"><span>🎀 ซองผูกโบว์</span><span>🎁 แกะกล่องของขวัญ</span><span>🎂 เป่าเทียน</span><span>📸 อัลบั้มรูป</span><span>💌 จดหมายรัก</span><span>🔒 ข้อความลับ</span><span>🎵 เพลงประกอบ</span></div>
@@ -220,6 +228,8 @@ textarea{resize:none;line-height:1.6}
     <div class="sh"><div class="num">5</div><h2>เพลงประกอบ</h2><span class="opt">ไม่ใส่ก็ได้</span></div>
     <input type="url" id="yt" placeholder="วางลิงก์เพลงจาก YouTube">
     <div class="yt" id="ytS"><div class="disc"></div><span id="ytT">คัดลอกลิงก์จากแอป YouTube (กดแชร์ › คัดลอกลิงก์)</span></div>
+    <div class="ytbox" id="ytBox"><div id="ytPrev"></div></div>
+    <div class="startrow"><label for="ytStart">ให้เพลงเริ่มที่ (นาที:วินาที)<br><span class="help" style="margin:0">เช่น ข้ามอินโทรไปเริ่มท่อนฮุคเลย</span></label><input type="text" id="ytStart" inputmode="numeric" maxlength="5" placeholder="0:00"></div>
     <p class="help">แนะนำคลิปแบบ Lyrics หรือ Audio เพราะ MV ของค่ายเพลงบางเพลงไม่อนุญาตให้เล่นบนเว็บอื่น เพลงจะเริ่มเมื่อผู้รับแตะเปิดซอง</p>
   </div>
 
@@ -293,10 +303,28 @@ $('#fxs').addEventListener('click',e=>{const f=e.target.closest('.fx');if(!f)ret
 
 /* youtube */
 function ytId(u){u=(u||'').trim();const m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/)|music\.youtube\.com\/watch\?(?:.*&)?v=)([\w-]{11})/);return m?m[1]:null}
-$('#yt').addEventListener('input',()=>{const v=$('#yt').value.trim(),id=ytId(v),s=$('#ytS');s.classList.remove('ok','bad');
-  if(!v)$('#ytT').textContent='คัดลอกลิงก์จากแอป YouTube (กดแชร์ › คัดลอกลิงก์)';
-  else if(id){s.classList.add('ok');$('#ytT').textContent='✓ ใช้ลิงก์นี้ได้ เพลงจะเล่นเมื่อเปิดซอง'}
-  else{s.classList.add('bad');$('#ytT').textContent='ลิงก์นี้ไม่ใช่ลิงก์ YouTube ลองคัดลอกใหม่อีกครั้ง'}});
+function ytT(u){const m=(u||'').match(/[?&]t=(?:(\d+)m)?(\d+)s?/);return m?(+(m[1]||0))*60+(+m[2]):0}
+function secOf(v){v=(v||'').trim();if(!v)return 0;const p=v.split(':').map(Number);if(p.some(isNaN))return 0;return p.length>1?p[0]*60+p[1]:p[0]}
+const fmt=t=>Math.floor(t/60)+':'+String(t%60).padStart(2,'0');
+let ytApi=null,ytP=null,ytFor=null;
+function loadYT(){if(ytApi)return ytApi;ytApi=new Promise(res=>{window.onYouTubeIframeAPIReady=()=>res();const sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';sc.onerror=()=>res();document.head.appendChild(sc);setTimeout(res,7000)});return ytApi}
+function ytStatus(cls,txt){const s=$('#ytS');s.classList.remove('ok','bad');if(cls)s.classList.add(cls);$('#ytT').textContent=txt}
+async function checkYT(id){
+  ytFor=id;ytStatus('','กำลังตรวจเพลง…');$('#ytBox').classList.add('show');
+  try{await loadYT()}catch(e){}
+  if(ytFor!==id)return;
+  if(!window.YT||!YT.Player){ytStatus('ok','✓ ลิงก์ถูกต้อง เพลงจะเล่นเมื่อเปิดซอง');return}
+  if(ytP){try{ytP.cueVideoById({videoId:id,startSeconds:secOf($('#ytStart').value)})}catch(e){}ytStatus('ok','✓ ใช้เพลงนี้ได้ กดเล่นในกรอบเพื่อลองฟังได้');return}
+  ytP=new YT.Player('ytPrev',{videoId:id,playerVars:{playsinline:1,rel:0,start:secOf($('#ytStart').value)},
+    events:{onReady:()=>{if(ytFor===id)ytStatus('ok','✓ ใช้เพลงนี้ได้ กดเล่นในกรอบเพื่อลองฟังได้')},
+            onError:e=>{if([101,150,153].includes(e.data))ytStatus('bad','คลิปนี้เจ้าของไม่ให้เล่นบนเว็บอื่น ลองค้นเพลงเดียวกันแบบ Lyrics หรือ Audio นะ');
+                        else ytStatus('bad','เปิดคลิปนี้ไม่ได้ ลองลิงก์อื่นนะ')}}})}
+$('#yt').addEventListener('input',()=>{const v=$('#yt').value.trim(),id=ytId(v);
+  if(!v){ytStatus('','คัดลอกลิงก์จากแอป YouTube (กดแชร์ › คัดลอกลิงก์)');$('#ytBox').classList.remove('show');ytFor=null;if(ytP)try{ytP.stopVideo()}catch(e){};return}
+  if(!id){ytStatus('bad','ลิงก์นี้ไม่ใช่ลิงก์ YouTube ลองคัดลอกใหม่อีกครั้ง');$('#ytBox').classList.remove('show');return}
+  const t=ytT(v);if(t&&!$('#ytStart').value)$('#ytStart').value=fmt(t);
+  if(id!==ytFor)checkYT(id)});
+$('#ytStart').addEventListener('input',e=>{e.target.value=e.target.value.replace(/[^\d:]/g,'')});
 
 /* photos */
 $('#file').addEventListener('change',async e=>{const files=[...e.target.files].slice(0,5-st.photos.length);e.target.value='';
@@ -318,18 +346,23 @@ function renderPhotos(){const box=$('#photos');$$('#photos .ph').forEach(p=>p.re
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('input')){e.preventDefault();e.target.blur()}});
 document.addEventListener('touchstart',e=>{const a=document.activeElement;if(a&&a.matches('input,textarea')&&!e.target.closest('input,textarea,button,label,.seg,.fx,.tpls'))a.blur()},{passive:true});
 
+/* hero live demo */
+function fitHero(){const f=$('#heroDemo'),sc=f.parentElement,w=sc.clientWidth,h=sc.clientHeight;if(!w)return;const k=w/390;f.style.width='390px';f.style.height=(h/k)+'px';f.style.transform='scale('+k+')'}
+fitHero();addEventListener('resize',fitHero);addEventListener('load',fitHero);
+$('#heroPhone').onclick=()=>openPreview({});
+
 /* data */
 function data(){return{to:$('#to').value.trim(),from:$('#from').value.trim(),age:$('#age').value?+$('#age').value:null,
   photos:st.photos.map(p=>({src:p.src,cap:p.cap.trim()})),letter:$('#letter').value.trim(),secret:$('#secret').value.trim(),
   lock:{type:st.lock,code:$('#code').value,hint:$('#hint').value.trim()},endMsg:$('#endMsg').value.trim()||'ขอให้ปีนี้เป็นปีที่สดใสที่สุดของเธอ\nรักและคิดถึงเสมอ',
-  effect:st.effect,music:ytId($('#yt').value)?{type:'youtube',id:ytId($('#yt').value)}:{type:'demo'},expires:new Date(Date.now()+15*864e5).toISOString()}}
+  effect:st.effect,music:ytId($('#yt').value)&&!$('#ytS').classList.contains('bad')?{type:'youtube',id:ytId($('#yt').value),start:secOf($('#ytStart').value)}:{type:'demo'},expires:new Date(Date.now()+15*864e5).toISOString()}}
 
 /* draft (เก็บไว้ในเครื่อง ไม่รวมรูป) */
 const KEY='luvnote-draft-coquette';
 function save(){try{localStorage.setItem(KEY,JSON.stringify({to:$('#to').value,from:$('#from').value,age:$('#age').value,letter:$('#letter').value,secret:$('#secret').value,
-  code:$('#code').value,hint:$('#hint').value,yt:$('#yt').value,end:$('#endMsg').value,lock:st.lock,effect:st.effect}))}catch(e){}}
+  code:$('#code').value,hint:$('#hint').value,yt:$('#yt').value,yts:$('#ytStart').value,end:$('#endMsg').value,lock:st.lock,effect:st.effect}))}catch(e){}}
 (function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d)return;
-  ['to','from','age','letter','secret','code','hint','yt'].forEach(k=>{if(d[k])$('#'+k).value=d[k]});if(d.end)$('#endMsg').value=d.end;
+  ['to','from','age','letter','secret','code','hint','yt'].forEach(k=>{if(d[k])$('#'+k).value=d[k]});if(d.end)$('#endMsg').value=d.end;if(d.yts)$('#ytStart').value=d.yts;
   if(d.lock)$(`#lockSeg [data-v="${d.lock}"]`)?.click();if(d.effect)$(`.fx[data-v="${d.effect}"]`)?.click();$('#yt').dispatchEvent(new Event('input'))}catch(e){}})();
 refresh();
 
@@ -356,7 +389,7 @@ $('#pvBtn').onclick=()=>{const d=data();
 function summary(d){const L=['🎀 สั่งการ์ด Pink Coquette (วันเกิด)','ผู้รับ: '+d.to+(d.age?' (ครบ '+d.age+' ปี)':''),'ผู้ส่ง: '+d.from,
   'รูป: '+d.photos.length+' รูป'+(d.photos.some(p=>p.cap)?' | คำบรรยาย: '+d.photos.map((p,i)=>(i+1)+'.'+(p.cap||'-')).join(' '):''),
   'จดหมาย:\n'+d.letter,'ข้อความลับ: '+d.secret+(d.lock.type==='code'?' (รหัส '+d.lock.code+(d.lock.hint?' คำใบ้: '+d.lock.hint:'')+')':' (แบบขูด)'),
-  'เพลง: '+(d.music.type==='youtube'?'https://youtu.be/'+d.music.id:'-'),'เอฟเฟกต์: '+({bows:'ริบบิ้น',hearts:'หัวใจ',pearls:'ไข่มุก'}[d.effect]),'คำปิดท้าย: '+d.endMsg];return L.join('\n')}
+  'เพลง: '+(d.music.type==='youtube'?'https://youtu.be/'+d.music.id+(d.music.start?' (เริ่มที่ '+fmt(d.music.start)+')':''):'-'),'เอฟเฟกต์: '+({bows:'ริบบิ้น',hearts:'หัวใจ',pearls:'ไข่มุก'}[d.effect]),'คำปิดท้าย: '+d.endMsg];return L.join('\n')}
 $('#mkBtn').onclick=()=>{if(!validate())return;const d=data();$('#sTo').textContent=d.to;$('#sheet').dataset.txt=summary(d);
   $('#sheet').classList.add('show');confetti(innerWidth/2,innerHeight*.45)};
 $('#again').onclick=()=>$('#sheet').classList.remove('show');

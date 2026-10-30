@@ -516,6 +516,17 @@ header{position:absolute;top:0;left:0;right:0;z-index:40;display:flex;justify-co
 @keyframes hop{0%{translate:0 0;rotate:0deg}18%{translate:0 10px;scale:1.04 .94}38%{translate:0 -46px;scale:1.06;rotate:-4deg}58%{translate:0 0;scale:1.03 .96;rotate:2deg}74%{translate:0 -14px;scale:1;rotate:-1deg}100%{translate:0 0;rotate:0deg;scale:1}}
 #cpol.hop .cake{animation:cakeJ 1.3s ease both}
 @keyframes cakeJ{38%{transform:scale(1.06)}58%{transform:scale(.98)}}
+.kp{display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 12px;border-radius:16px;background:#fff;box-shadow:0 6px 14px rgba(91,64,56,.15),0 0 0 2px var(--blush)}
+.kp .pins{display:flex;gap:8px}
+.kp .pins i{width:34px;height:40px;border-radius:9px;background:#FDF3F2;border:1.5px solid #F1D6D3;display:grid;place-items:center;font-family:'Fredoka';font-weight:600;font-size:22px;color:var(--wine);font-style:normal;transition:.15s}
+.kp .pins i.on{background:#fff;border-color:var(--rose);transform:scale(1.05)}
+.kp .pins.err{animation:nudge .45s}.kp .pins.err i{border-color:#E05273;background:#FDE3E1}
+.kp .keys{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.kp .keys button{width:38px;height:38px;border-radius:50%;border:none;background:#FDECEC;font-family:'Fredoka';font-weight:600;font-size:18px;color:var(--wine);cursor:pointer;box-shadow:0 2px 0 #F1CFCC}
+.kp .keys button:active{transform:translateY(2px);box-shadow:none;background:var(--blush)}
+.kp .keys button[data-v="✓"]{background:var(--wine);color:#fff;box-shadow:0 2px 0 #8E3346}
+.mode-code .sbox{height:470px!important}
+.mode-code .fr .ds{font-size:0}.mode-code .fr .ds::after{content:'ใส่รหัสด้านล่างเพื่อเปิด';font-size:13px}
 /* notebook frame: every scene is a page */
 #nbc,#nb,#pflip{position:absolute;left:12px;right:14px;top:64px;bottom:86px;pointer-events:none;opacity:0;transition:opacity .6s}
 #nbc{z-index:4;left:6px;right:6px;top:58px;bottom:80px;border-radius:8px 18px 18px 8px;
@@ -966,12 +977,15 @@ function flipIt(){if(flipped)return;flipped=true;$('#sbox').classList.add('flip'
 enter[4]=()=>{};
 $('#flipper').addEventListener('click',()=>{if(flipped||s4.classList.contains('mode-code'))return;$('#s4sub').textContent='just for you ♡';$('#h4').textContent='';$('#h4').classList.remove('b');flipIt()});
 let wv=[0,0,0,0];
-(function wheels(){const box=$('#wheels');for(let i=0;i<4;i++){const w=document.createElement('div');w.className='wh';w.innerHTML='<span>0</span>';let sy=null;
-  const bump=d=>{wv[i]=(wv[i]+d+10)%10;const s=w.querySelector('span');s.style.transform=`translateY(${d>0?-10:10}px)`;s.textContent=wv[i];requestAnimationFrame(()=>requestAnimationFrame(()=>s.style.transform=''));vib(6);checkCode()};
-  w.addEventListener('pointerdown',e=>{e.stopPropagation();sy=e.clientY;try{w.setPointerCapture(e.pointerId)}catch(_){}});
-  w.addEventListener('pointermove',e=>{if(sy===null)return;if(Math.abs(e.clientY-sy)>20){bump(e.clientY<sy?1:-1);sy=e.clientY}});
-  w.addEventListener('pointerup',e=>{if(sy===null)return;const r=w.getBoundingClientRect();if(Math.abs(e.clientY-sy)<6)bump(e.clientY<r.top+r.height/2?1:-1);sy=null});box.appendChild(w)}})();
-function checkCode(){if(flipped)return;if(wv.join('')===String(CARD.lock.code)){$('#padl').classList.add('open');$('#lockb').classList.add('gone');setTimeout(flipIt,700)}}
+let pin='';
+(function keypad(){const box=$('#wheels');box.className='kp';
+  box.innerHTML='<div class="pins">'+'<i></i>'.repeat(4)+'</div><div class="keys">'+[1,2,3,4,5,6,7,8,9,'⌫',0,'✓'].map(v=>`<button data-v="${v}">${v}</button>`).join('')+'</div>';
+  box.querySelectorAll('button').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();if(flipped)return;const v=b.dataset.v;vib(8);try{click()}catch(_){}
+    if(v==='⌫')pin=pin.slice(0,-1);else if(v==='✓'){if(pin.length===4)checkCode(true);return}else if(pin.length<4)pin+=v;
+    showPin();if(pin.length===4)setTimeout(()=>checkCode(true),180)}))})();
+function showPin(){$$('#wheels .pins i').forEach((d,k)=>{d.textContent=pin[k]||'';d.classList.toggle('on',k<pin.length)})}
+function checkCode(){if(flipped)return;if(pin===String(CARD.lock.code)){$('#h4').textContent='';$('#padl').classList.add('open');$('#lockb').classList.add('gone');setTimeout(flipIt,700)}
+  else if(pin.length===4){const p=$('#wheels .pins');p.classList.remove('err');void p.offsetWidth;p.classList.add('err');vib([60,40,60]);setTimeout(()=>{pin='';showPin()},500)}}
 
 /* ---------- 5 photo booth ending ---------- */
 let hearts=0;
@@ -1011,7 +1025,7 @@ function fill(){
   $('#lv').innerHTML=cakeSVG('l');$('#cpolIm').insertAdjacentHTML('afterbegin',cakeSVG('c')+'<span class="wishb">แตะเป่าเทียน 🕯️</span>');$('#cpolCap').innerHTML='<span>'+esc(CARD.to)+' <svg class="hh" viewBox="0 0 24 22"><path d="M12 21 C5 16 1 12 1 7.2 C1 3.6 3.7 1 7 1 C9.2 1 11 2.3 12 4 C13 2.3 14.8 1 17 1 C20.3 1 23 3.6 23 7.2 C23 12 19 16 12 21Z" fill="#B8475A"/></svg></span>';{const d=new Date(),dd=`'${String(d.getFullYear()).slice(2)} ${String(d.getMonth()+1).padStart(2,'0')} ${String(d.getDate()).padStart(2,'0')}`;$('#scrDt').textContent=dd}
   const exp=CARD.expires?new Date(CARD.expires):new Date(Date.now()+15*864e5);
   $('#exp').textContent='เปิดดูได้ถึง '+exp.toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'});
-  if(CARD.lock&&CARD.lock.type==='code'&&CARD.lock.code){$('#s4').classList.add('mode-code');$('#codehint').textContent=CARD.lock.hint?('คำใบ้: '+CARD.lock.hint):'หมุนรหัส 4 หลักเพื่อปลดล็อก';$('#h4').textContent='ปัดวงล้อขึ้นลง ใส่รหัสให้ถูก'}
+  if(CARD.lock&&CARD.lock.type==='code'&&CARD.lock.code){$('#s4').classList.add('mode-code');$('#codehint').textContent=CARD.lock.hint?('คำใบ้: '+CARD.lock.hint):'กดตัวเลข 4 หลักเพื่อปลดล็อก';$('#h4').textContent='กดตัวเลข 4 หลักเพื่อปลดล็อก'}
   ambType=['hearts','confetti','stars'].includes(CARD.effect)?CARD.effect:'hearts';initAmb();buildBook();buildFan();
   document.fonts&&document.fonts.ready.then(fitLetter);initYT()}
 if(location.hash==='#preview'){

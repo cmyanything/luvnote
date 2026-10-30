@@ -974,6 +974,24 @@ enter[5]=()=>{setTimeout(()=>$('#endTiles').classList.add('on','wave'),300);setT
 $('#s5').addEventListener('pointerdown',e=>{if(e.target.closest('button,a'))return;const[x,y]=rel(e);burst(x,y,12,{types:['heart'],speed:5,g:-.05});hearts++;$('#hearts').textContent='× '+hearts});
 $('#replay').addEventListener('click',()=>location.reload());
 
+
+/* ============ auto-fit: keep every page centered inside the notebook paper ============ */
+(function(){
+  const natRect=el=>{const r=el.getBoundingClientRect(),f=el._f||{tx:0,ty:0,k:1,ox:0,oy:0};const a=app.getBoundingClientRect();
+    const L=r.left-a.left-f.ox*(1-f.k)-f.tx,T=r.top-a.top-f.oy*(1-f.k)-f.ty;return{l:L,t:T,r:L+r.width/f.k,b:T+r.height/f.k}};
+  const flow=el=>{if(!el.getClientRects().length)return false;const p=getComputedStyle(el).position;return p!=='absolute'&&p!=='fixed'};
+  function fit(els,box){els=els.filter(flow);if(!els.length)return;const R=els.map(natRect);
+    let l=1e9,t=1e9,r=-1e9,b=-1e9;R.forEach((q,i)=>{let qt=q.t;if(els[i].id==='cam'&&$('#hbt').classList.contains('on'))qt-=92;if(q.r-q.l<1)return;l=Math.min(l,q.l);t=Math.min(t,qt);r=Math.max(r,q.r);b=Math.max(b,q.b)});
+    if(r<l)return;const uw=r-l,uh=b-t,bw=box.r-box.l,bh=box.b-box.t,k=Math.min(1,bw/uw,bh/uh),cx=(l+r)/2,cy=(t+b)/2,tx=(box.l+box.r)/2-cx,ty=(box.t+box.b)/2-cy;
+    els.forEach((el,i)=>{const q=R[i],f=el._f||{tx:0,ty:0,k:1};const nf={ox:cx-q.l,oy:cy-q.t,tx:f.tx+(tx-f.tx)*.18,ty:f.ty+(ty-f.ty)*.18,k:f.k+(k-f.k)*.18};
+      if(Math.abs(nf.tx-f.tx)<.05&&Math.abs(nf.ty-f.ty)<.05&&Math.abs(nf.k-f.k)<.0005&&el._f)return;
+      el._f=nf;el.style.transformOrigin=nf.ox+'px '+nf.oy+'px';el.style.translate=nf.tx+'px '+nf.ty+'px';el.style.scale=nf.k})}
+  (function loop(){try{const inb=app.classList.contains('inbook');
+    const box=inb?{l:46,r:W-22,t:cur===5?118:76,b:H-112}:{l:6,r:W-6,t:66,b:H-96};
+    fit([...scenes[cur].children],box);
+    const p0=$('#page0');if(cur===0&&p0.classList.contains('on'))fit([...p0.children],{l:52,r:W-30,t:128,b:H-140});
+  }catch(e){}requestAnimationFrame(loop)})();
+})();
 /* ============ boot ============ */
 function fill(){
   $$('.js-to').forEach(e=>e.textContent=CARD.to);$$('.js-from').forEach(e=>e.textContent=CARD.from);

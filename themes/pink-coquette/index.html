@@ -176,7 +176,7 @@ textarea{resize:none;line-height:1.6}
 
 <div class="wrap">
   <div class="hero">
-    <div class="phone" id="heroPhone" role="button" aria-label="ดูการ์ดตัวอย่าง"><div class="screen"><iframe id="heroDemo" src="card.html?v=4#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe></div></div>
+    <div class="phone" id="heroPhone" role="button" aria-label="ดูการ์ดตัวอย่าง"><div class="screen"><iframe id="heroDemo" src="card.html?v=5#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe></div></div>
     <div class="hero-t">
       <span class="chip">🎂 วันเกิด</span>
       <h1>Pink Coquette</h1>
@@ -381,7 +381,7 @@ function validate(){const bad=[];
 
 /* preview */
 let pending=null;
-function openPreview(card){pending=card;$('#frame').src='card.html?v=4#preview';$('#ov').classList.add('show');document.body.style.overflow='hidden'}
+function openPreview(card){pending=card;$('#frame').src='card.html?v=5#preview';$('#ov').classList.add('show');document.body.style.overflow='hidden'}
 addEventListener('message',e=>{if(e.data&&e.data.type==='luvnote-ready'&&pending){$('#frame').contentWindow.postMessage({type:'luvnote-card',card:pending},'*')}});
 $('#closePv').onclick=()=>{$('#ov').classList.remove('show');$('#frame').src='about:blank';document.body.style.overflow=''};
 $('#demoBtn').onclick=()=>openPreview({});

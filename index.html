@@ -643,7 +643,7 @@ html.intro-done .tabs-bar{animation:siteIn .8s var(--ease) .1s both}
 /* cards: jelly entrance + jelly on tap */
 .item.enter{animation:itemJelly .9s var(--spring) forwards;animation-delay:calc(var(--i,0)*90ms)}
 @keyframes itemJelly{0%{opacity:0;transform:translateY(30px) scale(.85) rotate(-2deg)}60%{opacity:1;transform:translateY(-4px) scale(1.03,.97)}80%{transform:scale(.99,1.01)}100%{opacity:1;transform:none}}
-.item.tapped{animation:jelly .5s ease}
+.item.tapped .thumb{animation:jelly .5s ease}
 @keyframes jelly{30%{transform:scale(1.06,.94)}50%{transform:scale(.95,1.05)}70%{transform:scale(1.02,.98)}100%{transform:none}}
 .tab.on .ic{animation:tabJelly .6s var(--spring)}
 @keyframes tabJelly{0%{transform:scale(.6) rotate(-15deg)}60%{transform:scale(1.15) rotate(6deg)}100%{transform:none}}
@@ -942,6 +942,8 @@ function renderGrid(cat){
 var vio="IntersectionObserver" in window?new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){var p=v.play();if(p&&p.catch)p.catch(function(){});}else v.pause();});},{threshold:.5}):null;
 function watchVideos(){if(!vio)return;grid.querySelectorAll("video").forEach(function(v){vio.observe(v);});}
 renderGrid("love");
+/* once a card has finished its entrance, drop the entrance class so later animations can't hide it */
+grid.addEventListener("animationend",function(e){if(e.target.classList&&e.target.classList.contains("item"))e.target.classList.remove("enter");});
 
 /* ===== icon tabs ===== */
 var tabs=$("#tabs"),ind=$("#tabInd"),more=$("#tabsMore");

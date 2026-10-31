@@ -11,7 +11,7 @@ if(/^p[a-z0-9]{7}$/.test(h)){location.replace("themes/pink-coquette/card.html?v=
 if(/^d[a-z0-9]{7}$/.test(h)){location.replace("themes/coquette-dream/card.html?v=3#"+h.slice(1));return;}
 if(/^m[a-z0-9]{7}$/.test(h)){location.replace("themes/little-memories/card.html?v=4#"+h.slice(1));return;}
 if(/^c[a-z0-9]{7}$/.test(h)){location.replace("themes/birthday-chat/card.html?v=1#"+h.slice(1));return;}
-if(/^v[a-z0-9]{7}$/.test(h)){location.replace("themes/velvet-gift/card.html?v=1#"+h.slice(1));return;}
+if(/^v[a-z0-9]{7}$/.test(h)){location.replace("themes/velvet-gift/card.html?v=2#"+h.slice(1));return;}
 if((/^[a-z0-9]{7}$/.test(h)&&h!=="pricing"&&h!=="contact")||/^[cd]-[0-9a-v]+$/.test(h))location.replace("app/#"+h);})();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -970,7 +970,7 @@ var CARDS=[
    fx:["แตะซองเพื่อเปิดดูข้างใน","แตะการ์ดแล้วกลีบกุหลาบโปรยลงมา"], hint:"แตะการ์ดเพื่อโปรยกลีบกุหลาบ 🌹", burst:"petal"},
   {id:"bunny", chip:"🐰 กระต่ายกระโดด", price:49, en:"Bunny",  th:"คาวาอี้ น่ารักนุ่มฟู", short:"กระต่ายกระโดด", type:"free", cats:["love"],
    fx:["ซองเด้งดึ๋ง น่ารักตั้งแต่ยังไม่เปิด","แตะการ์ดให้น้องกระต่ายกระโดด"], hint:"แตะการ์ดให้น้องกระต่ายกระโดด 🐰", burst:"heart"},
-  {id:"velvet", chip:"🎁 ดึงริบบิ้น แกะกล่อง", price:59,en:"Velvet", th:"วันเกิด · กล่องของขวัญขาวแดง", short:"ดึงริบบิ้น แกะกล่อง", type:"custom", cats:["bday"], page:"themes/velvet-gift/",ver:1,
+  {id:"velvet", chip:"🎁 ดึงริบบิ้น แกะกล่อง", price:59,en:"Velvet", th:"วันเกิด · กล่องของขวัญขาวแดง", short:"ดึงริบบิ้น แกะกล่อง", type:"custom", cats:["bday"], page:"themes/velvet-gift/",ver:2,
    fx:["ดึงริบบิ้นแกะกล่อง › จุดเทียน กดค้างอธิษฐาน › แกะกล่องรูปทีละใบ","การ์ดอวยพรเปิดปก และกล่องแหวนข้อความลับแบบขูด/ใส่รหัส","เริ่มเรียบหรู แล้วค่อย ๆ ว้าว จนตอนจบกลายเป็นกำมะหยี่แดงประกายทอง"], hint:"แตะการ์ดเพื่อโปรยประกายดาว ✨", burst:"star"},
   {id:"letter", chip:"💋 พิมพ์ทีละตัว", price:49,en:"Letter", th:"จดหมายรักลายเส้น", short:"พิมพ์ทีละตัว", type:"free", cats:["love","anniv"],
    fx:["ข้อความค่อย ๆ พิมพ์ขึ้นทีละตัว","ดึงรูปโพลารอยด์ออกจากซอง","แตะการ์ดเพื่อส่งจูบ"], hint:"แตะการ์ดเพื่อส่งจูบ 💋", burst:"kiss"},

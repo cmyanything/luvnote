@@ -397,6 +397,10 @@ body{color:#800020}
 #velvet{position:absolute;inset:0;z-index:0;opacity:0;pointer-events:none;transition:opacity 2.4s ease;background:radial-gradient(120% 90% at 30% 20%,#D12A4C 0%,#A1002E 45%,#5E0018 100%)}
 .finale #velvet{opacity:1}
 .build #veil{display:none}
+/* ตอนจุดเทียน: ไม่หรี่ไฟ ใช้แสงเทียนทองอุ่น ๆ แทน */
+#dim{background:radial-gradient(circle at 50% 42%,rgba(255,206,130,.42),rgba(255,226,180,.18) 32%,rgba(255,240,242,0) 62%)}
+#dim.on{animation:warm 2.4s ease-in-out infinite}
+@keyframes warm{50%{filter:brightness(1.08);transform:scale(1.04)}}
 .brand{color:#C8102E}
 #vinyl .note{color:#C8102E}
 .kicker{color:#C8102E}

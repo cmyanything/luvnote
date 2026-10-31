@@ -367,9 +367,9 @@ function data(){return{to:$('#to').value.trim(),from:$('#from').value.trim(),age
 
 /* draft (เก็บไว้ในเครื่อง ไม่รวมรูป) */
 const KEY='luvnote-draft-coquette-dream';
-function save(){try{localStorage.setItem(KEY,JSON.stringify({to:$('#to').value,from:$('#from').value,age:$('#age').value,letter:$('#letter').value,secret:$('#secret').value,
+function save(){return;try{localStorage.setItem(KEY,JSON.stringify({to:$('#to').value,from:$('#from').value,age:$('#age').value,letter:$('#letter').value,secret:$('#secret').value,
   code:$('#code').value,hint:$('#hint').value,yt:$('#yt').value,yts:$('#ytStart').value,end:$('#endMsg').value,lock:st.lock,effect:st.effect}))}catch(e){}}
-(function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d)return;
+(function load(){try{localStorage.removeItem(KEY)}catch(e){}return;try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d)return;
   ['to','from','age','letter','secret','code','hint','yt'].forEach(k=>{if(d[k])$('#'+k).value=d[k]});if(d.end)$('#endMsg').value=d.end;if(d.yts)$('#ytStart').value=d.yts;
   if(d.lock)$(`#lockSeg [data-v="${d.lock}"]`)?.click();if(d.effect)$(`.fx[data-v="${d.effect}"]`)?.click();$('#yt').dispatchEvent(new Event('input'))}catch(e){}})();
 refresh();

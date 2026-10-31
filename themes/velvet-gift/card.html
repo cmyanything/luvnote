@@ -44,7 +44,7 @@ canvas#amb{z-index:1}canvas#fx{z-index:60}
   background:linear-gradient(90deg,transparent,rgba(253,247,231,.97) 10%,#F3D9A4 26%,#FDF7E7 42%,#FFFFFF 50%,#FDF7E7 58%,#F3D9A4 74%,rgba(253,247,231,.97) 90%,transparent);
   display:grid;place-items:center}
 #wipe svg{width:120px;filter:drop-shadow(0 6px 10px rgba(74,0,20,.35))}
-#wipe.go{animation:wipe 1.05s cubic-bezier(.7,0,.3,1)}
+#wipe.go{animation:wipe 1.7s cubic-bezier(.65,0,.35,1)}
 @keyframes wipe{from{transform:translateX(-120%)}to{transform:translateX(100%)}}
 
 /* header */
@@ -69,12 +69,13 @@ header{position:absolute;top:0;left:0;right:0;z-index:40;display:flex;justify-co
 
 /* scenes */
 .scene{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:78px 24px 118px;text-align:center;gap:14px;opacity:0;pointer-events:none;visibility:hidden;transition:opacity .5s,visibility 0s .5s}
-.scene.active{opacity:1;pointer-events:auto;visibility:visible;transition:opacity .5s}
+  padding:98px 24px 98px;text-align:center;gap:14px;opacity:0;pointer-events:none;visibility:hidden;transition:opacity .8s,visibility 0s .8s,padding .7s ease}
+.scene.active{opacity:1;pointer-events:auto;visibility:visible;transition:opacity .8s,padding .7s ease}
+.has-next .scene.active{padding-top:78px;padding-bottom:118px}
 .scene>*{flex-shrink:0}
-.scene.active>*{animation:inUp .8s cubic-bezier(.2,.8,.2,1) both}
-.scene.active>*:nth-child(2){animation-delay:.08s}.scene.active>*:nth-child(3){animation-delay:.16s}
-.scene.active>*:nth-child(4){animation-delay:.24s}.scene.active>*:nth-child(n+5){animation-delay:.32s}
+.scene.active>*{animation:inUp 1.15s cubic-bezier(.2,.8,.2,1) .15s both}
+.scene.active>*:nth-child(2){animation-delay:.3s}.scene.active>*:nth-child(3){animation-delay:.45s}
+.scene.active>*:nth-child(4){animation-delay:.6s}.scene.active>*:nth-child(n+5){animation-delay:.75s}
 .scene.active>.hint.b{animation:inUp .8s .3s both,breath 2.2s ease-in-out 1.1s infinite}
 @keyframes inUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
 .kicker{font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:25px;color:var(--gold2);line-height:1.1;letter-spacing:.2px}
@@ -321,8 +322,8 @@ h1{font-size:38px}h2{font-size:25px}
 @keyframes cpeek{0%,70%,100%{transform:none}80%{transform:rotateY(-16deg)}90%{transform:rotateY(-5deg)}}
 .gcard.open .cover{transform:rotateY(-178deg);animation:copen 1.8s cubic-bezier(.4,0,.2,1) both}
 @keyframes copen{0%{transform:rotateY(0)}14%{transform:rotateY(-10deg)}100%{transform:rotateY(-178deg)}}
-.gcard.aside .cover{transform:translateX(-24px) rotateY(-178deg);animation:caside .8s ease both}
-@keyframes caside{from{transform:rotateY(-178deg)}to{transform:translateX(-24px) rotateY(-178deg)}}
+.gcard.aside .cover{transform:translateX(-70px) rotateY(-178deg);opacity:0;animation:caside 1s ease both}
+@keyframes caside{from{transform:rotateY(-178deg);opacity:1}to{transform:translateX(-70px) rotateY(-178deg);opacity:0}}
 .gcard.open{cursor:default}
 
 /* ===== 4 secret: ring box ===== */
@@ -353,7 +354,7 @@ h1{font-size:38px}h2{font-size:25px}
 .codecover .big{font-size:40px;display:block}
 .mode-code .codecover{display:grid}
 .mode-code #scratch{display:none}
-.mode-code{padding-bottom:46px}
+.mode-code{padding-top:78px;padding-bottom:46px}
 .mode-code.sec-done{padding-bottom:118px}
 .mode-code .scratch{height:130px}
 .mode-code .ringbox{height:84px;zoom:.85}
@@ -782,7 +783,7 @@ function go(i){
   next.classList.remove('show');app.classList.remove('has-next');clearTimers();
   const w=$('#wipe');w.classList.remove('go');void w.offsetWidth;w.classList.add('go');
   setTimeout(()=>{scenes[cur].classList.remove('active');$('#dim').classList.remove('on');
-    cur=i;scenes[i].classList.add('active');setDots();setLevel(i);fitScene();enter[i]&&enter[i]()},480);
+    cur=i;scenes[i].classList.add('active');setDots();setLevel(i);fitScene();enter[i]&&enter[i]()},800);
 }
 next.addEventListener('click',e=>{e.stopPropagation();vib(15);let n=cur+1;if(n===2&&!CARD.photos.length)n=3;go(n)});
 const enter={};
@@ -975,7 +976,7 @@ if(location.hash==='#preview'){
 /* ============ โหมดเล่นอัตโนมัติ (หน้าแคตตาล็อก) ============ */
 if(AUTO){
   const wait=ms=>new Promise(r=>setTimeout(r,ms));
-  const to=async i=>{go(i);await wait(700)};
+  const to=async i=>{go(i);await wait(1100)};
   (async()=>{
     try{
     await wait(1200);for(let i=0;i<3;i++){tug();await wait(520)}

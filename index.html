@@ -10,6 +10,7 @@
 if(/^p[a-z0-9]{7}$/.test(h)){location.replace("themes/pink-coquette/card.html?v=6#"+h.slice(1));return;}
 if(/^d[a-z0-9]{7}$/.test(h)){location.replace("themes/coquette-dream/card.html?v=3#"+h.slice(1));return;}
 if(/^m[a-z0-9]{7}$/.test(h)){location.replace("themes/little-memories/card.html?v=4#"+h.slice(1));return;}
+if(/^c[a-z0-9]{7}$/.test(h)){location.replace("themes/birthday-chat/card.html?v=1#"+h.slice(1));return;}
 if((/^[a-z0-9]{7}$/.test(h)&&h!=="pricing"&&h!=="contact")||/^[cd]-[0-9a-v]+$/.test(h))location.replace("app/#"+h);})();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -955,8 +956,8 @@ var CARDS=[
    fx:["ข้อความค่อย ๆ พิมพ์ขึ้นทีละตัว","ดึงรูปโพลารอยด์ออกจากซอง","แตะการ์ดเพื่อส่งจูบ"], hint:"แตะการ์ดเพื่อส่งจูบ 💋", burst:"kiss"},
   {id:"anniv", chip:"📷 รูปคู่โพลารอยด์", price:79, en:"Our Forever", th:"วันครบรอบ · โพลารอยด์", short:"รูปคู่โพลารอยด์", type:"custom", cats:["anniv","love"],
    fx:["รูปคู่ในกรอบโพลารอยด์ พร้อมข้อความถึงกัน","ปรับชื่อ ข้อความ และรูปตามที่คุณต้องการ"], hint:"แตะการ์ดเพื่อโปรยหัวใจ 💗", burst:"heart"},
-  {id:"bday", chip:"💬 แชทเด้งทีละข้อความ", price:69,  en:"Birthday Chat", th:"วันเกิด · แชทมือถือ", short:"แชทเด้งทีละบับเบิล", type:"custom", cats:["bday"],
-   fx:["ข้อความเด้งขึ้นทีละบับเบิล เหมือนแชทจริง","ปรับข้อความในแชทได้ตามสั่ง"], hint:"แตะการ์ดเพื่อเล่นอีกครั้ง 🎂", burst:"confetti"},
+  {id:"bday", chip:"💬 แชทเด้งทีละข้อความ", price:69,  en:"Birthday Chat", th:"วันเกิด · แชทมือถือ", short:"แชทเด้งทีละบับเบิล", type:"custom", cats:["bday"], page:"themes/birthday-chat/",ver:1,
+   fx:["แจ้งเตือนเด้งหน้าจอล็อก › แชทเด้งทีละบับเบิล ผู้รับแตะเลือกคำตอบเอง","ข้อความแกล้งแล้วลบ สติกเกอร์ ส่งรูปในแชท","วิดีโอคอลเป่าเทียนบนเค้กหัวใจ มีพลุ ปุ่มปฏิเสธหนีนิ้ว","จดหมาย ข้อความลับแบบใช้นิ้วถู/ใส่รหัส ใส่เพลงจาก YouTube ได้"], hint:"แตะการ์ดเพื่อเล่นอีกครั้ง 🎂", burst:"confetti"},
   {id:"sorry", chip:"🥺 ปุ่ม “ไม่” หนีนิ้ว", price:59, en:"I'm Sorry", th:"ง้อ · ปุ่มรักมั้ย?", short:"ปุ่ม “ไม่” หนีนิ้ว", type:"custom", cats:["sorry","love"],
    fx:["ปุ่ม “ไม่” จะหนีนิ้วไปเรื่อย ๆ","กด “ได้สิ” แล้วมีหัวใจโปรยฉลอง"], hint:"ลองกดปุ่ม “ไม่” ดูสิ", burst:"heart"}
 ];

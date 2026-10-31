@@ -139,6 +139,7 @@ function cleanV2(d) {
       if (!r || typeof r !== "object") return null;
       if (r.w === "stk") return { w: "stk", s: STICKERS.includes(r.s) ? r.s : "heart" };
       if (r.w === "pic") return { w: "pic" };
+      if (r.w === "t" && Array.isArray(r.o)) { const o = r.o.slice(0, 3).map((v) => s(v, 60).trim()).filter(Boolean); return o.length ? { w: "t", o } : null; }
       if (["f", "t", "oops"].includes(r.w)) { const x = s(r.x, 120).trim(); return x ? { w: r.w, x } : null; }
       return null;
     }).filter(Boolean);

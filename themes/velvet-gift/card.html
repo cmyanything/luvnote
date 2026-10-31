@@ -529,6 +529,20 @@ h1,h2{color:#800020}
 #wrap.tie.untie .rb.h{transform:scaleX(0);transition:transform .7s cubic-bezier(.6,0,.3,1) .3s}
 #wrap.tie.untie .rb.v{transform:scaleY(0);transition:transform .7s cubic-bezier(.6,0,.3,1) .38s}
 #wrap.tie.untie .wv{opacity:0;transition:opacity .8s ease .45s}
+
+/* ปุ่มอธิษฐาน = โบว์ */
+.wish.show:not(.shut){height:88px}
+#wishBtn{width:118px!important;height:88px!important;border-radius:24px!important;background:none!important;box-shadow:none!important;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#wishBtn svg.b1,#wishBtn svg.b2{position:absolute;left:0;top:0;width:100%;height:100%}
+#wishBtn .b1{filter:drop-shadow(0 6px 8px rgba(120,0,30,.3))}
+#wishBtn .b2{clip-path:inset(calc((1 - var(--hp,0)) * 100%) 0 0 0);filter:drop-shadow(0 0 calc(var(--hp,0) * 12px) rgba(255,210,120,.9))}
+#wishBtn .bh{position:absolute;left:50%;top:50%;width:84px;height:84px;margin:-42px;border-radius:50%;border:2px solid rgba(214,38,74,.45);animation:tapr 1.8s infinite;pointer-events:none}
+#wishBtn.hold .bh{display:none}
+#wishBtn:not(.hold){animation:bowbeat 1.5s ease-in-out infinite}
+@keyframes bowbeat{0%,100%{transform:scale(1)}20%{transform:scale(1.1) rotate(-3deg)}40%{transform:scale(.97) rotate(2deg)}}
+#wishBtn.hold{transform:scale(.92)}
+#wishBtn.hold svg{animation:bowshake .14s linear infinite}
+@keyframes bowshake{0%{transform:rotate(-2deg)}50%{transform:rotate(2deg) translateY(-1px)}100%{transform:rotate(-2deg)}}
 </style>
 </head>
 <body>
@@ -617,7 +631,7 @@ h1,h2{color:#800020}
       </div>
       <div class="stand"></div><div class="stem"></div>
     </div>
-    <div class="wish" id="wish"><button id="wishBtn" aria-label="กดค้างเพื่ออธิษฐาน"><svg class="rg" viewBox="0 0 76 76"><circle class="tr" cx="38" cy="38" r="36"/><circle class="pg" id="wishPg" cx="38" cy="38" r="36"/></svg><svg class="st" viewBox="0 0 24 24"><use href="#star4"/></svg></button></div>
+    <div class="wish" id="wish"><button id="wishBtn" aria-label="กดโบว์ค้างไว้เพื่ออธิษฐาน"><span class="bh"></span><svg class="b1" viewBox="0 0 100 74"><use href="#bow"/></svg><svg class="b2" viewBox="0 0 100 74"><use href="#bowG"/></svg></button></div>
     <p class="hint b" id="cakeHint">แตะไส้เทียนทีละเล่มเพื่อจุดไฟ</p>
   </section>
 
@@ -799,7 +813,7 @@ function done(label,icon){next.innerHTML=`<span class="sh"></span><span class="i
 function fitScene(){const s=scenes[cur];if(!s||!s.dataset.fit)return;const el=s.querySelector(s.dataset.fit);if(!el)return;el.style.zoom=1;
   const cs=getComputedStyle(s),kids=[...s.children].filter(k=>{const c=getComputedStyle(k);return c.position!=='absolute'&&c.display!=='none'});
   const total=kids.reduce((a,k)=>{const c=getComputedStyle(k);return a+k.offsetHeight+parseFloat(c.marginTop)+parseFloat(c.marginBottom)},0)+14*(kids.length-1)+parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom);
-  const extra=(s.id==='cakeScene'&&!celebrated)?86:0;/* เผื่อที่ปุ่มอธิษฐานที่จะโผล่มา จะได้ไม่ต้องย่อซ้ำ */
+  const extra=(s.id==='cakeScene'&&!celebrated)?102:0;/* เผื่อที่ปุ่มอธิษฐานที่จะโผล่มา จะได้ไม่ต้องย่อซ้ำ */
   const over=total+extra-s.clientHeight,h=el.offsetHeight;if(over>0&&h>0)el.style.zoom=Math.max(.6,(h-over)/h)}
 function go(i){
   next.classList.remove('show');app.classList.remove('has-next');clearTimers();
@@ -847,12 +861,12 @@ function buildCandles(){const box=$('#candles');box.innerHTML='';const age=CARD.
     c.addEventListener('click',e=>{e.stopPropagation();light(c)})});
   candleEls=[...box.children]}
 function light(c){if(c.classList.contains('lit')||wished)return;c.classList.add('lit');lit++;vib(20);const f=c.querySelector('.flame'),[x,y]=center(f);sparkle(x,y,12);
-  if(lit===candleEls.length){$('#dim').classList.add('on');setTimeout(()=>{$('#wish').classList.add('show');$('#cakeHint').textContent='หลับตา อธิษฐานในใจ แล้วกดปุ่มดาวค้างไว้'},500)}
+  if(lit===candleEls.length){$('#dim').classList.add('on');setTimeout(()=>{$('#wish').classList.add('show');$('#cakeHint').textContent='หลับตา อธิษฐานในใจ แล้วกดโบว์ค้างไว้'},500)}
   else $('#cakeHint').textContent='อีก '+(candleEls.length-lit)+' เล่ม ✨'}
 /* hold to wish */
 let hp=0,holding=false,lastT=0,hraf=0;const C=2*Math.PI*36;
 function holdLoop(t){const dt=lastT?t-lastT:16;lastT=t;
-  hp=holding?Math.min(1,hp+dt/2200):Math.max(0,hp-dt/700);$('#wishPg').style.strokeDashoffset=C*(1-hp);
+  hp=holding?Math.min(1,hp+dt/2200):Math.max(0,hp-dt/700);$('#wishBtn').style.setProperty('--hp',hp.toFixed(3));
   candleEls.forEach((c,i)=>{const j=Math.sin(tick*.3+i*2)*.08*hp;c.style.setProperty('--wind',((i%2?-1:1)*hp*24+Math.sin(tick*.2+i)*hp*8)+'deg');
     c.style.setProperty('--fs',Math.max(.22,1-hp*.72+j).toFixed(3));c.style.setProperty('--fd',(.18-hp*.11).toFixed(3)+'s')});
   $('#cake').classList.toggle('tense',holding&&hp>.55);
@@ -863,7 +877,7 @@ function holdLoop(t){const dt=lastT?t-lastT:16;lastT=t;
   if(holding||hp>0)hraf=requestAnimationFrame(holdLoop);else{hraf=0;lastT=0}}
 function holdStart(e){if(wished||!$('#wish').classList.contains('show'))return;if(e){e.stopPropagation();try{$('#wishBtn').setPointerCapture(e.pointerId)}catch(_){}}holding=true;$('#wishBtn').classList.add('hold');
   $('#cakeHint').textContent='อธิษฐานอยู่นะ… ค้างไว้อีกนิด';if(!hraf){lastT=0;hraf=requestAnimationFrame(holdLoop)}}
-function holdEnd(){if(!holding)return;holding=false;$('#wishBtn').classList.remove('hold');$('#cake').classList.remove('tense');if(!wished&&hp>.3){candleEls.forEach(c=>{c.classList.add('flare');setTimeout(()=>c.classList.remove('flare'),500)});vib(15)}if(!wished)$('#cakeHint').textContent='กดค้างไว้จนวงดาวเต็มนะ'}
+function holdEnd(){if(!holding)return;holding=false;$('#wishBtn').classList.remove('hold');$('#cake').classList.remove('tense');if(!wished&&hp>.3){candleEls.forEach(c=>{c.classList.add('flare');setTimeout(()=>c.classList.remove('flare'),500)});vib(15)}if(!wished)$('#cakeHint').textContent='กดโบว์ค้างไว้จนโบว์เป็นสีทองนะ'}
 $('#wishBtn').addEventListener('pointerdown',holdStart);['pointerup','pointercancel','pointerleave'].forEach(t=>$('#wishBtn').addEventListener(t,holdEnd));
 $('#wishBtn').addEventListener('contextmenu',e=>e.preventDefault());
 function smokeAt(c,n){for(let k=0;k<n;k++){const s=document.createElement('div');s.className='smoke';s.style.setProperty('--dx',(Math.random()*24-12)+'px');s.style.animationDelay=k*.13+'s';c.appendChild(s);setTimeout(()=>s.remove(),2400)}}

@@ -196,9 +196,9 @@ h1{font-size:38px}h2{font-size:25px}
   background:radial-gradient(ellipse at 50% 75%,#fff 0 18%,#FFE08A 30%,#FFB347 60%,rgba(255,120,80,0) 72%);
   transform-origin:50% 90%;transform:scale(0);opacity:0;filter:drop-shadow(0 0 10px #FFD27A);pointer-events:none}
 .candle .flame::after{content:'';position:absolute;inset:-24px;border-radius:50%;background:radial-gradient(circle,rgba(255,220,140,.55),transparent 65%)}
-.candle.lit .flame{opacity:1;transform:scale(1);animation:ignite .5s cubic-bezier(.3,1.8,.5,1),flick .18s .5s infinite alternate}
+.candle.lit .flame{opacity:1;transform:scale(1);animation:ignite .5s cubic-bezier(.3,1.8,.5,1),flick var(--fd,.18s) .5s infinite alternate}
 @keyframes ignite{from{transform:scale(0) translateY(6px)}}
-@keyframes flick{from{transform:scale(1,1) rotate(calc(-2deg - var(--wind,0deg)))}to{transform:scale(.92,1.08) rotate(calc(2deg + var(--wind,0deg)))}}
+@keyframes flick{from{transform:scale(var(--fs,1),var(--fs,1)) rotate(calc(-2deg - var(--wind,0deg)))}to{transform:scale(calc(var(--fs,1) * .9),calc(var(--fs,1) * 1.1)) rotate(calc(2deg + var(--wind,0deg)))}}
 .candle.out .flame{animation:none;transform:scale(0);opacity:0;transition:.3s}
 .candle:not(.lit)::after{content:'';position:absolute;left:50%;bottom:58px;width:30px;height:30px;margin-left:-15px;border-radius:50%;border:2px solid rgba(243,217,164,.75);animation:tapr 1.6s infinite;pointer-events:none}
 .candle.out::after{display:none}
@@ -497,6 +497,12 @@ h1,h2{color:#800020}
 .gb.untie .lid{animation:none}
 .gb{margin-top:48px}
 .gb .lid{background:linear-gradient(180deg,#FFFFFF,#FBF1F3)}
+
+/* ลุ้นเทียนดับ */
+.cake.tense{animation:tense .09s linear infinite}
+@keyframes tense{0%{transform:translate(0,0)}25%{transform:translate(-1px,.5px)}50%{transform:translate(1px,-.5px)}75%{transform:translate(-.5px,-1px)}100%{transform:translate(.5px,1px)}}
+.candle.flare .flame{filter:drop-shadow(0 0 16px #FFB347) brightness(1.15)}
+.shoot::before{background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1C12.8 8 16 11.2 23 12 16 12.8 12.8 16 12 23 11.2 16 8 12.8 1 12 8 11.2 11.2 8 12 1Z' fill='%23E0263F'/%3E%3C/svg%3E");filter:drop-shadow(0 0 6px #FF8FA3)}
 </style>
 </head>
 <body>
@@ -816,29 +822,39 @@ function light(c){if(c.classList.contains('lit')||wished)return;c.classList.add(
 let hp=0,holding=false,lastT=0,hraf=0;const C=2*Math.PI*36;
 function holdLoop(t){const dt=lastT?t-lastT:16;lastT=t;
   hp=holding?Math.min(1,hp+dt/2200):Math.max(0,hp-dt/700);$('#wishPg').style.strokeDashoffset=C*(1-hp);
-  candleEls.forEach(c=>c.style.setProperty('--wind',(hp*10)+'deg'));
-  if(holding&&tick%5===0){const[x,y]=center($('#wishBtn'));bp.push({x:x+(Math.random()-.5)*40,y:y-20,vx:(Math.random()-.5)*.6,vy:-1.5-Math.random()*1.5,t:'star',c:'#FFF3D6',s:5+Math.random()*6,r:0,vr:.1,a:1,life:.9,g:-.01,decay:.012});if(tick%15===0)vib(6)}
+  candleEls.forEach((c,i)=>{const j=Math.sin(tick*.3+i*2)*.08*hp;c.style.setProperty('--wind',((i%2?-1:1)*hp*24+Math.sin(tick*.2+i)*hp*8)+'deg');
+    c.style.setProperty('--fs',Math.max(.22,1-hp*.72+j).toFixed(3));c.style.setProperty('--fd',(.18-hp*.11).toFixed(3)+'s')});
+  $('#cake').classList.toggle('tense',holding&&hp>.55);
+  if(holding){const msg=hp<.3?'อธิษฐานในใจ… กดค้างไว้นะ':hp<.6?'เปลวไฟเริ่มสั่นแล้ว…':hp<.85?'ใกล้แล้ว! อีกนิด…':'อีกนิดเดียว…!!';if($('#cakeHint').textContent!==msg)$('#cakeHint').textContent=msg}
+  if(holding&&tick%3===0){const[x,y]=center($('#wishBtn'));bp.push({x:x+(Math.random()-.5)*60,y:y-24,vx:(Math.random()-.5)*1.2,vy:-2-Math.random()*2-hp*3,t:Math.random()<.5?'star':'dot',c:Math.random()<.5?'#FF8FA3':'#E9C88A',s:4+Math.random()*5,r:0,vr:.1,a:1,life:.8,g:-.01,decay:.014,full:1});
+    if(tick%Math.max(4,Math.round(16-hp*12))===0)vib(Math.round(6+hp*14))}
   if(hp>=1){wishDone();return}
   if(holding||hp>0)hraf=requestAnimationFrame(holdLoop);else{hraf=0;lastT=0}}
 function holdStart(e){if(wished||!$('#wish').classList.contains('show'))return;if(e){e.stopPropagation();try{$('#wishBtn').setPointerCapture(e.pointerId)}catch(_){}}holding=true;$('#wishBtn').classList.add('hold');
   $('#cakeHint').textContent='อธิษฐานอยู่นะ… ค้างไว้อีกนิด';if(!hraf){lastT=0;hraf=requestAnimationFrame(holdLoop)}}
-function holdEnd(){if(!holding)return;holding=false;$('#wishBtn').classList.remove('hold');if(!wished)$('#cakeHint').textContent='กดค้างไว้จนวงดาวเต็มนะ'}
+function holdEnd(){if(!holding)return;holding=false;$('#wishBtn').classList.remove('hold');$('#cake').classList.remove('tense');if(!wished&&hp>.3){candleEls.forEach(c=>{c.classList.add('flare');setTimeout(()=>c.classList.remove('flare'),500)});vib(15)}if(!wished)$('#cakeHint').textContent='กดค้างไว้จนวงดาวเต็มนะ'}
 $('#wishBtn').addEventListener('pointerdown',holdStart);['pointerup','pointercancel','pointerleave'].forEach(t=>$('#wishBtn').addEventListener(t,holdEnd));
 $('#wishBtn').addEventListener('contextmenu',e=>e.preventDefault());
-function wishDone(){if(wished)return;wished=true;holding=false;hraf=0;vib([40,30,60]);$('#wish').classList.add('gone');$('#cakeHint').textContent='';
-  candleEls.forEach((c,i)=>setTimeout(()=>{c.style.setProperty('--wind','0deg');c.classList.add('out');
-    for(let k=0;k<3;k++){const s=document.createElement('div');s.className='smoke';s.style.setProperty('--dx',(Math.random()*20-10)+'px');s.style.animationDelay=k*.15+'s';c.appendChild(s);setTimeout(()=>s.remove(),2200)}},i*160));
+function smokeAt(c,n){for(let k=0;k<n;k++){const s=document.createElement('div');s.className='smoke';s.style.setProperty('--dx',(Math.random()*24-12)+'px');s.style.animationDelay=k*.13+'s';c.appendChild(s);setTimeout(()=>s.remove(),2400)}}
+function wishDone(){if(wished)return;wished=true;holding=false;hraf=0;vib([40,30,60]);$('#wish').classList.add('gone');$('#cake').classList.remove('tense');$('#cakeHint').textContent='ฟู่ววว…';
+  const n=candleEls.length,last=candleEls[n-1],t0=(n-1)*170;
+  candleEls.slice(0,-1).forEach((c,i)=>setTimeout(()=>{c.style.setProperty('--wind','0deg');c.classList.add('out');smokeAt(c,3);vib(20)},i*170));
+  /* เทียนเล่มสุดท้ายแกล้งไม่ยอมดับ */
+  setTimeout(()=>{last.style.setProperty('--fs','.14');last.style.setProperty('--wind','28deg');$('#cakeHint').textContent='ดับแล้ว…?'},t0+120);
+  setTimeout(()=>{last.style.setProperty('--fs','1.25');last.style.setProperty('--wind','0deg');last.style.setProperty('--fd','.09s');last.classList.add('flare');
+    const[x,y]=center(last.querySelector('.flame'));sparkle(x,y,14);vib([30,30,30]);$('#cake').classList.add('tense');$('#cakeHint').textContent='เอ๊ะ! ยังไม่ดับ 😳 อีกฟู่!'},t0+900);
+  setTimeout(()=>{$('#cake').classList.remove('tense');last.classList.remove('flare');last.style.setProperty('--wind','30deg');last.style.setProperty('--fs','.3')},t0+1550);
+  setTimeout(()=>{last.classList.add('out');smokeAt(last,5);vib([50,30,80]);$('#cakeHint').textContent='ดับหมดแล้ว! 🎉'},t0+1800);
   /* ดาวตกพาคำอธิษฐานขึ้นฟ้า */
   setTimeout(()=>{const[x,y]=center($('#candles'));const s=document.createElement('div');s.className='shoot';s.style.left=(x-8)+'px';s.style.top=(y-8)+'px';app.appendChild(s);
     const dx=W*.82-x,dy=60-y;
     s.animate([{transform:'translate(0,0) scale(.6)',opacity:1},{transform:`translate(${dx}px,${dy}px) scale(1.4) rotate(180deg)`,opacity:1}],{duration:900,easing:'cubic-bezier(.3,0,.4,1)',fill:'forwards'});
-    let k=0;const iv=setInterval(()=>{const r=s.getBoundingClientRect(),a=app.getBoundingClientRect();bp.push({x:r.left-a.left+8,y:r.top-a.top+8,vx:0,vy:0,t:'star',c:'#FFF3D6',s:6+Math.random()*4,r:0,vr:.1,a:1,life:.6,g:0,decay:.02});if(++k>28)clearInterval(iv)},30);
-    setTimeout(()=>{const r=s.getBoundingClientRect(),a=app.getBoundingClientRect();firework(r.left-a.left+8,r.top-a.top+8);s.remove();celebrate()},950)},candleEls.length*160+300)}
+    let k=0;const iv=setInterval(()=>{const r=s.getBoundingClientRect(),a=app.getBoundingClientRect();bp.push({x:r.left-a.left+8,y:r.top-a.top+8,vx:0,vy:0,t:'star',c:Math.random()<.5?'#E0263F':'#FF8FA3',s:6+Math.random()*4,r:0,vr:.1,a:1,life:.6,g:0,decay:.02,full:1});if(++k>28)clearInterval(iv)},30);
+    setTimeout(()=>{const r=s.getBoundingClientRect(),a=app.getBoundingClientRect();firework(r.left-a.left+8,r.top-a.top+8);s.remove();celebrate()},950)},(candleEls.length-1)*170+2100)}
 /* วางชื่อให้อยู่กึ่งกลางระหว่าง Happy Birthday กับเลขอายุ */
-function centerName(){const n=$('#hb .n'),t=$('#hb .t');if(!n||!t)return;n.style.translate='0 0';
-  const top=$('#candles .dg')||$('#candles .stick');if(!top)return;
-  const z=parseFloat($('#cake').style.zoom)||1,tb=t.getBoundingClientRect().bottom,ct=top.getBoundingClientRect().top,r=n.getBoundingClientRect();
-  const dy=((tb+ct)/2)-(r.top+r.height/2);if(dy>0)n.style.translate=`0 ${dy}px`}
+function centerName(){const n=$('#hb .n');if(!n)return;
+  const z=parseFloat($('#cake').style.zoom)||1,T=$('#candles .dg')?34:36;
+  n.style.translate=`0 ${Math.round((14+T*z-6)/2)}px`}
 function celebrate(){if(celebrated)return;celebrated=true;vib([50,40,80]);$('#dim').classList.remove('on');flash();$('#cake').classList.add('yay');
   $('#hb').innerHTML='<div class="t">'+[...'Happy Birthday'].map((ch,i)=>`<span style="animation-delay:${i*.06}s">${ch===' '?'&nbsp;':ch}</span>`).join('')+'</div>'+
     `<div class="n">${esc(CARD.to)}${CARD.age?' · ครบ <span class="en">'+esc(CARD.age)+'</span> ปี':''}</div>`;

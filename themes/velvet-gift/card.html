@@ -291,7 +291,7 @@ h1{font-size:38px}h2{font-size:25px}
 .gcard.open .paper::after{opacity:0}
 .gcard .paper{position:absolute;inset:0;background:var(--cream);border-radius:10px;box-shadow:0 20px 40px rgba(20,0,6,.45);overflow:hidden}
 .gcard .paper::before{content:'';position:absolute;inset:9px;border:1.5px dashed rgba(194,160,106,.6);border-radius:6px;pointer-events:none}
-.paper-in{position:absolute;inset:0;padding:30px 26px 24px;text-align:left;overflow-y:auto;color:var(--ink);opacity:0;transition:opacity .7s .9s}
+.paper-in{position:absolute;inset:12px 6px;padding:18px 20px 22px;text-align:left;overflow-y:auto;color:var(--ink);opacity:0;transition:opacity .7s .9s}
 .gcard.open .paper-in{opacity:1}
 .dear{font-family:'Mitr';font-weight:500;font-size:20px;color:var(--wine);margin-bottom:8px}
 #typed{font-family:'Athiti';font-weight:500;font-size:18px;line-height:1.75;white-space:pre-line;min-height:110px;color:#5A0A20}
@@ -508,6 +508,27 @@ h1,h2{color:#800020}
 @keyframes tense{0%{transform:translate(0,0)}25%{transform:translate(-1px,.5px)}50%{transform:translate(1px,-.5px)}75%{transform:translate(-.5px,-1px)}100%{transform:translate(.5px,1px)}}
 .candle.flare .flame{filter:drop-shadow(0 0 16px #FFB347) brightness(1.15)}
 .shoot::before{background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1C12.8 8 16 11.2 23 12 16 12.8 12.8 16 12 23 11.2 16 8 12.8 1 12 8 11.2 11.2 8 12 1Z' fill='%23E0263F'/%3E%3C/svg%3E");filter:drop-shadow(0 0 6px #FF8FA3)}
+
+/* เปลี่ยนฉาก: ริบบิ้นพันเข้ามา ผูกโบว์ แล้วคลายโบว์เปิดฉากใหม่ */
+#wipe{display:none}
+#wrap{position:absolute;inset:0;z-index:50;pointer-events:none;overflow:hidden}
+#wrap .wv{position:absolute;inset:0;background:radial-gradient(circle at 50% 48%,#FFFFFF 0%,#FFF5F7 55%,#FCE4EA 100%);opacity:0}
+#wrap .rb{position:absolute;background:linear-gradient(180deg,#8A0024,#C8102E 30%,#E8344D 50%,#C8102E 70%,#8A0024)}
+#wrap .rb::before,#wrap .rb::after{content:'';position:absolute;background:rgba(243,217,164,.85)}
+#wrap .rb.h{left:0;right:0;top:50%;height:34px;margin-top:-17px;transform:scaleX(0)}
+#wrap .rb.h::before,#wrap .rb.h::after{left:0;right:0;height:2px}#wrap .rb.h::before{top:4px}#wrap .rb.h::after{bottom:4px}
+#wrap .rb.v{top:0;bottom:0;left:50%;width:34px;margin-left:-17px;transform:scaleY(0);background:linear-gradient(90deg,#8A0024,#C8102E 30%,#E8344D 50%,#C8102E 70%,#8A0024)}
+#wrap .rb.v::before,#wrap .rb.v::after{top:0;bottom:0;width:2px}#wrap .rb.v::before{left:4px}#wrap .rb.v::after{right:4px}
+#wrap .wbow{position:absolute;left:50%;top:50%;width:156px;margin:-62px 0 0 -78px;opacity:0;transform:scale(0) rotate(-40deg);filter:drop-shadow(0 8px 10px rgba(120,0,30,.3))}
+#wrap.tie .wv{opacity:1;transition:opacity .5s ease}
+#wrap.tie .rb.h{transform:scaleX(1);transition:transform .55s cubic-bezier(.6,0,.3,1) .05s}
+#wrap.tie .rb.v{transform:scaleY(1);transition:transform .55s cubic-bezier(.6,0,.3,1) .2s}
+#wrap.tie .wbow{opacity:1;transform:scale(1) rotate(0);transition:transform .75s cubic-bezier(.3,1.7,.5,1) .5s,opacity .15s .5s}
+#wrap.tie.untie .wbow{animation:unbow2 .85s cubic-bezier(.5,0,.6,1) forwards}
+@keyframes unbow2{0%{transform:scale(1)}25%{transform:scale(1.22,.82) rotate(5deg)}45%{transform:scale(1.3,.7) rotate(-6deg);opacity:1}100%{transform:translateY(-170px) rotate(-50deg) scale(.45);opacity:0}}
+#wrap.tie.untie .rb.h{transform:scaleX(0);transition:transform .7s cubic-bezier(.6,0,.3,1) .3s}
+#wrap.tie.untie .rb.v{transform:scaleY(0);transition:transform .7s cubic-bezier(.6,0,.3,1) .38s}
+#wrap.tie.untie .wv{opacity:0;transition:opacity .8s ease .45s}
 </style>
 </head>
 <body>
@@ -656,7 +677,8 @@ h1,h2{color:#800020}
 
   <button id="next">ไปต่อ</button>
   <nav id="dots"></nav>
-  <div id="wipe"><svg viewBox="0 0 100 74"><use href="#bowG"/></svg></div>
+  <div id="wipe"></div>
+  <div id="wrap"><i class="wv"></i><i class="rb h"></i><i class="rb v"></i><svg class="wbow" viewBox="0 0 100 74"><use href="#bow"/></svg></div>
   <div id="flash"></div>
   <canvas id="fx"></canvas>
   <div id="gate"><div class="gh"></div><p id="gateTxt">กำลังเปิดการ์ด…</p></div>
@@ -781,9 +803,12 @@ function fitScene(){const s=scenes[cur];if(!s||!s.dataset.fit)return;const el=s.
   const over=total+extra-s.clientHeight,h=el.offsetHeight;if(over>0&&h>0)el.style.zoom=Math.max(.6,(h-over)/h)}
 function go(i){
   next.classList.remove('show');app.classList.remove('has-next');clearTimers();
-  const w=$('#wipe');w.classList.remove('go');void w.offsetWidth;w.classList.add('go');
+  const w=$('#wrap');w.classList.remove('tie','untie');void w.offsetWidth;w.classList.add('tie');
+  setTimeout(()=>{vib(18);const[x,y]=center(w.querySelector('.wbow'));sparkle(x,y,10)},1050);
+  setTimeout(()=>{w.classList.add('untie');vib(12);const[x,y]=center(w.querySelector('.wbow'));burst(x,y,24,{types:['star','heart'],speed:6,g:.05,full:1})},1450);
+  setTimeout(()=>w.classList.remove('tie','untie'),2600);
   setTimeout(()=>{scenes[cur].classList.remove('active');$('#dim').classList.remove('on');
-    cur=i;scenes[i].classList.add('active');setDots();setLevel(i);fitScene();enter[i]&&enter[i]()},800);
+    cur=i;scenes[i].classList.add('active');setDots();setLevel(i);fitScene();enter[i]&&enter[i]()},1150);
 }
 next.addEventListener('click',e=>{e.stopPropagation();vib(15);let n=cur+1;if(n===2&&!CARD.photos.length)n=3;go(n)});
 const enter={};
@@ -976,7 +1001,7 @@ if(location.hash==='#preview'){
 /* ============ โหมดเล่นอัตโนมัติ (หน้าแคตตาล็อก) ============ */
 if(AUTO){
   const wait=ms=>new Promise(r=>setTimeout(r,ms));
-  const to=async i=>{go(i);await wait(1100)};
+  const to=async i=>{go(i);await wait(1700)};
   (async()=>{
     try{
     await wait(1200);for(let i=0;i<3;i++){tug();await wait(520)}

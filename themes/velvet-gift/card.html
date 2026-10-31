@@ -102,7 +102,8 @@ h1{font-size:38px}h2{font-size:25px}
 @keyframes hbeat{0%,50%,100%{transform:scale(1)}25%{transform:scale(1.35)}}
 #next::after{content:'';position:absolute;inset:-6px;border-radius:40px;border:2px solid rgba(243,217,164,.6);animation:ring 1.8s infinite}
 @keyframes ring{from{opacity:1;transform:scale(.95)}to{opacity:0;transform:scale(1.15)}}
-.has-next .scene.active .hint{visibility:hidden}
+.scene .hint{max-height:80px;transition:max-height .6s ease,margin .6s ease,opacity .3s}
+.has-next .scene.active .hint{visibility:hidden;opacity:0;max-height:0;min-height:0;margin-top:-14px;overflow:hidden}
 #dots{position:absolute;z-index:45;bottom:24px;left:0;right:0;display:flex;justify-content:center;gap:9px}
 #dots i{width:8px;height:8px;transform:rotate(45deg);background:rgba(243,217,164,.25);transition:.4s}
 #dots i.on{background:var(--gold2);transform:rotate(45deg) scale(1.25);box-shadow:0 0 8px rgba(243,217,164,.7)}
@@ -227,6 +228,9 @@ h1{font-size:38px}h2{font-size:25px}
 .wish.show{opacity:1;pointer-events:auto}
 .scene.active>.wish:not(.show){animation:none;opacity:0}
 .wish.gone{opacity:0!important;pointer-events:none}
+.wish{transition:opacity .5s,height .9s cubic-bezier(.4,0,.2,1),margin .9s cubic-bezier(.4,0,.2,1)}
+.wish:not(.show),.wish.shut{height:0;margin-top:-14px;overflow:hidden}
+#cakeScene.done .hint{height:0;min-height:0;margin-top:-14px;overflow:hidden;transition:all .9s}
 #wishBtn{position:relative;width:64px;height:64px;border-radius:50%;border:none;cursor:pointer;touch-action:none;
   background:radial-gradient(circle at 40% 35%,#FFFFFF,#FDF7E7 55%,#F3D9A4);box-shadow:0 8px 20px rgba(0,0,0,.35);transition:transform .2s}
 #wishBtn.hold{transform:scale(.92)}
@@ -772,7 +776,8 @@ function done(label,icon){next.innerHTML=`<span class="sh"></span><span class="i
 function fitScene(){const s=scenes[cur];if(!s||!s.dataset.fit)return;const el=s.querySelector(s.dataset.fit);if(!el)return;el.style.zoom=1;
   const cs=getComputedStyle(s),kids=[...s.children].filter(k=>{const c=getComputedStyle(k);return c.position!=='absolute'&&c.display!=='none'});
   const total=kids.reduce((a,k)=>{const c=getComputedStyle(k);return a+k.offsetHeight+parseFloat(c.marginTop)+parseFloat(c.marginBottom)},0)+14*(kids.length-1)+parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom);
-  const over=total-s.clientHeight,h=el.offsetHeight;if(over>0&&h>0)el.style.zoom=Math.max(.6,(h-over)/h)}
+  const extra=(s.id==='cakeScene'&&!celebrated)?86:0;/* เผื่อที่ปุ่มอธิษฐานที่จะโผล่มา จะได้ไม่ต้องย่อซ้ำ */
+  const over=total+extra-s.clientHeight,h=el.offsetHeight;if(over>0&&h>0)el.style.zoom=Math.max(.6,(h-over)/h)}
 function go(i){
   next.classList.remove('show');app.classList.remove('has-next');clearTimers();
   const w=$('#wipe');w.classList.remove('go');void w.offsetWidth;w.classList.add('go');
@@ -855,7 +860,7 @@ function wishDone(){if(wished)return;wished=true;holding=false;hraf=0;vib([40,30
 function centerName(){const n=$('#hb .n');if(!n)return;
   const z=parseFloat($('#cake').style.zoom)||1,T=$('#candles .dg')?34:36;
   n.style.translate=`0 ${Math.round((14+T*z-6)/2)}px`}
-function celebrate(){if(celebrated)return;celebrated=true;vib([50,40,80]);$('#dim').classList.remove('on');flash();$('#cake').classList.add('yay');
+function celebrate(){if(celebrated)return;celebrated=true;$('#wish').classList.add('shut');setTimeout(()=>$('#cakeScene').classList.add('done'),1500);vib([50,40,80]);$('#dim').classList.remove('on');flash();$('#cake').classList.add('yay');
   $('#hb').innerHTML='<div class="t">'+[...'Happy Birthday'].map((ch,i)=>`<span style="animation-delay:${i*.06}s">${ch===' '?'&nbsp;':ch}</span>`).join('')+'</div>'+
     `<div class="n">${esc(CARD.to)}${CARD.age?' · ครบ <span class="en">'+esc(CARD.age)+'</span> ปี':''}</div>`;
   setTimeout(centerName,950);

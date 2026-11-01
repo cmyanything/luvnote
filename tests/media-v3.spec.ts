@@ -8,6 +8,17 @@ test('R2 path uploads binary JPEG media and publishes references rather than Bas
   const requestBodies: unknown[] = [];
   let uploadCount = 0;
   let sessionCount = 0;
+  // The picker normalizes JPEG once. Publishing/retrying should never encode it again.
+  await page.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.toDataURL;
+    const stats = window as Window & { __jpegEncodeCount?: number };
+    stats.__jpegEncodeCount = 0;
+    HTMLCanvasElement.prototype.toDataURL = function(type?: string, quality?: number) {
+      if (type === 'image/jpeg') stats.__jpegEncodeCount = (stats.__jpegEncodeCount || 0) + 1;
+      return original.call(this, type, quality);
+    };
+  });
+  const encodes = () => page.evaluate(() => (window as Window & { __jpegEncodeCount?: number }).__jpegEncodeCount);
   await page.route('https://www.youtube.com/**', (route) => route.abort());
   await page.route(/^https:\/\/fonts\.(googleapis|gstatic)\.com\//, (route) => route.abort());
   await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit', (route) => route.fulfill({
@@ -66,6 +77,7 @@ test('R2 path uploads binary JPEG media and publishes references rather than Bas
     buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aWQ0AAAAASUVORK5CYII=', 'base64'),
   });
   await expect(page.locator('.ph')).toHaveCount(1);
+  await expect.poll(encodes).toBe(1);
   await expect(page.getByText('verified')).toBeVisible();
   await page.locator('#mkBtn').click();
   await expect(page.locator('#toast')).toHaveText('สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ');
@@ -78,4 +90,5 @@ test('R2 path uploads binary JPEG media and publishes references rather than Bas
   const data = (requestBodies[0] as { data: { photos: { id: string }[] } }).data;
   expect(data.photos).toEqual([{ id: asset, cap: '' }]);
   expect(JSON.stringify(data)).not.toContain('data:image');
+  expect(await encodes()).toBe(1);
 });

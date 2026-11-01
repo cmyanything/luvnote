@@ -29,6 +29,31 @@ async function sessionFor(req, env, sid) {
     "SELECT id FROM media_upload_sessions WHERE id = ? AND token_hash = ? AND expires_at > ? AND used_at IS NULL"
   ).bind(sid, digest, Date.now()).first();
 }
+// Bound actual streamed bytes even when Content-Length is absent or untrusted.
+async function readLimitedBody(request, limit) {
+  if (!request.body) return new Uint8Array();
+  const reader = request.body.getReader();
+  const parts = [];
+  let total = 0;
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > limit) {
+        await reader.cancel().catch(() => {});
+        return null;
+      }
+      parts.push(value);
+    }
+    const bytes = new Uint8Array(total);
+    let offset = 0;
+    for (const part of parts) { bytes.set(part, offset); offset += part.byteLength; }
+    return bytes;
+  } finally {
+    reader.releaseLock();
+  }
+}
 function jpegBytes(buffer) {
   const b = new Uint8Array(buffer);
   if (b.length < 32 || b.length > MAX_JPEG) return false;
@@ -82,7 +107,8 @@ async function uploadPhoto(req, env, url, sid, json) {
     return json(req, { error: "jpeg_only" }, 415);
   const hinted = Number(req.headers.get("Content-Length") || 0);
   if (hinted > MAX_JPEG) return json(req, { error: "too_large" }, 413);
-  const bytes = await req.arrayBuffer();
+  const bytes = await readLimitedBody(req, MAX_JPEG);
+  if (bytes === null) return json(req, { error: "too_large" }, 413);
   if (!jpegBytes(bytes)) return json(req, { error: "invalid_jpeg" }, 400);
   const field = kind === "photo" ? "photo_count" : "cover_count";
   const max = kind === "photo" ? 5 : 1;
@@ -119,13 +145,15 @@ async function publishCard(req, env, json, cleanV2, newId) {
   if (!await sessionFor(req, env, sid)) return json(req, { error: "session_invalid" }, 403);
   const rawData = body.data || {};
   if (typeof rawData !== "object" || Array.isArray(rawData)) return json(req, { error: "bad_data" }, 400);
+  // Do not silently accept embedded binary data in the new storage contract.
+  if (Object.hasOwn(rawData, "cover") && rawData.cover != null) return json(req, { error: "embedded_media_not_allowed" }, 400);
   const photos = Array.isArray(rawData.photos) ? rawData.photos : [];
   const coverId = rawData.cover_id || null;
   if (photos.length > 5 || (coverId && !ASSET.test(coverId))) return json(req, { error: "bad_media" }, 400);
   const photoIds = [];
   const cleanPhotos = [];
   for (const p of photos) {
-    if (!p || !ASSET.test(p.id || "")) return json(req, { error: "bad_media" }, 400);
+    if (!p || !ASSET.test(p.id || "") || Object.hasOwn(p, "src")) return json(req, { error: "bad_media" }, 400);
     photoIds.push(p.id);
     cleanPhotos.push({ id: p.id, cap: typeof p.cap === "string" ? p.cap.slice(0, 40) : "" });
   }

@@ -5,6 +5,7 @@ import { cleanupMediaV3 } from '../worker/media-v3.js';
 import { validateJpeg } from '../worker/jpeg.js';
 import jpeg from 'jpeg-js';
 import { readLimitedBody } from '../worker/guards.js';
+import { QUOTAS } from '../worker/quotas.js';
 
 test('rejects JPEG-shaped garbage before storing an object', async () => {
   const f = await fixture();
@@ -251,14 +252,14 @@ test('read rate guard rejects enumeration before querying card data', async () =
 
 test('daily global session budget is enforced across different source IPs', async t => {
   const f=await fixture(); t.mock.method(globalThis,'fetch',async()=>Response.json({success:true,action:'luvnote_media_upload',hostname:'luvnote.fun'}));
-  f.sql.prepare('INSERT INTO media_write_budgets VALUES(?,?,?)').run('sessions:global',Math.floor(Date.now()/86400000)*86400000+86400000,100);
+  f.sql.prepare('INSERT INTO media_write_budgets VALUES(?,?,?)').run('sessions:global',Math.floor(Date.now()/86400000)*86400000+86400000,QUOTAS.sessionsPerDay);
   const res=await f.request('/v3/upload-sessions',{method:'POST',headers:{'CF-Connecting-IP':'198.51.100.90'},body:JSON.stringify({turnstileToken:'synthetic'})});
   assert.equal(res.status,429); assert.equal(f.sql.prepare('SELECT count(*) n FROM media_upload_sessions').get().n,1);
 });
 
 test('V1 and V2 creation share a bounded legacy write budget', async () => {
   const f=await fixture();
-  f.sql.prepare('INSERT INTO media_write_budgets VALUES(?,?,?)').run('legacy:global',Math.floor(Date.now()/86400000)*86400000+86400000,100);
+  f.sql.prepare('INSERT INTO media_write_budgets VALUES(?,?,?)').run('legacy:global',Math.floor(Date.now()/86400000)*86400000+86400000,QUOTAS.legacyPerDay);
   for (const path of ['/cards','/v2/cards']) assert.equal((await f.request(path,{method:'POST',body:'{}'})).status,429);
 });
 
@@ -287,8 +288,9 @@ test('Turnstile action, hostname, failures, replay and test-mode isolation fail 
 
 test('session quotas are exact in SQLite and bearer secrets are stored only as hashes', async t => {
   const f=await fixture(); t.mock.method(globalThis,'fetch',async () => Response.json({success:true,action:'luvnote_media_upload',hostname:'luvnote.fun'}));
-  const responses=await Promise.all(Array.from({length:8},()=>f.request('/v3/upload-sessions',{method:'POST',body:JSON.stringify({turnstileToken:'synthetic-token'})})));
-  assert.equal(responses.filter(r=>r.status===201).length,5); assert.equal(responses.filter(r=>r.status===429).length,3);
+  const limit=QUOTAS.sessionsPerIpPerHour;
+  const responses=await Promise.all(Array.from({length:limit+3},()=>f.request('/v3/upload-sessions',{method:'POST',body:JSON.stringify({turnstileToken:'synthetic-token'})})));
+  assert.equal(responses.filter(r=>r.status===201).length,limit); assert.equal(responses.filter(r=>r.status===429).length,3);
   for (const row of f.sql.prepare('SELECT token_hash FROM media_upload_sessions').all()) { assert.match(row.token_hash,/^[a-f0-9]{64}$/); assert.notEqual(row.token_hash,token); }
 });
 

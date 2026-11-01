@@ -1,5 +1,6 @@
 import { readLimitedBody, readJson, digest, reserveBudget } from './guards.js';
 import { validateJpeg } from './jpeg.js';
+import { QUOTAS } from './quotas.js';
 // LuvNote Media API V3: private R2 images with short-lived guest upload capabilities.
 // Existing V1/V2 cards stay in D1 and remain readable.
 const DAY = 86400000;
@@ -66,8 +67,8 @@ async function startSession(req, env, json) {
   try { valid = await checkTurnstile(req, env, body.turnstileToken); } catch { /* fail closed */ }
   if (!valid) return json(req, { error: "verification_failed" }, 403);
   const ip = await digest(req.headers.get('CF-Connecting-IP') || 'unknown');
-  if (!await reserveBudget(env, 'session:' + ip, 5, 3600000) ||
-      !await reserveBudget(env, 'sessions:global', 100, DAY))
+  if (!await reserveBudget(env, 'session:' + ip, QUOTAS.sessionsPerIpPerHour, 3600000) ||
+      !await reserveBudget(env, 'sessions:global', QUOTAS.sessionsPerDay, DAY))
     return json(req, { error: 'quota_exceeded' }, 429, { 'Retry-After': '3600' });
   const id = crypto.randomUUID(), secret = randomSecret(), now = Date.now();
   await env.DB.prepare(

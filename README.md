@@ -74,3 +74,24 @@ the frontend origin through its CORS configuration for local writes.
   Run workflow, paste the card link or id and choose the years paid. Renew photo cards **before**
   they expire: cleanup deletes an expired card's photos within the hour, and the workflow refuses
   to revive them. Legacy Base64 cards keep their data and can be renewed after expiry.
+
+## Operations
+
+- **Quotas** live in `worker/quotas.js` (R2 upload sessions: 20 per IP per hour, 1000 per day site-wide;
+  one session per card created or edited). `WRITE_LIMITER` in `wrangler.toml` allows 300 writes per
+  minute per IP and per Cloudflare location. Raise both as traffic grows, then redeploy the API.
+- **Health check:** `.github/workflows/health-check.yml` runs hourly (API health, 404s on unknown
+  cards/photos, homepage and all five editors with their JS). GitHub emails the owner when a scheduled
+  run fails. GitHub pauses schedules in public repos after 60 days without commits; re-enable under
+  Actions if that happens.
+- **Backups:** `.github/workflows/backup-d1.yml` exports production D1 every Monday 03:23 Bangkok time to
+  the private R2 bucket `luvnote-backups` (`d1/luvnote-<timestamp>.sql.gz`) and verifies the upload.
+  Never store exports in GitHub (public repo). To restore: download the file from the Cloudflare
+  dashboard, `gunzip`, create a new D1 database and `npx wrangler d1 execute <new-db> --remote --file
+  <file>.sql`, verify, then point `PRODUCTION_D1_ID` at it. D1 Time Travel also allows point-in-time
+  restore for recent days. Photos in `luvnote-media` are not part of this export.
+- **Staging CPU test:** push to `claude/r2-staging-acceptance` (workflow on that branch) to measure real
+  Cloudflare CPU for upload changes before release.
+- **Rollback:** set the repository variable `VITE_R2_MEDIA_ENABLED=false` and rerun "Frontend checks and
+  deployment"; set `MEDIA_V3_UPLOADS_ENABLED = "false"` in `wrangler.toml` and redeploy the API to stop
+  R2 writes. Existing cards stay readable.

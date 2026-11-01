@@ -1,5 +1,13 @@
 # R2 Production Readiness Report
 
+> **Current status (2026-11-01, supersedes every NO-GO / "do not launch" below): R2 media is LIVE in production.**
+> The CPU blocker was the full `jpeg-js` pixel decode; PR #7 validates JPEG structure only.
+> Real staging: 13/13 uploads, 0 `exceededCpu`, typical 5–10 ms CPU, worst case 13–28 ms
+> (current V2 card creation measured 15–21 ms). Launched via PR #2 → API deploy (schema + uploads on)
+> → `VITE_R2_MEDIA_ENABLED=true`. Owner edits and paid renewal were added in PR #8.
+> Everything below is the historical investigation, kept for reference only.
+> Operations, quotas, monitoring and backups: see README "Operations".
+
 Updated **2026-11-01 — final acceptance continuation**. This supersedes the earlier report's release decision. [PR #2](https://github.com/cmyanything/luvnote/pull/2) remains draft; [PR #4](https://github.com/cmyanything/luvnote/pull/4) is integrated into its feature branch. [Issue #5](https://github.com/cmyanything/luvnote/issues/5) tracks outstanding gates.
 
 ## Final decision

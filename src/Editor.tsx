@@ -161,9 +161,12 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
         : await createCard(theme.id, data, controller.signal, verificationToken || undefined);
       setCreated({ result, recipient: data.to });
     } catch (error) {
+      const reason = error instanceof Error ? error.message : '';
       toast(
-        error instanceof Error && error.message === 'too_large'
+        reason === 'too_large'
           ? 'รูปใหญ่เกินไป ลองลดจำนวนรูปนะ'
+          : reason === 'quota_exceeded' || reason === 'rate_limited'
+            ? 'ตอนนี้มีคนใช้งานเยอะ รอสักครู่แล้วลองใหม่นะ'
           : editing
             ? 'บันทึกไม่สำเร็จ ลองใหม่อีกครั้งนะ'
             : 'สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ',

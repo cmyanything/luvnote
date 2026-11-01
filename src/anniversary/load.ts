@@ -9,10 +9,12 @@ export class CardLoadError extends Error {
   }
 }
 
+// Legacy cards embed JPEG data URLs; R2 cards reference the API's private media route.
+const R2_MEDIA = /^https?:\/\/[^/?#]+\/v3\/cards\/[a-z0-9]{7}\/media\/[0-9a-f-]{36}$/;
 function safeImage(value: unknown): value is string {
   return (
     typeof value === 'string' &&
-    /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(value)
+    (/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(value) || R2_MEDIA.test(value))
   );
 }
 

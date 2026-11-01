@@ -3,8 +3,8 @@
   "initialSource": "86cece35fca20880e95515ba456baa735fdcfc70",
   "productionDeployed": false,
   "billingChanged": false,
-  "newWindowMaximumAttempts": 36,
-  "cumulativeStagingDiagnosticLimit": 66,
+  "newWindowMaximumAttempts": 78,
+  "cumulativeStagingDiagnosticLimit": 108,
   "existingDiagnosticCount": 30,
   "counterReset": false,
   "costBasis": "Owner-confirmed Images Free; official docs specify no Free overage charge and repeat source/parameter combinations count once per calendar month. Reuse synthetic inputs. Monthly account meter remains unavailable (403).",
@@ -15,6 +15,9 @@
     {"method":"Buffer native string search", "realCloudflare":true, "differentialChecks":2029, "decision":"6/6 uploads, CPU 24/84/142/14/80/95 ms; rejected"},
     {"method":"Native bounded body fill", "realCloudflare":true, "decision":"6/6 uploads; ready replays fell to 4-6 ms from up to 34 ms, full upload still 19-77 ms"},
     {"method":"177-byte Wasm entropy scan", "realCloudflare":true, "decision":"6/6 uploads; CPU 28/58/49/18/36/54 ms; not sufficient alone"},
-    {"method":"Blob input stream and R2 payload", "decision":"six additional bounded calls reusing the same synthetic hashes; no counter reset or billing change"}
+    {"method":"Blob input stream and R2 payload", "realCloudflare":true, "decision":"6/6 uploads, CPU 36/51/59/23/57/55 ms; not sufficient"},
+    {"method":"Minimal conversion versus authenticated no-op", "realCloudflare":true, "decision":"3 controls 7/8/8 ms; Images Blob input 7/25/30 ms, no R2 or card writes"},
+    {"method":"Minimal single-chunk conversion", "realCloudflare":true, "decision":"3 controls 7/9/8 ms; Images 12/9/9 ms; requires full-pipeline proof, not a paired causal certificate"},
+    {"method":"Full single-chunk pipeline", "decision":"at most 30 additional primary attempts to restore complete security/theme/concurrency acceptance; unchanged plan, same synthetic inputs, no counter reset"}
   ]
 }

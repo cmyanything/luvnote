@@ -103,7 +103,9 @@ export async function validateJpegTransformed(bytes, images, createMarkerSearch)
   if (!parsed || typeof images?.input !== 'function') return null;
   console.log(JSON.stringify({event:'staging_images_transform',phase:'attempt'}));
   try {
-    const result = await images.input(new Blob([parsed.bytes]).stream())
+    // One immutable, bounded chunk avoids an extra Response/Blob body reader.
+    const input = new ReadableStream({start(c) { c.enqueue(parsed.bytes); c.close(); }});
+    const result = await images.input(input)
       .output({format:'image/jpeg',quality:95});
     const response = result.response();
     if (!response.ok || response.headers.get('Content-Type')?.split(';')[0].trim().toLowerCase() !== 'image/jpeg') return null;

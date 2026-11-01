@@ -1,3 +1,4 @@
+import { handleMediaV3, materializeV3Card, cleanupMediaV3 } from "./media-v3.js";
 // LuvNote card API — Cloudflare Worker + D1
 // POST /cards            {t,to,msg,from,secret,img(base64 jpeg)} -> {id}
 // GET  /cards/:id        -> {t,to,msg,from,secret,hasImg}
@@ -179,7 +180,8 @@ async function getV2(req, env, id) {
   const row = await env.DB.prepare("SELECT theme, data, expires_at FROM theme_cards WHERE id = ?").bind(id).first();
   if (!row) return json(req, { error: "not_found" }, 404);
   if (row.expires_at < Date.now()) return json(req, { error: "expired", expires: row.expires_at }, 410);
-  return json(req, { theme: row.theme, data: JSON.parse(row.data), expires: row.expires_at }, 200, { "Cache-Control": "public, max-age=120" });
+  const data = materializeV3Card(JSON.parse(row.data), id, new URL(req.url).origin);
+  return json(req, { theme: row.theme, data, expires: row.expires_at }, 200, { "Cache-Control": "private, no-store" });
 }
 
 export default {
@@ -187,6 +189,15 @@ export default {
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(req) });
 
     const url = new URL(req.url);
+    if (url.pathname.startsWith("/v3/")) {
+      try {
+        return await handleMediaV3(req, env, url, { json, cors, cleanV2, newId });
+      } catch (error) {
+        console.error("media_v3_error", String(error?.message || error));
+        return json(req, { error: "server_error" }, 500);
+      }
+    }
+
     if (url.pathname === "/" || url.pathname === "/health") return json(req, { ok: true, service: "luvnote-api" });
 
     const v2 = url.pathname.match(/^\/v2\/cards(?:\/([a-z0-9]{7}))?\/?$/);
@@ -211,5 +222,8 @@ export default {
     } catch (e) {
       return json(req, { error: "server_error" }, 500);
     }
+  },
+  async scheduled(_event, env, ctx) {
+    ctx.waitUntil(cleanupMediaV3(env).catch(error => console.error("media_v3_cleanup_failed", String(error?.message || error))));
   },
 };

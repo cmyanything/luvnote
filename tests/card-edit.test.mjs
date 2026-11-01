@@ -169,3 +169,15 @@ test('admin reissue gives legacy cards an edit key and refuses expired cards', a
   assert.equal(f.sql.prepare('SELECT count(*) n FROM card_edit_keys WHERE card_id=?').get('legacy1').n, 1);
   assert.equal((await reissue(f, 'oldcard')).status, 410);
 });
+
+test('edit-check tells the editor whether a link still works', async () => {
+  const { f, card } = await created();
+  const check = (key) => f.request(`/v3/cards/${card.id}/edit-check`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ editKey: key }),
+  });
+  assert.equal((await check(token)).status, 200);
+  assert.equal((await check('c'.repeat(64))).status, 403);
+  assert.equal((await check('short')).status, 400);
+  f.sql.prepare('UPDATE theme_cards SET expires_at=? WHERE id=?').run(Date.now() - 1000, card.id);
+  assert.equal((await check(token)).status, 410);
+});

@@ -146,8 +146,13 @@ export function ShareDialog({
         </a>
       </p>
       <button type="button" className="again" id="again" onClick={onClose}>
-        กลับไปแก้ไข
+        {result.editKey ? 'กลับไปแก้ไขการ์ดใบนี้' : 'กลับไปแก้ไข'}
       </button>
+      {result.editKey && (
+        <a className="again" id="newCard" href="./">
+          สร้างการ์ดใบใหม่
+        </a>
+      )}
     </div>
   );
 }

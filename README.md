@@ -120,6 +120,11 @@ round-trip through the real Worker. No production cards are written during tests
   restore for recent days. Photos in `luvnote-media` are not part of this export.
 - **Staging CPU test:** push to `claude/r2-staging-acceptance` (workflow on that branch) to measure real
   Cloudflare CPU for upload changes before release.
+- **Full-system audit (on demand):** `tests/system-audit.spec.ts` drives every theme end to end against a
+  real local Worker (create → open → edit twice → reopen), the admin reissue flow, expired/missing/legacy
+  card links and the catalog, and prints a findings list. Run it with an R2 build:
+  `VITE_R2_MEDIA_ENABLED=true VITE_TURNSTILE_SITE_KEY=1x00000000000000000000AA npm run build` then
+  `AUDIT=1 npx playwright test tests/system-audit.spec.ts --project=mobile --workers=1`. CI skips it.
 - **Rollback:** set the repository variable `VITE_R2_MEDIA_ENABLED=false` and rerun "Frontend checks and
   deployment"; set `MEDIA_V3_UPLOADS_ENABLED = "false"` in `wrangler.toml` and redeploy the API to stop
   R2 writes. Existing cards stay readable.

@@ -150,6 +150,7 @@ test('owner edit link loads the card, re-uploads photos and saves over the same 
   await page.route(/https:\/\/api\.luvnote\.fun\/v3\/upload-sessions\/.+\/media\?kind=photo$/, (route) => route.fulfill({
     status: 201, json: { id: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc' }, headers: cors,
   }));
+  await page.route('https://api.luvnote.fun/v3/cards/abc2345/edit-check', (route) => route.fulfill({ status: 200, headers: cors, json: { ok: true } }));
   await page.route('https://api.luvnote.fun/v3/cards/abc2345/edit', async (route) => {
     edited = route.request().postDataJSON();
     expect(route.request().headers().authorization).toBe('Bearer ' + 'e'.repeat(64));
@@ -175,14 +176,59 @@ test('owner edit link loads the card, re-uploads photos and saves over the same 
   await expect(page.locator('#editLnk')).toContainText(`?edit=abc2345#key=${key}`);
 });
 
-test('an invalid or expired edit link explains the problem and blocks saving', async ({ page }) => {
+for (const [status, error, text] of [[403, 'edit_denied', 'ลิงก์แก้ไขนี้ใช้ไม่ได้แล้ว'], [410, 'expired', 'การ์ดใบนี้หมดอายุแล้ว']] as const) {
+  test(`a ${error} edit link explains the problem before any editing and blocks saving`, async ({ page }) => {
+    await page.route(/^https:\/\/fonts\.(googleapis|gstatic)\.com\//, (route) => route.abort());
+    let loaded = false;
+    await page.route('https://api.luvnote.fun/v3/cards/abc2345/edit-check', (route) => route.fulfill({
+      status, json: { error }, headers: { 'access-control-allow-origin': '*' },
+    }));
+    await page.route('https://api.luvnote.fun/v2/cards/abc2345', (route) => { loaded = true; return route.abort(); });
+    await page.goto(`/themes/pink-coquette/?edit=abc2345#key=${'d'.repeat(64)}`);
+    await expect(page.locator('#editBanner')).toContainText(text);
+    await expect(page.locator('#mkBtn')).toBeDisabled();
+    expect(loaded).toBe(false);
+  });
+}
+
+test('after creating a card, saving again updates the same card instead of creating another', async ({ page }) => {
+  const key = 'c'.repeat(64);
+  const cors = { 'access-control-allow-origin': '*' };
+  let creates = 0;
+  const edits: { editKey: string; data: { letter: string } }[] = [];
   await page.route(/^https:\/\/fonts\.(googleapis|gstatic)\.com\//, (route) => route.abort());
-  await page.route('https://api.luvnote.fun/v2/cards/abc2345', (route) => route.fulfill({
-    status: 410, json: { error: 'expired' }, headers: { 'access-control-allow-origin': '*' },
+  await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit', (route) => route.fulfill({
+    status: 200, contentType: 'text/javascript',
+    body: "window.turnstile={render:function(el,opts){el.textContent='verified';opts.callback('t');return 'w';},remove:function(){}};",
   }));
-  await page.goto(`/themes/pink-coquette/?edit=abc2345#key=${'d'.repeat(64)}`);
-  await expect(page.locator('#editBanner')).toContainText('เปิดการ์ดเพื่อแก้ไขไม่ได้');
-  await expect(page.locator('#mkBtn')).toBeDisabled();
+  await page.route('https://api.luvnote.fun/v3/upload-sessions', (route) => route.fulfill({
+    status: 201, headers: cors, json: { sessionId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', uploadToken: creates ? 'e'.repeat(64) : key, expires: Date.now() + 100000 },
+  }));
+  await page.route('https://api.luvnote.fun/v3/cards', (route) => { creates++; return route.fulfill({ status: 201, headers: cors, json: { id: 'abc2345', expires: Date.now() + 90 * 86400000 } }); });
+  await page.route('https://api.luvnote.fun/v3/cards/abc2345/edit', (route) => {
+    edits.push(route.request().postDataJSON());
+    return route.fulfill({ status: 200, headers: cors, json: { id: 'abc2345', expires: Date.now() + 90 * 86400000 } });
+  });
+  await page.goto('/themes/pink-coquette/');
+  await page.getByLabel('ชื่อผู้รับ').fill('น้องพลอย');
+  await page.getByLabel('ชื่อผู้ส่ง').fill('พี่ต้นข้าว');
+  await page.locator('#letter').fill('มีคำผิด');
+  await page.locator('#secret').fill('ความลับ');
+  await expect(page.getByText('verified')).toBeVisible();
+  await page.locator('#mkBtn').click();
+  await expect(page.locator('#share-title')).toHaveText('การ์ดของคุณพร้อมแล้ว!');
+  await expect(page).toHaveURL(new RegExp(`\\?edit=abc2345#key=${key}$`));
+  await page.locator('#again').click();
+  await expect(page.locator('#editBanner')).toContainText('กำลังแก้ไขการ์ดเดิม');
+  await page.locator('#letter').fill('แก้คำผิดแล้ว');
+  await expect(page.locator('#mkBtn')).toHaveText('บันทึกการแก้ไข ♡');
+  await page.locator('#mkBtn').click();
+  await expect(page.locator('#share-title')).toHaveText('บันทึกการแก้ไขแล้ว!');
+  expect(creates).toBe(1);
+  expect(edits).toHaveLength(1);
+  expect(edits[0].editKey).toBe(key);
+  expect(edits[0].data.letter).toBe('แก้คำผิดแล้ว');
+  await expect(page.locator('#newCard')).toHaveAttribute('href', './');
 });
 
 test('Our Story sends its start date and photo dates with R2 photo references', async ({ page }) => {

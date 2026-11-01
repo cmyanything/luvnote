@@ -1,5 +1,5 @@
 import type { Miniflare } from 'miniflare';
-export function workerdFixture(options?: { realTurnstile?: boolean }): Promise<{
+export function workerdFixture(options?: { realTurnstile?: boolean; bindings?: Record<string, string> }): Promise<{
   mf: Miniflare;
   db: Awaited<ReturnType<Miniflare['getD1Database']>>;
   bucket: { list(): Promise<{ objects: { key: string }[] }> };

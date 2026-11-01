@@ -16,6 +16,7 @@ button:disabled{cursor:wait}
 .owner-note,.renew{font-family:'Athiti';font-weight:600;font-size:13px;color:var(--mute);margin:0}
 .renew{margin-top:10px;text-align:center}
 .renew a{color:var(--wine)}
+a.again{display:block;text-align:center}
 :focus-visible{outline:2px solid var(--wine);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}

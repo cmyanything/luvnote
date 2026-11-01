@@ -283,6 +283,20 @@ async function editCard(req, env, json, cleanV2, cardId) {
   return json(req, { id: cardId, expires: card.expires_at }, 200, { 'Cache-Control': 'no-store' });
 }
 
+// POST /v3/cards/:id/edit-check {editKey}: lets the editor tell the owner up front that a link
+// was replaced or the card expired, before they redo their changes. Reveals nothing else.
+async function editCheck(req, env, json, cardId) {
+  const body = await readJson(req, 1024);
+  const editKey = String(body.editKey || '');
+  if (!/^[0-9a-f]{64}$/.test(editKey)) return json(req, { error: 'bad_request' }, 400);
+  const card = await env.DB.prepare(
+    'SELECT c.expires_at FROM theme_cards c JOIN card_edit_keys k ON k.card_id=c.id WHERE c.id=? AND k.key_hash=?'
+  ).bind(cardId, await tokenHash(editKey)).first();
+  if (!card) return json(req, { error: 'edit_denied' }, 403);
+  if (card.expires_at <= Date.now()) return json(req, { error: 'expired' }, 410);
+  return json(req, { ok: true, expires: card.expires_at }, 200, { 'Cache-Control': 'no-store' });
+}
+
 // POST /v3/admin/edit-key {cardId} with header X-Admin-Key: owner support tool for customers who
 // lost their edit link. Issues a fresh edit key (old link stops working) for any unexpired card.
 // ADMIN_KEY is a Worker secret (>= 32 chars); without it the route is disabled.
@@ -356,6 +370,9 @@ export async function handleMediaV3(req, env, url, helpers) {
     return publishCard(req, env, json, cleanV2, newId);
   if (url.pathname === "/v3/admin/edit-key" && req.method === "POST")
     return adminReissueEditKey(req, env, json);
+  const check = /^\/v3\/cards\/([a-z0-9]{7})\/edit-check$/.exec(url.pathname);
+  if (check && req.method === "POST")
+    return editCheck(req, env, json, check[1]);
   const edit = /^\/v3\/cards\/([a-z0-9]{7})\/edit$/.exec(url.pathname);
   if (edit && req.method === "POST")
     return editCard(req, env, json, cleanV2, edit[1]);

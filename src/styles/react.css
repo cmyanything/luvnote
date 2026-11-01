@@ -1,0 +1,16 @@
+/* Keep the original layout while using semantic controls in React. */
+button.ci{width:100%;text-align:left;font:inherit;color:inherit}
+.ci .tx{display:block}
+button.fx{font:inherit;color:inherit;cursor:pointer}
+.fx .ic{display:block}
+.fx .fx-label{display:block;font-family:'Mitr';font-weight:400;font-size:14px}
+button:disabled{cursor:wait}
+.csacts button:disabled,.cstypes button:disabled,.addmsg:disabled{cursor:default}
+.btn:disabled{opacity:.65}
+#qr canvas{display:block;max-width:100%;height:auto;margin:auto}
+#covTxt{position:relative;z-index:1}
+:focus-visible{outline:2px solid var(--wine);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+  .sec{opacity:1;transform:none}
+}

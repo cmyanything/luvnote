@@ -81,9 +81,11 @@ async function uploadPhoto(req, env, url, sid, json) {
   if (!await sessionFor(req, env, sid)) return json(req, { error: "session_invalid" }, 403);
   if ((req.headers.get("Content-Type") || "").toLowerCase() !== "image/jpeg")
     return json(req, { error: "jpeg_only" }, 415);
-  // Do not consume an upload slot when the explicitly selected native validator
-  // has not been provisioned. Never silently downgrade to header-only checks.
-  if (env.MEDIA_JPEG_VALIDATOR === 'images' && typeof env.IMAGES?.info !== 'function')
+  // Do not consume an upload slot if the validator mode is misconfigured.
+  // Never silently downgrade from native inspection to header-only checks.
+  const validationMode = env.MEDIA_JPEG_VALIDATOR || 'legacy';
+  if (!['legacy', 'images'].includes(validationMode) ||
+      (validationMode === 'images' && typeof env.IMAGES?.info !== 'function'))
     return json(req, { error: 'image_validation_unavailable' }, 503);
   const previous = await env.DB.prepare(
     'SELECT j.asset_id,j.content_hash,j.state,m.kind FROM media_upload_jobs j JOIN media_assets m ON m.id=j.asset_id WHERE j.session_id=? AND j.request_key=?'
@@ -121,7 +123,7 @@ async function uploadPhoto(req, env, url, sid, json) {
     if (raw === null) throw Object.assign(Error('too_large'), { status: 413 });
     // Preserve strict JS decoding by default. Use the Images binding only when
     // explicitly enabled after isolated staging acceptance.
-    const bytes = env.MEDIA_JPEG_VALIDATOR === 'images'
+    const bytes = validationMode === 'images'
       ? await validateJpegNative(raw, env.IMAGES)
       : validateJpeg(raw);
     if (!bytes) throw Object.assign(Error('invalid_jpeg'), { status: 400 });

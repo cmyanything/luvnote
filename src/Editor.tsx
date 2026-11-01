@@ -497,7 +497,10 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
             className="btn sec2"
             id="pvBtn"
             disabled={photosBusy || busy}
-            onClick={openPreview}
+            onClick={(event) => {
+              event.currentTarget.focus({ preventScroll: true });
+              openPreview();
+            }}
           >
             👀 ดูตัวอย่าง
           </button>

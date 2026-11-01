@@ -1,11 +1,16 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import worker from '../worker/index.js';
+import api from '../worker/index.js';
 import { materializeV3Card, cleanupMediaV3 } from '../worker/media-v3.js';
 
 const uuid = '11111111-1111-4111-8111-111111111111';
 const second = '22222222-2222-4222-8222-222222222222';
 const origin = 'https://api.luvnote.fun';
+const worker = { fetch: (req,env) => {
+  const headers = new Headers(req.headers); headers.set('CF-Connecting-IP','192.0.2.1');
+  headers.set('Idempotency-Key',uuid);
+  return api.fetch(new Request(req,{headers}), { WRITE_LIMITER: { limit: async () => ({success:true}) }, MEDIA_V3_UPLOADS_ENABLED:'true', ...env });
+} };
 
 test('legacy V2 data is preserved byte-for-byte by the materializer', () => {
   const old = { to: 'Recipient', photos: [{ src: 'data:image/jpeg;base64,/9j/', cap: 'A' }] };
@@ -70,8 +75,10 @@ test('a bound live card image can be read as JPEG', async () => {
 test('scheduled cleanup executes with no candidates', async () => {
   const sql = [];
   const env = {
+    MEDIA_CLEANUP_ENABLED: 'true',
     MEDIA: {},
     DB: {
+      batch: async () => [],
       prepare(query) {
         sql.push(query);
         return { bind() { return { all: async () => ({ results: [] }), run: async () => ({ success: true }) }; } };

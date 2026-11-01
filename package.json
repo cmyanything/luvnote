@@ -11,9 +11,11 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "tsc --noEmit",
+    "test:api": "node --test tests/media-v3.test.mjs tests/media-v3.integration.test.mjs tests/media-v3.workerd.test.mjs tests/staging-safety.test.mjs",
     "test": "playwright test"
   },
   "dependencies": {
+    "jpeg-js": "0.4.4",
     "qrcode": "^1.5.4",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
@@ -25,7 +27,10 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
+    "esbuild": "0.28.2",
+    "miniflare": "5.20261023.3-beta",
     "typescript": "^7.0.2",
-    "vite": "^8.3.5"
+    "vite": "^8.3.5",
+    "wrangler": "4.156.0"
   }
 }

@@ -1,48 +1,70 @@
-name: Deploy card API to Cloudflare
+name: Owner-approved card API deployment
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "worker/**"
-      - "wrangler.toml"
-      - ".github/workflows/deploy-api.yml"
   workflow_dispatch:
+    inputs:
+      approval:
+        description: Type OWNER_APPROVED_PRODUCTION after reviewing the readiness report
+        required: true
+        type: string
+      approved_commit:
+        description: Exact main commit approved by the Owner
+        required: true
+        type: string
+      apply_schema:
+        description: Explicitly approve the additive production D1 migration
+        type: boolean
+        default: false
+      verified_backup_reference:
+        description: Reference to encrypted backup and successful isolated restore drill (no secrets)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-card-api
+  cancel-in-progress: false
 
 jobs:
   deploy:
+    if: github.ref == 'refs/heads/main' && github.actor == github.repository_owner && inputs.approval == 'OWNER_APPROVED_PRODUCTION' && inputs.approved_commit == github.sha
+    environment: production
     runs-on: ubuntu-latest
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      PRODUCTION_D1_ID: ${{ vars.PRODUCTION_D1_ID }}
+      CONFIG_VERIFIED: ${{ vars.R2_PRODUCTION_CONFIG_VERIFIED }}
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
-
-      - name: Install wrangler
-        run: npm install -g wrangler@4
-
-      - name: Find Cloudflare account
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck && npm run test:api
+      - name: Require explicit resource configuration
         run: |
-          ACC=$(curl -fsS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" https://api.cloudflare.com/client/v4/accounts \
-            | node -e 'const r=JSON.parse(require("fs").readFileSync(0,"utf8"));if(!r.result||!r.result.length){console.error(JSON.stringify(r.errors));process.exit(1)}console.log(r.result[0].id)')
-          echo "CLOUDFLARE_ACCOUNT_ID=$ACC" >> "$GITHUB_ENV"
-
-      - name: Find D1 database "luvnote"
+          test "$CONFIG_VERIFIED" = "true"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$PRODUCTION_D1_ID"
+          test -n "$CLOUDFLARE_API_TOKEN"
+          node --input-type=module -e 'import fs from "node:fs"; const id=process.env.PRODUCTION_D1_ID;if(!/^[0-9a-f-]{36}$/.test(id))process.exit(1);fs.writeFileSync("wrangler.toml",fs.readFileSync("wrangler.toml","utf8").replace("__D1_ID__",id));'
+      - name: Verify provisioned bucket and secret names
         run: |
-          DB_ID=$(wrangler d1 list --json | node -e 'const l=JSON.parse(require("fs").readFileSync(0,"utf8"));const d=l.find(x=>x.name==="luvnote");if(!d){console.error("D1 database luvnote not found");process.exit(1)}console.log(d.uuid)')
-          sed -i "s/__D1_ID__/$DB_ID/" wrangler.toml
-          echo "D1 id: $DB_ID"
-
-      - name: Create table
-        run: wrangler d1 execute luvnote --remote --file worker/schema.sql
-
-      - name: Deploy worker
-        run: wrangler deploy
-
-      - name: Smoke test
+          npx wrangler r2 bucket info luvnote-media
+          npx wrangler secret list --name luvnote-api > /tmp/luvnote-secret-names.json
+          node -e 'const names=require("/tmp/luvnote-secret-names.json");if(!names.some(s=>s.name==="TURNSTILE_SECRET_KEY"))process.exit(1)'
+      - name: Apply explicitly approved additive schema
+        if: inputs.apply_schema
+        run: npx wrangler d1 execute luvnote --remote --file worker/schema.sql --config wrangler.toml
+      - name: Verify required schema exists
         run: |
-          sleep 20
-          curl -fsS https://api.luvnote.fun/health || echo "api.luvnote.fun not reachable yet (custom domain may still be provisioning)"
+          npx wrangler d1 execute luvnote --remote --json --command "SELECT name FROM sqlite_master WHERE type='table' AND name IN ('media_assets','media_upload_sessions','media_upload_jobs','media_publications','media_write_budgets','media_cleanup_state')" > /tmp/luvnote-schema.json
+          node -e 'const r=require("/tmp/luvnote-schema.json");if(r[0]?.results?.length!==6)process.exit(1)'
+      - name: Deploy backend with V3 writes disabled
+        run: npx wrangler deploy --config wrangler.toml
+      - name: Read-only health check must succeed
+        run: curl --fail --retry 4 --retry-delay 5 https://api.luvnote.fun/health

@@ -1,72 +1,57 @@
-# LuvNote R2 — isolated staging setup (no production impact)
+# Isolated R2 staging
 
-This checklist requires access to the **Cloudflare account** that owns the existing Worker and D1 database. The GitHub connector cannot create a Cloudflare bucket or install a Worker secret. Do not paste a Cloudflare API token into GitHub code or a public chat.
+The authorized local Wrangler OAuth session works. On 2026-11-01 the R2 bucket listing failed with Cloudflare code **10042: enable R2 through the Dashboard**. Billing was not activated. D1 `luvnote-staging` was created and its additive schema applied; no staging Worker was deployed and no R2 bucket was created. Production resources were not modified.
 
-## 1. Provision isolated staging resources
+## Resume after the account Owner activates R2
 
-On a trusted machine with Node.js and Wrangler:
+Use the existing authorized Cloudflare account. Never paste API tokens or real Turnstile secrets into code, a report or chat. Confirm the account and read the readiness report before continuing.
 
-\`\`\`sh
-npx wrangler login
+```sh
+npx wrangler whoami
+npx wrangler r2 bucket list
+npx wrangler d1 list --json
+```
+
+Reuse D1 `luvnote-staging`, UUID `3967493c-55db-4ab8-bb2c-9ed3c157a543`. It differs from production D1 `luvnote`. Do not create a duplicate database. Create or verify only bucket `luvnote-media-staging` with public access disabled. The Worker name must be `luvnote-api-staging`, with no custom routes and no production bindings.
+
+```sh
 npx wrangler r2 bucket create luvnote-media-staging
-npx wrangler d1 create luvnote-staging
-cp wrangler.staging.example.toml wrangler.staging.toml
-\`\`\`
+```
 
-Record the database UUID returned by \`wrangler d1 create\` and replace \`REPLACE_WITH_STAGING_D1_UUID\` in the ignored local file \`wrangler.staging.toml\`. Confirm that the UUID is **not** the production D1 UUID.
+Copy `wrangler.staging.example.toml` to ignored `wrangler.staging.toml`, replace the UUID placeholder with the staging UUID and inspect the entire file. Check identity before any remote command:
 
-The staging configuration has a separate Worker name \`luvnote-api-staging\`, an independent R2 bucket, an independent D1 database, **no custom domain route**, and no production bindings.
-
-## 2. Configure staging schema and Turnstile test secret
-
-\`\`\`sh
+```sh
+node --input-type=module -e "import {verifyStagingResources} from './scripts/staging-safety.mjs'; console.log(verifyStagingResources())"
 npx wrangler d1 execute luvnote-staging --remote --file worker/schema.sql --config wrangler.staging.toml
 npx wrangler secret put TURNSTILE_SECRET_KEY --config wrangler.staging.toml
-\`\`\`
+```
 
-For this isolated staging Worker **only**, enter Cloudflare's documented *test* secret key (do not use a production secret). \`TURNSTILE_TEST_MODE\` is set only in \`wrangler.staging.example.toml\` and requires this exact test secret and \`ENVIRONMENT=staging\`. Never enable test mode on \`api.luvnote.fun\`.
+For this staging Worker only, use Cloudflare's public dummy test secret from its [testing documentation](https://developers.cloudflare.com/turnstile/troubleshooting/testing/). Never substitute a production secret. Keep test mode and host restrictions in the staging file. Real production token replay, hostname and widget behavior still require later controlled acceptance with a separate real staging widget.
 
-## 3. Deploy staging only
-
-\`\`\`sh
+```sh
 npx wrangler deploy --config wrangler.staging.toml
-\`\`\`
+```
 
-This should produce a \`https://luvnote-api-staging.<account>.workers.dev\` URL. Confirm it is NOT \`api.luvnote.fun\`.
+Verify the resulting hostname is exactly `luvnote-api-staging.<account-subdomain>.workers.dev`, inspect deployment bindings, and confirm the R2 bucket has neither r2.dev public access nor a public custom domain. Do not add production routes or DNS.
 
-## 4. Real integration smoke test (synthetic image, no customer data)
+## Real synthetic integration
 
-\`\`\`sh
-STAGING_API_URL="https://luvnote-api-staging.<account>.workers.dev" ALLOW_STAGING_WRITE=1 node scripts/smoke-r2-staging.mjs
-\`\`\`
+In PowerShell, after deployment:
 
-The script is guarded to reject non-staging Workers. It creates one synthetic test card, checks direct R2 upload, D1 card metadata, legacy viewer response, real image download, denial of cross-card media requests, and consumed-session rejection. It does not write to production resources.
+```powershell
+$env:STAGING_API_URL='https://luvnote-api-staging.<account-subdomain>.workers.dev'
+$env:ALLOW_STAGING_WRITE='1'
+node scripts/smoke-r2-staging.mjs
+```
 
-## 5. Test the new React Editor against staging
+The script rejects production/deceptive URLs, routes and mismatched staging D1 identity before writing. For all five themes it creates only synthetic JPEGs, verifies D1 metadata with Wrangler and downloads the actual R2 object, then publishes, replays the receipt, reads through V2, decodes image pixels, denies a cross-card read and denies upload after consumption. It prints synthetic card IDs and outcomes, never bearer tokens or secrets. It was **not run against a deployed staging Worker** while R2 was disabled.
 
-Use the public Cloudflare **test site key** only in the local staging browser. From a shell:
+Remote expiry, deletion/retry, concurrency and fault-injection testing remain required. Scope all injected faults to synthetic fixtures in the isolated staging resources; never install broad failure triggers on production. Inspect each D1 asset and object key, record UTC timestamps, and verify a scheduled cleanup run and recovery from a failed delete. Keep a non-expired synthetic card to verify cleanup preserves live assets. Do not use customer data.
 
-\`\`\`sh
-VITE_API_URL="https://luvnote-api-staging.<account>.workers.dev" \
-VITE_R2_MEDIA_ENABLED=true \
-VITE_TURNSTILE_SITE_KEY="1x00000000000000000000AA" npm run dev
-\`\`\`
+## Frontend and device acceptance
 
-Open each editor from \`http://127.0.0.1:5173/themes/<theme>/\` and validate all 5 themes. Staging CORS accepts explicit localhost origins. Do not use real customer images or payments.
+Use a local build pointed to the staging Worker with `VITE_API_URL`, `VITE_R2_MEDIA_ENABLED=true` and the public dummy site key. Explicit localhost origins are allowed only by staging. Do not publish a dummy key or enable production frontend variables.
 
-## 6. Production preflight — DO NOT SKIP
+Check multiple uploads, removal, replacement cover, preview, publication, published link/reload, LINE share destination, lost upload/publication receipts, slow connections, quality and EXIF orientation in every theme. The automated local HTTP suite covers these core paths using synthetic images and emulated browsers. Physical iPhone/Android, installed LINE handoff, real cellular conditions and deployed R2 behavior remain manual acceptance items.
 
-1. Back up D1 and test the restore procedure. Record the last-working Worker deployment and GitHub Pages release.
-2. Separately create private \`luvnote-media\` bucket and real Turnstile widget for \`luvnote.fun\`. Set \`TURNSTILE_SECRET_KEY\` on **luvnote-api** Worker, not the staging Worker.
-3. Confirm production R2 bucket exists before merging PR #2: the existing \`.github/workflows/deploy-api.yml\` automatically deploys on main changes.
-4. Review V3 abuse protections and the still-public legacy V2 POST creation endpoint. Add Cloudflare rate-limiting and appropriate controls before public launch.
-5. When staging + production preflight pass, merge, test the Worker production health, then enable frontend feature flag and real Turnstile site key in **GitHub Actions repository variables**. Observe actual failed/successful upload and errors.
-6. Keep V2 readable indefinitely until old cards naturally expire; never delete production D1 Base64 rows during this rollout.
-7. Roll back by disabling frontend V3 uploads, but retain deployed V3 media read route and R2 bucket for previously published V3 cards. Reverting the Worker alone would break their images.
-
-## Operational limits
-
-- Default V3 uploads: maximum 5 photos + 1 cover, each JPEG up to 1.5 MB, valid session 30 minutes; published cards expire after 15 days.
-- Worker hourly cleanup deletes expired R2 objects and their D1 media metadata; it must be monitored for failures.
-- Published card media is **link accessible**, not password-protected. Images are stored in a private bucket but available to the holder of the published card URL.
-- Uploading client-side compressed photos does **not** give fully trusted server-side image decoding. More content validation, rate limiting, privacy notice, and abuse monitoring are still required for open public use.
+Before production, complete [operations](R2-OPERATIONS.md) and obtain explicit Owner approval. PR #2 remains draft; merging does not authorize production migration/deployment.

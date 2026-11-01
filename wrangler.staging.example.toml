@@ -3,12 +3,14 @@
 # No custom routes: staging stays off api.luvnote.fun.
 name = "luvnote-api-staging"
 main = "worker/index.js"
-compatibility_date = "2026-10-31"
+compatibility_date = "2025-01-01"
 workers_dev = true
 
 # STAGING ONLY. Never copy test configuration into production.
 [vars]
 ENVIRONMENT = "staging"
+MEDIA_V3_UPLOADS_ENABLED = "true"
+MEDIA_CLEANUP_ENABLED = "true"
 TURNSTILE_TEST_MODE = "true"
 TURNSTILE_HOSTNAMES = "localhost,127.0.0.1"
 
@@ -23,3 +25,14 @@ bucket_name = "luvnote-media-staging"
 
 [triggers]
 crons = ["0 * * * *"]
+
+# Separate namespace from the future production binding. Approximate per-colocation burst guard.
+[[ratelimits]]
+name = "WRITE_LIMITER"
+namespace_id = "472002"
+simple = { limit = 60, period = 60 }
+
+[[ratelimits]]
+name = "READ_LIMITER"
+namespace_id = "472004"
+simple = { limit = 300, period = 60 }

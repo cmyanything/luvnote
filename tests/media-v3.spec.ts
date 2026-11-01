@@ -7,6 +7,7 @@ test('R2 path uploads binary JPEG media and publishes references rather than Bas
   const asset = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
   const requestBodies: unknown[] = [];
   let uploadCount = 0;
+  let sessionCount = 0;
   await page.route('https://www.youtube.com/**', (route) => route.abort());
   await page.route(/^https:\/\/fonts\.(googleapis|gstatic)\.com\//, (route) => route.abort());
   await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit', (route) => route.fulfill({
@@ -18,6 +19,7 @@ test('R2 path uploads binary JPEG media and publishes references rather than Bas
     route.fulfill({ status: 500, json: { error: 'unexpected_request' }, headers: { 'access-control-allow-origin': '*' } }),
   );
   await page.route('https://api.luvnote.fun/v3/upload-sessions', async (route) => {
+    sessionCount++;
     const data = route.request().postDataJSON();
     expect(data.turnstileToken).toBe('test-turnstile-token');
     await route.fulfill({
@@ -35,6 +37,10 @@ test('R2 path uploads binary JPEG media and publishes references rather than Bas
     if (browserName !== 'webkit') {
       expect(bytes?.[0]).toBe(0xff);
       expect(bytes?.[1]).toBe(0xd8);
+    }
+    if (uploadCount === 1) {
+      await route.fulfill({status:503,json:{error:'server_error'},headers:{'access-control-allow-origin':'*'}});
+      return;
     }
     await route.fulfill({
       status: 201, json: { id: asset },
@@ -62,8 +68,12 @@ test('R2 path uploads binary JPEG media and publishes references rather than Bas
   await expect(page.locator('.ph')).toHaveCount(1);
   await expect(page.getByText('verified')).toBeVisible();
   await page.locator('#mkBtn').click();
+  await expect(page.locator('#toast')).toHaveText('สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ');
+  await expect(page.locator('#mkBtn')).toBeEnabled();
+  await page.locator('#mkBtn').click();
   await expect(page.locator('#sheet')).toBeVisible();
-  expect(uploadCount).toBe(1);
+  expect(uploadCount).toBe(2);
+  expect(sessionCount).toBe(2);
   expect(requestBodies).toHaveLength(1);
   const data = (requestBodies[0] as { data: { photos: { id: string }[] } }).data;
   expect(data.photos).toEqual([{ id: asset, cap: '' }]);

@@ -35,6 +35,9 @@ async function uploadJpeg(
       signal,
     },
   );
+  // A declared server upload failure leaves a failed journal; a fresh session lets
+  // the next click recover. Network/receipt loss retains the key for safe replay.
+  if (res.status >= 500) pending = null;
   const uploaded = await responseJson<Uploaded>(res);
   if (!/^[0-9a-f-]{36}$/.test(uploaded.id)) throw new Error('bad_upload_receipt');
   return uploaded.id;

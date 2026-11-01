@@ -19,6 +19,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: node --check worker/media-v3.js && node --check scripts/smoke-r2-staging.mjs
       - run: node --test tests/media-v3.test.mjs
       # Legacy compatibility tests use the old creation API.
       - run: npm run build
@@ -34,6 +35,19 @@ jobs:
       - run: npx playwright test tests/media-v3.spec.ts
         env:
           VITE_R2_MEDIA_ENABLED: 'true'
+      # Never ship the Cloudflare testing site key or a missing real key to production.
+      - name: Check production Turnstile rollout guard
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          MEDIA_MODE: ${{ vars.VITE_R2_MEDIA_ENABLED }}
+          SITE_KEY: ${{ vars.VITE_TURNSTILE_SITE_KEY }}
+        run: |
+          if [ "$MEDIA_MODE" = "true" ]; then
+            if [ -z "$SITE_KEY" ] || [ "$SITE_KEY" = "1x00000000000000000000AA" ] || [ "$SITE_KEY" = "2x00000000000000000000AB" ]; then
+              echo "::error::V3 cannot deploy without a genuine Turnstile site key"
+              exit 1
+            fi
+          fi
       # Build the actual deployable artifact using explicitly configured repository vars.
       - run: npm run build
         env:

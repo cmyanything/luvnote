@@ -28,7 +28,7 @@ function cors(req, env) {
   return {
     ...(allowed.includes(o) ? { "Access-Control-Allow-Origin": o } : {}),
     "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization, Idempotency-Key",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, Idempotency-Key, X-Admin-Key",
     "Access-Control-Max-Age": "86400",
     Vary: "Origin",
   };

@@ -12,7 +12,7 @@ type Uploaded = { id: string };
 async function responseJson<T>(res: Response): Promise<T> {
   const data = (await res.json().catch(() => ({}))) as Record<string, unknown>;
   if (!res.ok) throw new Error(typeof data.error === 'string' ? data.error : 'http_' + res.status);
-  return data as T;
+  return data as unknown as T;
 }
 
 async function uploadJpeg(

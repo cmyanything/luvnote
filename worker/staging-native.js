@@ -1,5 +1,7 @@
 import worker from './index.js';
-import {createJpegMarkerSearch} from './jpeg-search.js';
+import scanModule from './jpeg-scan.wasm';
+import {createJpegMarkerSearchFactory} from './jpeg-search.js';
+const createJpegMarkerSearch = createJpegMarkerSearchFactory(scanModule);
 
 // Isolated same-Worker CPU experiment. Production's main/config stay unchanged.
 export default {

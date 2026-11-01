@@ -1,8 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createJpegMarkerSearch} from '../worker/jpeg-search.js';
+import {readFileSync} from 'node:fs';
+import {createJpegMarkerSearchFactory} from '../worker/jpeg-search.js';
 import {parseJpeg} from '../worker/jpeg.js';
 import {jpegCorpus} from './helpers/jpeg-corpus.mjs';
+const createJpegMarkerSearch=createJpegMarkerSearchFactory(new WebAssembly.Module(readFileSync(new URL('../worker/jpeg-scan.wasm',import.meta.url))));
 
 function reference(bytes, offset) {
   while(offset < bytes.length) {
@@ -21,7 +23,7 @@ test('native marker search preserves every byte value, fill/restart boundary and
     const bytes=padded.subarray(1,-1),find=createJpegMarkerSearch(bytes);
     for(let offset=0;offset<=bytes.length;offset++)assert.equal(find(offset),reference(bytes,offset));
   }
-  // Long non-matching fill runs must terminate without regex backtracking blowup.
+  // Long non-matching fill runs must terminate with bounded memory.
   const bytes=new Uint8Array(1500000).fill(255);bytes[bytes.length-1]=0;
   assert.equal(createJpegMarkerSearch(bytes)(0),bytes.length);
 });

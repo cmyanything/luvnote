@@ -81,3 +81,51 @@ test('scheduled cleanup executes with no candidates', async () => {
   await cleanupMediaV3(env);
   assert.ok(sql.some(s => s.includes('media_assets')));
 });
+
+
+test('oversized streaming upload is rejected before touching R2 even without Content-Length', async () => {
+  let writes = 0;
+  const env = {
+    DB: {
+      prepare() {
+        return { bind() { return { first: async () => ({ id: uuid }) }; } };
+      },
+    },
+    MEDIA: { put: async () => { writes++; } },
+  };
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(new Uint8Array(1_500_001));
+      controller.close();
+    },
+  });
+  const response = await worker.fetch(new Request(
+    origin + '/v3/upload-sessions/' + uuid + '/media?kind=photo',
+    { method: 'POST', headers: {
+      'Content-Type': 'image/jpeg',
+      Authorization: 'Bearer ' + 'a'.repeat(64),
+    }, body: stream, duplex: 'half' },
+  ), env);
+  assert.equal(response.status, 413);
+  assert.equal(writes, 0);
+});
+
+test('V3 publish rejects embedded photo data instead of storing Base64 in D1', async () => {
+  const env = {
+    DB: { prepare() { return { bind() { return { first: async () => ({ id: uuid }) }; } }; } },
+    MEDIA: {},
+  };
+  const response = await worker.fetch(new Request(origin + '/v3/cards', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + 'a'.repeat(64),
+    },
+    body: JSON.stringify({
+      theme: 'pink-coquette', sessionId: uuid,
+      data: { to: 'Recipient', from: 'Author', letter: 'Hello', photos: [{ id: second, src: 'data:image/jpeg;base64,/9j/' }] },
+    }),
+  }), env);
+  assert.equal(response.status, 400);
+  assert.equal((await response.json()).error, 'bad_media');
+});

@@ -66,7 +66,9 @@ for (const theme of themes) {
     );
     expect(requests).toHaveLength(0);
     await fillRequired(page);
-    await page.getByLabel('ครบกี่ปี').fill('25');
+    if (theme.occasion === 'anniversary')
+      await page.getByLabel('วันที่เราเริ่มคบกัน').fill('2022-06-14');
+    else await page.getByLabel('ครบกี่ปี').fill('25');
     await page.locator('#file').setInputFiles(photo);
     await expect(page.locator('#pc')).toHaveText('1');
     await page.getByLabel('คำบรรยายรูปที่ 1').fill('ความทรงจำของเรา');
@@ -89,16 +91,28 @@ for (const theme of themes) {
     const previewFrame = page
       .frames()
       .find((f) => f.url().includes('#preview'))!;
-    await expect
-      .poll(() => previewFrame.evaluate('CARD'))
-      .toMatchObject({
-        to: 'น้องพลอย 💗',
-        from: 'พี่ต้นข้าว',
-        letter: 'สุขสันต์วันเกิดนะ\nรักเธอมาก <3',
-        lock: { type: 'code', code: '1402', hint: 'วันครบรอบ' },
-        endMsg: 'รักเสมอ ♡',
-        photos: [{ cap: 'ความทรงจำของเรา' }],
-      });
+    if (theme.occasion === 'anniversary') {
+      await frame
+        .getByRole('button', { name: 'เปิดสมุดความทรงจำ', exact: true })
+        .click();
+      await frame
+        .getByRole('button', { name: 'เปิดจดหมาย', exact: true })
+        .click();
+      await expect(frame.locator('.letter-content p')).toHaveText(
+        'สุขสันต์วันเกิดนะ\nรักเธอมาก <3',
+      );
+      await expect(frame.locator('.story-polaroid img')).toHaveCount(1);
+    } else
+      await expect
+        .poll(() => previewFrame.evaluate('CARD'))
+        .toMatchObject({
+          to: 'น้องพลอย 💗',
+          from: 'พี่ต้นข้าว',
+          letter: 'สุขสันต์วันเกิดนะ\nรักเธอมาก <3',
+          lock: { type: 'code', code: '1402', hint: 'วันครบรอบ' },
+          endMsg: 'รักเสมอ ♡',
+          photos: [{ cap: 'ความทรงจำของเรา' }],
+        });
     await page.locator('#closePv').click();
     await expect(page.locator('#ov')).toHaveCount(0);
     await page.locator('#mkBtn').click();
@@ -112,7 +126,10 @@ for (const theme of themes) {
       data: {
         to: 'น้องพลอย 💗',
         from: 'พี่ต้นข้าว',
-        age: 25,
+        age: theme.occasion === 'anniversary' ? null : 25,
+        ...(theme.occasion === 'anniversary'
+          ? { startDate: '2022-06-14' }
+          : {}),
         effect: theme.effects.at(-1)!.value,
         photos: [
           {
@@ -153,14 +170,12 @@ test('image limit, removal, cover removal and templates remain editable', async 
   page,
 }) => {
   await page.goto('/themes/little-memories/');
-  await page
-    .locator('#file')
-    .setInputFiles(
-      Array.from({ length: 6 }, (_, i) => ({
-        ...photo,
-        name: `photo-${i}.png`,
-      })),
-    );
+  await page.locator('#file').setInputFiles(
+    Array.from({ length: 6 }, (_, i) => ({
+      ...photo,
+      name: `photo-${i}.png`,
+    })),
+  );
   await expect(page.locator('#photos .ph')).toHaveCount(5);
   await expect(page.locator('#addBtn')).toBeHidden();
   await page.getByLabel('ลบรูปที่ 2', { exact: true }).click();
@@ -347,7 +362,9 @@ test('build preserves standalone pages and old shared-card URLs', async ({
     'intro-preview.html',
     'app/index.html',
     'CNAME',
-    ...themes.map((theme) => `themes/${theme.id}/card.html`),
+    ...themes
+      .filter((theme) => theme.occasion !== 'anniversary')
+      .map((theme) => `themes/${theme.id}/card.html`),
   ]) {
     expect(await readFile(`dist/${path}`, 'utf8')).toBe(
       await readFile(path, 'utf8'),
@@ -365,6 +382,9 @@ test('build preserves standalone pages and old shared-card URLs', async ({
             letter: 'วันเกิดแสนสุข',
             photos: [],
             secret: 'รักเสมอ',
+            ...(theme.occasion === 'anniversary'
+              ? { startDate: '2022-06-14' }
+              : {}),
           },
           expires,
         },

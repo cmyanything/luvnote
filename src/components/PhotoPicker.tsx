@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import type { Photo, ThemeConfig } from '../types';
 import { readPhoto } from '../lib/images';
+import { today } from '../lib/dates';
 
 export function PhotoPicker({
   photos,
@@ -21,6 +22,14 @@ export function PhotoPicker({
 }) {
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
+  const anniversary = theme.occasion === 'anniversary';
+  function move(index: number, delta: number) {
+    onPhotos((previous) => {
+      const next = [...previous];
+      [next[index], next[index + delta]] = [next[index + delta], next[index]];
+      return next;
+    });
+  }
   async function add(files: File[]) {
     if (pending.current) return;
     const selected = files.slice(0, 5 - photos.length);
@@ -71,21 +80,59 @@ export function PhotoPicker({
               <img src={photo.src} alt={`รูปที่ ${index + 1}`} />
               <span className="no en">{index + 1}</span>
             </div>
-            <input
-              type="text"
-              maxLength={30}
-              enterKeyHint="done"
-              aria-label={`คำบรรยายรูปที่ ${index + 1}`}
-              placeholder="พิมพ์คำบรรยายรูป…"
-              value={photo.cap}
-              onChange={(event) =>
-                onPhotos((previous) =>
-                  previous.map((p, i) =>
-                    i === index ? { ...p, cap: event.target.value } : p,
-                  ),
-                )
-              }
-            />
+            <div className="photo-fields">
+              <input
+                type="text"
+                maxLength={anniversary ? 40 : 30}
+                enterKeyHint="done"
+                aria-label={`คำบรรยายรูปที่ ${index + 1}`}
+                placeholder="พิมพ์คำบรรยายรูป…"
+                value={photo.cap}
+                onChange={(event) =>
+                  onPhotos((previous) =>
+                    previous.map((p, i) =>
+                      i === index ? { ...p, cap: event.target.value } : p,
+                    ),
+                  )
+                }
+              />
+              {anniversary && (
+                <input
+                  type="date"
+                  aria-label={`วันที่ของรูปที่ ${index + 1}`}
+                  min="1900-01-01"
+                  max={today()}
+                  value={photo.date || ''}
+                  onChange={(event) =>
+                    onPhotos((previous) =>
+                      previous.map((p, i) =>
+                        i === index ? { ...p, date: event.target.value } : p,
+                      ),
+                    )
+                  }
+                />
+              )}
+            </div>
+            {anniversary && (
+              <div className="photo-order">
+                <button
+                  type="button"
+                  aria-label={`ย้ายรูปที่ ${index + 1} ขึ้น`}
+                  disabled={index === 0}
+                  onClick={() => move(index, -1)}
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  aria-label={`ย้ายรูปที่ ${index + 1} ลง`}
+                  disabled={index === photos.length - 1}
+                  onClick={() => move(index, 1)}
+                >
+                  ↓
+                </button>
+              </div>
+            )}
             <button
               type="button"
               className="x"

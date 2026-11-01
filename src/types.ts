@@ -3,7 +3,8 @@ export type ThemeId =
   | 'coquette-dream'
   | 'little-memories'
   | 'birthday-chat'
-  | 'velvet-gift';
+  | 'velvet-gift'
+  | 'anniversary-journey';
 export type ChatRow =
   | { w: 'f' | 'oops'; x: string }
   | { w: 't'; o: string[] }
@@ -15,6 +16,7 @@ export interface ThemeConfig {
   name: string;
   title: string;
   category: string;
+  occasion?: 'birthday' | 'anniversary';
   description: string;
   price: number;
   version: number;
@@ -44,11 +46,13 @@ export interface ThemeConfig {
 export interface Photo {
   src: string;
   cap: string;
+  date?: string;
 }
 export interface EditorState {
   to: string;
   from: string;
   age: string;
+  startDate: string;
   letter: string;
   secret: string;
   lock: 'scratch' | 'seal' | 'code';
@@ -74,9 +78,10 @@ export interface CardData {
   effect: string;
   music: { type: 'demo' } | { type: 'youtube'; id: string; start: number };
   photos: Photo[];
+  startDate?: string;
   cover?: string | null;
   chat?: ChatRow[];
-  expires?: string;
+  expires?: string | number;
 }
 
 export interface CreatedCard {

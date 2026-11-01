@@ -1,4 +1,5 @@
 import type { CardData, ChatRow, EditorState, ThemeConfig } from '../types';
+import { today, validDate } from './dates';
 
 export function youtubeId(value: string): string | null {
   try {
@@ -64,14 +65,17 @@ export function cleanChat(rows: ChatRow[]): ChatRow[] {
 }
 
 export type InvalidField =
-  'to' | 'from' | 'letter' | 'secret' | 'code' | 'chat';
+  'to' | 'from' | 'letter' | 'secret' | 'code' | 'chat' | 'startDate';
 export function invalidFields(
   state: EditorState,
   hasChat: boolean,
+  anniversary = false,
 ): InvalidField[] {
   const errors: InvalidField[] = [];
   if (!state.to.trim()) errors.push('to');
   if (!state.from.trim()) errors.push('from');
+  if (anniversary && (!validDate(state.startDate) || state.startDate > today()))
+    errors.push('startDate');
   if (hasChat && !cleanChat(state.chat).some((row) => row.w === 'f'))
     errors.push('chat');
   if (!state.letter.trim()) errors.push('letter');
@@ -101,6 +105,7 @@ export function cardData(
         ? { type: 'youtube', id, start: seconds(state.musicStart) }
         : { type: 'demo' },
     ...(theme.coverLabel ? { cover: state.cover } : {}),
+    ...(theme.occasion === 'anniversary' ? { startDate: state.startDate } : {}),
     ...(theme.id === 'birthday-chat' ? { chat: cleanChat(state.chat) } : {}),
   };
 }

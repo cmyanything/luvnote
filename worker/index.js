@@ -2,7 +2,7 @@
 // POST /cards            {t,to,msg,from,secret,img(base64 jpeg)} -> {id}
 // GET  /cards/:id        -> {t,to,msg,from,secret,hasImg}
 // GET  /cards/:id/img    -> image/jpeg
-// POST /v2/cards         {theme, data}  -> {id, expires}   (theme cards, photos inline as data:image/jpeg)
+// POST /v2/cards         {theme, data}  -> {id, expires}   (anniversary cards add startDate and optional photos[].date)
 // GET  /v2/cards/:id     -> {theme, data, expires}  (410 when expired)
 
 const ORIGINS = [
@@ -111,11 +111,17 @@ async function getImage(req, env, id) {
 }
 
 /* ---------- theme cards (v2) ---------- */
-const THEMES = ["pink-coquette", "coquette-dream", "little-memories", "birthday-chat", "velvet-gift"];
+const THEMES = ["pink-coquette", "coquette-dream", "little-memories", "birthday-chat", "velvet-gift", "anniversary-journey"];
 const STICKERS = ["heart", "cake", "gift", "hug"];
 const V2_MAX = 1900000; // bytes of JSON body
 const DAY = 864e5;
 const LIFE_DAYS = 15;
+
+function civilDate(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value) || value < "1900-01-01") return "";
+  const date = new Date(value + "T00:00:00Z");
+  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value ? value : "";
+}
 
 function cleanV2(d) {
   const s = (v, n) => (typeof v === "string" ? v.slice(0, n) : "");
@@ -133,6 +139,8 @@ function cleanV2(d) {
       : { type: "demo" },
     photos: [],
   };
+  const startDate = civilDate(d.startDate);
+  if (startDate) out.startDate = startDate;
   if (typeof d.cover === "string" && d.cover.length < 400000 && /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(d.cover)) out.cover = d.cover;
   if (Array.isArray(d.chat)) {
     out.chat = d.chat.slice(0, 20).map((r) => {
@@ -146,7 +154,10 @@ function cleanV2(d) {
   }
   for (const p of photos) {
     if (!p || typeof p.src !== "string" || !/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(p.src)) continue;
-    out.photos.push({ src: p.src, cap: s(p.cap, 40) });
+    const photo = { src: p.src, cap: s(p.cap, 40) };
+    const date = civilDate(p.date);
+    if (date) photo.date = date;
+    out.photos.push(photo);
   }
   return out;
 }
@@ -161,6 +172,7 @@ async function createV2(req, env) {
   if (!THEMES.includes(theme)) return json(req, { error: "bad_theme" }, 400);
   const data = cleanV2(body.data || {});
   if (!data.to || !data.from || !data.letter) return json(req, { error: "missing" }, 400);
+  if (theme === "anniversary-journey" && !data.startDate) return json(req, { error: "missing_start_date" }, 400);
   const now = Date.now(), exp = now + LIFE_DAYS * DAY;
   for (let i = 0; i < 5; i++) {
     const id = newId();
@@ -187,7 +199,7 @@ export default {
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(req) });
 
     const url = new URL(req.url);
-    if (url.pathname === "/" || url.pathname === "/health") return json(req, { ok: true, service: "luvnote-api" });
+    if (url.pathname === "/" || url.pathname === "/health") return json(req, { ok: true, service: "luvnote-api", themes: THEMES });
 
     const v2 = url.pathname.match(/^\/v2\/cards(?:\/([a-z0-9]{7}))?\/?$/);
     if (v2) {

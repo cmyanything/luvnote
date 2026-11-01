@@ -49,5 +49,19 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Wait for the anniversary API
+        run: |
+          node --input-type=module <<'NODE'
+          for (let attempt = 0; attempt < 12; attempt++) {
+            try {
+              const response = await fetch('https://api.luvnote.fun/health', { signal: AbortSignal.timeout(5000) });
+              const health = await response.json();
+              if (response.ok && health.themes?.includes('anniversary-journey')) process.exit(0);
+            } catch {}
+            await new Promise(resolve => setTimeout(resolve, 5000));
+          }
+          console.error('The anniversary API is not ready; leaving the current frontend deployed.');
+          process.exit(1);
+          NODE
       - uses: actions/deploy-pages@v5
         id: deployment

@@ -24,11 +24,8 @@ function parseJpeg(bytes, maxBytes = 1500000) {
         if (!frame || ++scans > 20) return null;
         offset += length;
         while (offset < bytes.length) {
-          // Skip ordinary entropy bytes in native typed-array code. Keep exactly
-          // the same stuffed-byte, fill-byte, restart and scan-marker handling.
-          const prefix = bytes.indexOf(255, offset);
-          if (prefix < 0) { offset = bytes.length; break; }
-          offset = prefix + 1;
+          if (bytes[offset++] !== 255) continue;
+          const prefix = offset - 1;
           while (bytes[offset] === 255) offset++;
           const next = bytes[offset++];
           if (next === 0 || (next >= 0xd0 && next <= 0xd7)) continue;

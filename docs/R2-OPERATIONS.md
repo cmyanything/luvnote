@@ -4,6 +4,10 @@
 
 **Current hard stop:** source 5d77a9b passes 103 automated cases, but real permitted JPEG uploads fail with Cloudflare CPU limit errors. Owner explicitly chose to retain the existing plan and record the blocker. Do not merge/roll out V3 while this remains unresolved. The separately approved read-only production D1 backup and isolated restore did run successfully; no production schema/rows were changed.
 
+**Native experiment decision (2026-11-01): NO-GO for PR #6.** Images.info() reduced CPU and completed 42/42 synthetic benchmark uploads without 1102, but admitted 3 truncated/corrupt/missing-entropy JPEGs rejected by strict decoding; their actual R2 bytes were verified. The paired legacy run completed only 13/42, with 29 HTTP 503/1102. CPU acceptance for a secure upload path remains FAIL. No plan/CPU-limit/paid-service change was made. The experimental mode now refuses non-staging environments; the template defaults to legacy/writes off. No production configuration changed. Evidence and limitations are in the [readiness report](R2-PRODUCTION-READINESS-REPORT.md).
+
+Final staging version is **b0f3a112-e7a9-4250-b7bb-027e83dca378** (source e7028dd), legacy validator / uploads off / cleanup on / genuine staging secret retained, without an Images binding. Actual rollback to **2182edbd-aff4-4bfa-b90f-204cace586a6** preserved all five themes' V2/V3 reads and denied writes. Inspect bindings on the actively deployed version: the latest-upload settings endpoint can retain a newer configuration after rollback. Never select the rejected native write-enabled testing version for recovery. No production operation is authorized by these staging results.
+
 ## 1. Provisioning and configuration plan
 
 1. Complete isolated staging certification in `R2-STAGING-SETUP.md` first. Initial R2 error 10042 cleared externally; staging resources and five real R2 flows are verified. Interrupted requests and real non-dummy widget/operational acceptance remain open. Do not substitute production bindings.

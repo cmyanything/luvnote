@@ -1,143 +1,159 @@
-# R2 Production Readiness Report
+# R2 Production Readiness — native JPEG acceptance
 
-Updated **2026-11-01 — final acceptance continuation**. This supersedes the earlier report's release decision. [PR #2](https://github.com/cmyanything/luvnote/pull/2) remains draft; [PR #4](https://github.com/cmyanything/luvnote/pull/4) is integrated into its feature branch. [Issue #5](https://github.com/cmyanything/luvnote/issues/5) tracks outstanding gates.
+Updated **2026-11-01 UTC**. Independent acceptance of [PR #6](https://github.com/cmyanything/luvnote/pull/6), based on the unmerged [PR #2](https://github.com/cmyanything/luvnote/pull/2) feature branch. [Issue #5](https://github.com/cmyanything/luvnote/issues/5) retains the production gates.
 
-## Final decision
+## Decision: NO-GO for merging PR #6 as the CPU solution
 
 ```text
-R2_CODE_READY = PASS
+R2_NATIVE_VALIDATOR_CODE = FAIL
+R2_NATIVE_SECURITY = FAIL
+R2_NATIVE_CPU = PASS
 R2_STAGING_VERIFIED = FAIL
 R2_CPU_ACCEPTANCE = FAIL
-R2_BACKUP_RESTORE = PASS
 R2_PRODUCTION_DEPLOYED = NO
 R2_PRODUCTION_READY = NO
 ```
 
-**R2 is not ready for actual customers.** Code PASS means the reviewed implementation and its 103 automated cases pass; it does not override the reproducible deployed CPU failure. Permitted JPEG uploads returned HTTP 503 / Cloudflare 1102. After seeing the measurements, the Owner explicitly chose to **keep the current plan and record CPU as a blocker**. No billing or CPU-limit changes were made.
+**Images.info() cannot replace the current strict JPEG decoder.** On real Cloudflare, it admitted three truncated/corrupt/missing-entropy JPEGs that the legacy validator rejected. Each returned 201, had a ready D1 journal, and its malformed bytes were retrieved from actual private R2. These synthetic objects were never published as cards. The implementation therefore fails its validation contract even though automated tests pass.
 
-Production was read/exported only under explicit backup approval. No production merge, migration, deployment, frontend enablement, resource provisioning, DNS change or customer-row mutation occurred. No legacy card/Base64 data was deleted. The frontend's final local build has V3 false and no staging site key/API override.
+Native CPU PASS covers **42 bounded benchmark requests only**: 42/42 HTTP 201, zero 1102, complete matching tail events. It does not certify future capacity or security. The safe full-decoding path failed **29/42** comparable requests, so overall CPU acceptance remains FAIL. The Owner's instruction to retain the existing plan remains in force.
 
-## Source, CI and scope
+No production merge, deployment, migration, provisioning, customer-data access, billing/CPU-limit change or DNS change occurred in this continuation. No customer/legacy data was deleted or rewritten. Production configuration and frontend source remain unchanged; both PRs remain draft/unmerged.
 
-- Started clean on `feat/r2-private-media-v3` at `47f8c074db0374a32e4057da33f2f73c6f94cd9b`; fetched and fast-forwarded to **5d77a9bbb74489028cb26d9f706903b9c26b1b5e**, the integrated PR #4 commit. PR #2 targets main and is unmerged. No unrelated changes were present or overwritten.
-- Independently verified [CI 41277248896](https://github.com/cmyanything/luvnote/actions/runs/41277248896) succeeded on that exact SHA: **49 backend/security + 36 legacy frontend + 18 V3 frontend = 103 PASS**; deploy skipped.
-- Reran all 103 locally on Windows, Node 22.23.1, Wrangler 4.156.0, Playwright 1.64.1, pinned Miniflare 5.20261023.3-beta. Repeated cases are not added to the count.
-- Deployed application source under acceptance is **5d77a9b**. This continuation changes manual acceptance scripts/documentation only: `git diff 5d77a9b -- worker src` was empty. No decoder/security/architecture rewrite was made.
-- The [earlier detailed audit and remediation record](https://github.com/cmyanything/luvnote/blob/47f8c074db0374a32e4057da33f2f73c6f94cd9b/docs/R2-PRODUCTION-READINESS-REPORT.md) preserves the initial reproductions, findings, 100-case revision and prior staging evidence. Its older counts/statuses do not override this report.
+## Source and reproducible evidence
 
-## Architecture and privacy
+- Started clean on PR #2's branch at f58c509. Fetched origin, verified PR #6 still targets feat/r2-private-media-v3 at that base, then switched to perf/r2-native-jpeg-validation. Remote PR #6 head was exactly **40cf547e8d25735343b9641f4d2c8ea4e3b28f0c**, with no newer commits or unrelated local changes.
+- Independently verified [CI 41282530019](https://github.com/cmyanything/luvnote/actions/runs/41282530019) successful on 40cf547: **50 backend/security + 36 legacy frontend + 18 V3 frontend = 104 PASS**; deploy skipped. This did not establish native decoding safety.
+- Native deployed source: **40cf547e8d25735343b9641f4d2c8ea4e3b28f0c**. Guard/regression fix and legacy comparison source: **e7028ddb73ef692e0ff530166c5a45a5ae5d91a4**. The full legacy decoder was unchanged; the new environment guard affects only explicit native mode.
+- [Source CI 41286330628](https://github.com/cmyanything/luvnote/actions/runs/41286330628) **SUCCESS on exact e7028dd**, check passed/deploy skipped: **79 API + 4 native workerd + 36 legacy frontend + 18 legacy-validator V3 + 18 native-validator V3 = 155 reported pass executions**. Subsequent evidence/documentation commits do not change application code.
+- [Sanitized raw evidence](evidence/r2-native-acceptance-2026-11-01.json) contains exact source/version/window, input hashes, HTTP samples, the security matrix, actual tail CPU/wall observations and GraphQL quantiles. No images, bearer/Turnstile tokens, credentials, customer data or backup contents are embedded.
 
-React 19/TypeScript/Vite retains five theme editors and standalone viewers. Workers verify Turnstile, create hash-only 30-minute bearer capabilities, reserve bounded upload slots, validate JPEGs, write private R2 objects and persist D1 ownership/journals. A D1 batch publishes a card and its receipt atomically, with ownership/readiness/expiry rechecks. Upload/publication retries are content-bound and idempotent. Cleanup is bounded and retryable across the D1/R2 consistency boundary.
+## Architecture and independent review
 
-`GET /v2/cards/:id` leaves old Base64 JSON intact and materializes V3 references into card-scoped Worker image URLs. The image route requires a matching unexpired card/asset. V1 reads survive. Disabling V3 writes preserves V3 reads and bindings. No existing HTML viewers, music/effects, theme formats, hash prefixes or LINE-share formats changed in this acceptance continuation.
+React prepares JPEGs once; Workers reserve an owned/quota-bounded upload slot before validation, store sanitized bytes in private R2, and mark the D1 journal ready. Publication batches ownership/expiry checks, card insertion and an idempotent receipt atomically. V2 reads materialize V3 references into card-scoped media URLs; V1/V2 Base64 remains intact. Five themes, URL formats, music/effects and LINE links were not redesigned.
 
-**Private R2 is a storage boundary, not authenticated photo privacy.** Anyone with a card link can read/copy its JSON/images. Seven base-32 characters provide 35 bits; this is not a confidential-content capability. The client PIN/scratch interaction does not authorize API reads. Owner acceptance of this sharing policy remains open; no confidential-content claim is justified.
+Actual path: worker/media-v3.js uploadPhoto → readLimitedBody → worker/jpeg.js parseJpeg → strict jpeg-js.decode or validateJpegNative → IMAGES.info → format/dimension comparison → D1 size/hash → R2 put → ready journal. The parser bounds bytes/dimensions/scans and strips metadata; it does not establish that every MCU/coefficient is present. Native information does not close that gap.
 
-## MVP complexity and security review
+Simpler-alternative review: doing nothing leaves CPU termination; repeating the full JavaScript decode restores the original cost. Empty-scan/minimum-byte checks do not reject same-length zeroed entropy. A reliable entropy/scans checker would be another substantial security-sensitive JPEG parser, not a small proven safeguard. No heuristic, reduced quality/limits, second decoder, new service/queue/database, or paid transformation was introduced. Native full transformation/decode was outside this unbilled info-only experiment and was not invoked.
 
-| Surface traced | Decision and evidence |
-|---|---|
-| PhotoPicker → readPhoto → uploadJpeg | PR #4 prepares a 900 px JPEG once and reuses it on publish/retry; cover remains 700 px. Encode-count and oversized-source regressions pass. No extra conversion is needed. |
-| JPEG parser → bounded full decode (`worker/jpeg.js:5`) | Retain actual validation: header-only acceptance previously admitted forged files. Full decode is the CPU hotspot; deleting validation or silently lowering image quality/limits is not an acceptable mitigation. |
-| Native limits plus D1 quotas | Different boundaries: approximate per-location bursts versus exact session/day budgets. Removing either loses a protection. Actual bindings and negative/quota tests were verified. |
-| Upload intent/journal and publication receipt | Real R2/D1 failure, concurrency and rollback tests demonstrate their recovery role. Receipts require the immediately preceding successful INSERT, preventing no-op/colliding-ID publication. PR #4 evaluates session expiry in SQL execution time. |
-| Per-asset D1 ownership and R2 head | Bounded to six assets. No measurement identifies these I/O checks as the CPU problem. Changing them would add risk without solving it. |
-| Cleanup, orphan grace and bounded cursor | Retain eventual crash recovery. Do not shorten the 24-hour grace to pass a test. Cleanup stays disabled during D1 restoration/reconciliation. |
-| Manual production workflow | Keep Owner/main/exact-SHA/backup/environment gates and separate migration approval. Actual protected environment settings are not certified by workflow source alone. |
+**Privacy is unchanged:** private R2 does not make cards authenticated private albums. Anyone with a card link can copy JSON/images; seven base-32 characters provide 35 bits, and the client PIN/scratch interaction does not authorize API access. Owner acceptance of that policy remains a production gate.
 
-Earlier fixes remain: actual-byte/timeout JSON guards, complete JPEG marker/metadata validation, slot reservation before body reading/decoding, mandatory write protection, exact guest/legacy quotas, restrictive staging CORS, ownership and no-store media access, transactional receipts, failure retry and safe cleanup. No new critical/high source defect was confirmed in this continuation. Deployment CPU incompatibility is nevertheless a launch blocker.
+## Current official Cloudflare contract
 
-The smallest operational change worth retesting would be an Owner-approved CPU allowance sufficient for the existing decoder. The Owner declined that change for now. No new codec, queue, service, database architecture or authentication platform was introduced. The only new database is the explicitly approved isolated backup recovery target.
+Verified on 2026-11-01 against official documentation:
 
-## Automated commands and results
+- [Images binding](https://developers.cloudflare.com/images/optimization/binding/): Wrangler TOML uses an images table with binding IMAGES. The info method returns image information (format, fileSize, width, height); info calls are free. Documentation does **not** promise complete strict entropy/pixel validation or rejection of every corrupt/incomplete JPEG. Empirical results refute equivalence.
+- [Images pricing](https://developers.cloudflare.com/images/pricing/): Images Free is the default and supports external-image optimization. No subscription/paid feature was enabled. The binding deployed and valid calls succeeded under existing access; no upgrade was needed. The exact Workers billing tier remains unverified from the earlier 403, not inferred from the zone plan.
+- [Formats](https://developers.cloudflare.com/images/get-started/limits/): JPEG and other input formats are supported; progressive JPEG is documented. LuvNote retains only its bounded baseline/progressive 8-bit subset. Actual baseline/progressive fixtures passed; other JPEG variants are not automatically allowed because Images supports broader formats.
+- [Worker timing](https://developers.cloudflare.com/workers/observability/metrics-and-analytics/): CPU and wall time differ; rollover can allow some costly requests to succeed. No CPU limit was increased to obtain these results.
 
-PowerShell environment assignments apply to each command's process. These local tests do not prove remote Cloudflare services.
+## Security matrix
 
-| Executed command | Result |
-|---|---|
-| `npm run test:api` | **49 PASS**, zero failed/skipped |
-| `npm run typecheck` | PASS |
-| `$env:VITE_R2_MEDIA_ENABLED='false'; npm run build; npm test` | Build PASS; **36 PASS / 18 intentionally skipped** on Chromium, Pixel 7 Chromium and iPhone 13 WebKit emulation |
-| `$env:VITE_R2_MEDIA_ENABLED='true'; $env:VITE_TURNSTILE_SITE_KEY='1x00000000000000000000AA'; npm run build` | PASS, local test artifact only |
-| `npx playwright test tests/media-v3.spec.ts tests/r2-acceptance.spec.ts` with the V3 build | **18 PASS**, zero skips |
-| `node --check scripts/measure-r2-staging.mjs` / `scripts/test-r2-interruption-staging.mjs` / `scripts/test-r2-orphan-staging.mjs` / `scripts/accept-r2-staging.mjs` | PASS, each supplied separately to node --check |
-| Final V3-false/default-API build and `git diff --check` | PASS |
+Same deterministic corpus for local strict validation and real native uploads. Legacy column is the **local strict validator outcome**, not a claim that large legacy cloud uploads succeeded. MIME belongs to the API. Accepted native objects were retrieved directly from R2; rejected cases had no ready journal, but are not an independent R2 absence census.
 
-**103 distinct local cases passed (49 + 36 + 18).** This excludes the real performance failures below and does not describe them as passing. Earlier npm ci/audit, actionlint and runtime/security evidence is retained in the linked historical report. No production workflow ran.
-
-## Real Cloudflare CPU and memory
-
-Command: set `ALLOW_STAGING_WRITE=1`, `STAGING_API_URL=https://luvnote-api-staging.c-myanything.workers.dev`, `STAGING_SOURCE_COMMIT=5d77a9bbb74489028cb26d9f706903b9c26b1b5e`, then `node scripts/measure-r2-staging.mjs`. Three operator-owned synthetic sessions isolated workload measurement without changing public quotas or Turnstile; unused sessions were expired for normal cleanup.
-
-Read **actual Cloudflare GraphQL Analytics**, filtered to this Worker and each recorded window. Schema introspection labels CPU/wall as microseconds and memory as bytes; the table converts to ms/MiB. Network wall time alone was not used as CPU evidence.
-
-| Workload / UTC window | HTTP result | CPU p50 / p95 / p99, ms | CF wall p50 / p99, ms | Isolate memory p99 |
+| Synthetic case | Legacy strict / API | Real native API | Required policy | Result |
 |---|---|---|---|---|
-| 900×675 synthetic JPEG, 55,636 bytes; 06:01:59.748–06:02:03.476 | 5/5 uploaded | 122.442 / 214.089 / 214.089 | 635.402 / 744.777 | 37.9 MiB |
-| Noisy 1024×1024 JPEG, 1,028,954 bytes; 06:02:09.150–06:02:15.369, successful group | 4/5 uploaded | 328.488 / 572.206 / 572.206 | 1216.322 / 1353.916 | 54.6 MiB |
-| Same maximum workload, terminated group | 1/5 returned 503 | 406.599 / 406.599 / 406.599 | 581.728 / 581.728 | 47.1 MiB |
-| Three concurrent maximum JPEGs; 06:02:21.127–06:02:21.648 | 0/3 uploaded, all 503 | 15.076 / 24.923 / 24.923 before termination | 175.622 / 223.955 | 20.2 MiB |
+| Valid baseline 64×48 | accept | 201, sanitized R2 bytes match | accept | PASS |
+| Valid progressive 64×48 | accept | 201, sanitized R2 bytes match | accept | PASS |
+| Maximum 1024², 1,028,954 bytes | accept | 201, bytes match | accept | PASS |
+| Noisy near-limit, 1,498,433 bytes | accept | 201, bytes match | accept | PASS |
+| Exactly 1,500,000 bytes with comments | accept/strip | 201; stored 879 bytes, matching legacy | accept/strip | PASS |
+| 1,500,001 bytes | reject | 413 | reject | PASS |
+| Malformed marker structure | reject | 400 | reject | PASS |
+| Truncation without EOI | reject | 400 | reject | PASS |
+| Truncated entropy, valid EOI | reject | **201; malformed R2 object verified** | reject | **FAIL** |
+| Zeroed entropy, same size/headers | reject | **201; malformed R2 object verified** | reject | **FAIL** |
+| Undefined Huffman table | reject | 400 | reject | PASS |
+| Out-of-bounds marker length | reject | 400 | reject | PASS |
+| Forged headers/SOS/EOI, no image data | reject | **201; malformed R2 object verified** | reject | **FAIL** |
+| APP1 EXIF/GPS-marked payload | reject | 400 | reject APP1 | PASS |
+| APP1 XMP payload | reject | 400 | reject APP1 | PASS |
+| APP13 IPTC-marked payload | reject | 400 | reject APP13 | PASS |
+| Embedded COM comment | accept/strip | 201; sanitized hash matches | accept/strip | PASS |
+| APP2 ICC payload | accept/strip | 201; sanitized hash matches | accept/strip | PASS |
+| Zero dimension | reject | 400 | reject | PASS |
+| Dimension 1025 | reject | 400 | reject | PASS |
+| Excess pixels (2048²) | reject | 400 | reject | PASS |
+| Duplicate frame | reject | 400 | reject | PASS |
+| Trailing bytes after EOI | reject | 400 | reject | PASS |
+| PNG bytes declared JPEG | reject | 400 | reject | PASS |
+| Valid JPEG declared PNG | API 415 | 415 | reject | PASS |
 
-**9/13 succeeded; 4/13 failed (30.8%); no client timeout.** This is a small diagnostic sample, not a statistically robust load/capacity certification. Memory is a shared-isolate percentile, not a per-request peak. Terminated CPU does not represent completed decoding cost.
+**22/25 PASS, 3 FAIL.** Metadata probes test marker rejection/stripping; they are synthetic payloads, not a complete library of camera GPS/ICC/IPTC variants. Missing binding returned 503 with zero slots/objects locally. A throwing binding, wrong format/dimensions or null metadata rejected locally; actual provider outages were not induced. Both modes' MIME 415/zero-object behavior was separately executed locally. There is no silent fallback to JavaScript decoding.
 
-The workload reached the maximum permitted resolution, not every possible valid 1.5 MB/progressive-scan encoding. Those worst-case variants are not certified; the reproduced failures already prevent rollout on the current environment.
+Root-cause ledger: valid baseline/progressive inputs disprove an unavailable/misbound service. Same-size corrupt entropy disproves a simple size/dimension fix. Identical input hashes, ready journals and fetched R2 bytes rule out an HTTP-only/mock result. Legacy rejects original and stored malformed bytes while valid sanitized bytes decode, ruling out metadata stripping as the cause. The deployed Images service cannot be stepped in a local debugger; source trace plus real input differentials identify the failed boundary. Rejecting promotion preserves the contract.
 
-Independent differential at about 06:03:51 UTC: a 16×12 JPEG returned 201, then two maximum JPEGs returned 503/1102. `npx wrangler tail --config wrangler.staging.toml --format pretty` classified both as **Exceeded CPU Limit**. The general adversarial test repeated the failure. Remote deployed requests cannot be paused in a local debugger; source trace is reservation/body read → validateJpeg → jpeg-js decode → R2 put. Small/large input is the differing knob. Guard rejection/D1/R2 errors do not explain the HTML 1102 plus explicit runtime CPU classification. Earlier isolated successful maximum uploads are compatible with Cloudflare's documented rollover flexibility.
+## Paired real Cloudflare CPU benchmark
 
-Account/Worker usage model is `standard`; **subscription tier and effective numeric CPU allowance remain unverified** because billing API returned 403/10000. A zone's Free Website plan does not establish the Workers plan. No billing or CPU limit was changed. See [Cloudflare CPU limits/rollover](https://developers.cloudflare.com/workers/platform/limits/) and [pricing/configurable limits](https://developers.cloudflare.com/workers/platform/pricing/).
+Same hashes/counts: 10 typical sequential + 10 maximum sequential + 10 near-limit sequential + 12 maximum uploads in four batches of three = **42 per mode**. Same account/Worker/D1/R2, unchanged plan/CPU limits, operator-owned sessions, no application Turnstile bypass. Native **07:34:00.296–07:35:01.026 UTC**; legacy **07:42:49.005–07:43:26.634 UTC**. Sequential comparison, not randomized long-running capacity certification.
 
-Analytics query: `workersInvocationsAdaptive`, scriptName plus per-window datetime filters; dimensions `status`; sum `requests errors subrequests cpuTimeUs wallTime`; quantiles `cpuTimeP50 cpuTimeP95 cpuTimeP99 wallTimeP50 wallTimeP95 wallTimeP99 memoryUsageBytesP50 memoryUsageBytesP99`. Introspection exhausted the query budget once; the successful measurement query followed a backoff of more than five minutes. This was unrelated to upload errors. Credential values were never printed or saved in evidence.
+Actual Wrangler tail CPU/wall values below are **milliseconds**, nearest-rank p50/p95/p99, not client network timers. Native tail coverage is 42/42. Legacy tail captured 35/42 (10 typical, 8 maximum, 5 near-limit, 12 concurrent); missing observations are not invented. HTTP samples cover all 84, and GraphQL confirms 29 legacy resource errors.
 
-## Latest real staging acceptance
+| Mode / workload | HTTP 201 / attempts | Tail group n | CPU p50 / p95 / p99 ms | CF wall p50 / p95 / p99 ms |
+|---|---:|---:|---|---|
+| Native typical 900×675, 55,636 bytes | 10/10 | 10 success | 8 / 19 / 19 | 504 / 808 / 808 |
+| Native maximum 1024², 1,028,954 bytes | 10/10 | 10 success | 37 / 49 / 49 | 666 / 1253 / 1253 |
+| Native noisy 1,498,433 bytes | 10/10 | 10 success | 51 / 82 / 82 | 721 / 1362 / 1362 |
+| Native maximum concurrent ×3 | 12/12 | 12 success | 49 / 80 / 80 | 693 / 1218 / 1218 |
+| Legacy typical, same bytes | 10/10 | 10 success | 119 / 243 / 243 | 578 / 973 / 973 |
+| Legacy maximum, successful subset | 1/10 | 1 success | 356 / 356 / 356 | 1024 / 1024 / 1024 |
+| Legacy maximum, failed subset | 9/10 failed | 7 captured failures | 10 / 453 / 453 before termination | 143 / 597 / 597 |
+| Legacy near-limit | 0/10 | 5 captured failures | 10 / 10 / 10 before termination | 144 / 146 / 146 |
+| Legacy concurrent, successful subset | 2/12 | 2 success | 236 / 333 / 333 | 997 / 1035 / 1035 |
+| Legacy concurrent, failed subset | 10/12 failed | 10 failures | 10 / 20 / 20 before termination | 138 / 817 / 817 |
 
-Existing Worker **luvnote-api-staging**, D1 **luvnote-staging / 3967493c-55db-4ab8-bb2c-9ed3c157a543**, and private bucket **luvnote-media-staging** were reused. Verified no production routes/bindings; r2.dev disabled and no custom domains. Source 5d77a9b testing version **bbc931e8-9364-4d0a-b941-2e5aa6003490** opened a controlled write window at 06:00:30 UTC.
+**Native: 42/42 success, zero 503/1102 and zero observed binding failures in this benchmark. Legacy: 13/42 success, 29 HTTP 503/1102**, corroborated by exceededCpu tail/GraphQL exceededResources. Terminated CPU is not completed decoding cost. Typical paired median fell from 119 to 8 ms (~93%). Maximum completed CPU fell from one 356 ms sample to native median 37 ms; one legacy success cannot establish its percentile distribution. Prior 122/328 ms medians, 572 ms large p95 and 9/13 success remain compatible with variable CPU rollover.
 
-| Check / actual command | Evidence and result |
+Actual whole-window GraphQL workersInvocationsAdaptive: native CPU **42.149/79.943/80.541 ms**, wall **671.668/1253.248/1362.484 ms**, isolate memory p50/p99 **13,177,384/32,251,756 bytes**. Legacy successful group CPU **122.995/356.640/356.640 ms**, wall **739.620/1035.843/1035.843 ms**, memory **41,551,988/59,066,636 bytes**; failed group CPU **10/20/453.048 ms**, memory **31,611,626/35,688,360 bytes**. Different success mixes prevent an aggregate apples-to-apples speedup claim.
+
+GraphQL is adaptive, not an invocation census: native whole-window response represented 39 requests despite 42 client/tail observations; short buckets returned 10/11/8/13 instead of 10/10/10/12. Raw counts/quantiles are preserved, not relabeled exact. Legacy whole-window response was 13 success + 29 failures. Memory is sampled/shared-isolate usage, not peak per-request allocation or Images-service memory. Native service CPU is outside Worker JavaScript CPU. Small samples, one location/window, progressive worst cases, sustained load and outages remain uncertified. Zero 1102 in 42 attempts is not a reliability guarantee.
+
+## Staging identity, rollback and final state
+
+Existing authorized account **cee7f572be6cf7e3de1e4526f6d250d2**. Reused **luvnote-api-staging**, **luvnote-staging / 3967493c-55db-4ab8-bb2c-9ed3c157a543**, **luvnote-media-staging**. Verified private bucket (r2.dev off/no domains), no Worker custom domain/routes in config, no production bindings. No duplicates. Native write 60/min and read 300/min limits, guest Turnstile and D1 budgets retained. Test capabilities were operator-seeded/hash-only; tokens were not logged.
+
+| Stage | Actual version / evidence |
 |---|---|
-| Real non-dummy widget | Created/reused one Managed **LuvNote staging acceptance** widget, public site key `0x4AAAAAAFu3P7KP1Kckzd3a`, localhost/127.0.0.1 only. Secret installed directly into staging; test mode false, server allowlist localhost. Dummy token rejected with 403. |
-| Real widget token / action / hostname / replay / expiry | Headless attempts did not issue a token. One challenge response was 401, not a definitive root cause. Positive non-dummy validation and action/hostname/replay/expiry acceptance remain **NOT_VERIFIED**. No mocked success or challenge bypass. [Cloudflare testing guidance](https://developers.cloudflare.com/turnstile/troubleshooting/testing/) distinguishes real challenges from test keys. Interactive acceptance is required. |
-| `node scripts/test-r2-staging.mjs` | **37 checks: 35 PASS, 1 FAIL (maximum JPEG 503), 1 NOT_VERIFIED (interruption)**. Actual D1 failure after R2 put, upload replay/conflict, slot/publication concurrency, atomic rollback, missing/expired/unowned assets, expired sessions/cards, consumed sessions, cleanup failure/retry/live preservation and five newly created Base64 V2 theme cards passed. Synthetic card `tmyxrp9`; operator-seeded capabilities disclosed. |
-| `node scripts/test-r2-interruption-staging.mjs` | Sent only 262,144 bytes of a full-length HTTPS JPEG then destroyed the socket. No Worker journal appeared before cancellation: **NOT_VERIFIED** for the Worker interrupted-body path, rather than a false pass. Local interrupted-stream tests pass separately. |
-| `node scripts/test-r2-orphan-staging.mjs` | Fresh R2 object with no D1 row survived actual scheduled cleanup byte-for-byte: **fresh grace PASS**. Fixture `v3/staging-orphan-230ad133-9cd3-4ab0-9df6-445abfc0d0a6.jpg`, uploaded 06:18:27–06:18:29 UTC. Aged deletion remains **NOT_VERIFIED** until **2026-11-02 06:18:29.566 UTC**. No clock/grace override. |
-| Real scheduled cleanup/retry | Remote preview saw the same real D1 card, then processed 24 candidates with one scoped injected D1-delete failure; next run processed one retry with zero failures. Later run zero candidates/failures. Triggers removed; live images survived. Natural hourly cron was previously observed at 05:00:32 UTC. Lifecycle/backlog/alert-delivery drills are open. |
-| `STAGING_BROWSER_READ_ONLY=1 STAGING_BROWSER_PUBLISH=0 node scripts/accept-r2-staging.mjs` with the real staging build | **15 PASS**: all five theme reads/reloads and actual R2 image decodes on desktop Chromium, Pixel 7 Chromium and iPhone 13 WebKit. Viewer origin rewrite uses real staging network responses; production API requests are blocked. Not physical-device evidence. |
+| Parked preflight / prepared rollback | **2182edbd-aff4-4bfa-b90f-204cace586a6**, uploads false / cleanup true / test mode false |
+| Native window, source 40cf547 | **7563e6ec-d178-4ec4-8e76-eba3f064742d**, Images binding, uploads true / cleanup false |
+| Rejection rollback | Actual rollback to **2182edbd-aff4-4bfa-b90f-204cace586a6**; all five V2 Base64/V3 reads 200, new sessions 503 |
+| Legacy comparison, source e7028dd | **acc5b8a8-b9e6-4e2c-bcce-e074a0bd9eb6**, legacy/no Images, uploads true / cleanup false |
+| Final active, source e7028dd | **b0f3a112-e7a9-4250-b7bb-027e83dca378**, **legacy / uploads false / cleanup true / test mode false / localhost / no Images binding**; real staging secret retained |
 
-The earlier 5/5 actual guest flows and 22 staging browser checks used public dummy keys on the earlier revision; they are historical evidence, not proof of the current non-dummy widget. Latest local tests preserve music/effects/share URLs; physical device/audio/perceptual/LINE app handoff remain unverified.
+Verified active deployment/version resources: after rollback the latest-upload settings endpoint still described the newer upload, while active version 2182edbd correctly denied writes. Final deployment has aligned settings. Keep 2182edbd or the final V3-read-capable legacy version as recovery targets; never the rejected native write-enabled version.
 
-## Owner-approved encrypted production backup and restore
+Final health 200; session/upload/publication POSTs each 503. New synthetic V1 Base64 card **6a5ea57** JSON/image returned 200 with matching image hash. All five prior synthetic V2 Base64/V3 R2 theme reads remained 200. Real browser read/reload/R2 decode: **15 PASS**, five themes × desktop Chromium/Pixel 7 Chromium/iPhone 13 WebKit emulation. No physical-device/installed-LINE test is claimed.
 
-The Owner explicitly approved the read-only production export, encrypted local storage and isolated restore in this conversation. Verified deployed production binding/database: **luvnote / b48f8655-c980-47f3-bd72-a9549d813b09**.
+Normal cleanup on real Cloudflare remote preview processed **100 candidates/0 failures**, then **9/0**; remaining expired unlinked candidates **0**. Synthetic expired sessions included the three unpublished malformed objects. Live reads survived. Earlier actual D1-failure/retry evidence remains in the prior report, not counted as a new drill. Existing orphan aged-deletion check is due after **2026-11-02 06:18:29.566 UTC**. No grace/clock override or lifecycle change.
 
-- Backup: **luvnote-production-2026-11-01T06-11-29.727Z.lnvb**, only in **C:/Users/User/AppData/Local/LuvNote/Backups**, outside Git. Plain export length **5,693,811 bytes**, SHA-256 **4c235e0eb9c0b54e73f17f3b1c0e04db715eb1886fdd4cf9e4a5ed386a313a73**.
-- AES-256-GCM; key wrapped with Windows DPAPI CurrentUser; manifest authenticated as AAD. ACL allows only current Windows identity and SYSTEM. SQL downloaded/decrypted in memory; no plaintext SQL files or presigned URLs were logged/saved.
-- Recovery: **luvnote-restore-20261101 / 1578a192-8066-4aaf-a4c8-43e9dd31992c**, private, never bound to a Worker. Reused on retry; no duplicate DB.
-- Read encrypted file back from disk, unwrapped/decrypted and verified digest; modified ciphertext rejected. Restored **7 cards + 8 theme_cards = 15 rows**. Every full-row hash and normalized schema hash matched (**2 schema objects**). Personal fields, card links and Base64 contents are not in reports/logs.
-- Managed D1 file ingestion returned an error and was not counted as success. The successful method restored schemas and **bound row parameters from decrypted memory through the official D1 query API**, then independently compared all data/schema. Production rows/schema were unchanged.
-- Actual commands: `.wrangler/secure-backup-directory.ps1`; `OWNER_APPROVED_D1_BACKUP=2026-11-01 node .wrangler/backup-restore.mjs` (encrypted export succeeded, managed import failed); `OWNER_APPROVED_D1_BACKUP=2026-11-01 node .wrangler/restore-encrypted-backup.mjs` (restore/integrity PASS). The tested restore utility and operator helper were also saved beside the protected backup. Run from the checked-out repository with its pinned Wrangler dependencies; credentials are retrieved only in memory.
+## Automated regression results
 
-**PASS covers this backup and isolated restore.** Off-host/profile-loss key recovery, off-site copy, recurring backups/retention and formal RPO/RTO are NOT_VERIFIED. Preserve the Windows profile/DPAPI material: the file alone is insufficient on another account. Take a fresh approved backup if data changes before rollout. The private recovery database remains intact for Owner review and disposal policy. [D1 export](https://developers.cloudflare.com/api/resources/d1/subresources/database/methods/export/) and [query API](https://developers.cloudflare.com/api/resources/d1/subresources/database/methods/query/) are the official interfaces used.
+| Actually executed locally | Result / limits |
+|---|---|
+| npm run test:api | **79 PASS**, zero failed/skipped; Node reports 54 top-level tests plus 25 corpus subtests |
+| npm run typecheck | PASS |
+| VITE_R2_MEDIA_ENABLED=false npm run build; npm test | Build PASS, **36 PASS / 18 intentionally skipped** |
+| VITE_R2_MEDIA_ENABLED=true VITE_TURNSTILE_SITE_KEY=1x00000000000000000000AA npm run build | PASS; local test artifact only |
+| npx playwright test tests/media-v3.spec.ts tests/r2-acceptance.spec.ts | **18 PASS**, default legacy Worker |
+| TEST_JPEG_VALIDATOR=images node --test tests/media-v3.workerd.test.mjs | **4 PASS**, local low-fidelity Images |
+| TEST_JPEG_VALIDATOR=images npx playwright test tests/media-v3.spec.ts tests/r2-acceptance.spec.ts | **18 PASS**, local low-fidelity Images compatibility |
+| node --check scripts/accept-native-jpeg-staging.mjs; git diff --check | PASS |
+| STAGING_VALIDATOR=images node scripts/accept-native-jpeg-staging.mjs benchmark | Real Cloudflare **42/42 PASS** |
+| STAGING_VALIDATOR=images node scripts/accept-native-jpeg-staging.mjs matrix | Real Cloudflare **22/25 PASS, 3 FAIL**; nonzero exit retained |
+| STAGING_VALIDATOR=legacy node scripts/accept-native-jpeg-staging.mjs benchmark | Real Cloudflare **13/42 PASS, 29 FAIL**; nonzero exit retained |
 
-## Rollback and final deployed state
+Remote commands also require ALLOW_STAGING_WRITE=1, STAGING_API_URL, STAGING_SOURCE_COMMIT and STAGING_VERSION; see [staging instructions](R2-STAGING-SETUP.md). Matching input hashes/counts are in the evidence artifact.
 
-Executed a **staging-only version rollback** with `npx wrangler rollback 96e4c13f-6363-4942-9002-ad80e0e74c70 --config wrangler.staging.toml --yes` from testing version bbc931e8. All five themes' V2 Base64 and V3 images returned 200; new sessions returned 503. D1/R2 were preserved. The rollback also restored its older Turnstile secret, as the CLI explicitly warned; secret/config dependencies require verification after version rollback.
+Reported local pass executions: **79+36+18+4+18 = 155**; the final 22 repeat compatibility cases under another configuration, not additional unique scenarios. Local Images/test doubles do not establish Cloudflare security. CI now repeats native compatibility with an explicit low-fidelity warning. Both local configurations cover five-theme photo/cover uploads, publication/reopening, retry/idempotency, ownership, expiry, atomicity/failures and cleanup through existing tests. Real native cover/publication/full guest acceptance stopped after security failure; no success is invented. Final local frontend artifact is returned to V3 disabled before handoff.
 
-Then redeployed latest application source with **uploads false / cleanup true / test mode false / hostname localhost**, and reinstalled the real staging secret using the official Worker secrets API. A CLI secret replacement attempt after rollback failed and was not marked successful. Final active version independently verified: **2182edbd-aff4-4bfa-b90f-204cace586a6**, Secret Change **06:22:02.600 UTC** (preceding latest-source deploy 87d2a805-582e-4723-8b9d-96610d1b917a). All-theme reads/session denial passed again. No production rollback or deployment occurred.
+## Confirmed fixes and remaining gates
 
-The rollback procedure is ready for operator review and **staging read preservation was tested**. Production artifact/version, secrets, environment protection and restore/cutover are not certified. Never roll production back to a pre-V3 reader after V3 cards exist. Preserve R2 bindings, metadata, V2/Base64 and V3 media routes.
+Minimal confirmed fix: native mode now returns 503 outside ENVIRONMENT=staging, even with an Images binding, before consuming a slot. Tests cover absent/production environments and typo modes. Template defaults are legacy/writes off. The unsafe algorithm was not relabeled secure; its rejection is documented in source and a reproducible corpus.
 
-## Remaining gates and next Owner action
+e7028dd changes worker/jpeg.js, worker/media-v3.js, wrangler.staging.example.toml, package.json, .github/workflows/frontend.yml, integration/staging safety tests, workerd helper/declaration; adds jpeg-native tests, corpus, synthetic progressive fixture/README and scripts/accept-native-jpeg-staging.mjs. Documentation continuation updates this report, staging/operations instructions and sanitized evidence. No src or production wrangler.toml changes. Work stays on PR #6's existing branch; documentation hashes are available from git log.
 
-1. **CPU FAIL:** current runtime terminates permitted uploads; Owner instructed to keep the current plan. Do not enable V3 based on earlier isolated success or local tests.
-2. Non-dummy interactive Turnstile action/hostname/replay/expiry, interrupted requests, actual aged-orphan deletion and lifecycle/backlog acceptance are incomplete.
-3. WAF custom/managed/rate-limit, alerting and billing APIs returned **403/10000** under existing OAuth. No protection was weakened. Native staging limits remain write 60/min and read 300/min; exact D1 quotas remain. WAF coverage of both custom-domain and workers.dev ingress, cost alerts and delivery must be verified through an authorized operator path.
-4. Current production metadata has only its D1 binding. There is no production Turnstile binding and bucket listing contains only staging. Production bucket, widget/secrets, protected GitHub environment/reviewers, deployment token/variables remain unverified/unprovisioned.
-5. Owner acceptance of link-accessible privacy, actual iPhone/Android/LINE handoff, cellular/slow network, HEIC and subjective image/audio/effects remain open. Browser emulation is not a physical device.
-6. Backup round-trip passed; off-host recovery, recurring retention and DR objectives remain open. No customer data was deleted.
+Earlier approved encrypted D1 backup/isolated restore **PASS** is preserved in the [prior report](https://github.com/cmyanything/luvnote/blob/f58c509510f914a5cac2b74fec5c8e93cef27676/docs/R2-PRODUCTION-READINESS-REPORT.md): 15 row hashes/schema matched, AES-256-GCM + DPAPI outside Git. No customer data was reopened for this task. Off-host key recovery/retention/RPO/RTO remain unverified.
 
-**Next Owner action:** review the retained CPU blocker and decide when/how to resume its resolution; arrange interactive/device acceptance and an authorized WAF/alerts operator. No production approval is requested prematurely. After all gates pass, approve the exact reviewed commit, fresh backup and each merge/provision/migration/deploy/pilot/frontend operation separately through the controlled manual workflow in [R2-OPERATIONS.md](R2-OPERATIONS.md). [R2-STAGING-SETUP.md](R2-STAGING-SETUP.md) describes safe resumption.
+Other gates: non-dummy Turnstile action/hostname/replay/expiry, actual interrupted Worker requests, aged orphan/lifecycle, physical iPhone/Android/LINE, privacy approval, WAF ingress coverage, cost/usage alerts and delivery, protected production workflow configuration, fresh backup before migration and separate Owner approvals. Earlier billing/WAF/alerts 403 restrictions were not bypassed.
 
-## Files and commits in this continuation
-
-Modified `docs/R2-PRODUCTION-READINESS-REPORT.md`, `docs/R2-STAGING-SETUP.md`, `docs/R2-OPERATIONS.md`, `scripts/accept-r2-staging.mjs`; added `scripts/measure-r2-staging.mjs`, `scripts/test-r2-interruption-staging.mjs`, `scripts/test-r2-orphan-staging.mjs`. No application source changed. Local Cloudflare config, private operator artifacts and encrypted backups are excluded from Git.
-
-Baseline integrated commit: **5d77a9bbb74489028cb26d9f706903b9c26b1b5e**. New continuation commit is titled **test: record final R2 acceptance and CPU rollout blocker**; obtain its exact hash with `git log --oneline -- docs/R2-PRODUCTION-READINESS-REPORT.md`. Earlier commit hashes and the complete remediation history remain in the linked historical report and PR #2. Work stays on the existing feature branch; PR #2 is not merged.
+**Next action:** keep PR #6 draft/unmerged and V3 uploads off. Review the NO-GO evidence and choose a separately scoped strict-validation solution within the retained plan; metadata/length heuristics are insufficient. No billing change or production approval is requested. Complete the remaining operational/device gates before production. [Operations and rollback](R2-OPERATIONS.md) remain the controlled rollout plan.

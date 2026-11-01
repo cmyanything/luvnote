@@ -1,0 +1,1990 @@
+{
+  "collectedAt": "2026-11-01T07:46:21.710Z",
+  "environment": "Existing isolated Cloudflare staging, synthetic inputs/operator-owned capabilities only",
+  "units": "Tail CPU and wall: ms; GraphQL CPU/wall: microseconds; GraphQL isolate memory: bytes",
+  "statistics": "Tail p50/p95/p99 use nearest rank on captured events, matched by exact version and workload window. Adaptive GraphQL data is not a request census; preserve returned sample counts.",
+  "modes": [
+    {
+      "mode": "images",
+      "task": "benchmark",
+      "sourceCommit": "40cf547e8d25735343b9641f4d2c8ea4e3b28f0c",
+      "version": "7563e6ec-d178-4ec4-8e76-eba3f064742d",
+      "startedAt": "2026-11-01T07:33:54.881Z",
+      "endedAt": "2026-11-01T07:35:28.021Z",
+      "realCloudflare": true,
+      "operatorSeeded": true,
+      "results": [
+        {
+          "name": "typical-sequential",
+          "start": "2026-11-01T07:34:00.296Z",
+          "end": "2026-11-01T07:34:09.840Z",
+          "count": 10,
+          "concurrency": 1,
+          "jpegBytes": 55636,
+          "inputSha256": "1826798ea2ea0dc968cfad344c14a067cc3e02b4d4f7b282b58425f2b68f0fe9",
+          "samples": [
+            {
+              "status": 201,
+              "wallMs": 653,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 503,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 529,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 542,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 548,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 517,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 636,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 832,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 528,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 476,
+              "error1102": false
+            }
+          ],
+          "passed": true,
+          "tail": {
+            "count": 10,
+            "complete": true,
+            "groups": [
+              {
+                "outcome": "ok",
+                "count": 10,
+                "cpuMs": {
+                  "p50": 8,
+                  "p95": 19,
+                  "p99": 19
+                },
+                "wallMs": {
+                  "p50": 504,
+                  "p95": 808,
+                  "p99": 808
+                }
+              }
+            ],
+            "events": [
+              {
+                "time": 1793518442226,
+                "outcome": "ok",
+                "cpuTime": 19,
+                "wallTime": 520
+              },
+              {
+                "time": 1793518442823,
+                "outcome": "ok",
+                "cpuTime": 7,
+                "wallTime": 435
+              },
+              {
+                "time": 1793518443320,
+                "outcome": "ok",
+                "cpuTime": 11,
+                "wallTime": 466
+              },
+              {
+                "time": 1793518443818,
+                "outcome": "ok",
+                "cpuTime": 8,
+                "wallTime": 511
+              },
+              {
+                "time": 1793518444370,
+                "outcome": "ok",
+                "cpuTime": 14,
+                "wallTime": 504
+              },
+              {
+                "time": 1793518446925,
+                "outcome": "ok",
+                "cpuTime": 6,
+                "wallTime": 485
+              },
+              {
+                "time": 1793518447448,
+                "outcome": "ok",
+                "cpuTime": 11,
+                "wallTime": 596
+              },
+              {
+                "time": 1793518448069,
+                "outcome": "ok",
+                "cpuTime": 5,
+                "wallTime": 808
+              },
+              {
+                "time": 1793518448897,
+                "outcome": "ok",
+                "cpuTime": 10,
+                "wallTime": 504
+              },
+              {
+                "time": 1793518449439,
+                "outcome": "ok",
+                "cpuTime": 4,
+                "wallTime": 441
+              }
+            ]
+          }
+        },
+        {
+          "name": "maximum-sequential",
+          "start": "2026-11-01T07:34:09.843Z",
+          "end": "2026-11-01T07:34:25.940Z",
+          "count": 10,
+          "concurrency": 1,
+          "jpegBytes": 1028954,
+          "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+          "samples": [
+            {
+              "status": 201,
+              "wallMs": 905,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 661,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 951,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 744,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 962,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 840,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 1387,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 763,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 843,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 707,
+              "error1102": false
+            }
+          ],
+          "passed": true,
+          "tail": {
+            "count": 10,
+            "complete": true,
+            "groups": [
+              {
+                "outcome": "ok",
+                "count": 10,
+                "cpuMs": {
+                  "p50": 37,
+                  "p95": 49,
+                  "p99": 49
+                },
+                "wallMs": {
+                  "p50": 666,
+                  "p95": 1253,
+                  "p99": 1253
+                }
+              }
+            ],
+            "events": [
+              {
+                "time": 1793518451981,
+                "outcome": "ok",
+                "cpuTime": 49,
+                "wallTime": 723
+              },
+              {
+                "time": 1793518452824,
+                "outcome": "ok",
+                "cpuTime": 23,
+                "wallTime": 542
+              },
+              {
+                "time": 1793518453582,
+                "outcome": "ok",
+                "cpuTime": 44,
+                "wallTime": 733
+              },
+              {
+                "time": 1793518454452,
+                "outcome": "ok",
+                "cpuTime": 29,
+                "wallTime": 609
+              },
+              {
+                "time": 1793518455199,
+                "outcome": "ok",
+                "cpuTime": 38,
+                "wallTime": 822
+              },
+              {
+                "time": 1793518461613,
+                "outcome": "ok",
+                "cpuTime": 46,
+                "wallTime": 666
+              },
+              {
+                "time": 1793518462414,
+                "outcome": "ok",
+                "cpuTime": 36,
+                "wallTime": 1253
+              },
+              {
+                "time": 1793518463792,
+                "outcome": "ok",
+                "cpuTime": 40,
+                "wallTime": 637
+              },
+              {
+                "time": 1793518464562,
+                "outcome": "ok",
+                "cpuTime": 32,
+                "wallTime": 710
+              },
+              {
+                "time": 1793518465392,
+                "outcome": "ok",
+                "cpuTime": 37,
+                "wallTime": 588
+              }
+            ]
+          }
+        },
+        {
+          "name": "near-byte-limit-sequential",
+          "start": "2026-11-01T07:34:25.942Z",
+          "end": "2026-11-01T07:34:41.967Z",
+          "count": 10,
+          "concurrency": 1,
+          "jpegBytes": 1498433,
+          "inputSha256": "6ccb3267423979720bbe371fd3eb96a173c54c67889a6264ef62b5c1d621f43f",
+          "samples": [
+            {
+              "status": 201,
+              "wallMs": 891,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 833,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 984,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 906,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 1000,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 877,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 809,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 1527,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 760,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 884,
+              "error1102": false
+            }
+          ],
+          "passed": true,
+          "tail": {
+            "count": 10,
+            "complete": true,
+            "groups": [
+              {
+                "outcome": "ok",
+                "count": 10,
+                "cpuMs": {
+                  "p50": 51,
+                  "p95": 82,
+                  "p99": 82
+                },
+                "wallMs": {
+                  "p50": 721,
+                  "p95": 1362,
+                  "p99": 1362
+                }
+              }
+            ],
+            "events": [
+              {
+                "time": 1793518469879,
+                "outcome": "ok",
+                "cpuTime": 54,
+                "wallTime": 703
+              },
+              {
+                "time": 1793518470739,
+                "outcome": "ok",
+                "cpuTime": 51,
+                "wallTime": 675
+              },
+              {
+                "time": 1793518471579,
+                "outcome": "ok",
+                "cpuTime": 59,
+                "wallTime": 819
+              },
+              {
+                "time": 1793518472574,
+                "outcome": "ok",
+                "cpuTime": 62,
+                "wallTime": 727
+              },
+              {
+                "time": 1793518473461,
+                "outcome": "ok",
+                "cpuTime": 82,
+                "wallTime": 846
+              },
+              {
+                "time": 1793518477295,
+                "outcome": "ok",
+                "cpuTime": 62,
+                "wallTime": 729
+              },
+              {
+                "time": 1793518478200,
+                "outcome": "ok",
+                "cpuTime": 51,
+                "wallTime": 635
+              },
+              {
+                "time": 1793518478999,
+                "outcome": "ok",
+                "cpuTime": 46,
+                "wallTime": 1362
+              },
+              {
+                "time": 1793518480524,
+                "outcome": "ok",
+                "cpuTime": 51,
+                "wallTime": 598
+              },
+              {
+                "time": 1793518481284,
+                "outcome": "ok",
+                "cpuTime": 47,
+                "wallTime": 721
+              }
+            ]
+          }
+        },
+        {
+          "name": "maximum-concurrent",
+          "start": "2026-11-01T07:34:41.977Z",
+          "end": "2026-11-01T07:35:01.026Z",
+          "count": 12,
+          "concurrency": 3,
+          "jpegBytes": 1028954,
+          "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+          "samples": [
+            {
+              "status": 201,
+              "wallMs": 1299,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 1256,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 1402,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 903,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 1403,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 808,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 1193,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 1271,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 1479,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 952,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 1014,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 1249,
+              "error1102": false
+            }
+          ],
+          "passed": true,
+          "tail": {
+            "count": 12,
+            "complete": true,
+            "groups": [
+              {
+                "outcome": "ok",
+                "count": 12,
+                "cpuMs": {
+                  "p50": 49,
+                  "p95": 80,
+                  "p99": 80
+                },
+                "wallMs": {
+                  "p50": 693,
+                  "p95": 1218,
+                  "p99": 1218
+                }
+              }
+            ],
+            "events": [
+              {
+                "time": 1793518486871,
+                "outcome": "ok",
+                "cpuTime": 64,
+                "wallTime": 658
+              },
+              {
+                "time": 1793518486909,
+                "outcome": "ok",
+                "cpuTime": 52,
+                "wallTime": 663
+              },
+              {
+                "time": 1793518486459,
+                "outcome": "ok",
+                "cpuTime": 49,
+                "wallTime": 1218
+              },
+              {
+                "time": 1793518490899,
+                "outcome": "ok",
+                "cpuTime": 42,
+                "wallTime": 558
+              },
+              {
+                "time": 1793518490830,
+                "outcome": "ok",
+                "cpuTime": 43,
+                "wallTime": 720
+              },
+              {
+                "time": 1793518491458,
+                "outcome": "ok",
+                "cpuTime": 31,
+                "wallTime": 590
+              },
+              {
+                "time": 1793518495562,
+                "outcome": "ok",
+                "cpuTime": 80,
+                "wallTime": 904
+              },
+              {
+                "time": 1793518495579,
+                "outcome": "ok",
+                "cpuTime": 70,
+                "wallTime": 968
+              },
+              {
+                "time": 1793518495567,
+                "outcome": "ok",
+                "cpuTime": 79,
+                "wallTime": 1187
+              },
+              {
+                "time": 1793518500096,
+                "outcome": "ok",
+                "cpuTime": 47,
+                "wallTime": 671
+              },
+              {
+                "time": 1793518500013,
+                "outcome": "ok",
+                "cpuTime": 51,
+                "wallTime": 816
+              },
+              {
+                "time": 1793518500370,
+                "outcome": "ok",
+                "cpuTime": 37,
+                "wallTime": 693
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "mode": "legacy",
+      "task": "benchmark",
+      "sourceCommit": "e7028ddb73ef692e0ff530166c5a45a5ae5d91a4",
+      "version": "acc5b8a8-b9e6-4e2c-bcce-e074a0bd9eb6",
+      "startedAt": "2026-11-01T07:42:43.515Z",
+      "endedAt": "2026-11-01T07:43:44.872Z",
+      "realCloudflare": true,
+      "operatorSeeded": true,
+      "results": [
+        {
+          "name": "typical-sequential",
+          "start": "2026-11-01T07:42:49.005Z",
+          "end": "2026-11-01T07:43:00.516Z",
+          "count": 10,
+          "concurrency": 1,
+          "jpegBytes": 55636,
+          "inputSha256": "1826798ea2ea0dc968cfad344c14a067cc3e02b4d4f7b282b58425f2b68f0fe9",
+          "samples": [
+            {
+              "status": 201,
+              "wallMs": 918,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 738,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 584,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 628,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 902,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 595,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 1034,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 815,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 626,
+              "error1102": false
+            },
+            {
+              "status": 201,
+              "wallMs": 617,
+              "error1102": false
+            }
+          ],
+          "passed": true,
+          "tail": {
+            "count": 10,
+            "complete": true,
+            "groups": [
+              {
+                "outcome": "ok",
+                "count": 10,
+                "cpuMs": {
+                  "p50": 119,
+                  "p95": 243,
+                  "p99": 243
+                },
+                "wallMs": {
+                  "p50": 578,
+                  "p95": 973,
+                  "p99": 973
+                }
+              }
+            ],
+            "events": [
+              {
+                "time": 1793518971446,
+                "outcome": "ok",
+                "cpuTime": 223,
+                "wallTime": 739
+              },
+              {
+                "time": 1793518972277,
+                "outcome": "ok",
+                "cpuTime": 170,
+                "wallTime": 659
+              },
+              {
+                "time": 1793518972963,
+                "outcome": "ok",
+                "cpuTime": 122,
+                "wallTime": 558
+              },
+              {
+                "time": 1793518973568,
+                "outcome": "ok",
+                "cpuTime": 87,
+                "wallTime": 578
+              },
+              {
+                "time": 1793518974223,
+                "outcome": "ok",
+                "cpuTime": 243,
+                "wallTime": 827
+              },
+              {
+                "time": 1793518976913,
+                "outcome": "ok",
+                "cpuTime": 78,
+                "wallTime": 550
+              },
+              {
+                "time": 1793518977524,
+                "outcome": "ok",
+                "cpuTime": 83,
+                "wallTime": 973
+              },
+              {
+                "time": 1793518978531,
+                "outcome": "ok",
+                "cpuTime": 119,
+                "wallTime": 781
+              },
+              {
+                "time": 1793518979375,
+                "outcome": "ok",
+                "cpuTime": 79,
+                "wallTime": 560
+              },
+              {
+                "time": 1793518979987,
+                "outcome": "ok",
+                "cpuTime": 121,
+                "wallTime": 567
+              }
+            ]
+          }
+        },
+        {
+          "name": "maximum-sequential",
+          "start": "2026-11-01T07:43:00.519Z",
+          "end": "2026-11-01T07:43:08.314Z",
+          "count": 10,
+          "concurrency": 1,
+          "jpegBytes": 1028954,
+          "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+          "samples": [
+            {
+              "status": 201,
+              "wallMs": 1219,
+              "error1102": false
+            },
+            {
+              "status": 503,
+              "wallMs": 802,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 265,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 272,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 274,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 281,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 282,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 290,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 266,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 254,
+              "error1102": true
+            }
+          ],
+          "passed": false,
+          "tail": {
+            "count": 8,
+            "complete": false,
+            "groups": [
+              {
+                "outcome": "ok",
+                "count": 1,
+                "cpuMs": {
+                  "p50": 356,
+                  "p95": 356,
+                  "p99": 356
+                },
+                "wallMs": {
+                  "p50": 1024,
+                  "p95": 1024,
+                  "p99": 1024
+                }
+              },
+              {
+                "outcome": "exceededCpu",
+                "count": 7,
+                "cpuMs": {
+                  "p50": 10,
+                  "p95": 453,
+                  "p99": 453
+                },
+                "wallMs": {
+                  "p50": 143,
+                  "p95": 597,
+                  "p99": 597
+                }
+              }
+            ],
+            "events": [
+              {
+                "time": 1793518982552,
+                "outcome": "ok",
+                "cpuTime": 356,
+                "wallTime": 1024
+              },
+              {
+                "time": 1793518983780,
+                "outcome": "exceededCpu",
+                "cpuTime": 453,
+                "wallTime": 597
+              },
+              {
+                "time": 1793518984507,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 136
+              },
+              {
+                "time": 1793518984771,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 143
+              },
+              {
+                "time": 1793518985043,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 146
+              },
+              {
+                "time": 1793518987120,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 141
+              },
+              {
+                "time": 1793518987398,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 146
+              },
+              {
+                "time": 1793518987958,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 142
+              }
+            ]
+          }
+        },
+        {
+          "name": "near-byte-limit-sequential",
+          "start": "2026-11-01T07:43:08.318Z",
+          "end": "2026-11-01T07:43:14.936Z",
+          "count": 10,
+          "concurrency": 1,
+          "jpegBytes": 1498433,
+          "inputSha256": "6ccb3267423979720bbe371fd3eb96a173c54c67889a6264ef62b5c1d621f43f",
+          "samples": [
+            {
+              "status": 503,
+              "wallMs": 308,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 285,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 294,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 290,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 307,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 293,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 305,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 308,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 313,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 317,
+              "error1102": true
+            }
+          ],
+          "passed": false,
+          "tail": {
+            "count": 5,
+            "complete": false,
+            "groups": [
+              {
+                "outcome": "exceededCpu",
+                "count": 5,
+                "cpuMs": {
+                  "p50": 10,
+                  "p95": 10,
+                  "p99": 10
+                },
+                "wallMs": {
+                  "p50": 144,
+                  "p95": 146,
+                  "p99": 146
+                }
+              }
+            ],
+            "events": [
+              {
+                "time": 1793518990327,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 146
+              },
+              {
+                "time": 1793518990629,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 131
+              },
+              {
+                "time": 1793518993591,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 143
+              },
+              {
+                "time": 1793518993891,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 146
+              },
+              {
+                "time": 1793518994201,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 144
+              }
+            ]
+          }
+        },
+        {
+          "name": "maximum-concurrent",
+          "start": "2026-11-01T07:43:14.945Z",
+          "end": "2026-11-01T07:43:26.634Z",
+          "count": 12,
+          "concurrency": 3,
+          "jpegBytes": 1028954,
+          "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+          "samples": [
+            {
+              "status": 503,
+              "wallMs": 274,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 1293,
+              "error1102": true
+            },
+            {
+              "status": 201,
+              "wallMs": 1566,
+              "error1102": false
+            },
+            {
+              "status": 503,
+              "wallMs": 320,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 370,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 661,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 303,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 358,
+              "error1102": true
+            },
+            {
+              "status": 201,
+              "wallMs": 1621,
+              "error1102": false
+            },
+            {
+              "status": 503,
+              "wallMs": 293,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 357,
+              "error1102": true
+            },
+            {
+              "status": 503,
+              "wallMs": 629,
+              "error1102": true
+            }
+          ],
+          "passed": false,
+          "tail": {
+            "count": 12,
+            "complete": true,
+            "groups": [
+              {
+                "outcome": "exceededCpu",
+                "count": 10,
+                "cpuMs": {
+                  "p50": 10,
+                  "p95": 20,
+                  "p99": 20
+                },
+                "wallMs": {
+                  "p50": 138,
+                  "p95": 817,
+                  "p99": 817
+                }
+              },
+              {
+                "outcome": "ok",
+                "count": 2,
+                "cpuMs": {
+                  "p50": 236,
+                  "p95": 333,
+                  "p99": 333
+                },
+                "wallMs": {
+                  "p50": 997,
+                  "p95": 1035,
+                  "p99": 1035
+                }
+              }
+            ],
+            "events": [
+              {
+                "time": 1793518996918,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 138
+              },
+              {
+                "time": 1793518997257,
+                "outcome": "exceededCpu",
+                "cpuTime": 20,
+                "wallTime": 817
+              },
+              {
+                "time": 1793518997353,
+                "outcome": "ok",
+                "cpuTime": 236,
+                "wallTime": 997
+              },
+              {
+                "time": 1793519000319,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 139
+              },
+              {
+                "time": 1793519000369,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 138
+              },
+              {
+                "time": 1793519000662,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 136
+              },
+              {
+                "time": 1793519002774,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 137
+              },
+              {
+                "time": 1793519002831,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 134
+              },
+              {
+                "time": 1793519003195,
+                "outcome": "ok",
+                "cpuTime": 333,
+                "wallTime": 1035
+              },
+              {
+                "time": 1793519006202,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 133
+              },
+              {
+                "time": 1793519006259,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 141
+              },
+              {
+                "time": 1793519006505,
+                "outcome": "exceededCpu",
+                "cpuTime": 10,
+                "wallTime": 168
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "matrix": {
+    "mode": "images",
+    "task": "matrix",
+    "sourceCommit": "40cf547e8d25735343b9641f4d2c8ea4e3b28f0c",
+    "version": "7563e6ec-d178-4ec4-8e76-eba3f064742d",
+    "startedAt": "2026-11-01T07:35:11.372Z",
+    "endedAt": "2026-11-01T07:37:33.620Z",
+    "realCloudflare": true,
+    "operatorSeeded": true,
+    "results": [
+      {
+        "name": "valid-baseline",
+        "inputBytes": 897,
+        "inputSha256": "831b2cd4d3b0bfa4e8faa13904c51f2004f26c0e62b1ced47e1240abdd142ede",
+        "legacyValidatorAccepts": true,
+        "policy": "accept (strip metadata)",
+        "expected": 201,
+        "status": 201,
+        "error1102": false,
+        "journalState": "ready",
+        "object": {
+          "exists": true,
+          "bytes": 879,
+          "sha256": "24e577c4cf1d80a57908cf2d0bcd495081abf5e9917f7a0251efc6d99e764562",
+          "strictlyDecodable": true,
+          "matchesLegacySanitized": true
+        },
+        "passed": true
+      },
+      {
+        "name": "valid-progressive",
+        "inputBytes": 2023,
+        "inputSha256": "5ef57c7b8983e6b1e081582ac7fb98d786975dce687839a683b47f9f3d3250ef",
+        "legacyValidatorAccepts": true,
+        "policy": "accept (strip metadata)",
+        "expected": 201,
+        "status": 201,
+        "error1102": false,
+        "journalState": "ready",
+        "object": {
+          "exists": true,
+          "bytes": 2005,
+          "sha256": "8ee94ce92da33ccd6a336892dfc3ea410d740c01234a0c0649e91d7c146d959d",
+          "strictlyDecodable": true,
+          "matchesLegacySanitized": true
+        },
+        "passed": true
+      },
+      {
+        "name": "maximum-dimensions",
+        "inputBytes": 1028954,
+        "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+        "legacyValidatorAccepts": true,
+        "policy": "accept (strip metadata)",
+        "expected": 201,
+        "status": 201,
+        "error1102": false,
+        "journalState": "ready",
+        "object": {
+          "exists": true,
+          "bytes": 1028936,
+          "sha256": "4a696bc5dc04a768eaf0635f2141c69f938240261a26953c7f87f225f61e2ef7",
+          "strictlyDecodable": true,
+          "matchesLegacySanitized": true
+        },
+        "passed": true
+      },
+      {
+        "name": "near-byte-limit-noisy",
+        "inputBytes": 1498433,
+        "inputSha256": "6ccb3267423979720bbe371fd3eb96a173c54c67889a6264ef62b5c1d621f43f",
+        "legacyValidatorAccepts": true,
+        "policy": "accept (strip metadata)",
+        "expected": 201,
+        "status": 201,
+        "error1102": false,
+        "journalState": "ready",
+        "object": {
+          "exists": true,
+          "bytes": 1498415,
+          "sha256": "6a35682b4177f119933335adb983fd35ddf55573d9469cdf27c4ba98727c8c66",
+          "strictlyDecodable": true,
+          "matchesLegacySanitized": true
+        },
+        "passed": true
+      },
+      {
+        "name": "exact-byte-limit-comments",
+        "inputBytes": 1500000,
+        "inputSha256": "7bcefad377ade4ff6a7502a4503fbeb64a0baffec54a69632e8003a63903bb1e",
+        "legacyValidatorAccepts": true,
+        "policy": "accept (strip metadata)",
+        "expected": 201,
+        "status": 201,
+        "error1102": false,
+        "journalState": "ready",
+        "object": {
+          "exists": true,
+          "bytes": 879,
+          "sha256": "24e577c4cf1d80a57908cf2d0bcd495081abf5e9917f7a0251efc6d99e764562",
+          "strictlyDecodable": true,
+          "matchesLegacySanitized": true
+        },
+        "passed": true
+      },
+      {
+        "name": "over-byte-limit",
+        "inputBytes": 1500001,
+        "inputSha256": "28445742dea91ebd89bece46738613ef32a34e3a26bdaf0e4b1e5dc8afec8616",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 413,
+        "status": 413,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "malformed-structure",
+        "inputBytes": 897,
+        "inputSha256": "273a640e03486b33529309ef5420b3015b0c9d56d2a675212cd768bafe7cd35e",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 400,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "truncated-no-EOI",
+        "inputBytes": 877,
+        "inputSha256": "98c33e41a1458f2a6dd3ac7831bae6c5b235224deacb914772126e01a419dbf5",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 400,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "truncated-entropy-with-EOI",
+        "inputBytes": 610,
+        "inputSha256": "3f53eff522c96005b2bce12d3f0638c474e458ffe5dd2cf1368235b0baa7d5e6",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 201,
+        "error1102": false,
+        "journalState": "ready",
+        "object": {
+          "exists": true,
+          "bytes": 592,
+          "sha256": "66179af99778e8235232bbe819c9c7f818bbffe212a1b0dcb16108fb9a91232c",
+          "strictlyDecodable": false
+        },
+        "passed": false
+      },
+      {
+        "name": "corrupt-entropy-all-zero",
+        "inputBytes": 897,
+        "inputSha256": "4209a78966cbdc2f8f5fe198e5da482568bf89af92f0018f565765d24d64b962",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 201,
+        "error1102": false,
+        "journalState": "ready",
+        "object": {
+          "exists": true,
+          "bytes": 879,
+          "sha256": "007b65c4e05ab7d30a8bb2effae90ad82ded6ec69437b971d444c9d86df3790c",
+          "strictlyDecodable": false
+        },
+        "passed": false
+      },
+      {
+        "name": "undefined-Huffman-table",
+        "inputBytes": 897,
+        "inputSha256": "fbe58843443751e75c3bad286e090d528f18532f29cb87ff3968445f0601ce1f",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 400,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "invalid-marker-length",
+        "inputBytes": 897,
+        "inputSha256": "f2a35b0bde0864938ed155c8a7a085dbbff146f74a654a50dec6b92a048cdfbb",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 400,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "forged-headers-no-pixels",
+        "inputBytes": 609,
+        "inputSha256": "6989ba2fcc1970278c505256ae84520a4abff5805b763075b793a5ef7a4190c4",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 201,
+        "error1102": false,
+        "journalState": "ready",
+        "object": {
+          "exists": true,
+          "bytes": 591,
+          "sha256": "9d460ad2501267eab4c91c210797cdac723a53b89b84a1baf68efc0fb8acbd31",
+          "strictlyDecodable": false
+        },
+        "passed": false
+      },
+      {
+        "name": "EXIF-GPS",
+        "inputBytes": 924,
+        "inputSha256": "16b0ef90114aafadda0a24f4cd945c1f06fd672545647acc0371b88d5e62bad6",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 400,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "XMP",
+        "inputBytes": 939,
+        "inputSha256": "79d15d6908b93a3b11be43162abcb2c47efd1edd32f7c29384f565fe2fafcc52",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 400,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "IPTC",
+        "inputBytes": 924,
+        "inputSha256": "95753164f3b70d5de6054e78a203c9cfb2a1b1cdc73a58b23eacadd07b78276c",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 400,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "embedded-comment",
+        "inputBytes": 926,
+        "inputSha256": "a4102ef68e750e6d3d81b0bc4b34ff8aa7efb7ecf491b881464663a6246bb676",
+        "legacyValidatorAccepts": true,
+        "policy": "accept (strip metadata)",
+        "expected": 201,
+        "status": 201,
+        "error1102": false,
+        "journalState": "ready",
+        "object": {
+          "exists": true,
+          "bytes": 879,
+          "sha256": "24e577c4cf1d80a57908cf2d0bcd495081abf5e9917f7a0251efc6d99e764562",
+          "strictlyDecodable": true,
+          "matchesLegacySanitized": true
+        },
+        "passed": true
+      },
+      {
+        "name": "APP2-ICC-stripped",
+        "inputBytes": 922,
+        "inputSha256": "c3fe0f222a9ac6c1d942230355d6f41c5966c7105d3edd0d4caced36244362e5",
+        "legacyValidatorAccepts": true,
+        "policy": "accept (strip metadata)",
+        "expected": 201,
+        "status": 201,
+        "error1102": false,
+        "journalState": "ready",
+        "object": {
+          "exists": true,
+          "bytes": 879,
+          "sha256": "24e577c4cf1d80a57908cf2d0bcd495081abf5e9917f7a0251efc6d99e764562",
+          "strictlyDecodable": true,
+          "matchesLegacySanitized": true
+        },
+        "passed": true
+      },
+      {
+        "name": "zero-dimensions",
+        "inputBytes": 897,
+        "inputSha256": "f962ee9bef09e2227180f4d794cec94fe17513b1a783b1acc0bc9eb968eac726",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 400,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "dimension-over-1024",
+        "inputBytes": 897,
+        "inputSha256": "f2a85a4ae0d03788315eb9d89c367cdc13a55d9c57fb4782c4018aee022768e7",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 400,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "excess-pixels",
+        "inputBytes": 897,
+        "inputSha256": "2a006289ca072fab35f162eb153a2ee8800bd42d02509f0399400b00aca14971",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 400,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "duplicate-frame",
+        "inputBytes": 916,
+        "inputSha256": "88fe099a8690e727622a8a45e5dbf25ac8487cfad17deaad54fba31c68f03ebc",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 400,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "trailing-bytes",
+        "inputBytes": 900,
+        "inputSha256": "8a0fdd0ef79a405d5f8d34e41a4852d3afb38be6c1fdb061bbf17800cc29b146",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 400,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "PNG-as-JPEG",
+        "inputBytes": 33,
+        "inputSha256": "9eaf66cb2ab9389f42744617015dfdbfa9a382221513149241ab355a2bd32ea4",
+        "legacyValidatorAccepts": false,
+        "policy": "reject",
+        "expected": 400,
+        "status": 400,
+        "error1102": false,
+        "journalState": "failed",
+        "object": null,
+        "passed": true
+      },
+      {
+        "name": "wrong-MIME-valid-JPEG",
+        "inputBytes": 897,
+        "inputSha256": "831b2cd4d3b0bfa4e8faa13904c51f2004f26c0e62b1ced47e1240abdd142ede",
+        "legacyValidatorAccepts": true,
+        "policy": "reject",
+        "expected": 415,
+        "status": 415,
+        "error1102": false,
+        "journalState": null,
+        "object": null,
+        "passed": true
+      }
+    ]
+  },
+  "graphql": {
+    "timeUnits": "CPU/wall microseconds; memory bytes",
+    "rows": [
+      {
+        "mode": "images",
+        "name": "typical-sequential",
+        "expectedRequests": 10,
+        "start": "2026-11-01T07:34:00.296Z",
+        "end": "2026-11-01T07:34:09.840Z",
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "success"
+            },
+            "quantiles": {
+              "cpuTimeP50": 8827,
+              "cpuTimeP95": 19905,
+              "cpuTimeP99": 19905,
+              "memoryUsageBytesP50": 2858654,
+              "memoryUsageBytesP99": 3981462,
+              "wallTimeP50": 504873,
+              "wallTimeP95": 808884,
+              "wallTimeP99": 808884
+            },
+            "sum": {
+              "cpuTimeUs": 99888,
+              "errors": 0,
+              "requests": 10,
+              "subrequests": 10,
+              "wallTime": 5276275
+            }
+          }
+        ]
+      },
+      {
+        "mode": "images",
+        "name": "maximum-sequential",
+        "expectedRequests": 10,
+        "start": "2026-11-01T07:34:09.843Z",
+        "end": "2026-11-01T07:34:25.940Z",
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "success"
+            },
+            "quantiles": {
+              "cpuTimeP50": 37866,
+              "cpuTimeP95": 49577,
+              "cpuTimeP99": 49577,
+              "memoryUsageBytesP50": 8051090,
+              "memoryUsageBytesP99": 13177384,
+              "wallTimeP50": 666529,
+              "wallTimeP95": 1253248,
+              "wallTimeP99": 1253248
+            },
+            "sum": {
+              "cpuTimeUs": 383224,
+              "errors": 0,
+              "requests": 11,
+              "subrequests": 11,
+              "wallTime": 7730118
+            }
+          }
+        ]
+      },
+      {
+        "mode": "images",
+        "name": "near-byte-limit-sequential",
+        "expectedRequests": 10,
+        "start": "2026-11-01T07:34:25.942Z",
+        "end": "2026-11-01T07:34:41.967Z",
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "success"
+            },
+            "quantiles": {
+              "cpuTimeP50": 51133,
+              "cpuTimeP95": 62311,
+              "cpuTimeP99": 62311,
+              "memoryUsageBytesP50": 18291140,
+              "memoryUsageBytesP99": 26978756,
+              "wallTimeP50": 721235,
+              "wallTimeP95": 1362484,
+              "wallTimeP99": 1362484
+            },
+            "sum": {
+              "cpuTimeUs": 417076,
+              "errors": 0,
+              "requests": 8,
+              "subrequests": 8,
+              "wallTime": 6223250
+            }
+          }
+        ]
+      },
+      {
+        "mode": "images",
+        "name": "maximum-concurrent",
+        "expectedRequests": 12,
+        "start": "2026-11-01T07:34:41.977Z",
+        "end": "2026-11-01T07:35:01.026Z",
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "success"
+            },
+            "quantiles": {
+              "cpuTimeP50": 49272,
+              "cpuTimeP95": 80541,
+              "cpuTimeP99": 80541,
+              "memoryUsageBytesP50": 30228364,
+              "memoryUsageBytesP99": 32251756,
+              "wallTimeP50": 720121,
+              "wallTimeP95": 1218786,
+              "wallTimeP99": 1218786
+            },
+            "sum": {
+              "cpuTimeUs": 697706,
+              "errors": 0,
+              "requests": 13,
+              "subrequests": 13,
+              "wallTime": 10373449
+            }
+          }
+        ]
+      },
+      {
+        "mode": "images",
+        "name": "whole-benchmark",
+        "expectedRequests": 42,
+        "start": "2026-11-01T07:33:59.296Z",
+        "end": "2026-11-01T07:35:06.026Z",
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "success"
+            },
+            "quantiles": {
+              "cpuTimeP50": 42149,
+              "cpuTimeP95": 79943,
+              "cpuTimeP99": 80541,
+              "memoryUsageBytesP50": 13177384,
+              "memoryUsageBytesP99": 32251756,
+              "wallTimeP50": 671668,
+              "wallTimeP95": 1253248,
+              "wallTimeP99": 1362484
+            },
+            "sum": {
+              "cpuTimeUs": 1508228,
+              "errors": 0,
+              "requests": 39,
+              "subrequests": 39,
+              "wallTime": 27852509
+            }
+          }
+        ]
+      },
+      {
+        "mode": "legacy",
+        "name": "typical-sequential",
+        "expectedRequests": 10,
+        "start": "2026-11-01T07:42:49.005Z",
+        "end": "2026-11-01T07:43:00.516Z",
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "success"
+            },
+            "quantiles": {
+              "cpuTimeP50": 119506,
+              "cpuTimeP95": 243307,
+              "cpuTimeP99": 243307,
+              "memoryUsageBytesP50": 39967850,
+              "memoryUsageBytesP99": 59066636,
+              "wallTimeP50": 578707,
+              "wallTimeP95": 974066,
+              "wallTimeP99": 974066
+            },
+            "sum": {
+              "cpuTimeUs": 1330306,
+              "errors": 0,
+              "requests": 10,
+              "subrequests": 0,
+              "wallTime": 6798929
+            }
+          }
+        ]
+      },
+      {
+        "mode": "legacy",
+        "name": "maximum-sequential",
+        "expectedRequests": 10,
+        "start": "2026-11-01T07:43:00.519Z",
+        "end": "2026-11-01T07:43:08.314Z",
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "success"
+            },
+            "quantiles": {
+              "cpuTimeP50": 356640,
+              "cpuTimeP95": 356640,
+              "cpuTimeP99": 356640,
+              "memoryUsageBytesP50": 58302950,
+              "memoryUsageBytesP99": 58302950,
+              "wallTimeP50": 1024854,
+              "wallTimeP95": 1024854,
+              "wallTimeP99": 1024854
+            },
+            "sum": {
+              "cpuTimeUs": 356640,
+              "errors": 0,
+              "requests": 1,
+              "subrequests": 0,
+              "wallTime": 1024854
+            }
+          },
+          {
+            "dimensions": {
+              "status": "exceededResources"
+            },
+            "quantiles": {
+              "cpuTimeP50": 10000,
+              "cpuTimeP95": 453048,
+              "cpuTimeP99": 453048,
+              "memoryUsageBytesP50": 32648386,
+              "memoryUsageBytesP99": 34143896,
+              "wallTimeP50": 143720,
+              "wallTimeP95": 597953,
+              "wallTimeP99": 597953
+            },
+            "sum": {
+              "cpuTimeUs": 553048,
+              "errors": 11,
+              "requests": 11,
+              "subrequests": 0,
+              "wallTime": 2049495
+            }
+          }
+        ]
+      },
+      {
+        "mode": "legacy",
+        "name": "near-byte-limit-sequential",
+        "expectedRequests": 10,
+        "start": "2026-11-01T07:43:08.318Z",
+        "end": "2026-11-01T07:43:14.936Z",
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "exceededResources"
+            },
+            "quantiles": {
+              "cpuTimeP50": 10000,
+              "cpuTimeP95": 10000,
+              "cpuTimeP99": 10000,
+              "memoryUsageBytesP50": 24143968,
+              "memoryUsageBytesP99": 26065936,
+              "wallTimeP50": 143109,
+              "wallTimeP95": 148291,
+              "wallTimeP99": 148291
+            },
+            "sum": {
+              "cpuTimeUs": 80000,
+              "errors": 8,
+              "requests": 8,
+              "subrequests": 0,
+              "wallTime": 1139339
+            }
+          }
+        ]
+      },
+      {
+        "mode": "legacy",
+        "name": "maximum-concurrent",
+        "expectedRequests": 12,
+        "start": "2026-11-01T07:43:14.945Z",
+        "end": "2026-11-01T07:43:26.634Z",
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "success"
+            },
+            "quantiles": {
+              "cpuTimeP50": 236064,
+              "cpuTimeP95": 333317,
+              "cpuTimeP99": 333317,
+              "memoryUsageBytesP50": 20883394,
+              "memoryUsageBytesP99": 44457224,
+              "wallTimeP50": 997739,
+              "wallTimeP95": 1035843,
+              "wallTimeP99": 1035843
+            },
+            "sum": {
+              "cpuTimeUs": 569381,
+              "errors": 0,
+              "requests": 2,
+              "subrequests": 0,
+              "wallTime": 2033582
+            }
+          },
+          {
+            "dimensions": {
+              "status": "exceededResources"
+            },
+            "quantiles": {
+              "cpuTimeP50": 10000,
+              "cpuTimeP95": 20000,
+              "cpuTimeP99": 20000,
+              "memoryUsageBytesP50": 26709244,
+              "memoryUsageBytesP99": 35688360,
+              "wallTimeP50": 138888,
+              "wallTimeP95": 817196,
+              "wallTimeP99": 817196
+            },
+            "sum": {
+              "cpuTimeUs": 130000,
+              "errors": 12,
+              "requests": 12,
+              "subrequests": 0,
+              "wallTime": 2376281
+            }
+          }
+        ]
+      },
+      {
+        "mode": "legacy",
+        "name": "whole-benchmark",
+        "expectedRequests": 42,
+        "start": "2026-11-01T07:42:48.005Z",
+        "end": "2026-11-01T07:43:31.634Z",
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "success"
+            },
+            "quantiles": {
+              "cpuTimeP50": 122995,
+              "cpuTimeP95": 356640,
+              "cpuTimeP99": 356640,
+              "memoryUsageBytesP50": 41551988,
+              "memoryUsageBytesP99": 59066636,
+              "wallTimeP50": 739620,
+              "wallTimeP95": 1035843,
+              "wallTimeP99": 1035843
+            },
+            "sum": {
+              "cpuTimeUs": 2256327,
+              "errors": 0,
+              "requests": 13,
+              "subrequests": 0,
+              "wallTime": 9857365
+            }
+          },
+          {
+            "dimensions": {
+              "status": "exceededResources"
+            },
+            "quantiles": {
+              "cpuTimeP50": 10000,
+              "cpuTimeP95": 20000,
+              "cpuTimeP99": 453048,
+              "memoryUsageBytesP50": 31611626,
+              "memoryUsageBytesP99": 35688360,
+              "wallTimeP50": 143109,
+              "wallTimeP95": 597953,
+              "wallTimeP99": 817196
+            },
+            "sum": {
+              "cpuTimeUs": 743048,
+              "errors": 29,
+              "requests": 29,
+              "subrequests": 0,
+              "wallTime": 5271631
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "productionDeployed": false
+}

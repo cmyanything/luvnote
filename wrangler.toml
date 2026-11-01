@@ -4,7 +4,31 @@ compatibility_date = "2025-01-01"
 workers_dev = true
 routes = [{ pattern = "api.luvnote.fun", custom_domain = true }]
 
+# Prepared only; keep uploads disabled through backend verification and Owner approval.
+[vars]
+MEDIA_V3_UPLOADS_ENABLED = "false"
+MEDIA_CLEANUP_ENABLED = "false"
+
+[[ratelimits]]
+name = "WRITE_LIMITER"
+namespace_id = "472001"
+simple = { limit = 60, period = 60 }
+
+[[ratelimits]]
+name = "READ_LIMITER"
+namespace_id = "472003"
+simple = { limit = 300, period = 60 }
+
 [[d1_databases]]
 binding = "DB"
 database_name = "luvnote"
 database_id = "__D1_ID__" # filled in by the deploy workflow
+
+# Provision the private bucket before deploying this binding.
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "luvnote-media"
+
+# Check expired uploads and published card media hourly.
+[triggers]
+crons = ["0 * * * *"]

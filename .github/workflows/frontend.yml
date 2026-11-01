@@ -19,9 +19,41 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: node --check worker/media-v3.js && node --check scripts/smoke-r2-staging.mjs
+      - run: npm run test:api
+      # Legacy compatibility tests use the old creation API.
       - run: npm run build
-      - run: npx playwright install --with-deps chromium
+        env:
+          VITE_R2_MEDIA_ENABLED: 'false'
+      - run: npx playwright install --with-deps chromium webkit
       - run: npm test
+      # Validate the new binary-upload path against mocked API requests.
+      - run: npm run build
+        env:
+          VITE_R2_MEDIA_ENABLED: 'true'
+          VITE_TURNSTILE_SITE_KEY: '1x00000000000000000000AA'
+      - run: npx playwright test tests/media-v3.spec.ts tests/r2-acceptance.spec.ts
+        env:
+          VITE_R2_MEDIA_ENABLED: 'true'
+      # Never ship the Cloudflare testing site key or a missing real key to production.
+      - name: Check production Turnstile rollout guard
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          MEDIA_MODE: ${{ vars.VITE_R2_MEDIA_ENABLED }}
+          SITE_KEY: ${{ vars.VITE_TURNSTILE_SITE_KEY }}
+          BACKEND_VERIFIED: ${{ vars.R2_PRODUCTION_CONFIG_VERIFIED }}
+        run: |
+          if [ "$MEDIA_MODE" = "true" ]; then
+            if [ "$BACKEND_VERIFIED" != "true" ] || ! [[ "$SITE_KEY" =~ ^0x[A-Za-z0-9_-]+$ ]]; then
+              echo "::error::V3 cannot deploy without a genuine Turnstile site key"
+              exit 1
+            fi
+          fi
+      # Build the actual deployable artifact using explicitly configured repository vars.
+      - run: npm run build
+        env:
+          VITE_R2_MEDIA_ENABLED: ${{ vars.VITE_R2_MEDIA_ENABLED }}
+          VITE_TURNSTILE_SITE_KEY: ${{ vars.VITE_TURNSTILE_SITE_KEY }}
       - uses: actions/upload-artifact@v7
         if: failure()
         with:

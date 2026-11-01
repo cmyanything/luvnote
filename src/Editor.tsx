@@ -9,6 +9,8 @@ import {
   type InvalidField,
 } from './lib/card';
 import { createCard } from './lib/api';
+import { R2_MEDIA_ENABLED, TURNSTILE_SITE_KEY } from './lib/media-v3';
+import { UploadVerification } from './components/UploadVerification';
 import { Hero } from './components/Hero';
 import { Section } from './components/Section';
 import { PhotoPicker } from './components/PhotoPicker';
@@ -40,6 +42,8 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
   const [musicAllowed, setMusicAllowed] = useState(false);
   const [photosBusy, setPhotosBusy] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [verificationToken, setVerificationToken] = useState<string | null>(null);
+  const [verificationVersion, setVerificationVersion] = useState(0);
   const [preview, setPreview] = useState<Partial<CardData> | null>(null);
   const [created, setCreated] = useState<{
     result: CreatedCard;
@@ -116,13 +120,17 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
   }
   async function submit() {
     if (request.current || photosBusy || !validate()) return;
+    if (R2_MEDIA_ENABLED && !verificationToken) {
+      toast('กรุณายืนยันตัวตนก่อนสร้างการ์ดนะ');
+      return;
+    }
     const controller = new AbortController();
     request.current = controller;
     setBusy(true);
-    const timer = setTimeout(() => controller.abort(), 30000);
+    const timer = setTimeout(() => controller.abort(), R2_MEDIA_ENABLED ? 120000 : 30000);
     try {
       const data = cardData(state, theme, musicAllowed);
-      const result = await createCard(theme.id, data, controller.signal);
+      const result = await createCard(theme.id, data, controller.signal, verificationToken || undefined);
       setCreated({ result, recipient: data.to });
     } catch (error) {
       toast(
@@ -132,6 +140,10 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
       );
     } finally {
       clearTimeout(timer);
+      if (R2_MEDIA_ENABLED) {
+        setVerificationToken(null);
+        setVerificationVersion((n) => n + 1);
+      }
       request.current = null;
       setBusy(false);
     }
@@ -471,6 +483,13 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
           'ไม่ใส่ก็ได้',
         )}
       </main>
+      {R2_MEDIA_ENABLED && (
+        <div style={{ textAlign: 'center', padding: '12px 0' }}>
+          {TURNSTILE_SITE_KEY
+            ? <UploadVerification key={verificationVersion} onToken={setVerificationToken} />
+            : <p role="alert">ระบบอัปโหลดรูปยังไม่พร้อม กรุณาติดต่อผู้ดูแล</p>}
+        </div>
+      )}
       <div className="bar">
         <div className="in">
           <button
@@ -478,7 +497,10 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
             className="btn sec2"
             id="pvBtn"
             disabled={photosBusy || busy}
-            onClick={openPreview}
+            onClick={(event) => {
+              event.currentTarget.focus({ preventScroll: true });
+              openPreview();
+            }}
           >
             👀 ดูตัวอย่าง
           </button>

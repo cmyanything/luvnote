@@ -1,6 +1,13 @@
 import { useRef, useState } from 'react';
 import type { Photo, ThemeConfig } from '../types';
 import { readPhoto } from '../lib/images';
+import { R2_MEDIA_ENABLED } from '../lib/media-v3';
+
+function imageReadError(error: unknown): string {
+  return error instanceof Error && error.message === 'image_too_large'
+    ? 'รูปใหญ่เกิน 15 MB กรุณาเลือกรูปที่เล็กลง'
+    : 'อ่านรูปนี้ไม่ได้ ลองรูปอื่นนะ';
+}
 
 export function PhotoPicker({
   photos,
@@ -35,9 +42,10 @@ export function PhotoPicker({
       const added: Photo[] = [];
       for (const file of selected) {
         try {
-          added.push({ src: await readPhoto(file), cap: '' });
-        } catch {
-          toast('อ่านรูปนี้ไม่ได้ ลองรูปอื่นนะ');
+          // R2 accepts a maximum 1024px JPEG. Prepare 900px only once.
+          added.push({ src: await readPhoto(file, R2_MEDIA_ENABLED ? 900 : 1080), cap: '' });
+        } catch (error) {
+          toast(imageReadError(error));
         }
       }
       onPhotos((previous) => [...previous, ...added].slice(0, 5));
@@ -54,8 +62,8 @@ export function PhotoPicker({
     onBusy(true);
     try {
       onCover(await readPhoto(file, 700));
-    } catch {
-      toast('อ่านรูปนี้ไม่ได้ ลองรูปอื่นนะ');
+    } catch (error) {
+      toast(imageReadError(error));
     } finally {
       pending.current = false;
       setBusy(false);

@@ -1,3 +1,4 @@
+import { R2_MEDIA_ENABLED, TURNSTILE_SITE_KEY, createR2Card } from './media-v3';
 import type { CardData, CreatedCard, ThemeId } from '../types';
 import { jpeg } from './images';
 
@@ -11,8 +12,13 @@ export async function createCard(
   theme: ThemeId,
   data: CardData,
   signal: AbortSignal,
+  turnstileToken?: string,
 ): Promise<CreatedCard> {
   signal.throwIfAborted();
+  if (R2_MEDIA_ENABLED) {
+    if (!TURNSTILE_SITE_KEY) throw new Error('media_not_configured');
+    return createR2Card(theme, data, turnstileToken || '', signal);
+  }
   const payload = {
     ...data,
     photos: await Promise.all(

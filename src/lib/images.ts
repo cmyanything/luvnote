@@ -24,7 +24,11 @@ export async function jpeg(
   });
 }
 
+// Reject very large phone originals before the browser decodes them into memory.
+export const MAX_SOURCE_IMAGE_BYTES = 15 * 1024 * 1024;
+
 export async function readPhoto(file: File, max = 1080): Promise<string> {
+  if (file.size > MAX_SOURCE_IMAGE_BYTES) throw new Error('image_too_large');
   const url = URL.createObjectURL(file);
   try {
     return await jpeg(url, max, 0.82);

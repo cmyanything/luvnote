@@ -1,0 +1,19 @@
+# Safe isolated staging Worker: copy to wrangler.staging.toml, replace the D1 id and validate.
+# This file is a TEMPLATE. Do not deploy it without replacing the placeholder.
+# No custom routes: staging stays off api.luvnote.fun.
+name = "luvnote-api-staging"
+main = "worker/index.js"
+compatibility_date = "2026-10-31"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "luvnote-staging"
+database_id = "REPLACE_WITH_STAGING_D1_UUID"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "luvnote-media-staging"
+
+[triggers]
+crons = ["0 * * * *"]

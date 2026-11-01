@@ -131,7 +131,7 @@ async function uploadPhoto(req, env, url, sid, json) {
         !await reserveBudget(env, 'images-transform:staging', 60, DAY))
       throw Object.assign(Error('transformation_test_budget_exceeded'), {status:429});
     const bytes = validationMode === 'images' ? await validateJpegNative(raw, env.IMAGES)
-      : validationMode === 'images-transform' ? await validateJpegTransformed(raw, env.IMAGES)
+      : validationMode === 'images-transform' ? await validateJpegTransformed(raw, env.IMAGES, env.JPEG_MARKER_SEARCH)
       : validateJpeg(raw);
     if (!bytes) throw Object.assign(Error('invalid_jpeg'), { status: 400 });
     await env.DB.batch([

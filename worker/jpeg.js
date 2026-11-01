@@ -3,11 +3,12 @@ import {readLimitedBody} from './guards.js';
 
 // Reject out-of-bounds JPEG markers, dimensions and EXIF/IPTC metadata without decoding pixels.
 // The client normalizes rotation before uploading. Native inspection is experimental, staging only.
-function parseJpeg(bytes, maxBytes = 1500000) {
+export function parseJpeg(bytes, maxBytes = 1500000, createMarkerSearch) {
   if (bytes.length < 32 || bytes.length > maxBytes || bytes[0] !== 255 || bytes[1] !== 216 ||
       bytes[bytes.length-2] !== 255 || bytes[bytes.length-1] !== 217) return null;
   let offset = 2, frame = false, ended = false, scans = 0, frameDimensions = null;
   const parts = [bytes.subarray(0,2)];
+  let findMarker;
   try {
     while (offset < bytes.length) {
       const start = offset;
@@ -23,15 +24,18 @@ function parseJpeg(bytes, maxBytes = 1500000) {
       if (marker === 0xda) {
         if (!frame || ++scans > 20) return null;
         offset += length;
-        while (offset < bytes.length) {
-          // Native search skips entropy without changing marker handling.
-          const prefix = bytes.indexOf(255, offset);
-          if (prefix < 0) { offset = bytes.length; break; }
-          offset = prefix + 1;
-          while (bytes[offset] === 255) offset++;
-          const next = bytes[offset++];
-          if (next === 0 || (next >= 0xd0 && next <= 0xd7)) continue;
-          offset = prefix; break;
+        if (createMarkerSearch) {
+          findMarker ??= createMarkerSearch(bytes);
+          offset = findMarker(offset);
+        } else {
+          while (offset < bytes.length) {
+            if (bytes[offset++] !== 255) continue;
+            const prefix = offset - 1;
+            while (bytes[offset] === 255) offset++;
+            const next = bytes[offset++];
+            if (next === 0 || (next >= 0xd0 && next <= 0xd7)) continue;
+            offset = prefix; break;
+          }
         }
         parts.push(bytes.subarray(start,offset)); continue;
       }
@@ -94,8 +98,8 @@ export async function validateJpegNative(bytes, images) {
  * Owner-approved policy allows canonical repair, provided only the newly encoded
  * complete image is stored. Input byte/pixel/metadata limits remain unchanged.
  */
-export async function validateJpegTransformed(bytes, images) {
-  const parsed = parseJpeg(bytes);
+export async function validateJpegTransformed(bytes, images, createMarkerSearch) {
+  const parsed = parseJpeg(bytes, 1500000, createMarkerSearch);
   if (!parsed || typeof images?.input !== 'function') return null;
   console.log(JSON.stringify({event:'staging_images_transform',phase:'attempt'}));
   try {
@@ -110,7 +114,7 @@ export async function validateJpegTransformed(bytes, images) {
       console.log(JSON.stringify({event:'staging_images_transform',phase:'rejected',reason:'output_size'}));
       return null;
     }
-    const clean = parseJpeg(output, 3000000);
+    const clean = parseJpeg(output, 3000000, createMarkerSearch);
     if (!clean || clean.width !== parsed.width || clean.height !== parsed.height) return null;
     console.log(JSON.stringify({event:'staging_images_transform',phase:'complete',bytes:clean.bytes.length}));
     return clean.bytes;

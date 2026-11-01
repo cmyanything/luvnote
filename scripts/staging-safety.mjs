@@ -25,7 +25,7 @@ export function stagingConfig(text) {
   }
   for (const [key,value] of Object.entries({name:'luvnote-api-staging',database_name:'luvnote-staging',bucket_name:'luvnote-media-staging',ENVIRONMENT:'staging'}))
     if (!new RegExp('^'+key+'\\s*=\\s*"'+value+'"\\s*$','m').test(clean)) throw Error('Invalid staging '+key);
-  const imageBlocks=[...clean.matchAll(/^\s*\[images\]([\s\S]*?)(?=\n\s*\[|$)/gm)];
+  const imageBlocks=[...clean.matchAll(/\[images\]([\s\S]*?)(?=\n\s*\[|$)/g)];
   if (imageBlocks.length > 1 ||
       (imageBlocks.length === 1 && !/^binding\s*=\s*"IMAGES"\s*$/m.test(imageBlocks[0][1])))
     throw Error('Invalid staging Images binding');

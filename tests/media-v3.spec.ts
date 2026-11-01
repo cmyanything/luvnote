@@ -51,6 +51,7 @@ test('R2 path uploads binary JPEG media and publishes references rather than Bas
   await page.getByLabel('ชื่อผู้รับ').fill('น้องพลอย');
   await page.getByLabel('ชื่อผู้ส่ง').fill('พี่ต้นข้าว');
   await page.locator('#letter').fill('สุขสันต์วันเกิด');
+  await page.locator('#secret').fill('เธอคือคนพิเศษ');
   await page.locator('#file').setInputFiles({
     name: 'memory.png', mimeType: 'image/png',
     buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aWQ0AAAAASUVORK5CYII=', 'base64'),

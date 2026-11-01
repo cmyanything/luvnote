@@ -2,7 +2,109 @@
 
 Updated **2026-11-01 UTC**. Independent acceptance of [PR #6](https://github.com/cmyanything/luvnote/pull/6), based on the unmerged [PR #2](https://github.com/cmyanything/luvnote/pull/2) feature branch. [Issue #5](https://github.com/cmyanything/luvnote/issues/5) retains the production gates.
 
-## Full Transformation final acceptance — NO-GO for reliable Workers Free CPU
+## Latest continuation — minimal changes, Free CPU gate still NO-GO
+
+Verified **2026-11-01 12:50 UTC**. Continued from clean `86cece35fca20880e95515ba456baa735fdcfc70` on `perf/r2-native-jpeg-validation`. The Owner requested a simple implementation and retained the existing plan. **The complete media flow works in the tested staging window; it is not approved for production because CPU still exceeds the documented Workers Free budget.** No production merge, deployment, migration, customer-data access, billing change or new resource/service occurred.
+
+### Retained change and exact source
+
+Relative to `86cece3`, application changes are limited to **two files**:
+
+- `worker/guards.js`: use the existing native BYOB `readAtLeast()` for bounded large bodies when available; retain the fallback reader, actual byte cap, EOF check and 20-second whole-operation deadline. Cancellation cannot turn an incomplete prefix into an accepted body.
+- `worker/jpeg.js`: give Images one bounded immutable stream chunk. Keep the original structure/metadata parser, SHA-256 ownership/idempotency logic and output validation. No second full JS decode or image-quality reduction was added to requests.
+
+All experimental Wasm/string scanners, alternate entry points and extra runtime flags were **removed**. No package, schema, frontend design or production configuration changed. `worker/media-v3.js` is identical to the starting version: the **30-attempt** staging diagnostic cap is restored and the counter was never reset. The only other retained engineering changes are regression cases in `tests/media-v3.integration.test.mjs` and `tests/media-v3.workerd.test.mjs`, plus Full Transformation repetitions in `.github/workflows/frontend.yml`.
+
+Actual staging application source: **`5c61808b20f85517a9a37941f1899c6cf2c4e5de`**. Final source before this documentation: **`6d9951403d9842c6838d10245f661ade9e369083`**, which only restores the original diagnostic limit and updates its test/ledger. That final stricter quota was locally verified with **85/85 API tests**; the full runtime flow was tested at `5c61808`.
+
+Commits created during this continuation, all on the existing PR #6 branch:
+
+| Commit | Disposition |
+|---|---|
+| `98097ab1bfa10b6692acf338168a43f4d0ec60ae` | Bounded diagnostic window / initial comparison |
+| `f88a01491d58ddade8cac3646e6d7f6b6a96b09c` | Typed-array search experiment, removed |
+| `01c919bf15ca8f743e2c2c1ab274378eb8801af4` | String search experiment, removed |
+| `fbc7de7cc108863fe40b7768a78d345d233f7b2a` | Retained bounded reader and regression coverage |
+| `e1956853fe6190d91a8248a4548fec7034892195` | Wasm experiment, removed |
+| `3b2c18ed272631ea66ff8577e2a407efc86af239` | Blob experiment, removed; reader negative tests retained |
+| `ef01d41e741116c45f194a8acde406dcfc9ee447` | Retained single-chunk Images input |
+| `5c61808b20f85517a9a37941f1899c6cf2c4e5de` | Remove speculative helpers; complete real acceptance |
+| `6d9951403d9842c6838d10245f661ade9e369083` | Restore original 30-attempt diagnostic cap |
+| Documentation/evidence commit | This section and sanitized evidence; exact hash in Git history |
+
+### Actual Cloudflare acceptance
+
+Reused account `cee7f572be6cf7e3de1e4526f6d250d2`, Worker `luvnote-api-staging`, D1 `luvnote-staging / 3967493c-55db-4ab8-bb2c-9ed3c157a543` and private R2 `luvnote-media-staging`. No production routes/bindings. Managed r2.dev access is disabled and custom R2 domains are empty.
+
+The final controlled window **12:36:14–12:38:34 UTC**, version **`c3942c8c-bc1e-48f5-b91e-ee419edb2a7f`**, performed:
+
+- **24 primary uploads: 22 HTTP 201 and two expected HTTP 400** (EXIF/GPS, fake PNG declared JPEG); **22 actual Images calls**, with no provider exception or observed 1102/9422.
+- **22/22 ready-upload replays**, without new transformations. Three simultaneous maximum-size image uploads all succeeded.
+- All three previously problematic damaged JPEGs were repaired under the explicit Owner-approved policy. Every successful object was downloaded from real private R2 and independently strict-decoded and checked for stripped metadata by the operator process. No original damaged input was stored.
+- All five themes published with photo and cover, receipt retry and compatibility read/reopen: `pink-coquette`, `coquette-dream`, `little-memories`, `birthday-chat`, `velvet-gift`.
+- **15/15 live browser read/reload checks**: five themes each on desktop Chromium, Pixel 7 Chromium emulation and iPhone 13 WebKit emulation. This is browser emulation, not physical-device or installed-LINE acceptance.
+- Existing scheduled cleanup through an isolated remote preview reduced **50 expired unlinked metadata rows to zero**; all five live synthetic cards still read afterward. The existing aged-orphan grace check remains pending until **2026-11-02 06:18:29.566 UTC**; it was not bypassed.
+
+Output hashes matched the previously verified Full Transformation outputs **22/22**. The prior browser quality comparisons therefore apply to identical bytes; their results and decoder-reference limitations are retained below. The new evidence also records the operator's decoder-based PSNR values, which are not interchangeable with browser perceptual comparisons. Dimensions, quality setting 95 and all theme/UI code are unchanged. Repaired damaged files are assessed for complete canonical output, not fidelity to missing source pixels. Maximum generated output remains 3 MB, raw input 1.5 MB and 1024×1024; no limits were weakened.
+
+### Real CPU result and quota
+
+Cloudflare tail percentiles use nearest-rank and **milliseconds**, separately from client/network time:
+
+| Workload | n | CPU p50 / p95 / p99 | Cloudflare wall p50 / p95 / p99 |
+|---|---:|---|---|
+| Prior Full Transformation, same six sequential inputs/order | 6 | 71 / 128 / 128 | 1084 / 1506 / 1506 |
+| Retained simple IO change, same six sequential inputs/order | 6 | **39 / 63 / 63** | 981 / 1034 / 1034 |
+| Final mixed binding calls, including small/repaired images | 22 | **20 / 48 / 63** | 985 / 1260 / 1424 |
+
+The same-hash comparison shows a reduction in this small, nonrandomized diagnostic sample. **It still fails the documented 10 ms Free CPU budget**; zero 1102 in 24 attempts cannot certify sustained reliability. The six-input baseline is the previous Full Transformation implementation, not a new jpeg-js run. Historical strict-decoder evidence remains below and must not be relabeled as a paired rerun.
+
+Adaptive analytics for the final window represented 72 mixed invocations, including reads/publication: CPU p50/p95/p99 **5.462 / 39.737 / 63.030 ms**, memory p50/p99 **11,164,495 / 31,884,254 bytes**. This is sampled/shared-isolate usage, not peak per-upload memory or provider-service memory. Tail binding events are the primary upload CPU evidence. No CPU limit was increased.
+
+This continuation used **78 additional diagnostic attempts**, taking the retained D1 counter **30 → 108**, including intermediate rejected approaches. The counter was never reset or deleted; code now again caps it at 30 and uploads are disabled. All calls reused synthetic inputs. **Images Free is Owner-confirmed, but the authoritative monthly account meter still returns 403 / NOT_VERIFIED**. Calls, HTTP requests and unique billable transformations are different counters; no monthly-zero claim is made. No billing change or paid plan was enabled.
+
+### Regression commands and results
+
+Local full workflow mirror passed; [CI run 41307409207](https://github.com/cmyanything/luvnote/actions/runs/41307409207) independently passed for exact staging source `5c61808`. **185 passing test executions, not 185 unique scenarios**:
+
+| Command / environment | Result |
+|---|---|
+| `npm run test:api` (default legacy validator) | **85 PASS**, including nested security corpus and five workerd tests |
+| `TEST_JPEG_VALIDATOR=images node --test tests/media-v3.workerd.test.mjs` | **5 PASS** |
+| `TEST_JPEG_VALIDATOR=images-transform node --test tests/media-v3.workerd.test.mjs` | **5 PASS** |
+| `VITE_R2_MEDIA_ENABLED=false npm run build`, then `npm test` | TypeScript/build PASS; **36 PASS / 18 intentional V3 SKIP** |
+| V3 build with official dummy key for local tests, then `npx playwright test tests/media-v3.spec.ts tests/r2-acceptance.spec.ts` | **18 PASS** with default legacy decoder |
+| Same V3 Playwright command, `TEST_JPEG_VALIDATOR=images` | **18 PASS** |
+| Same V3 Playwright command, `TEST_JPEG_VALIDATOR=images-transform` | **18 PASS** |
+| Final `VITE_R2_MEDIA_ENABLED=false npm run build` | TypeScript/build PASS; local artifact returned to disabled state |
+
+Environment assignments above use shell-appropriate syntax (local PowerShell `$env:...`; CI `env`). Browser suites cover editor changes, preview, publication, retry/response loss, ownership, compatibility, read/reload and sharing URL generation. Local Images emulation is lower fidelity; it is not proof of real Cloudflare decodability, quality, performance or real Turnstile. Local tests after restoring quota at `6d99514`: **85 PASS**. [Exact-source CI 41308122708](https://github.com/cmyanything/luvnote/actions/runs/41308122708) also completed **SUCCESS: 185 passing executions**, deployment skipped.
+
+Harness corrections were kept separate from product findings: the first live browser run used disallowed local port 4174; repeating on existing allowed 4173 passed without changing CORS. One earlier six-upload experiment failed a post-rollback assertion before persisting its CPU artifact; those six uploads have **no claimed CPU result**. A later check confirmed the parked version and write denials. Local differential/profiling experiments were not reported as remote CPU proof.
+
+### Final parked state and decision
+
+At **12:50:13.630 UTC**, the active version was again **`b0f3a112-e7a9-4250-b7bb-027e83dca378`**, 100% traffic: **legacy / uploads false / cleanup true / Turnstile test mode false / no Images binding**. Health was 200; session, upload and publication writes each returned 503. The temporary diagnostic route returned 404. Existing V1/V2 and V3 image reads remained available. Local test/preview servers were stopped.
+
+Sanitized primary evidence: [latest acceptance, raw tail measurements, quality hashes and final bindings](evidence/r2-simple-io-acceptance-2026-11-01.json); [bounded experiment ledger](evidence/r2-cpu-continuation-ledger-2026-11-01.json). Tokens, session credentials and customer data are excluded.
+
+| Current gate | Status |
+|---|---|
+| R2_FULL_TRANSFORMATION_CODE | PASS |
+| R2_FULL_TRANSFORMATION_SECURITY | PASS — bounded corpus and Owner-approved canonical repair |
+| R2_FULL_TRANSFORMATION_FUNCTIONAL | PASS |
+| R2_FULL_TRANSFORMATION_CPU | **FAIL** |
+| R2_STAGING_VERIFIED | **FAIL** — aggregate acceptance still blocked |
+| R2_CPU_ACCEPTANCE | **FAIL** |
+| R2_IMAGES_MONTHLY_METER | NOT_VERIFIED |
+| R2_PRODUCTION_DEPLOYED | **NO** |
+| R2_PRODUCTION_READY | **NO** |
+
+**NO-GO for merging PR #6 as a resolved Workers Free CPU blocker.** Preserve the existing V2 production path and keep the V3 frontend disabled. Do not add more speculative accelerators. On the current evidence, no tested Full Transformation variant reliably meets the unchanged Free budget. Any plan change requires a separate Owner decision; none is requested or performed here.
+
+Broader gates also remain: real public Turnstile positive/hostname/action/replay, real interrupted ingress, physical devices/LINE, monthly Images meter, aged orphan observation, lifecycle backstop, alert delivery/cost controls, off-host backup/key recovery and exact production approvals. The previously completed encrypted backup/isolated restore is historical evidence, not a fresh backup for an eventual rollout. Link-accessible private-R2 cards still confer image access to anyone with the card URL; they are not authenticated private albums. These limitations remain documented in the retained historical/operations sections below.
+
+## Historical Full Transformation acceptance — superseded by the continuation above
 
 The Owner confirmed **Images Free**, retained **Workers Free / R2 Paid**, and explicitly approved **creating a complete new JPEG from a damaged source and discarding the source**. This changes the earlier reject-every-damaged-input policy for this Full Transformation experiment only. It does not approve Images.info(), which can store malformed original bytes, or any production action.
 

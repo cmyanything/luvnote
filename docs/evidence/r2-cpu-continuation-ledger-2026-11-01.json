@@ -21,6 +21,6 @@
     {"method":"Blob input stream and R2 payload", "realCloudflare":true, "decision":"6/6 uploads, CPU 36/51/59/23/57/55 ms; not sufficient"},
     {"method":"Minimal conversion versus authenticated no-op", "realCloudflare":true, "decision":"3 controls 7/8/8 ms; Images Blob input 7/25/30 ms, no R2 or card writes"},
     {"method":"Minimal single-chunk conversion", "realCloudflare":true, "decision":"3 controls 7/9/8 ms; Images 12/9/9 ms; requires full-pipeline proof, not a paired causal certificate"},
-    {"method":"Full single-chunk pipeline", "decision":"at most 30 additional primary attempts to restore complete security/theme/concurrency acceptance; unchanged plan, same synthetic inputs, no counter reset"}
+    {"method":"Full single-chunk pipeline", "realCloudflare":true, "source":"5c61808b20f85517a9a37941f1899c6cf2c4e5de", "version":"c3942c8c-bc1e-48f5-b91e-ee419edb2a7f", "decision":"Final window: 22 HTTP 201 / 2 expected HTTP 400, 22 idempotent replays, all five photo/cover themes and 15 live browser-emulation checks passed. CPU p50/p95/p99 20/48/63 ms still fails Free acceptance. Full evidence in r2-simple-io-acceptance-2026-11-01.json. No further acceleration experiment retained."}
   ]
 }

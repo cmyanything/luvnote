@@ -1,0 +1,2087 @@
+{
+  "capturedAt": "2026-11-01T12:51:11.012Z",
+  "startingSource": "86cece35fca20880e95515ba456baa735fdcfc70",
+  "acceptedApplicationSource": "5c61808b20f85517a9a37941f1899c6cf2c4e5de",
+  "finalSourceBeforeDocumentation": "6d9951403d9842c6838d10245f661ade9e369083",
+  "acceptance": {
+    "source": "5c61808b20f85517a9a37941f1899c6cf2c4e5de",
+    "version": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f",
+    "label": "acceptance",
+    "startedAt": "2026-11-01T12:36:14.555Z",
+    "endedAt": "2026-11-01T12:38:34.924Z",
+    "realCloudflare": true,
+    "ownerConfirmedImagesFree": true,
+    "monthlyMeter": "NOT_VERIFIED",
+    "diagnosticBefore": 84,
+    "diagnosticAfter": 108,
+    "rows": [
+      {
+        "name": "sequential-0-pink-coquette-photo",
+        "kind": "photo",
+        "start": "2026-11-01T12:36:26.778Z",
+        "end": "2026-11-01T12:36:27.734Z",
+        "inputBytes": 55636,
+        "inputSha256": "1826798ea2ea0dc968cfad344c14a067cc3e02b4d4f7b282b58425f2b68f0fe9",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 956.2439000000013,
+        "journalState": "ready",
+        "output": {
+          "bytes": 55616,
+          "sha256": "b1cd83ce8978e55290c4c65de0ca20ecefc93b64458dd1eb0c026dfd4dde57dd",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "sequential-0-coquette-dream-photo",
+        "kind": "photo",
+        "start": "2026-11-01T12:36:31.158Z",
+        "end": "2026-11-01T12:36:32.326Z",
+        "inputBytes": 1028954,
+        "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 1173.9750999999997,
+        "journalState": "ready",
+        "output": {
+          "bytes": 1855090,
+          "sha256": "fb50f775a123f0cd8cca3b1f443cbd99767a308e006e0c01b47b8a272268b7d5",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "sequential-0-little-memories-photo",
+        "kind": "photo",
+        "start": "2026-11-01T12:36:35.987Z",
+        "end": "2026-11-01T12:36:37.131Z",
+        "inputBytes": 1498433,
+        "inputSha256": "6ccb3267423979720bbe371fd3eb96a173c54c67889a6264ef62b5c1d621f43f",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 1154.3991000000024,
+        "journalState": "ready",
+        "output": {
+          "bytes": 1936631,
+          "sha256": "06ed3395c30d09ae588f13a5cd0413106f48b3049955bfdf577cda729be877d9",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "sequential-1-pink-coquette-photo",
+        "kind": "photo",
+        "start": "2026-11-01T12:36:41.295Z",
+        "end": "2026-11-01T12:36:42.112Z",
+        "inputBytes": 55636,
+        "inputSha256": "1826798ea2ea0dc968cfad344c14a067cc3e02b4d4f7b282b58425f2b68f0fe9",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 817.1129000000001,
+        "journalState": "ready",
+        "output": {
+          "bytes": 55616,
+          "sha256": "b1cd83ce8978e55290c4c65de0ca20ecefc93b64458dd1eb0c026dfd4dde57dd",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "sequential-1-coquette-dream-photo",
+        "kind": "photo",
+        "start": "2026-11-01T12:36:45.092Z",
+        "end": "2026-11-01T12:36:46.229Z",
+        "inputBytes": 1028954,
+        "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 1143.1754,
+        "journalState": "ready",
+        "output": {
+          "bytes": 1855090,
+          "sha256": "fb50f775a123f0cd8cca3b1f443cbd99767a308e006e0c01b47b8a272268b7d5",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "sequential-1-little-memories-photo",
+        "kind": "photo",
+        "start": "2026-11-01T12:36:50.541Z",
+        "end": "2026-11-01T12:36:51.693Z",
+        "inputBytes": 1498433,
+        "inputSha256": "6ccb3267423979720bbe371fd3eb96a173c54c67889a6264ef62b5c1d621f43f",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 1156.8724999999977,
+        "journalState": "ready",
+        "output": {
+          "bytes": 1936631,
+          "sha256": "06ed3395c30d09ae588f13a5cd0413106f48b3049955bfdf577cda729be877d9",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "concurrent-maximum-0",
+        "kind": "photo",
+        "start": "2026-11-01T12:36:55.687Z",
+        "end": "2026-11-01T12:36:56.867Z",
+        "inputBytes": 1028954,
+        "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 1186.525099999999,
+        "journalState": "ready",
+        "output": {
+          "bytes": 1855090,
+          "sha256": "fb50f775a123f0cd8cca3b1f443cbd99767a308e006e0c01b47b8a272268b7d5",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "concurrent-maximum-2",
+        "kind": "photo",
+        "start": "2026-11-01T12:36:55.694Z",
+        "end": "2026-11-01T12:36:57.058Z",
+        "inputBytes": 1028954,
+        "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 1367.2536000000036,
+        "journalState": "ready",
+        "output": {
+          "bytes": 1855090,
+          "sha256": "fb50f775a123f0cd8cca3b1f443cbd99767a308e006e0c01b47b8a272268b7d5",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "concurrent-maximum-1",
+        "kind": "photo",
+        "start": "2026-11-01T12:36:55.690Z",
+        "end": "2026-11-01T12:37:01.991Z",
+        "inputBytes": 1028954,
+        "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 6302.922599999998,
+        "journalState": "ready",
+        "output": {
+          "bytes": 1855090,
+          "sha256": "fb50f775a123f0cd8cca3b1f443cbd99767a308e006e0c01b47b8a272268b7d5",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "truncated-entropy-with-EOI",
+        "kind": "photo",
+        "start": "2026-11-01T12:37:14.639Z",
+        "end": "2026-11-01T12:37:15.918Z",
+        "inputBytes": 610,
+        "inputSha256": "3f53eff522c96005b2bce12d3f0638c474e458ffe5dd2cf1368235b0baa7d5e6",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 1278.8850999999995,
+        "journalState": "ready",
+        "output": {
+          "bytes": 326,
+          "sha256": "f3eb85f07091031ba9b9462c3c9c31dfe8e7d825acb56d263d85e4c4e9b3157d",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "corrupt-entropy-all-zero",
+        "kind": "photo",
+        "start": "2026-11-01T12:37:18.602Z",
+        "end": "2026-11-01T12:37:19.503Z",
+        "inputBytes": 897,
+        "inputSha256": "4209a78966cbdc2f8f5fe198e5da482568bf89af92f0018f565765d24d64b962",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 900.9511999999959,
+        "journalState": "ready",
+        "output": {
+          "bytes": 618,
+          "sha256": "ec098bdee3f962e483fcd3f555e5f797eadf58af90c4d9c794daef2ede2e0fe5",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "forged-headers-no-pixels",
+        "kind": "photo",
+        "start": "2026-11-01T12:37:22.333Z",
+        "end": "2026-11-01T12:37:23.206Z",
+        "inputBytes": 609,
+        "inputSha256": "6989ba2fcc1970278c505256ae84520a4abff5805b763075b793a5ef7a4190c4",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 872.969499999992,
+        "journalState": "ready",
+        "output": {
+          "bytes": 321,
+          "sha256": "9f92e69c28a127170ea73f9ba27c0e57af8999ab380b61df32a1a56402f40208",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "EXIF-GPS",
+        "kind": "photo",
+        "start": "2026-11-01T12:37:25.935Z",
+        "end": "2026-11-01T12:37:26.159Z",
+        "inputBytes": 924,
+        "inputSha256": "16b0ef90114aafadda0a24f4cd945c1f06fd672545647acc0371b88d5e62bad6",
+        "status": 400,
+        "error1102": false,
+        "clientWallMs": 223.53740000000107,
+        "journalState": "failed"
+      },
+      {
+        "name": "PNG-as-JPEG",
+        "kind": "photo",
+        "start": "2026-11-01T12:37:26.337Z",
+        "end": "2026-11-01T12:37:26.604Z",
+        "inputBytes": 33,
+        "inputSha256": "9eaf66cb2ab9389f42744617015dfdbfa9a382221513149241ab355a2bd32ea4",
+        "status": 400,
+        "error1102": false,
+        "clientWallMs": 266.4149000000034,
+        "journalState": "failed"
+      },
+      {
+        "name": "pink-coquette-cover",
+        "kind": "cover",
+        "start": "2026-11-01T12:37:27.011Z",
+        "end": "2026-11-01T12:37:28.002Z",
+        "inputBytes": 18253,
+        "inputSha256": "61ad593dc856547768a0602be2ed07a243d29e1435e3f2d0c68f36fe9f44c7cb",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 991.1530000000057,
+        "journalState": "ready",
+        "output": {
+          "bytes": 18621,
+          "sha256": "020e5579825e0fac6996654ff38214e44145b5dc9de812de59cf8fd1b4bcf728",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "pink-coquette-photo",
+        "kind": "photo",
+        "start": "2026-11-01T12:37:27.009Z",
+        "end": "2026-11-01T12:37:28.125Z",
+        "inputBytes": 55636,
+        "inputSha256": "1826798ea2ea0dc968cfad344c14a067cc3e02b4d4f7b282b58425f2b68f0fe9",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 1116.2678000000014,
+        "journalState": "ready",
+        "output": {
+          "bytes": 55616,
+          "sha256": "b1cd83ce8978e55290c4c65de0ca20ecefc93b64458dd1eb0c026dfd4dde57dd",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "coquette-dream-cover",
+        "kind": "cover",
+        "start": "2026-11-01T12:37:34.765Z",
+        "end": "2026-11-01T12:37:36.059Z",
+        "inputBytes": 17399,
+        "inputSha256": "8d4c85a19095b809b90aa056aebb798125d6f7bf3ec3f1c3f5b6c8f2ee655d13",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 1294.2675000000017,
+        "journalState": "ready",
+        "output": {
+          "bytes": 17809,
+          "sha256": "f0dc824df8188e4beae794d3f0e232ba02fe0ac66e8dce1c4ef33011ba875843",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "coquette-dream-photo",
+        "kind": "photo",
+        "start": "2026-11-01T12:37:34.763Z",
+        "end": "2026-11-01T12:37:36.154Z",
+        "inputBytes": 1028954,
+        "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 1395.2694999999949,
+        "journalState": "ready",
+        "output": {
+          "bytes": 1855090,
+          "sha256": "fb50f775a123f0cd8cca3b1f443cbd99767a308e006e0c01b47b8a272268b7d5",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "little-memories-cover",
+        "kind": "cover",
+        "start": "2026-11-01T12:37:44.724Z",
+        "end": "2026-11-01T12:37:45.921Z",
+        "inputBytes": 16192,
+        "inputSha256": "3c7dad57cefe15ba88c894a20e0739b37bc20d834e3f68658bfd722406cc48d3",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 1196.4539000000077,
+        "journalState": "ready",
+        "output": {
+          "bytes": 16534,
+          "sha256": "f798bb0355fad88ffa6154fdf74291ee00970432460e9f00265d523e9d7f8e97",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "little-memories-photo",
+        "kind": "photo",
+        "start": "2026-11-01T12:37:44.723Z",
+        "end": "2026-11-01T12:37:48.761Z",
+        "inputBytes": 1498433,
+        "inputSha256": "6ccb3267423979720bbe371fd3eb96a173c54c67889a6264ef62b5c1d621f43f",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 4041.2621999999974,
+        "journalState": "ready",
+        "output": {
+          "bytes": 1936631,
+          "sha256": "06ed3395c30d09ae588f13a5cd0413106f48b3049955bfdf577cda729be877d9",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "birthday-chat-cover",
+        "kind": "cover",
+        "start": "2026-11-01T12:37:56.527Z",
+        "end": "2026-11-01T12:37:57.322Z",
+        "inputBytes": 15356,
+        "inputSha256": "40e695049f49d1c0284e62d089ee561323a5c2a3cd09cc955d1dacefca2574cb",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 794.830099999992,
+        "journalState": "ready",
+        "output": {
+          "bytes": 15756,
+          "sha256": "225169b192ca57f3c9a4a28845b817cebf2795bc814c673c154aca28919a1da8",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "birthday-chat-photo",
+        "kind": "photo",
+        "start": "2026-11-01T12:37:56.526Z",
+        "end": "2026-11-01T12:38:03.987Z",
+        "inputBytes": 49366,
+        "inputSha256": "e199f7b2c583e004f901ee9f031f018b0390aeed33de11f0bf3f8a013e24fa91",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 7466.1101999999955,
+        "journalState": "ready",
+        "output": {
+          "bytes": 49410,
+          "sha256": "f63b0fbd831c7140706967f01a7f92bef16d260f7be9329cafad0917bb18532d",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "velvet-gift-photo",
+        "kind": "photo",
+        "start": "2026-11-01T12:38:10.620Z",
+        "end": "2026-11-01T12:38:11.507Z",
+        "inputBytes": 47834,
+        "inputSha256": "4765a80a100cfae8b82f82ab301ab0c565d085cf80cfae20da995eedb1b0c2bf",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 887.1539000000048,
+        "journalState": "ready",
+        "output": {
+          "bytes": 47997,
+          "sha256": "440a543200238d73786b6101d6736893eb0251f1fd108ac7cd7ee0bae59fea7b",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      },
+      {
+        "name": "velvet-gift-cover",
+        "kind": "cover",
+        "start": "2026-11-01T12:38:10.621Z",
+        "end": "2026-11-01T12:38:11.543Z",
+        "inputBytes": 14185,
+        "inputSha256": "950170031b0dbf5ad2f11eb52b1c267b6cbf41108b34237934f5762854362bc9",
+        "status": 201,
+        "error1102": false,
+        "clientWallMs": 921.8597000000009,
+        "journalState": "ready",
+        "output": {
+          "bytes": 14479,
+          "sha256": "c7ee91360c032b44120a32ddc31417818ca7da87f4e838eed161fe3757381c33",
+          "strictlyDecodable": true,
+          "metadataStripped": true
+        },
+        "replay": true
+      }
+    ],
+    "cards": [
+      {
+        "theme": "pink-coquette",
+        "id": "wbumdbf",
+        "photoCoverRead": true,
+        "publishReplay": true
+      },
+      {
+        "theme": "coquette-dream",
+        "id": "ihfsuua",
+        "photoCoverRead": true,
+        "publishReplay": true
+      },
+      {
+        "theme": "little-memories",
+        "id": "2vev2a7",
+        "photoCoverRead": true,
+        "publishReplay": true
+      },
+      {
+        "theme": "birthday-chat",
+        "id": "h83pykk",
+        "photoCoverRead": true,
+        "publishReplay": true
+      },
+      {
+        "theme": "velvet-gift",
+        "id": "8e94jib",
+        "photoCoverRead": true,
+        "publishReplay": true
+      }
+    ],
+    "tail": [
+      {
+        "time": 1793536586950,
+        "outcome": "ok",
+        "cpuTime": 39,
+        "wallTime": 802,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 55616
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536590874,
+        "outcome": "ok",
+        "cpuTime": 4,
+        "wallTime": 80,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536591362,
+        "outcome": "ok",
+        "cpuTime": 63,
+        "wallTime": 1034,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 1855090
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536595737,
+        "outcome": "ok",
+        "cpuTime": 5,
+        "wallTime": 93,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536596221,
+        "outcome": "ok",
+        "cpuTime": 48,
+        "wallTime": 981,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 1936631
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536601028,
+        "outcome": "ok",
+        "cpuTime": 10,
+        "wallTime": 113,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536601393,
+        "outcome": "ok",
+        "cpuTime": 18,
+        "wallTime": 791,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 55616
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536604866,
+        "outcome": "ok",
+        "cpuTime": 5,
+        "wallTime": 87,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536605300,
+        "outcome": "ok",
+        "cpuTime": 40,
+        "wallTime": 999,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 1855090
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536610110,
+        "outcome": "ok",
+        "cpuTime": 5,
+        "wallTime": 106,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536610778,
+        "outcome": "ok",
+        "cpuTime": 34,
+        "wallTime": 985,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 1936631
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536615442,
+        "outcome": "ok",
+        "cpuTime": 8,
+        "wallTime": 104,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536615907,
+        "outcome": "ok",
+        "cpuTime": 30,
+        "wallTime": 1030,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 1855090
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536616240,
+        "outcome": "ok",
+        "cpuTime": 26,
+        "wallTime": 888,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 1855090
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536616670,
+        "outcome": "ok",
+        "cpuTime": 39,
+        "wallTime": 1000,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 1855090
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536622304,
+        "outcome": "ok",
+        "cpuTime": 6,
+        "wallTime": 92,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536625903,
+        "outcome": "ok",
+        "cpuTime": 6,
+        "wallTime": 98,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536628782,
+        "outcome": "ok",
+        "cpuTime": 5,
+        "wallTime": 99,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536634731,
+        "outcome": "ok",
+        "cpuTime": 20,
+        "wallTime": 1256,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 326
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536638585,
+        "outcome": "ok",
+        "cpuTime": 4,
+        "wallTime": 87,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536638741,
+        "outcome": "ok",
+        "cpuTime": 14,
+        "wallTime": 834,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 618
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536642247,
+        "outcome": "ok",
+        "cpuTime": 3,
+        "wallTime": 157,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536642445,
+        "outcome": "ok",
+        "cpuTime": 10,
+        "wallTime": 833,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 321
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536645924,
+        "outcome": "ok",
+        "cpuTime": 3,
+        "wallTime": 82,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536646044,
+        "outcome": "ok",
+        "cpuTime": 4,
+        "wallTime": 188,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536646441,
+        "outcome": "ok",
+        "cpuTime": 6,
+        "wallTime": 235,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536647129,
+        "outcome": "ok",
+        "cpuTime": 11,
+        "wallTime": 946,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 18621
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536647116,
+        "outcome": "ok",
+        "cpuTime": 27,
+        "wallTime": 1080,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 55616
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536650685,
+        "outcome": "ok",
+        "cpuTime": 3,
+        "wallTime": 79,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536653097,
+        "outcome": "ok",
+        "cpuTime": 6,
+        "wallTime": 84,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536653233,
+        "outcome": "ok",
+        "cpuTime": 9,
+        "wallTime": 346,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536653616,
+        "outcome": "ok",
+        "cpuTime": 2,
+        "wallTime": 77,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536653720,
+        "outcome": "ok",
+        "cpuTime": 2,
+        "wallTime": 39,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536653826,
+        "outcome": "ok",
+        "cpuTime": 2,
+        "wallTime": 226,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536654182,
+        "outcome": "ok",
+        "cpuTime": 1,
+        "wallTime": 433,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536654921,
+        "outcome": "ok",
+        "cpuTime": 16,
+        "wallTime": 1208,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 17809
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536654965,
+        "outcome": "ok",
+        "cpuTime": 30,
+        "wallTime": 1260,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 1855090
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536659143,
+        "outcome": "ok",
+        "cpuTime": 4,
+        "wallTime": 78,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536662842,
+        "outcome": "ok",
+        "cpuTime": 2,
+        "wallTime": 76,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536662971,
+        "outcome": "ok",
+        "cpuTime": 15,
+        "wallTime": 357,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536663375,
+        "outcome": "ok",
+        "cpuTime": 2,
+        "wallTime": 73,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536663479,
+        "outcome": "ok",
+        "cpuTime": 2,
+        "wallTime": 38,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536663539,
+        "outcome": "ok",
+        "cpuTime": 2,
+        "wallTime": 230,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536664302,
+        "outcome": "ok",
+        "cpuTime": 1,
+        "wallTime": 210,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536664907,
+        "outcome": "ok",
+        "cpuTime": 10,
+        "wallTime": 1087,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 16534
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536664949,
+        "outcome": "ok",
+        "cpuTime": 29,
+        "wallTime": 1424,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 1936631
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536668858,
+        "outcome": "ok",
+        "cpuTime": 3,
+        "wallTime": 74,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536672528,
+        "outcome": "ok",
+        "cpuTime": 6,
+        "wallTime": 110,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536672670,
+        "outcome": "ok",
+        "cpuTime": 4,
+        "wallTime": 287,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536672977,
+        "outcome": "ok",
+        "cpuTime": 2,
+        "wallTime": 80,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536673085,
+        "outcome": "ok",
+        "cpuTime": 1,
+        "wallTime": 38,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536673143,
+        "outcome": "ok",
+        "cpuTime": 1,
+        "wallTime": 223,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536676075,
+        "outcome": "ok",
+        "cpuTime": 1,
+        "wallTime": 197,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536676636,
+        "outcome": "ok",
+        "cpuTime": 10,
+        "wallTime": 760,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 15756
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536676622,
+        "outcome": "ok",
+        "cpuTime": 18,
+        "wallTime": 1061,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 49410
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536684159,
+        "outcome": "ok",
+        "cpuTime": 5,
+        "wallTime": 86,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536688944,
+        "outcome": "ok",
+        "cpuTime": 2,
+        "wallTime": 71,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536689077,
+        "outcome": "ok",
+        "cpuTime": 8,
+        "wallTime": 338,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536689457,
+        "outcome": "ok",
+        "cpuTime": 1,
+        "wallTime": 71,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536689560,
+        "outcome": "ok",
+        "cpuTime": 0,
+        "wallTime": 36,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536689643,
+        "outcome": "ok",
+        "cpuTime": 1,
+        "wallTime": 234,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536690158,
+        "outcome": "ok",
+        "cpuTime": 1,
+        "wallTime": 195,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536690728,
+        "outcome": "ok",
+        "cpuTime": 9,
+        "wallTime": 844,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 47997
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536690732,
+        "outcome": "ok",
+        "cpuTime": 12,
+        "wallTime": 880,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [
+          {
+            "event": "staging_images_transform",
+            "phase": "attempt"
+          },
+          {
+            "event": "staging_images_transform",
+            "phase": "complete",
+            "bytes": 14479
+          }
+        ],
+        "exceptions": []
+      },
+      {
+        "time": 1793536701114,
+        "outcome": "ok",
+        "cpuTime": 5,
+        "wallTime": 86,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536701101,
+        "outcome": "ok",
+        "cpuTime": 14,
+        "wallTime": 99,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536701226,
+        "outcome": "ok",
+        "cpuTime": 7,
+        "wallTime": 351,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536701608,
+        "outcome": "ok",
+        "cpuTime": 2,
+        "wallTime": 85,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536701718,
+        "outcome": "ok",
+        "cpuTime": 1,
+        "wallTime": 43,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536701819,
+        "outcome": "ok",
+        "cpuTime": 2,
+        "wallTime": 235,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      },
+      {
+        "time": 1793536702194,
+        "outcome": "ok",
+        "cpuTime": 1,
+        "wallTime": 232,
+        "scriptVersion": {
+          "id": "c3942c8c-bc1e-48f5-b91e-ee419edb2a7f"
+        },
+        "events": [],
+        "exceptions": []
+      }
+    ],
+    "rollback": "b0f3a112-e7a9-4250-b7bb-027e83dca378",
+    "stageRestored": true,
+    "finalVersion": "b0f3a112-e7a9-4250-b7bb-027e83dca378"
+  },
+  "cpu": {
+    "units": "milliseconds",
+    "method": "Cloudflare tail; nearest-rank; actual binding attempts only",
+    "allBindingCalls": {
+      "cpu": {
+        "n": 22,
+        "p50": 20,
+        "p95": 48,
+        "p99": 63,
+        "values": [
+          39,
+          63,
+          48,
+          18,
+          40,
+          34,
+          30,
+          26,
+          39,
+          20,
+          14,
+          10,
+          11,
+          27,
+          16,
+          30,
+          10,
+          29,
+          10,
+          18,
+          9,
+          12
+        ]
+      },
+      "wall": {
+        "n": 22,
+        "p50": 985,
+        "p95": 1260,
+        "p99": 1424,
+        "values": [
+          802,
+          1034,
+          981,
+          791,
+          999,
+          985,
+          1030,
+          888,
+          1000,
+          1256,
+          834,
+          833,
+          946,
+          1080,
+          1208,
+          1260,
+          1087,
+          1424,
+          760,
+          1061,
+          844,
+          880
+        ]
+      }
+    },
+    "comparableSixSequential": {
+      "baseline": {
+        "source": "98097ab1bfa10b6692acf338168a43f4d0ec60ae",
+        "version": "6b561218-a3cb-4986-8788-5c4239a17e0e",
+        "cpu": {
+          "n": 6,
+          "p50": 71,
+          "p95": 128,
+          "p99": 128,
+          "values": [
+            38,
+            122,
+            128,
+            13,
+            71,
+            79
+          ]
+        },
+        "wall": {
+          "n": 6,
+          "p50": 1084,
+          "p95": 1506,
+          "p99": 1506,
+          "values": [
+            1168,
+            1506,
+            1291,
+            918,
+            1039,
+            1084
+          ]
+        }
+      },
+      "retainedCode": {
+        "cpu": {
+          "n": 6,
+          "p50": 39,
+          "p95": 63,
+          "p99": 63,
+          "values": [
+            39,
+            63,
+            48,
+            18,
+            40,
+            34
+          ]
+        },
+        "wall": {
+          "n": 6,
+          "p50": 981,
+          "p95": 1034,
+          "p99": 1034,
+          "values": [
+            802,
+            1034,
+            981,
+            791,
+            999,
+            985
+          ]
+        }
+      }
+    },
+    "error1102": 0,
+    "qualification": "Small sequential nonrandomized diagnostics, not a capacity certificate. Baseline is prior full transformation, not jpeg-js. CPU exceeds the documented Workers Free budget."
+  },
+  "adaptiveAnalytics": {
+    "units": "CPU/wall microseconds; memory bytes",
+    "baseline": [
+      {
+        "dimensions": {
+          "status": "success"
+        },
+        "quantiles": {
+          "cpuTimeP50": 24840,
+          "cpuTimeP95": 128287,
+          "cpuTimeP99": 128287,
+          "memoryUsageBytesP50": 11873889,
+          "memoryUsageBytesP99": 30150432,
+          "wallTimeP50": 148969,
+          "wallTimeP95": 1506614,
+          "wallTimeP99": 1506614
+        },
+        "sum": {
+          "cpuTimeUs": 578629,
+          "errors": 0,
+          "requests": 14,
+          "subrequests": 6,
+          "wallTime": 7719286
+        }
+      }
+    ],
+    "acceptance": [
+      {
+        "dimensions": {
+          "status": "success"
+        },
+        "quantiles": {
+          "cpuTimeP50": 5462,
+          "cpuTimeP95": 39737,
+          "cpuTimeP99": 63030,
+          "memoryUsageBytesP50": 11164495,
+          "memoryUsageBytesP99": 31884254,
+          "wallTimeP50": 197764,
+          "wallTimeP95": 1208770,
+          "wallTimeP99": 1424644
+        },
+        "sum": {
+          "cpuTimeUs": 784550,
+          "errors": 0,
+          "requests": 72,
+          "subrequests": 22,
+          "wallTime": 29276260
+        }
+      }
+    ],
+    "qualification": "Adaptive/shared-isolate measurements include publish/read requests, not a per-upload census or peak memory."
+  },
+  "qualityComparison": [
+    {
+      "name": "sequential-0-pink-coquette-photo",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 900,
+        "height": 675,
+        "psnrDb": 59.235411959777544,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      }
+    },
+    {
+      "name": "sequential-0-coquette-dream-photo",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 1024,
+        "height": 1024,
+        "psnrDb": 36.12193877251181,
+        "identicalPixels": false,
+        "maxChannelError": 27
+      }
+    },
+    {
+      "name": "sequential-0-little-memories-photo",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 1024,
+        "height": 1024,
+        "psnrDb": 36.61922334067219,
+        "identicalPixels": false,
+        "maxChannelError": 25
+      }
+    },
+    {
+      "name": "sequential-1-pink-coquette-photo",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 900,
+        "height": 675,
+        "psnrDb": 59.235411959777544,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      }
+    },
+    {
+      "name": "sequential-1-coquette-dream-photo",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 1024,
+        "height": 1024,
+        "psnrDb": 36.12193877251181,
+        "identicalPixels": false,
+        "maxChannelError": 27
+      }
+    },
+    {
+      "name": "sequential-1-little-memories-photo",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 1024,
+        "height": 1024,
+        "psnrDb": 36.61922334067219,
+        "identicalPixels": false,
+        "maxChannelError": 25
+      }
+    },
+    {
+      "name": "concurrent-maximum-0",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 1024,
+        "height": 1024,
+        "psnrDb": 36.12193877251181,
+        "identicalPixels": false,
+        "maxChannelError": 27
+      }
+    },
+    {
+      "name": "concurrent-maximum-2",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 1024,
+        "height": 1024,
+        "psnrDb": 36.12193877251181,
+        "identicalPixels": false,
+        "maxChannelError": 27
+      }
+    },
+    {
+      "name": "concurrent-maximum-1",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 1024,
+        "height": 1024,
+        "psnrDb": 36.12193877251181,
+        "identicalPixels": false,
+        "maxChannelError": 27
+      }
+    },
+    {
+      "name": "truncated-entropy-with-EOI",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": null
+    },
+    {
+      "name": "corrupt-entropy-all-zero",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": null
+    },
+    {
+      "name": "forged-headers-no-pixels",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": null
+    },
+    {
+      "name": "pink-coquette-cover",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 512,
+        "height": 384,
+        "psnrDb": 59.264983043630444,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      }
+    },
+    {
+      "name": "pink-coquette-photo",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 900,
+        "height": 675,
+        "psnrDb": 59.235411959777544,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      }
+    },
+    {
+      "name": "coquette-dream-cover",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 496,
+        "height": 372,
+        "psnrDb": 59.18926672998039,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      }
+    },
+    {
+      "name": "coquette-dream-photo",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 1024,
+        "height": 1024,
+        "psnrDb": 36.12193877251181,
+        "identicalPixels": false,
+        "maxChannelError": 27
+      }
+    },
+    {
+      "name": "little-memories-cover",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 480,
+        "height": 360,
+        "psnrDb": 59.282116035995045,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      }
+    },
+    {
+      "name": "little-memories-photo",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 1024,
+        "height": 1024,
+        "psnrDb": 36.61922334067219,
+        "identicalPixels": false,
+        "maxChannelError": 25
+      }
+    },
+    {
+      "name": "birthday-chat-cover",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 464,
+        "height": 348,
+        "psnrDb": 59.02934910841598,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      }
+    },
+    {
+      "name": "birthday-chat-photo",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 840,
+        "height": 645,
+        "psnrDb": 59.573234429984964,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      }
+    },
+    {
+      "name": "velvet-gift-photo",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 820,
+        "height": 635,
+        "psnrDb": 59.65282027377063,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      }
+    },
+    {
+      "name": "velvet-gift-cover",
+      "identicalToPreviouslyVerifiedOutput": true,
+      "previousQuality": {
+        "width": 448,
+        "height": 336,
+        "psnrDb": 59.05585538989061,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      }
+    }
+  ],
+  "liveBrowsers": {
+    "passed": 15,
+    "themes": [
+      "pink-coquette",
+      "coquette-dream",
+      "little-memories",
+      "birthday-chat",
+      "velvet-gift"
+    ],
+    "surfaces": [
+      "desktop Chromium",
+      "Pixel 7 Chromium emulation",
+      "iPhone 13 WebKit emulation"
+    ],
+    "checks": "Actual staging card API reads, photo/cover decode, dimensions and reload",
+    "physicalDevices": false,
+    "installedLINE": false,
+    "harnessCorrection": "First run used disallowed preview port 4174. Rerun on existing allowed 4173 passed, with no CORS change."
+  },
+  "cleanup": {
+    "checkedAt": "2026-11-01T12:42:21.018Z",
+    "realStagingResources": true,
+    "previewCleanupOnly": true,
+    "expiredUnlinkedBefore": 50,
+    "expiredUnlinkedAfter": 0,
+    "budget": 108,
+    "activeVersion": "b0f3a112-e7a9-4250-b7bb-027e83dca378"
+  },
+  "finalState": {
+    "checkedAt": "2026-11-01T12:50:13.630Z",
+    "realCloudflare": true,
+    "health": 200,
+    "writeDenials": [
+      {
+        "path": "/v3/upload-sessions",
+        "status": 503
+      },
+      {
+        "path": "/v3/cards",
+        "status": 503
+      },
+      {
+        "path": "/v3/upload-sessions/11111111-1111-4111-8111-111111111111/media?kind=photo",
+        "status": 503
+      }
+    ],
+    "activeVersions": [
+      {
+        "version_id": "b0f3a112-e7a9-4250-b7bb-027e83dca378",
+        "percentage": 100
+      }
+    ],
+    "bindings": [
+      {
+        "database_id": "3967493c-55db-4ab8-bb2c-9ed3c157a543",
+        "id": "3967493c-55db-4ab8-bb2c-9ed3c157a543",
+        "name": "DB",
+        "type": "d1"
+      },
+      {
+        "name": "ENVIRONMENT",
+        "text": "staging",
+        "type": "plain_text"
+      },
+      {
+        "bucket_name": "luvnote-media-staging",
+        "name": "MEDIA",
+        "type": "r2_bucket"
+      },
+      {
+        "name": "MEDIA_CLEANUP_ENABLED",
+        "text": "true",
+        "type": "plain_text"
+      },
+      {
+        "name": "MEDIA_JPEG_VALIDATOR",
+        "text": "legacy",
+        "type": "plain_text"
+      },
+      {
+        "name": "MEDIA_V3_UPLOADS_ENABLED",
+        "text": "false",
+        "type": "plain_text"
+      },
+      {
+        "name": "READ_LIMITER",
+        "namespace_id": "472004",
+        "simple": {
+          "limit": 300,
+          "period": 60
+        },
+        "type": "ratelimit"
+      },
+      {
+        "name": "TURNSTILE_HOSTNAMES",
+        "text": "localhost",
+        "type": "plain_text"
+      },
+      {
+        "name": "TURNSTILE_SECRET_KEY",
+        "type": "secret_text"
+      },
+      {
+        "name": "TURNSTILE_TEST_MODE",
+        "text": "false",
+        "type": "plain_text"
+      },
+      {
+        "name": "WRITE_LIMITER",
+        "namespace_id": "472002",
+        "simple": {
+          "limit": 60,
+          "period": 60
+        },
+        "type": "ratelimit"
+      }
+    ],
+    "privateR2": {
+      "managed": {
+        "enabled": false,
+        "bucketId": "d41055a9fcdd4f3daa2ea4ff340a4e72",
+        "domain": "pub-d41055a9fcdd4f3daa2ea4ff340a4e72.r2.dev"
+      },
+      "custom": {
+        "domains": []
+      }
+    },
+    "temporaryDiagnosticRouteStatus": 404
+  },
+  "limits": {
+    "originalDiagnosticCap": 30,
+    "restoredDiagnosticCap": 30,
+    "storedCounter": 108,
+    "counterReset": false,
+    "additionalAttemptsThisContinuation": 78,
+    "monthlyMeter": "NOT_VERIFIED",
+    "billingChanged": false
+  },
+  "unverified": [
+    "Monthly account Images usage (403)",
+    "Real public Turnstile positive flow/hostname/action/replay",
+    "Real interrupted ingress",
+    "Physical devices and installed LINE",
+    "Aged orphan grace not elapsed",
+    "Production operations/alerts/approval"
+  ],
+  "harnessLimitations": [
+    "An earlier six-upload single-chunk window completed upload/read/replay checks but did not persist primary CPU evidence after a post-rollback assertion. Those six have no claimed CPU result.",
+    "Local Images mocks are lower fidelity and not evidence of Cloudflare security, quality or CPU."
+  ],
+  "ci": {
+    "application": {
+      "source": "5c61808b20f85517a9a37941f1899c6cf2c4e5de",
+      "run": "https://github.com/cmyanything/luvnote/actions/runs/41307409207",
+      "result": "success",
+      "passExecutions": 185
+    },
+    "head": {
+      "source": "6d9951403d9842c6838d10245f661ade9e369083",
+      "run": "https://github.com/cmyanything/luvnote/actions/runs/41308122708",
+      "result": "success",
+      "passExecutions": 185
+    },
+    "uniqueTestsClaimed": false
+  },
+  "decision": {
+    "R2_FULL_TRANSFORMATION_CODE": "PASS",
+    "R2_FULL_TRANSFORMATION_SECURITY": "PASS",
+    "R2_FULL_TRANSFORMATION_FUNCTIONAL": "PASS",
+    "R2_FULL_TRANSFORMATION_CPU": "FAIL",
+    "R2_STAGING_VERIFIED": "FAIL",
+    "R2_CPU_ACCEPTANCE": "FAIL",
+    "R2_IMAGES_MONTHLY_METER": "NOT_VERIFIED",
+    "R2_PRODUCTION_DEPLOYED": "NO",
+    "R2_PRODUCTION_READY": "NO",
+    "mergeRecommendation": "NO-GO as a proven Workers Free CPU solution"
+  }
+}

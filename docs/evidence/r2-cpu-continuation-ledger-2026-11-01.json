@@ -1,0 +1,16 @@
+{
+  "task": "Owner requested continuation until usable, retaining existing plan and production approval gates",
+  "initialSource": "86cece35fca20880e95515ba456baa735fdcfc70",
+  "productionDeployed": false,
+  "billingChanged": false,
+  "newWindowMaximumAttempts": 30,
+  "cumulativeStagingDiagnosticLimit": 60,
+  "existingDiagnosticCount": 30,
+  "counterReset": false,
+  "costBasis": "Owner-confirmed Images Free; official docs specify no Free overage charge and repeat source/parameter combinations count once per calendar month. Reuse synthetic inputs. Monthly account meter remains unavailable (403).",
+  "experiments": [
+    {"method":"Latin-1 string indexOf", "localOnly":true, "decision":"rejected: substantially slower, no remote service calls"},
+    {"method":"Latin-1 regular expression", "localOnly":true, "differentialChecks":2029, "decision":"rejected: 10-13 times slower locally; no remote service calls"},
+    {"method":"Uint8Array indexOf", "localOnly":true, "differentialChecks":325, "decision":"paired remote comparison required; earlier two-image concurrency test was inconclusive"}
+  ]
+}

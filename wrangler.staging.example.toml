@@ -11,6 +11,9 @@ workers_dev = true
 ENVIRONMENT = "staging"
 MEDIA_V3_UPLOADS_ENABLED = "true"
 MEDIA_CLEANUP_ENABLED = "true"
+# STAGING EXPERIMENT ONLY: use native Cloudflare Images.info() instead of JS jpeg-js decoding.
+# Do not copy this value to production until real CPU and adversarial-image tests pass.
+MEDIA_JPEG_VALIDATOR = "images"
 TURNSTILE_TEST_MODE = "true"
 TURNSTILE_HOSTNAMES = "localhost,127.0.0.1"
 
@@ -22,6 +25,10 @@ database_id = "REPLACE_WITH_STAGING_D1_UUID"
 [[r2_buckets]]
 binding = "MEDIA"
 bucket_name = "luvnote-media-staging"
+
+# Read-only image metadata validation; no paid image transformation is invoked.
+[images]
+binding = "IMAGES"
 
 [triggers]
 crons = ["0 * * * *"]

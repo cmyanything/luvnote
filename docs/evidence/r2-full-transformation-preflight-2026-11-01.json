@@ -1,0 +1,307 @@
+{
+  "sourceCommit": "1ccef87394ac1a38c69e21504ff0ba90682b12ea",
+  "decision": "NO-GO pending verifiable zero-additional-cost quota; remote experiment NOT_VERIFIED",
+  "preflight": {
+    "checkedAt": "2026-11-01T08:23:38.590Z",
+    "account": "cee7f572be6cf7e3de1e4526f6d250d2",
+    "checks": [
+      {
+        "endpoint": "/subscriptions",
+        "ok": false,
+        "error": "Cloudflare 403 [{\"code\":10000,\"message\":\"Authentication error\"}]"
+      },
+      {
+        "endpoint": "/images/v1/stats",
+        "ok": false,
+        "error": "Cloudflare 403 [{\"code\":10000,\"message\":\"Authentication error\"}]"
+      }
+    ]
+  },
+  "staging": {
+    "checkedAt": "2026-11-01T08:23:43.755Z",
+    "activeVersion": "b0f3a112-e7a9-4250-b7bb-027e83dca378",
+    "account": "cee7f572be6cf7e3de1e4526f6d250d2",
+    "bindings": [
+      {
+        "database_id": "3967493c-55db-4ab8-bb2c-9ed3c157a543",
+        "id": "3967493c-55db-4ab8-bb2c-9ed3c157a543",
+        "name": "DB",
+        "type": "d1"
+      },
+      {
+        "name": "ENVIRONMENT",
+        "text": "staging",
+        "type": "plain_text"
+      },
+      {
+        "bucket_name": "luvnote-media-staging",
+        "name": "MEDIA",
+        "type": "r2_bucket"
+      },
+      {
+        "name": "MEDIA_CLEANUP_ENABLED",
+        "text": "true",
+        "type": "plain_text"
+      },
+      {
+        "name": "MEDIA_JPEG_VALIDATOR",
+        "text": "legacy",
+        "type": "plain_text"
+      },
+      {
+        "name": "MEDIA_V3_UPLOADS_ENABLED",
+        "text": "false",
+        "type": "plain_text"
+      },
+      {
+        "name": "READ_LIMITER",
+        "namespace_id": "472004",
+        "simple": {
+          "limit": 300,
+          "period": 60
+        },
+        "type": "ratelimit"
+      },
+      {
+        "name": "TURNSTILE_HOSTNAMES",
+        "text": "localhost",
+        "type": "plain_text"
+      },
+      {
+        "name": "TURNSTILE_TEST_MODE",
+        "text": "false",
+        "type": "plain_text"
+      },
+      {
+        "name": "WRITE_LIMITER",
+        "namespace_id": "472002",
+        "simple": {
+          "limit": 60,
+          "period": 60
+        },
+        "type": "ratelimit"
+      }
+    ],
+    "secretValuesOmitted": true,
+    "publicR2": false,
+    "customR2Domains": [],
+    "workerCustomDomains": [],
+    "mutatedThisExperiment": false
+  },
+  "localProbe": {
+    "recordedAt": "2026-11-01T08:29:50.267Z",
+    "realCloudflare": false,
+    "quotaConsumed": 0,
+    "implementation": "Miniflare 5.20261023.3-beta / Sharp 0.35.5 local emulator",
+    "warning": "Raw transformation probe, without application pre-parser. Not remote security/CPU/quality acceptance.",
+    "rows": [
+      {
+        "name": "valid-baseline",
+        "inputSha256": "831b2cd4d3b0bfa4e8faa13904c51f2004f26c0e62b1ced47e1240abdd142ede",
+        "legacyAccepts": true,
+        "expectedPolicy": "accept",
+        "localTransformationStatus": 200,
+        "outputBytes": 401,
+        "outputStrictlyDecodable": true,
+        "outputSha256": "db5be284a59baaeaf93e25f7b80d2dabfa99c755a4fe193443a51fa0cb663527"
+      },
+      {
+        "name": "valid-progressive",
+        "inputSha256": "5ef57c7b8983e6b1e081582ac7fb98d786975dce687839a683b47f9f3d3250ef",
+        "legacyAccepts": true,
+        "expectedPolicy": "accept",
+        "localTransformationStatus": 200,
+        "outputBytes": 1561,
+        "outputStrictlyDecodable": true,
+        "outputSha256": "a47316d3d76a300950adca60eb68865bd75b3dc0b6d97d0fa9d1057def75fd1c"
+      },
+      {
+        "name": "truncated-no-EOI",
+        "inputSha256": "98c33e41a1458f2a6dd3ac7831bae6c5b235224deacb914772126e01a419dbf5",
+        "legacyAccepts": false,
+        "expectedPolicy": "reject",
+        "localTransformationStatus": 422,
+        "localFailure": {
+          "error": "local_transformation_failed",
+          "diagnostic": "Unexpected error response 500: Error: VipsJpeg: premature end of JPEG image"
+        }
+      },
+      {
+        "name": "truncated-entropy-with-EOI",
+        "inputSha256": "3f53eff522c96005b2bce12d3f0638c474e458ffe5dd2cf1368235b0baa7d5e6",
+        "legacyAccepts": false,
+        "expectedPolicy": "reject",
+        "localTransformationStatus": 422,
+        "localFailure": {
+          "error": "local_transformation_failed",
+          "diagnostic": "Unexpected error response 500: Error: VipsJpeg: Corrupt JPEG data: premature end of data segment"
+        }
+      },
+      {
+        "name": "corrupt-entropy-all-zero",
+        "inputSha256": "4209a78966cbdc2f8f5fe198e5da482568bf89af92f0018f565765d24d64b962",
+        "legacyAccepts": false,
+        "expectedPolicy": "reject",
+        "localTransformationStatus": 422,
+        "localFailure": {
+          "error": "local_transformation_failed",
+          "diagnostic": "Unexpected error response 500: Error: VipsJpeg: Corrupt JPEG data: premature end of data segment"
+        }
+      },
+      {
+        "name": "forged-headers-no-pixels",
+        "inputSha256": "6989ba2fcc1970278c505256ae84520a4abff5805b763075b793a5ef7a4190c4",
+        "legacyAccepts": false,
+        "expectedPolicy": "reject",
+        "localTransformationStatus": 422,
+        "localFailure": {
+          "error": "local_transformation_failed",
+          "diagnostic": "Unexpected error response 500: Error: VipsJpeg: Corrupt JPEG data: premature end of data segment"
+        }
+      },
+      {
+        "name": "PNG-as-JPEG",
+        "inputSha256": "9eaf66cb2ab9389f42744617015dfdbfa9a382221513149241ab355a2bd32ea4",
+        "legacyAccepts": false,
+        "expectedPolicy": "reject",
+        "localTransformationStatus": 422,
+        "localFailure": {
+          "error": "local_transformation_failed",
+          "diagnostic": "Unexpected error response 500: Error: Input buffer has corrupt header:"
+        }
+      }
+    ]
+  },
+  "currentRealCloudflareReadOnlyChecks": [
+    {
+      "name": "desktop",
+      "theme": "pink-coquette",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "desktop",
+      "theme": "coquette-dream",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "desktop",
+      "theme": "little-memories",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "desktop",
+      "theme": "birthday-chat",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "desktop",
+      "theme": "velvet-gift",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "Pixel 7",
+      "theme": "pink-coquette",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "Pixel 7",
+      "theme": "coquette-dream",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "Pixel 7",
+      "theme": "little-memories",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "Pixel 7",
+      "theme": "birthday-chat",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "Pixel 7",
+      "theme": "velvet-gift",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "iPhone 13 WebKit",
+      "theme": "pink-coquette",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "iPhone 13 WebKit",
+      "theme": "coquette-dream",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "iPhone 13 WebKit",
+      "theme": "little-memories",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "iPhone 13 WebKit",
+      "theme": "birthday-chat",
+      "realR2ImageAndReload": true
+    },
+    {
+      "name": "iPhone 13 WebKit",
+      "theme": "velvet-gift",
+      "realR2ImageAndReload": true
+    },
+    {
+      "status": "PASS",
+      "checks": 15,
+      "actualCloudflareReads": true,
+      "physicalDevices": false
+    }
+  ],
+  "killSwitch": {
+    "checkedAt": "2026-11-01T08:26:37.173Z",
+    "realCloudflare": true,
+    "health": 200,
+    "writeDenials": [
+      {
+        "path": "/v3/upload-sessions",
+        "status": 503
+      },
+      {
+        "path": "/v3/cards",
+        "status": 503
+      },
+      {
+        "path": "/v3/upload-sessions/11111111-1111-4111-8111-111111111111/media?kind=photo",
+        "status": 503
+      }
+    ]
+  },
+  "remoteTransformation": {
+    "invocations": 0,
+    "newImagesQuotaConsumedByThisExperiment": 0,
+    "cpu": "NOT_VERIFIED",
+    "error1102": "NOT_VERIFIED - no remote transformation workload",
+    "uploadSuccess": "NOT_VERIFIED",
+    "quality": "NOT_VERIFIED",
+    "imagesPlanAndMonthlyUsage": "NOT_VERIFIED",
+    "dashboardObservation": "Redirected to Cloudflare sign-in; no authenticated session"
+  },
+  "localRegression": {
+    "backendPass": 79,
+    "backendFail": 0,
+    "typecheck": "PASS",
+    "build": "PASS"
+  },
+  "priorSourceCI": {
+    "run": 41287485038,
+    "commit": "1ccef87394ac1a38c69e21504ff0ba90682b12ea",
+    "conclusion": "success",
+    "cleanPassExecutions": 154,
+    "flakyRecoveredOnRetry": 1,
+    "deploy": "skipped",
+    "note": "Historical source CI, not execution of the new offline probe or remote transformations"
+  },
+  "officialSources": [
+    "https://developers.cloudflare.com/images/optimization/binding/",
+    "https://developers.cloudflare.com/images/pricing/",
+    "https://developers.cloudflare.com/api/resources/images/subresources/v1/subresources/stats/methods/get/"
+  ]
+}

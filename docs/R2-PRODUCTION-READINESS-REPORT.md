@@ -1,6 +1,66 @@
-# R2 Production Readiness — native JPEG acceptance
+# R2 Production Readiness — JPEG validation experiments
 
 Updated **2026-11-01 UTC**. Independent acceptance of [PR #6](https://github.com/cmyanything/luvnote/pull/6), based on the unmerged [PR #2](https://github.com/cmyanything/luvnote/pull/2) feature branch. [Issue #5](https://github.com/cmyanything/luvnote/issues/5) retains the production gates.
+
+## Full Transformation continuation: NO-GO pending zero-cost quota verification
+
+The Owner authorized testing Cloudflare Images Full Transformation **only on staging, on the existing plan, without additional charges**. No billing change, merge or production deployment is authorized. This is a new candidate, distinct from the rejected `info()` validator below. **It has not been rejected on empirical Cloudflare security results: its remote acceptance is blocked before invocation by unverified plan/usage.**
+
+Fetched origin and confirmed a clean branch `perf/r2-native-jpeg-validation` at **1ccef87394ac1a38c69e21504ff0ba90682b12ea**; PR #6 is still draft/unmerged against `feat/r2-private-media-v3` at f58c509. The only new executable is an offline research script; no application, validator, deployment configuration or dependency changed. Commits for this continuation are listed in the branch history and Issue #5.
+
+### Cost preflight and stop condition
+
+- Current official [binding documentation](https://developers.cloudflare.com/images/optimization/binding/) describes `.input(stream).output({format:'image/jpeg',quality:95}).response()`, full decode/re-encode, and transformation usage. Only `info()` is free independently of transformation allowance. No public image URL or additional service is required.
+- [Images pricing](https://developers.cloudflare.com/images/pricing/) includes **5,000 unique transformations/month** on Free; new unique transformations over that allowance fail with **9422**, without overage charges on Free. Paid also includes the first 5,000, then charges **$0.50/1,000**. A repeat source/parameters combination in the same month does not add another unique transformation. These are general plan terms, **not verification of this account's active plan or remaining allowance**.
+- At **2026-11-01T08:23:38.590Z**, authorized read-only calls to account `/subscriptions` and `/images/v1/stats` both returned **403 / 10000 Authentication error**. The documented stats endpoint is for stored-image counts, so even a successful result alone would not establish remaining transformation allowance. No stored customer images were enumerated.
+- The available in-app Dashboard browser redirected to **Sign in to Cloudflare**. No authenticated Dashboard session is available; no credentials were requested or printed, no paid feature enabled, and no permission/billing setting changed. An asynchronous request asked the Owner for the existing Images plan and current monthly transformation usage/remaining allowance; no answer has yet supplied that evidence.
+- **Remote Full Transformation calls: 0. Additional Images transformation quota consumed by this experiment: 0.** No staging deployment or write window was opened. A successful request alone would not prove zero billing. Do not run a potentially chargeable method just to discover the subscription.
+
+Before resuming remote acceptance, verify Images Free with its hard cap, or verified included allowance with enough headroom for other account consumers. Use a bounded window of **at most 100 transformation attempts**, conservatively treating every attempt as a unique transformation; do not retry or fall back to original bytes on 9422/provider failure. Recheck usage afterward. This is a proposed maximum, **not an already executed or verified quota measurement**. Monthly quota is shared across account consumers, not reserved for this Worker. Existing daily guest quotas permit up to 600 image slots/day (100 sessions × 6), potentially more than 5,000/month; they are **not** an Images monthly budget. Production would need an explicit usage policy before this candidate could be considered economical or reliable.
+
+### Independent trace and offline experiment
+
+The existing path remains `uploadPhoto → session/MIME checks → validator-mode guard → owned quota slot → readLimitedBody → parseJpeg → strict jpeg-js decode → D1 metadata → private R2 put → ready journal`. No remote Full Transformation branch was added. The minimum candidate is to reuse the existing bounded parser/metadata policy, require full transformation completion, bound and sanitize the output, and store **only the re-encoded output**, retaining ownership/atomicity/idempotency/cleanup. Full transformation may repair a broken input rather than reject it; a decodable output alone does not establish the current **reject-corrupt-input** contract. Do not silently redefine that policy.
+
+Ran `node scripts/probe-jpeg-transformation-local.mjs` with **no external fetch, D1 or R2 bindings**. This standalone raw-binding diagnostic uses existing dependencies only. Its external-fetch handler rejects outbound requests. It intentionally does not pretend to be the application upload path.
+
+| Synthetic input (same hashes as prior acceptance) | Legacy strict | Local full transformation | Cloudflare full transformation |
+|---|---|---|---|
+| Valid baseline | accept | 200; strict-decodable output, 401 bytes | NOT_VERIFIED |
+| Valid progressive | accept | 200; strict-decodable output, 1,561 bytes | NOT_VERIFIED |
+| Truncated entropy with EOI (prior escape 1) | reject | 422 | NOT_VERIFIED |
+| Same-size zeroed entropy (prior escape 2) | reject | 422 | NOT_VERIFIED |
+| Forged headers with no pixels (prior escape 3) | reject | 422 | NOT_VERIFIED |
+| Truncated file without EOI | reject | 422 | NOT_VERIFIED |
+| Fake/incomplete PNG declared as JPEG | reject | 422 | NOT_VERIFIED |
+
+**7 local observations align with expected policy, not 7 Cloudflare acceptance passes.** The offline probe maps caught binding exceptions to 422; its diagnostics show Sharp/VipsJpeg premature-end/corrupt-segment errors for the three prior escapes and corrupt-header error for the fake PNG. These are not Cloudflare HTTP rejection codes. Miniflare 5.20261023.3-beta implements local Images using **Sharp 0.35.5**, not the remote Cloudflare decoder. Source trace also confirms its output path ignores the binding's `quality` parameter, so this run cannot establish quality=95, fidelity, production decoder behavior or CPU. No new library or second JavaScript decoding step was inserted into the upload handler. Strictly decoding the two synthetic outputs occurred only in the offline operator process to inspect results.
+
+### Checks actually repeated in this continuation
+
+- `npm run test:api`: **79 PASS / 0 fail / 0 skip**; includes the existing 25-case strict JPEG corpus and five-theme local publication/security tests. This is regression evidence, not remote transformation proof.
+- `npm run typecheck` and default V3-disabled `npm run build`: **PASS**.
+- `node .wrangler/browser-reads.mjs`: **15 PASS**, real existing staging R2 image reads/decodes/reloads across five themes × desktop Chromium / Pixel 7 Chromium / iPhone 13 WebKit emulation. Existing synthetic cards only; no physical device or new transformed-image quality claim.
+- Read-only Cloudflare preflight reconfirmed active staging **b0f3a112-e7a9-4250-b7bb-027e83dca378**, source e7028dd, **legacy / uploads off / cleanup on / test mode false / no Images binding**. Isolated staging D1 UUID and private R2 identity match the existing resources; r2.dev disabled, no R2/Worker custom domains or production routes/bindings. This version is also the prepared rollback target, but no new deployment needed rollback.
+- At **2026-11-01T08:26:37.173Z**, real staging health **200**; session/upload/publication POSTs each **503**. No upload/publication records were created by this continuation.
+- Prior exact-head [CI 41287485038](https://github.com/cmyanything/luvnote/actions/runs/41287485038), source 1ccef87, is now confirmed **SUCCESS / deployment skipped**, with **154 clean pass executions + 1 native WebKit case recovered on retry**, not 155 clean passes. It predates the new probe. The earlier flake's cause remains unverified; this continuation does not claim to fix it.
+
+Sanitized current evidence: [Full Transformation preflight](evidence/r2-full-transformation-preflight-2026-11-01.json). No customer content, secrets, raw backup data or authenticated browser session data is included.
+
+```text
+R2_FULL_TRANSFORMATION_SECURITY = NOT_VERIFIED
+R2_FULL_TRANSFORMATION_CPU = NOT_VERIFIED
+R2_FULL_TRANSFORMATION_QUOTA = NOT_VERIFIED
+R2_FULL_TRANSFORMATION_ACCEPTANCE = NO_GO
+R2_PRODUCTION_DEPLOYED = NO
+R2_PRODUCTION_READY = NO
+```
+
+Remote CPU p50/p95/p99, 1102 frequency, upload success, monthly quota delta, R2 transformed output quality/metadata/orientation, and all-theme publication with transformed photos/covers remain **NOT_VERIFIED**. No claim about a zero-1102 remote workload is made because it did not run. Prior `info()` timings below are **not** Full Transformation timings.
+
+**Next action:** the Owner supplies the existing Images plan and current monthly transformation usage/remaining allowance, or provides an already signed-in read-only Dashboard view. No token or card/customer data is needed. No billing upgrade is requested. Once zero-cost conditions can be verified, run the existing security corpus before any benchmark/publication window, then test no-resize JPEG output quality/metadata and five themes, collect actual Worker tail/analytics plus Images quota, and return to the parked legacy/write-disabled version. Any accepted malformed input is a security NO-GO unless a proven minimal check closes the exact gap without a second full JavaScript decode.
+
+If the existing plan cannot support the bounded zero-cost test, stop this candidate. A separate **same-Worker strict native/WASM codec experiment** may be assessed for complete error detection, dependency maintenance and actual CPU; it is an unverified alternative, not an implemented remedy. Client-only decoding, `info()`, header/minimum-length heuristics or merely storing a repaired image do not meet the retained validation policy. Keep jpeg-js and the R2 launch hold until a measured secure replacement exists. No queue, microservice, database or plan change was introduced.
 
 ## Decision: NO-GO for merging PR #6 as the CPU solution
 

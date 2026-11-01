@@ -1,5 +1,7 @@
 # R2 operational rollout and recovery plan
 
+**Full Transformation follow-up (2026-11-01): remote acceptance NOT_VERIFIED / promotion NO-GO pending zero-cost quota verification.** Current OAuth cannot read subscriptions/Images usage (403); available Dashboard is signed out. No remote transformation, deployment or billing change was performed. The offline Sharp-based probe is not Cloudflare security or CPU evidence. Legacy/write-disabled staging version b0f3a112 remains active with private R2; 15 real theme/browser reads and write-denial checks passed again. Obtain existing Images plan/monthly usage evidence before any finite test window; production and existing `info()` promotion remain blocked. Details and alternatives are in the [readiness report](R2-PRODUCTION-READINESS-REPORT.md).
+
 **Prepared, not executed.** Production provisioning, migrations, deployment, DNS changes, data deletion and PR merge are not authorized by this document. Obtain explicit Owner approval for the exact operation/commit and record it in the release ticket. Never treat passing local tests as production approval.
 
 **Current hard stop:** source 5d77a9b passes 103 automated cases, but real permitted JPEG uploads fail with Cloudflare CPU limit errors. Owner explicitly chose to retain the existing plan and record the blocker. Do not merge/roll out V3 while this remains unresolved. The separately approved read-only production D1 backup and isolated restore did run successfully; no production schema/rows were changed.

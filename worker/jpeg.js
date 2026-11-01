@@ -1,4 +1,5 @@
 import jpeg from 'jpeg-js';
+import {readLimitedBody} from './guards.js';
 
 // Reject out-of-bounds JPEG markers, dimensions and EXIF/IPTC metadata without decoding pixels.
 // The client normalizes rotation before uploading. Native inspection is experimental, staging only.
@@ -84,4 +85,31 @@ export async function validateJpegNative(bytes, images) {
       info.width === parsed.width && info.height === parsed.height
       ? parsed.bytes : null;
   } catch { return null; }
+}
+
+/** Staging experiment only: require full JPEG re-encoding, never store the input.
+ * The caller enforces the staging environment and a 20-attempt diagnostic budget.
+ * Parser checks still apply on both sides; remote rejection of corrupt entropy
+ * must be established by adversarial acceptance, not inferred from output success.
+ */
+export async function validateJpegTransformed(bytes, images) {
+  const parsed = parseJpeg(bytes);
+  if (!parsed || typeof images?.input !== 'function') return null;
+  console.log(JSON.stringify({event:'staging_images_transform',phase:'attempt'}));
+  try {
+    const result = await images.input(new Response(parsed.bytes).body)
+      .output({format:'image/jpeg',quality:95});
+    const response = result.response();
+    if (!response.ok || response.headers.get('Content-Type')?.split(';')[0].trim().toLowerCase() !== 'image/jpeg') return null;
+    const output = await readLimitedBody(response, 1500000);
+    const clean = output && parseJpeg(output);
+    if (!clean || clean.width !== parsed.width || clean.height !== parsed.height) return null;
+    console.log(JSON.stringify({event:'staging_images_transform',phase:'complete',bytes:clean.bytes.length}));
+    return clean.bytes;
+  } catch (error) {
+    // Record only a numeric provider code, never its message, URLs or request data.
+    const code = /\b(9\d{3})\b/.exec(String(error?.message || ''))?.[1] || null;
+    console.log(JSON.stringify({event:'staging_images_transform',phase:'error',code}));
+    return null;
+  }
 }

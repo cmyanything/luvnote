@@ -4,13 +4,13 @@ import { readFile } from 'node:fs/promises';
 
 const bundle = await build({ entryPoints: ['worker/index.js'], bundle: true, write: false, format: 'esm', platform: 'browser' });
 export async function workerdFixture({ realTurnstile = false, jpegValidator = process.env.TEST_JPEG_VALIDATOR || 'legacy' } = {}) {
-  if (!['legacy','images'].includes(jpegValidator)) throw Error('Invalid test JPEG validator');
+  if (!['legacy','images','images-transform'].includes(jpegValidator)) throw Error('Invalid test JPEG validator');
   const mf = new Miniflare(convertV4MiniflareOptions({
     workers: [{
       name: 'luvnote-test', modules: true, script: bundle.outputFiles[0].text,
       compatibilityDate: '2025-01-01',
       d1Databases: ['DB'], r2Buckets: ['MEDIA'],
-      ...(jpegValidator === 'images' ? {images:{binding:'IMAGES'}} : {}),
+      ...(jpegValidator !== 'legacy' ? {images:{binding:'IMAGES'}} : {}),
       ratelimits: { WRITE_LIMITER: { namespace_id: '472099', simple: { limit: 60, period: 60 } } },
       bindings: { ENVIRONMENT: 'staging', MEDIA_V3_UPLOADS_ENABLED: 'true', MEDIA_CLEANUP_ENABLED: 'true', TURNSTILE_TEST_MODE: 'true',
         MEDIA_JPEG_VALIDATOR: jpegValidator,

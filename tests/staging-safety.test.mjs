@@ -14,6 +14,7 @@ test('staging config requires isolated resource names and prohibits routes',()=>
   // Native mode cannot silently run against the wrong or missing image service.
   assert.throws(()=>stagingConfig(text.replace(/\[images\][\s\S]*?(?=\n\s*\[|$)/,'[images]\nbinding = "WRONG"\n')));
   assert.throws(()=>stagingConfig(text.replace('MEDIA_JPEG_VALIDATOR = "legacy"','MEDIA_JPEG_VALIDATOR = "images"').replace(/\[images\][\s\S]*?(?=\n\s*\[|$)/,'')));
+  assert.throws(()=>stagingConfig(text.replace('MEDIA_JPEG_VALIDATOR = "legacy"','MEDIA_JPEG_VALIDATOR = "images-transform"').replace(/\[images\][\s\S]*?(?=\n\s*\[|$)/,'')));
 
   for (const bad of [text.replace('luvnote-staging','luvnote'),text.replace('luvnote-media-staging','luvnote-media'),text+'\nroutes = []',text+'\n[env.production]',text+'\n[[r2_buckets]]\nbinding="PROD"\nbucket_name="luvnote-media"'])
     assert.throws(()=>stagingConfig(bad));

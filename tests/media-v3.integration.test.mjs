@@ -54,6 +54,28 @@ test('native inspection cannot be enabled outside staging even with an Images bi
   assert.equal(f.objects.size,0);
 });
 
+test('full transformation is staging-only, stores output once and enforces its exact diagnostic budget',async()=>{
+  for(const environment of [undefined,'production']) {
+    const f=await fixture();f.env.ENVIRONMENT=environment;f.env.MEDIA_JPEG_VALIDATOR='images-transform';
+    f.env.IMAGES={input(){throw Error('must not run outside staging');}};
+    assert.equal((await f.upload()).status,503);assert.equal(f.objects.size,0);
+    assert.equal(f.sql.prepare('SELECT photo_count n FROM media_upload_sessions').get().n,0);
+  }
+  const f=await fixture();f.env.ENVIRONMENT='staging';f.env.MEDIA_JPEG_VALIDATOR='images-transform';
+  assert.equal((await f.upload()).status,503);
+  let calls=0;
+  const output=jpeg.encode({width:8,height:8,data:new Uint8Array(8*8*4).fill(80)},95).data;
+  f.env.IMAGES={input:()=>({output:async()=>{calls++;return {response:()=>new Response(output,{headers:{'Content-Type':'image/jpeg'}})};}})};
+  const key=crypto.randomUUID();
+  const first=await f.upload(image,key);assert.equal(first.status,201);
+  assert.equal((await f.upload(image,key)).status,201);assert.equal(calls,1);
+  assert.deepEqual([...f.objects.values()][0],validateJpeg(output));
+  const budget=f.sql.prepare("SELECT count FROM media_write_budgets WHERE budget_key='images-transform:staging'").get();
+  assert.equal(budget.count,1);
+  f.sql.prepare("UPDATE media_write_budgets SET count=20 WHERE budget_key='images-transform:staging'").run();
+  assert.equal((await f.upload()).status,429);assert.equal(calls,1);assert.equal(f.objects.size,1);
+});
+
 test('a D1 completion failure keeps durable cleanup metadata for an R2 object', async () => {
   const f = await fixture();
   f.env.failSQL = query => f.objects.size > 0 && /INSERT INTO media_assets|UPDATE media_upload_jobs SET state='ready'/.test(query);

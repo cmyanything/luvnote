@@ -1,5 +1,5 @@
 import { readLimitedBody, readJson, digest, reserveBudget } from './guards.js';
-import { validateJpeg, validateJpegNative } from './jpeg.js';
+import { validateJpeg, validateJpegNative, validateJpegTransformed } from './jpeg.js';
 // LuvNote Media API V3: private R2 images with short-lived guest upload capabilities.
 // Existing V1/V2 cards stay in D1 and remain readable.
 const DAY = 86400000;
@@ -84,8 +84,9 @@ async function uploadPhoto(req, env, url, sid, json) {
   // Do not consume an upload slot if the validator mode is misconfigured.
   // Never silently downgrade from native inspection to header-only checks.
   const validationMode = env.MEDIA_JPEG_VALIDATOR || 'legacy';
-  if (!['legacy', 'images'].includes(validationMode) ||
-      (validationMode === 'images' && (env.ENVIRONMENT !== 'staging' || typeof env.IMAGES?.info !== 'function')))
+  if (!['legacy', 'images', 'images-transform'].includes(validationMode) ||
+      (validationMode !== 'legacy' && (env.ENVIRONMENT !== 'staging' ||
+        typeof env.IMAGES?.[validationMode === 'images' ? 'info' : 'input'] !== 'function')))
     return json(req, { error: 'image_validation_unavailable' }, 503);
   const previous = await env.DB.prepare(
     'SELECT j.asset_id,j.content_hash,j.state,m.kind FROM media_upload_jobs j JOIN media_assets m ON m.id=j.asset_id WHERE j.session_id=? AND j.request_key=?'
@@ -123,8 +124,14 @@ async function uploadPhoto(req, env, url, sid, json) {
     if (raw === null) throw Object.assign(Error('too_large'), { status: 413 });
     // Preserve strict JS decoding by default. Use the Images binding only when
     // explicitly enabled after isolated staging acceptance.
-    const bytes = validationMode === 'images'
-      ? await validateJpegNative(raw, env.IMAGES)
+    // Exact existing D1 budget bounds this staging-only experiment even if another
+    // valid capability is used during the window. Every attempt counts conservatively,
+    // including parser rejection; ready idempotent replays return before this block.
+    if (validationMode === 'images-transform' &&
+        !await reserveBudget(env, 'images-transform:staging', 20, DAY))
+      throw Object.assign(Error('transformation_test_budget_exceeded'), {status:429});
+    const bytes = validationMode === 'images' ? await validateJpegNative(raw, env.IMAGES)
+      : validationMode === 'images-transform' ? await validateJpegTransformed(raw, env.IMAGES)
       : validateJpeg(raw);
     if (!bytes) throw Object.assign(Error('invalid_jpeg'), { status: 400 });
     await env.DB.batch([

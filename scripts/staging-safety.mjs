@@ -29,7 +29,7 @@ export function stagingConfig(text) {
   if (imageBlocks.length > 1 ||
       (imageBlocks.length === 1 && !/^binding\s*=\s*"IMAGES"\s*$/m.test(imageBlocks[0][1])))
     throw Error('Invalid staging Images binding');
-  if (/^MEDIA_JPEG_VALIDATOR\s*=\s*"images"\s*$/m.test(clean) && imageBlocks.length !== 1)
+  if (/^MEDIA_JPEG_VALIDATOR\s*=\s*"images(?:-transform)?"\s*$/m.test(clean) && imageBlocks.length !== 1)
     throw Error('Native JPEG validation requires isolated staging IMAGES binding');
   if (/^\s*(routes?|remote)\s*=/m.test(clean) || /\[env\./.test(clean)) throw Error('Staging routes/environments are forbidden');
   const match=/^database_id\s*=\s*"([0-9a-f-]{36})"\s*$/m.exec(clean);

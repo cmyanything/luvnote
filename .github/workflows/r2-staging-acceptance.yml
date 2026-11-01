@@ -59,6 +59,7 @@ jobs:
           (npx wrangler tail luvnote-api-staging --format json > tail.json 2> tail.err &) 
           sleep 15
           node scripts/measure-r2-staging.mjs
+          node scripts/measure-v2-baseline-staging.mjs
           sleep 15
           pkill -f "wrangler.*tail" || true
 
@@ -76,18 +77,26 @@ jobs:
           node --input-type=module -e '
           import fs from "node:fs";
           const text = fs.existsSync("tail.json") ? fs.readFileSync("tail.json","utf8") : "";
-          const cpu = [...text.matchAll(/"cpuTime":\s*(\d+(?:\.\d+)?)/g)].map(m => +m[1]).sort((a,b)=>a-b);
-          const outcomes = [...text.matchAll(/"outcome":\s*"(\w+)"/g)].map(m => m[1]);
-          const count = o => outcomes.filter(x => x === o).length;
-          const q = p => cpu.length ? cpu[Math.min(cpu.length-1, Math.ceil(p*cpu.length)-1)] : "n/a";
-          const lines = [
-            "## R2 staging CPU (Cloudflare tail)",
-            `tail events: ${outcomes.length}, ok: ${count("ok")}, exceededCpu: ${count("exceededCpu")}`,
-            `cpuTime ms p50/p95/max: ${q(0.5)} / ${q(0.95)} / ${cpu.length ? cpu.at(-1) : "n/a"}`,
-            cpu.length ? "" : "No cpuTime in tail output: check tail.err / Workers Metrics in the dashboard.",
-          ];
+          const objs = []; let depth = 0, start = -1, inStr = false, esc = false;
+          for (let i = 0; i < text.length; i++) { const c = text[i];
+            if (inStr) { if (esc) esc = false; else if (c === "\\") esc = true; else if (c === "\"") inStr = false; continue; }
+            if (c === "\"") inStr = true; else if (c === "{") { if (depth++ === 0) start = i; }
+            else if (c === "}" && --depth === 0) { try { objs.push(JSON.parse(text.slice(start, i + 1))); } catch {} } }
+          const rows = objs.map(o => ({ outcome: o.outcome, cpu: o.cpuTime, wall: o.wallTime,
+            method: o.event?.request?.method, path: new URL(o.event?.request?.url || "http://x/").pathname.replace(/[0-9a-f-]{36}/g, ":id"),
+            status: o.event?.response?.status }));
+          const groups = {};
+          for (const r of rows) { const k = r.method + " " + r.path; (groups[k] ||= []).push(r); }
+          const q = (a, p) => a.length ? a[Math.min(a.length - 1, Math.ceil(p * a.length) - 1)] : "n/a";
+          const count = o => rows.filter(r => r.outcome === o).length;
+          const lines = ["## R2 staging CPU (Cloudflare tail)",
+            `tail events: ${rows.length}, ok: ${count("ok")}, exceededCpu: ${count("exceededCpu")}`,
+            "| request | n | cpu ms p50 / p95 / max | statuses |", "|---|---|---|---|"];
+          for (const [k, g] of Object.entries(groups)) { const c = g.map(r => r.cpu).filter(Number.isFinite).sort((a, b) => a - b);
+            lines.push(`| ${k} | ${g.length} | ${q(c, .5)} / ${q(c, .95)} / ${c.at(-1) ?? "n/a"} | ${[...new Set(g.map(r => r.status))].join(",")} |`); }
+          for (const r of rows) console.log(JSON.stringify(r));
           console.log(lines.join("\n"));
-          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join("\n\n") + "\n");
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join("\n") + "\n");
           if (count("exceededCpu") > 0) process.exit(1);
           '
           cat tail.err 2>/dev/null | tail -20 || true

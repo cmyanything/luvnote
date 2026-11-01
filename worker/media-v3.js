@@ -189,11 +189,13 @@ async function publishCard(req, env, json, cleanV2, newId) {
           'WHERE EXISTS(SELECT 1 FROM media_upload_sessions WHERE id=? AND token_hash=? AND used_at IS NULL AND expires_at>?) ' +
           "AND (SELECT count(*) FROM media_assets m JOIN media_upload_jobs j ON j.asset_id=m.id WHERE m.session_id=? AND m.card_id IS NULL AND j.state='ready' AND m.id IN (" + placeholders + '))=?'
         ).bind(cardId,theme,JSON.stringify(data),now,expires,sid,await tokenHash(bearer(req)),now,sid,...all,all.length),
-        ...all.map(id => env.DB.prepare('UPDATE media_assets SET card_id=?,expires_at=? WHERE id=? AND session_id=? AND card_id IS NULL AND EXISTS(SELECT 1 FROM theme_cards WHERE id=?)')
-          .bind(cardId,expires,id,sid,cardId)),
-        env.DB.prepare('INSERT INTO media_publications(session_id,card_id,payload_hash,expires_at) SELECT ?,?,?,? WHERE EXISTS(SELECT 1 FROM theme_cards WHERE id=?)')
+        // A zero-row INSERT may coincide with an already existing random card ID.
+        // Test this statement's changes(), not existence of that unrelated card.
+        env.DB.prepare('INSERT INTO media_publications(session_id,card_id,payload_hash,expires_at) SELECT ?,?,?,? WHERE changes()=1 AND EXISTS(SELECT 1 FROM theme_cards WHERE id=?)')
           .bind(sid,cardId,payloadHash,expires,cardId),
-        env.DB.prepare('UPDATE media_upload_sessions SET used_at=? WHERE id=? AND used_at IS NULL AND EXISTS(SELECT 1 FROM theme_cards WHERE id=?)').bind(now,sid,cardId),
+        ...all.map(id => env.DB.prepare('UPDATE media_assets SET card_id=?,expires_at=? WHERE id=? AND session_id=? AND card_id IS NULL AND EXISTS(SELECT 1 FROM media_publications WHERE session_id=? AND card_id=? AND payload_hash=?)')
+          .bind(cardId,expires,id,sid,sid,cardId,payloadHash)),
+        env.DB.prepare('UPDATE media_upload_sessions SET used_at=? WHERE id=? AND used_at IS NULL AND EXISTS(SELECT 1 FROM media_publications WHERE session_id=? AND card_id=? AND payload_hash=?)').bind(now,sid,sid,cardId,payloadHash),
       ]);
       if (result[0]?.meta?.changes !== 1) return await replay() || json(req, { error: 'session_used' }, 409);
       return json(req, { id: cardId, expires }, 201, { 'Cache-Control': 'no-store' });

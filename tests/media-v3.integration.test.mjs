@@ -37,6 +37,18 @@ test('expiry between validation and batch cannot consume or publish a session', 
   assert.equal(f.sql.prepare('SELECT count(*) n FROM theme_cards').get().n,0);
 });
 
+test('an expired no-op publication cannot inherit an existing colliding card ID', async t => {
+  const f=await fixture(); const asset=await (await f.upload()).json();
+  f.sql.prepare('INSERT INTO theme_cards VALUES(?,?,?,?,?)').run('aaaaaaa','pink-coquette',JSON.stringify({to:'Other card',from:'Other',letter:'Existing'}),Date.now(),Date.now()+100000);
+  t.mock.method(crypto,'getRandomValues',bytes=>{bytes.fill(0);return bytes;});
+  f.env.beforeBatch=()=>{f.sql.prepare('UPDATE media_upload_sessions SET expires_at=?').run(Date.now()-1000);};
+  const response=await f.publish([{id:asset.id}]);
+  assert.equal(response.status,409);
+  assert.equal(f.sql.prepare('SELECT count(*) n FROM media_publications').get().n,0);
+  assert.equal(f.sql.prepare('SELECT card_id FROM media_assets').get().card_id,null);
+  assert.equal(f.sql.prepare('SELECT used_at FROM media_upload_sessions').get().used_at,null);
+});
+
 test('real SQLite publication, materialization and binary read preserve decoded pixels', async () => {
   const f = await fixture(); const asset = await (await f.upload()).json();
   const res = await f.publish([{id:asset.id,cap:'Synthetic'}]); assert.equal(res.status,201);

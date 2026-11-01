@@ -76,7 +76,7 @@ During an incident, freeze writes, disable scheduled cleanup and pause lifecycle
 
 ## References
 
-- [D1 batch semantics](https://developers.cloudflare.com/d1/worker-api/d1-database/): statements run as a transaction; a zero-row update is not itself an exception. The publication SQL explicitly gates dependent writes.
+- [D1 batch semantics](https://developers.cloudflare.com/d1/worker-api/d1-database/): statements run as a transaction; a zero-row update is not itself an exception. The publication SQL explicitly gates a receipt on the preceding INSERT's [SQLite changes()](https://www.sqlite.org/lang_corefunc.html#changes) and ties dependent writes to that receipt, including the zero-row/random-ID-collision case.
 - [R2 consistency](https://developers.cloudflare.com/r2/reference/consistency/): object consistency does not make D1 and R2 atomic.
 - [Native rate limiting](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/): per-location, approximate counters, so exact D1 quotas supplement the binding.
 - [Turnstile validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/), [testing](https://developers.cloudflare.com/turnstile/troubleshooting/testing/): dummy key behavior is isolated from production authorization.

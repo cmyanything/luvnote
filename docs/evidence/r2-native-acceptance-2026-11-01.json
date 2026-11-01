@@ -1986,5 +1986,35 @@
       }
     ]
   },
-  "productionDeployed": false
+  "productionDeployed": false,
+  "ciObservations": [
+    {
+      "run": 41286330628,
+      "sha": "e7028ddb73ef692e0ff530166c5a45a5ae5d91a4",
+      "conclusion": "success",
+      "cleanReportedPassExecutions": 155,
+      "flakyRecovered": 0,
+      "deploy": "skipped"
+    },
+    {
+      "run": 41286747839,
+      "sha": "6594c13c17e8a60d88b1e2f93cfb5f1b735db099",
+      "conclusion": "success",
+      "cleanReportedPassExecutions": 154,
+      "flakyRecovered": 1,
+      "deploy": "skipped",
+      "case": "native WebKit little-memories",
+      "failure": "tests/r2-acceptance.spec.ts:86 publicationCalls expected 1, received 0 after 8000ms",
+      "artifactsAvailable": false,
+      "rootCause": "NOT_VERIFIED"
+    }
+  ],
+  "localFlakeReproduction": {
+    "command": "TEST_JPEG_VALIDATOR=images VITE_R2_MEDIA_ENABLED=true npx playwright test tests/r2-acceptance.spec.ts --project=webkit-mobile --grep little-memories --repeat-each=20 --retries=0",
+    "environment": "Windows local workerd and low-fidelity Images",
+    "passed": 20,
+    "failed": 0,
+    "retries": 0,
+    "fixed": false
+  }
 }

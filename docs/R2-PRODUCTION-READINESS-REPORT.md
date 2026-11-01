@@ -2,87 +2,159 @@
 
 Updated **2026-11-01 UTC**. Independent acceptance of [PR #6](https://github.com/cmyanything/luvnote/pull/6), based on the unmerged [PR #2](https://github.com/cmyanything/luvnote/pull/2) feature branch. [Issue #5](https://github.com/cmyanything/luvnote/issues/5) retains the production gates.
 
-## Full Transformation continuation: NO-GO pending zero-cost quota verification
+## Full Transformation final acceptance — NO-GO for reliable Workers Free CPU
 
-### Latest account-cost recheck after Owner Dashboard confirmation
+The Owner confirmed **Images Free**, retained **Workers Free / R2 Paid**, and explicitly approved **creating a complete new JPEG from a damaged source and discarding the source**. This changes the earlier reject-every-damaged-input policy for this Full Transformation experiment only. It does not approve Images.info(), which can store malformed original bytes, or any production action.
 
-On **2026-11-01**, the Owner confirmed **Workers Free — Active**, **R2 Paid — Active**, transformations disabled for **luvnote.fun**, and **0 analytics requests over 24 hours**. These are recorded as Owner-confirmed Dashboard facts. They do **not** identify the account's Images plan, monthly unique-transformation allowance or current monthly consumption. Workers Free and R2 Paid are separate product subscriptions; a zone traffic view is not the account's Images billing meter. No zero-monthly-usage inference was made.
+**Functional canonicalization works; the CPU blocker remains.** The fixed full-transformation run completed 14/14 uploads, including three repaired malformed inputs, with actual private R2 output independently strict-decoded and all five themes published/read/replayed. However, normal full-transformation upload CPU was p50/p95/p99 **13/53/53 ms**. The two large images used **53/51 ms**, above the documented **10 ms Workers Free** budget. No 1102 in these small samples is not a steady-traffic guarantee: [Cloudflare documents](https://developers.cloudflare.com/workers/platform/limits/) limited isolate flexibility and eventual termination on consistent overruns. **Do not merge PR #6 as a proven Free-plan CPU solution.**
 
-Fetched origin again at clean **41bef36a1427de16acaf48532413577a997ff664**. PR #6 remains draft, targeting PR #2's unchanged feature branch. At **08:42:28.903 UTC**, authorized subscription and Images stats reads still returned **403 / 10000**; the available Dashboard again redirected to sign-in. The account-level Images plan and monthly allowance therefore remain **NOT_VERIFIED**. Per the Owner's explicit stop rule, **no remote Full Transformation request was made**, no test upload window was opened and no zone feature was enabled.
+| Current gate | Evidence-based status |
+|---|---|
+| R2_FULL_TRANSFORMATION_CODE | PASS — guarded staging experiment, not production enablement |
+| R2_FULL_TRANSFORMATION_SECURITY | PASS — bounded synthetic corpus under Owner-approved canonical repair |
+| R2_FULL_TRANSFORMATION_FUNCTIONAL | PASS — five themes, photos/covers, publication/reopen/replay |
+| R2_FULL_TRANSFORMATION_CPU | FAIL — observed CPU exceeds Workers Free budget |
+| R2_STAGING_VERIFIED | FAIL — CPU gate and broader operational gates remain open |
+| R2_CPU_ACCEPTANCE | FAIL |
+| R2_IMAGES_MONTHLY_METER | NOT_VERIFIED |
+| R2_PRODUCTION_DEPLOYED | NO |
+| R2_PRODUCTION_READY | NO |
 
-Real read-only configuration verification at **08:42:34.255 UTC** confirmed the same private isolated resources and active staging **b0f3a112-e7a9-4250-b7bb-027e83dca378**, legacy / uploads off / cleanup on / no Images binding. Health was **200**, and session/upload/publication POSTs were each **503** at **08:44:19.829 UTC**. No restoration was necessary because staging writes were never enabled. No production or billing mutation occurred.
+### Source, limits and controlled windows
 
-**What the Owner needs to check, without purchasing/enabling anything:**
+Started clean at **41bef36a1427de16acaf48532413577a997ff664**, fetched origin and reconfirmed PR #6 targets PR #2's unmerged feature branch. No unrelated work changed.
 
-1. Select the existing **account**, then **Manage Account → Billing → Subscriptions**. Record the exact **Images** subscription label (Free, Paid, legacy Image Resizing, or absent/unspecified). Workers Free/R2 Paid labels cannot substitute for it. If no Images label is shown, report that state rather than assuming Free or activating a subscription.
-2. Record the **Images unique transformations included per month**, **used count**, **remaining allowance**, exact **month/date range**, and **last update time**, across all Workers/zones on the account. [Images pricing](https://developers.cloudflare.com/images/pricing/) states calendar-month transformation counting and a 5,000 included allowance; that general policy does not prove this account's current meter. **Images & Stream → Transformations → Analytics** provides sampled request estimates, per the [official Images changelog](https://developers.cloudflare.com/changelog/product/images/); even a monthly request chart is not a billing/unique-transformation census.
-3. For a paid Images subscription, review **Manage Account → Billing → Billable Usage**, filtered to the Images transformation metric: **Total usage / Billable usage / Usage cost**, included allowance and period boundaries. [Billable Usage](https://developers.cloudflare.com/billing/manage/billable-usage/) follows the subscription billing cycle and may lag; do not silently treat that cycle as the Images calendar-month uniqueness window. Obtain the applicable monthly meter if the periods differ. No token, payment details or customer data is needed.
+| Commit created | Purpose |
+|---|---|
+| 235acef60be55df34d79adef3729d43c368aa40f | Account-cost recheck before Images plan confirmation |
+| 7add11c96ea21b963aa5ac08d7604b1aea11b5f6 | Staging-only full JPEG transformation, exact diagnostic budget and acceptance script |
+| d023c1538eed6892e6e584d462caa75cab44108e | Separate generated-output size bound, canonical-policy acceptance and browser quality measurement |
+| f2b0f691fbdad7a875f29dfe832713e5db6fdfdf | Native indexOf scan experiment; not retained |
+| f4f7d80579c3abdd5c31189f8b9662efe2cd4194 | Revert the unproven scan optimization; retained application is identical to d023c15 |
+| Documentation/evidence continuation | This report, staging/operations notes and sanitized evidence; exact hash in git history / Issue #5 |
 
-The authorized first window is now **10–20 synthetic inputs and at most 20 transformation attempts**, replacing the earlier proposed 100-attempt maximum. Require a verified no-overage Free plan or sufficient verified included allowance for this bounded test with shared-account headroom. No automatic retries or extra quality variants should consume additional calls in that first window. It will include the three known entropy/header escapes; valid baseline/progressive, typical/max/noisy JPEGs; malformed/incomplete files; strict offline decoding and metadata/dimension checks of every returned object; sequential/concurrent timing capture; and five-theme photo/cover readback. This is a **pending test plan**, not completed acceptance. CPU, 1102 frequency, upload success, transformed-image fidelity and actual quota delta remain **NOT_VERIFIED**. The earlier offline seven-case/real existing-image fifteen-check results below are not new remote transformation results.
+Production wrangler.toml and frontend source remain unchanged. Legacy decoding remains the default. The images-transform mode returns **503 outside ENVIRONMENT=staging or without the binding**, before consuming an upload slot. Ownership, Turnstile, session expiry, exact quotas, publication atomicity, idempotency and cleanup remain in the existing Worker/D1/R2 flow. No service, database, queue, subscription or CPU limit was added/changed.
 
-[CI 41289105528](https://github.com/cmyanything/luvnote/actions/runs/41289105528) on exact **41bef36** is now confirmed **SUCCESS / deployment skipped**: **79 API + 4 native local workerd + 36 legacy frontend + 18 default V3 + 18 native local V3 = 155 clean reported pass executions**, no flaky case in this run. Configuration repetitions are not unique scenarios and local Images remains low-fidelity. This does not establish that the prior CI flake was fixed, nor remote transformation acceptance. No application suite was rerun locally for this read-only cost recheck; only configuration/health/write-denial and CI-result verification were necessary.
+Input stays **1,500,000 bytes**, **1024×1024 / 1,048,576 pixels**, bounded JPEG scans and the existing EXIF/GPS/XMP/IPTC rejection policy. Re-encoding a high-entropy valid image enlarged it beyond the first implementation's reused 1.5 MB input bound. The correction allows **at most 3,000,000 bytes only from the Images-generated output**, checks output MIME/dimensions/marker structure again and strips metadata before storing it. It does **not** increase raw upload limits or add a second JS decode to requests. Output quality is 95, with no resizing or speculative compression-quality reduction. The larger output cap is a storage/CPU tradeoff that remains staging-only.
 
-Current sanitized evidence: [Account cost recheck](evidence/r2-full-transformation-cost-recheck-2026-11-01.json). **Decision remains NO-GO pending account Images plan/monthly quota evidence**, not a finding that remote Full Transformation has failed security. Keep PR #6 unmerged and production untouched.
+The original 20-attempt diagnostic bound was explicitly expanded during authorized defect fixing to **30 total attempts including retries**, with **19 distinct synthetic input hashes**. The same exact D1 counter was retained, never reset, and ended at 30/30. Of those attempts, **25 reached the Images binding**; five were rejected by the existing input parser first. No more remote transformations were made after exhausting the bound.
 
-The Owner authorized testing Cloudflare Images Full Transformation **only on staging, on the existing plan, without additional charges**. No billing change, merge or production deployment is authorized. This is a new candidate, distinct from the rejected `info()` validator below. **It has not been rejected on empirical Cloudflare security results: its remote acceptance is blocked before invocation by unverified plan/usage.**
+### Actual Cloudflare resources and versions
 
-Fetched origin and confirmed a clean branch `perf/r2-native-jpeg-validation` at **1ccef87394ac1a38c69e21504ff0ba90682b12ea**; PR #6 is still draft/unmerged against `feat/r2-private-media-v3` at f58c509. The only new executable is an offline research script; no application, validator, deployment configuration or dependency changed. Commits for this continuation are listed in the branch history and Issue #5.
+Account **cee7f572be6cf7e3de1e4526f6d250d2**; existing Worker **luvnote-api-staging**, D1 **luvnote-staging / 3967493c-55db-4ab8-bb2c-9ed3c157a543**, R2 **luvnote-media-staging**. Private R2 remained r2.dev-disabled, with no public custom domain; no production route/binding or DNS change.
 
-### Cost preflight and stop condition
+| Window / source | Actual active version | Result |
+|---|---|---|
+| Initial candidate, 7add11c | b6485236-6e6c-441e-8370-e4b2cdff2f7a | 10-case initial matrix; then Owner-approved canonical policy; 4 additional uploads exposed output-size issue |
+| Fixed output bound, d023c15 | 0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e | **14/14 HTTP 201**, five complete photo/cover card flows |
+| Scan experiment, f2b0f69 | 4b669bb2-91fd-447f-b9f8-1cc9f942185c | Two concurrent large uploads completed, CPU 138/178 ms; source optimization reverted |
+| Final rollback / parked reader | **b0f3a112-e7a9-4250-b7bb-027e83dca378** | **legacy / uploads false / cleanup true / test mode false / genuine staging secret / no Images binding** |
 
-- Current official [binding documentation](https://developers.cloudflare.com/images/optimization/binding/) describes `.input(stream).output({format:'image/jpeg',quality:95}).response()`, full decode/re-encode, and transformation usage. Only `info()` is free independently of transformation allowance. No public image URL or additional service is required.
-- [Images pricing](https://developers.cloudflare.com/images/pricing/) includes **5,000 unique transformations/month** on Free; new unique transformations over that allowance fail with **9422**, without overage charges on Free. Paid also includes the first 5,000, then charges **$0.50/1,000**. A repeat source/parameters combination in the same month does not add another unique transformation. These are general plan terms, **not verification of this account's active plan or remaining allowance**.
-- At **2026-11-01T08:23:38.590Z**, authorized read-only calls to account `/subscriptions` and `/images/v1/stats` both returned **403 / 10000 Authentication error**. The documented stats endpoint is for stored-image counts, so even a successful result alone would not establish remaining transformation allowance. No stored customer images were enumerated.
-- The available in-app Dashboard browser redirected to **Sign in to Cloudflare**. No authenticated Dashboard session is available; no credentials were requested or printed, no paid feature enabled, and no permission/billing setting changed. An asynchronous request asked the Owner for the existing Images plan and current monthly transformation usage/remaining allowance; no answer has yet supplied that evidence.
-- **Remote Full Transformation calls: 0. Additional Images transformation quota consumed by this experiment: 0.** No staging deployment or write window was opened. A successful request alone would not prove zero billing. Do not run a potentially chargeable method just to discover the subscription.
+Each window returned to the parked reader; final health was 200 and session/upload/publication POSTs each 503 at **09:23:25.982 UTC**. Rollback preserves both legacy and new V3 reads, including generated JPEGs larger than the raw input cap. Use the active version's resource bindings rather than latest-upload settings after rollback.
 
-Before resuming remote acceptance, verify Images Free with its hard cap, or verified included allowance with enough headroom for other account consumers. Use a bounded window of **at most 20 transformation attempts** under the latest Owner instruction, conservatively treating every attempt as a unique transformation; do not retry or fall back to original bytes on 9422/provider failure. Recheck usage afterward. This is a proposed maximum, **not an already executed or verified quota measurement**. Monthly quota is shared across account consumers, not reserved for this Worker. Existing daily guest quotas permit up to 600 image slots/day (100 sessions × 6), potentially more than 5,000/month; they are **not** an Images monthly budget. Production would need an explicit usage policy before this candidate could be considered economical or reliable.
+### Account-level Images cost and quota
 
-### Independent trace and offline experiment
+Owner-confirmed **Images Free** plus the [official pricing contract](https://developers.cloudflare.com/images/pricing/) establishes no additional Images transformation charges: 5,000 unique transformations/month are included; new over-limit transformations fail with **9422**, without a Free-plan overage charge. Workers Free and R2 Paid were recorded separately. luvnote.fun URL transformations were not enabled; the per-Worker raw-byte binding worked without changing that production zone feature.
 
-The existing path remains `uploadPhoto → session/MIME checks → validator-mode guard → owned quota slot → readLimitedBody → parseJpeg → strict jpeg-js decode → D1 metadata → private R2 put → ready journal`. No remote Full Transformation branch was added. The minimum candidate is to reuse the existing bounded parser/metadata policy, require full transformation completion, bound and sanitize the output, and store **only the re-encoded output**, retaining ownership/atomicity/idempotency/cleanup. Full transformation may repair a broken input rather than reject it; a decodable output alone does not establish the current **reject-corrupt-input** contract. Do not silently redefine that policy.
+The initial 0-requests/24-hour zone chart was **never treated as monthly account usage**. Subscription/Images stats reads still return 403; the available Dashboard is signed out. **Authoritative monthly account meter before/after remains NOT_VERIFIED.** Stored-image stats and sampled request analytics are not a unique-transformation billing census.
 
-Ran `node scripts/probe-jpeg-transformation-local.mjs` with **no external fetch, D1 or R2 bindings**. This standalone raw-binding diagnostic uses existing dependencies only. Its external-fetch handler rejects outbound requests. It intentionally does not pretend to be the application upload path.
+Observed counters: **30 upload attempts / 19 distinct synthetic inputs / 25 binding attempts / 24 completed transformations / one output-bound rejection**, with no observed 9422 or provider exception. HTTP totals: **24×201 / 6×400**, including five expected parser rejections and the one valid image rejected before the output-size fix. Repeated source/parameter combinations can deduplicate under the billing contract, so **25 calls is not a claim of 25 billable unique transformations**. No claim of zero account-wide monthly usage or an independently audited all-product invoice is made. No billing setting changed.
 
-| Synthetic input (same hashes as prior acceptance) | Legacy strict | Local full transformation | Cloudflare full transformation |
+### Security and output completeness
+
+Initial results were preserved under the original policy: 7/10 policy passes and three input-rejection failures. After the Owner explicitly approved canonical repair, those actual outputs were evaluated under the new policy; the fixed-source repeat then verified all three again. This is an explicit policy decision, not a silently relabeled strict-input test.
+
+| Input | Legacy strict input outcome | Real Full Transformation / verified R2 output | Current policy result |
 |---|---|---|---|
-| Valid baseline | accept | 200; strict-decodable output, 401 bytes | NOT_VERIFIED |
-| Valid progressive | accept | 200; strict-decodable output, 1,561 bytes | NOT_VERIFIED |
-| Truncated entropy with EOI (prior escape 1) | reject | 422 | NOT_VERIFIED |
-| Same-size zeroed entropy (prior escape 2) | reject | 422 | NOT_VERIFIED |
-| Forged headers with no pixels (prior escape 3) | reject | 422 | NOT_VERIFIED |
-| Truncated file without EOI | reject | 422 | NOT_VERIFIED |
-| Fake/incomplete PNG declared as JPEG | reject | 422 | NOT_VERIFIED |
+| Typical 900×675 baseline | accept | 201; complete, sanitized, same dimensions, new bytes | PASS |
+| Progressive 64×48 | accept | 201; complete, sanitized, same dimensions, new bytes | PASS |
+| Truncated entropy with EOI | reject | 201; **326-byte newly generated, strict-decodable JPEG** | PASS under Owner-approved repair |
+| Same-size zeroed entropy | reject | 201; **618-byte newly generated, strict-decodable JPEG** | PASS under Owner-approved repair |
+| Forged headers/no pixels | reject | 201; **321-byte newly generated, strict-decodable JPEG** | PASS under Owner-approved repair |
+| Truncated file without EOI | reject | 400 before binding; failed journal, no ready object | PASS |
+| Fake/incomplete PNG declared JPEG | reject | 400 before binding; failed journal | PASS |
+| Invalid marker length | reject | 400 before binding | PASS |
+| Duplicate frame | reject | 400 before binding | PASS |
+| EXIF/GPS-marked synthetic payload | reject | 400 before binding | PASS |
+| Maximum dimensions/noisy input, 1,028,954 bytes | accept | First 400 due output cap; after fix **201 / 1,855,090-byte complete JPEG** | Fixed, PASS |
+| Near-limit input, 1,498,433 bytes | accept | **201 / 1,936,631-byte complete JPEG** | PASS |
 
-**7 local observations align with expected policy, not 7 Cloudflare acceptance passes.** The offline probe maps caught binding exceptions to 422; its diagnostics show Sharp/VipsJpeg premature-end/corrupt-segment errors for the three prior escapes and corrupt-header error for the fake PNG. These are not Cloudflare HTTP rejection codes. Miniflare 5.20261023.3-beta implements local Images using **Sharp 0.35.5**, not the remote Cloudflare decoder. Source trace also confirms its output path ignores the binding's `quality` parameter, so this run cannot establish quality=95, fidelity, production decoder behavior or CPU. No new library or second JavaScript decoding step was inserted into the upload handler. Strictly decoding the two synthetic outputs occurred only in the offline operator process to inspect results.
+The three repaired inputs were never published as cards. Their original bytes were not stored in R2. Every successful upload was downloaded from actual R2 and strict-decoded **in the operator process**, beyond MIME/header/success checks; generated size and sanitized-byte checks were also performed. No second full JS decode was introduced into the Worker. Missing/failing binding, bad output type/dimensions/metadata, over-limit output, production environment, replay and budget exhaustion have local fail-closed tests. Full real-camera GPS/ICC libraries, provider outage guarantees and every possible JPEG variant are not claimed certified.
 
-### Checks actually repeated in this continuation
+### Actual CPU, wall time and memory
 
-- `npm run test:api`: **79 PASS / 0 fail / 0 skip**; includes the existing 25-case strict JPEG corpus and five-theme local publication/security tests. This is regression evidence, not remote transformation proof.
-- `npm run typecheck` and default V3-disabled `npm run build`: **PASS**.
-- `node .wrangler/browser-reads.mjs`: **15 PASS**, real existing staging R2 image reads/decodes/reloads across five themes × desktop Chromium / Pixel 7 Chromium / iPhone 13 WebKit emulation. Existing synthetic cards only; no physical device or new transformed-image quality claim.
-- Read-only Cloudflare preflight reconfirmed active staging **b0f3a112-e7a9-4250-b7bb-027e83dca378**, source e7028dd, **legacy / uploads off / cleanup on / test mode false / no Images binding**. Isolated staging D1 UUID and private R2 identity match the existing resources; r2.dev disabled, no R2/Worker custom domains or production routes/bindings. This version is also the prepared rollback target, but no new deployment needed rollback.
-- At **2026-11-01T08:26:37.173Z**, real staging health **200**; session/upload/publication POSTs each **503**. No upload/publication records were created by this continuation.
-- Prior exact-head [CI 41287485038](https://github.com/cmyanything/luvnote/actions/runs/41287485038), source 1ccef87, is now confirmed **SUCCESS / deployment skipped**, with **154 clean pass executions + 1 native WebKit case recovered on retry**, not 155 clean passes. It predates the new probe. The earlier flake's cause remains unverified; this continuation does not claim to fix it.
+Primary measurements are captured Cloudflare tail events for binding invocations. CPU and wall columns are **p50 / p95 / p99 milliseconds**, nearest-rank; network/client wall time is separate. Client intervals in the first harness can include local scheduling delays around synchronous metadata commands, so they must not be used as Worker CPU or service wall time.
 
-Sanitized current evidence: [Full Transformation preflight](evidence/r2-full-transformation-preflight-2026-11-01.json). No customer content, secrets, raw backup data or authenticated browser session data is included.
+| Real workload / source | n | CPU ms | Cloudflare wall ms | Qualification |
+|---|---:|---|---|---|
+| Initial transformation calls, 7add11c | 9 | 8 / 37 / 37 | 758 / 1404 / 1404 | Includes the valid output-bound failure |
+| Fixed canonical/photo/cover calls, d023c15 | 14 | **13 / 53 / 53** | **865 / 1934 / 1934** | All HTTP 201; five photo/cover pairs at concurrency two |
+| Maximum noisy / near-limit, d023c15 | 1 each | **53 / 51** | **899 / 960** | Paired with smaller covers, not a capacity percentile |
+| Native-search experiment, f2b0f69 | 2 | 138 / 178 / 178 | 1594 / 1605 / 1605 | Two largest images concurrently; candidate reverted |
 
-```text
-R2_FULL_TRANSFORMATION_SECURITY = NOT_VERIFIED
-R2_FULL_TRANSFORMATION_CPU = NOT_VERIFIED
-R2_FULL_TRANSFORMATION_QUOTA = NOT_VERIFIED
-R2_FULL_TRANSFORMATION_ACCEPTANCE = NO_GO
-R2_PRODUCTION_DEPLOYED = NO
-R2_PRODUCTION_READY = NO
-```
+**1102: 0/30 observed upload attempts.** All 25 binding-attempt tail events were captured with no exceededCpu/binding exception. This demonstrates success in the tested windows, not compliance with a sustained 10 ms Free CPU budget. The final code's maximum-image cost remains well above it. No CPU setting or plan was raised to obtain success.
 
-Remote CPU p50/p95/p99, 1102 frequency, upload success, monthly quota delta, R2 transformed output quality/metadata/orientation, and all-theme publication with transformed photos/covers remain **NOT_VERIFIED**. No claim about a zero-1102 remote workload is made because it did not run. Prior `info()` timings below are **not** Full Transformation timings.
+Historical same-hash legacy comparison: typical 900×675 CPU **119/243/243 ms, n=10**; Full Transformation typical same-hash observations were **14, 9, 17 ms** across the initial/fixed windows. Legacy earlier completed **13/42** with **29 HTTP 503/1102**; its one completed maximum sample used 356 ms. This is material diagnostic improvement, **not a newly rerun paired capacity benchmark** or equal-sample percentile comparison.
 
-**Next action:** the Owner supplies the existing Images plan and current monthly transformation usage/remaining allowance, or provides an already signed-in read-only Dashboard view. No token or card/customer data is needed. No billing upgrade is requested. Once zero-cost conditions can be verified, run the existing security corpus before any benchmark/publication window, then test no-resize JPEG output quality/metadata and five themes, collect actual Worker tail/analytics plus Images quota, and return to the parked legacy/write-disabled version. Any accepted malformed input is a security NO-GO unless a proven minimal check closes the exact gap without a second full JavaScript decode.
+Actual adaptive GraphQL evidence is retained. The fixed window returned CPU p50/p95/p99 **4.173/51.189/53.229 ms**, isolate memory p50/p99 **2,387,697/14,886,028 bytes**, but included publication/read invocations and represented 38 requests, not only 14 uploads. The scan trial represented both requests, CPU **138.825/178.273/178.273 ms**, memory **21,924,168/21,932,360 bytes**. Memory is sampled/shared-isolate usage, not peak per-request or Images-service memory. The first window represented 9 rather than 10 requests; do not turn adaptive counts into an exact census.
 
-If the existing plan cannot support the bounded zero-cost test, stop this candidate. A separate **same-Worker strict native/WASM codec experiment** may be assessed for complete error detection, dependency maintenance and actual CPU; it is an unverified alternative, not an implemented remedy. Client-only decoding, `info()`, header/minimum-length heuristics or merely storing a repaired image do not meet the retained validation policy. Keep jpeg-js and the R2 launch hold until a measured secure replacement exists. No queue, microservice, database or plan change was introduced.
+A local CPU profile located the byte scanner as a dominant cost. The native indexOf experiment reduced aggregate local Node CPU from 766 to 375 ms over 60 iterations and preserved outputs in **325 seeded differential checks**. Remote benefit was not established. The two-largest-images concurrency differs from the previous large+cover pairing, so the larger remote numbers do **not** establish a controlled causal regression. The candidate was reverted instead of claiming a win from local data.
 
-## Decision: NO-GO for merging PR #6 as the CPU solution
+### Quality, five themes and rollback acceptance
+
+No dimensions were reduced. Actual-output comparisons in **Chromium and WebKit** gave typical/smooth PSNR approximately **59.48–59.83 dB**, maximum-noise **36.18 dB**, near-limit noise **36.67 dB**, and progressive **40.64 dB**. Twelve synthetic input/output pairs were checked in both engines (**24 comparisons**). Both engines agreed. These are numerical synthetic checks, not subjective customer-photo or physical-device acceptance.
+
+The first jpeg-js-only RGB comparison reported progressive 23.72 dB. Falsification with Pillow and both browsers showed 40.64 dB: source 4:2:0 versus output 4:4:4 and different decoder chroma upsampling made jpeg-js an unsuitable perceptual reference. The diagnostic value is retained, not presented as real browser degradation. Full-resolution output completeness was separately checked by strict decoding.
+
+Five new transformed-photo/cover cards: pink-coquette **6s2y3g7**, coquette-dream **5ag75n8**, little-memories **mc9zsu5**, birthday-chat **xp3sfv4**, velvet-gift **s3ud3sj**. Actual publication receipt retry, compatibility API, photo/cover URL reads and strict output decoding passed for all five.
+
+- New transformed-card read/reload/photo+cover decoding: **15 PASS**, five themes × desktop Chromium / Pixel 7 Chromium / iPhone 13 WebKit emulation.
+- Prior legacy/shared-card read/reload/image checks: **15 PASS** on the same three emulated profiles.
+- Existing operator synthetic V1 Base64 image: HTTP 200.
+- Actual cron cleanup: **12 candidates / 0 failures** at 09:00; scheduled isolated preview later reclaimed **6 / 0**, expired unlinked remainder **0**. All five live cards' photos/covers remained readable and strict-decodable afterward. Scheduled preview returns before background completion; final D1 verification was taken after completion.
+- Final diagnostic counter **30**, uploads disabled, no Images binding in the active parked reader.
+
+The temporary browser harness had an incorrect expected synthetic label and was corrected before the successful 15-case run; no application fix or false pass was attributed to that harness failure. Physical iPhone/Android, installed LINE handoff, subjective photo quality, real cellular delays and non-dummy guest Turnstile acceptance remain unverified.
+
+### Automated verification and files changed
+
+[Exact retained-source CI 41292160697](https://github.com/cmyanything/luvnote/actions/runs/41292160697) on **f4f7d80579c3abdd5c31189f8b9662efe2cd4194** is **SUCCESS / deployment skipped**, **159 clean reported pass executions**: **83 API + 4 local info-binding workerd + 36 legacy frontend + 18 default V3 + 18 local info-binding V3**. No flaky retry in this run. These are configuration repetitions, not 159 unique scenarios; the info-binding repetitions do not prove Full Transformation behavior.
+
+Additional current local commands/results:
+
+| Command | Actual result |
+|---|---|
+| npm run test:api | **83 PASS / 0 fail / 0 skip**; 58 top-level tests plus 25 corpus subtests |
+| npm run typecheck; npm run build | PASS; V3-on local test build and final V3-off build both passed |
+| TEST_JPEG_VALIDATOR=images-transform node --test tests/media-v3.workerd.test.mjs | **4 PASS** with local Images emulation |
+| TEST_JPEG_VALIDATOR=images-transform npx playwright test tests/media-v3.spec.ts tests/r2-acceptance.spec.ts | **18 PASS** with local Images emulation |
+| node scripts/measure-jpeg-transform-quality.mjs | **24 real-output/offline browser comparisons** |
+| Seeded before/after parser differential | **325 PASS**, local experiment only; optimization reverted |
+| node --check on changed Worker/operator scripts; git diff --check | PASS |
+| node --test tests/staging-safety.test.mjs after final template comments | **2 PASS**, repeated subset |
+
+Low-fidelity Miniflare uses Sharp and ignores output quality=95; its native-mode results are not Cloudflare security, quality or CPU proof. Live service evidence above is separate. CI may rerun for documentation-only descendants; do not infer their result from the retained-source run.
+
+Modified executable files: worker/jpeg.js, worker/media-v3.js, scripts/staging-safety.mjs, tests/helpers/workerd-env.mjs and its declaration, tests/jpeg-native.test.mjs, tests/media-v3.integration.test.mjs, tests/staging-safety.test.mjs. Added scripts/accept-jpeg-transform-staging.mjs and scripts/measure-jpeg-transform-quality.mjs. Documentation/evidence updates are on the existing PR #6 branch. No production frontend/configuration, database schema, customer data or billing change.
+
+### Remaining risks and next action
+
+**Keep PR #6 draft/unmerged, the current plan, and the upload hold.** Full Transformation is useful canonicalization under the approved policy but is **not yet a reliable solution to the CPU blocker on Workers Free**. The generated-output size correction is bounded and preserves quality, but increases worst-case storage per image; production storage/quota policy must be reviewed separately. The staging diagnostic budget is exhausted and must not be reset just to continue this execution.
+
+The smallest remaining investigation would be a **same-Worker streaming/byte-copy reduction experiment**, preserving bounded input/output validation, metadata policy, ownership and journal compensation. It requires fresh end-to-end CPU/security evidence; it is not implemented or approved as a remedy here. A strict optimized native/WASM codec is another unverified alternative with dependency/maintenance costs. Do not replace validation with info(), a browser-only check or header heuristics, reduce image quality/limits silently, introduce another service, or change the plan.
+
+Broader production gates remain: real guest Turnstile action/hostname/replay/expiry, actual devices/LINE, interrupted request/aged orphan acceptance, privacy policy, WAF/alerts, recurring/off-host backup recovery and separate exact-commit production approvals. The previously Owner-approved encrypted D1 backup/restore remains historical evidence; no customer data was reopened.
+
+[Sanitized Full Transformation evidence](evidence/r2-full-transformation-acceptance-2026-11-01.json) contains source/version IDs, raw per-input outcomes/hashes, strict-output checks, actual tail/GraphQL metrics, browser quality/results, cleanup and final state. No images, tokens, customer content or backup data is embedded.
+
+---
+
+## Historical Images.info() acceptance — NO-GO
+
+The following record concerns the earlier metadata-only experiment, under the earlier strict-input policy. Its CPU measurements and failed security decision must not be attributed to Full Transformation.
+
+
+## Earlier metadata-only decision
 
 ```text
 R2_NATIVE_VALIDATOR_CODE = FAIL

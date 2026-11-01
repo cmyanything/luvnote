@@ -1,0 +1,2448 @@
+{
+  "recordedAt": "2026-11-01T09:19:31.565Z",
+  "decision": "NO-GO for reliable CPU acceptance on Workers Free; functional canonicalization works",
+  "retainedApplicationSource": "f4f7d80579c3abdd5c31189f8b9662efe2cd4194",
+  "equivalentApplicationSource": "d023c1538eed6892e6e584d462caa75cab44108e",
+  "ownerConfirmations": {
+    "workers": "Workers Free Active",
+    "r2": "R2 Paid Active",
+    "images": "Free",
+    "source": "Owner messages during this continuation",
+    "canonicalRepair": "Explicitly approved: accept a complete newly generated JPEG while discarding malformed source",
+    "zoneTransformations": "luvnote.fun disabled, unchanged",
+    "requests24Hours": 0,
+    "note": "24-hour traffic is not used as a monthly quota baseline"
+  },
+  "totals": {
+    "uploadAttempts": 30,
+    "distinctSyntheticInputHashes": 19,
+    "httpStatusCounts": {
+      "201": 24,
+      "400": 6
+    },
+    "error1102": 0,
+    "imagesBindingAttempts": 25,
+    "imagesCompleted": 24,
+    "providerErrorEvents": 0,
+    "accountMonthlyMeterBefore": "NOT_VERIFIED",
+    "accountMonthlyMeterAfter": "NOT_VERIFIED",
+    "note": "Binding/HTTP attempt counts and source hashes are observed counters, not authoritative account billable unique-transform counts. Images Free prevents additional transformation charges; quota 9422 was not observed."
+  },
+  "phases": [
+    {
+      "file": "full-transformation-remote.json",
+      "sourceCommit": "7add11c96ea21b963aa5ac08d7604b1aea11b5f6",
+      "version": "b6485236-6e6c-441e-8370-e4b2cdff2f7a",
+      "startedAt": "2026-11-01T08:52:33.136Z",
+      "endedAt": "2026-11-01T08:53:22.495Z",
+      "realCloudflare": true,
+      "operatorSeeded": true,
+      "ownerConfirmedImagesFree": true,
+      "maximumAttempts": 20,
+      "requests": 10,
+      "stopReason": "security-matrix-failed-stop-before-publication",
+      "rows": [
+        {
+          "name": "typical-900x675",
+          "kind": "photo",
+          "start": "2026-11-01T08:52:40.632Z",
+          "end": "2026-11-01T08:52:42.192Z",
+          "clientWallMs": 1559,
+          "inputBytes": 55636,
+          "inputSha256": "1826798ea2ea0dc968cfad344c14a067cc3e02b4d4f7b282b58425f2b68f0fe9",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 55616,
+            "sha256": "b1cd83ce8978e55290c4c65de0ca20ecefc93b64458dd1eb0c026dfd4dde57dd",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 900,
+              "height": 675,
+              "psnrDb": 59.235411959777544,
+              "identicalPixels": false,
+              "maxChannelError": 3
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "valid-progressive",
+          "kind": "photo",
+          "start": "2026-11-01T08:52:48.206Z",
+          "end": "2026-11-01T08:52:49.018Z",
+          "clientWallMs": 812,
+          "inputBytes": 2023,
+          "inputSha256": "5ef57c7b8983e6b1e081582ac7fb98d786975dce687839a683b47f9f3d3250ef",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 3309,
+            "sha256": "6d3c6efab867d524375eadecfc9eba76682526df70aae3acb44385121624e55e",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 64,
+              "height": 48,
+              "psnrDb": 23.723065251567036,
+              "identicalPixels": false,
+              "maxChannelError": 103
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "corrupt-entropy-all-zero",
+          "kind": "photo",
+          "start": "2026-11-01T08:52:53.248Z",
+          "end": "2026-11-01T08:52:54.069Z",
+          "clientWallMs": 820,
+          "inputBytes": 897,
+          "inputSha256": "4209a78966cbdc2f8f5fe198e5da482568bf89af92f0018f565765d24d64b962",
+          "legacyAccepts": false,
+          "policy": "reject",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 618,
+            "sha256": "ec098bdee3f962e483fcd3f555e5f797eadf58af90c4d9c794daef2ede2e0fe5",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true
+          },
+          "journalState": "ready",
+          "passed": false
+        },
+        {
+          "name": "truncated-entropy-with-EOI",
+          "kind": "photo",
+          "start": "2026-11-01T08:52:53.248Z",
+          "end": "2026-11-01T08:52:58.484Z",
+          "clientWallMs": 5237,
+          "inputBytes": 610,
+          "inputSha256": "3f53eff522c96005b2bce12d3f0638c474e458ffe5dd2cf1368235b0baa7d5e6",
+          "legacyAccepts": false,
+          "policy": "reject",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 326,
+            "sha256": "f3eb85f07091031ba9b9462c3c9c31dfe8e7d825acb56d263d85e4c4e9b3157d",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true
+          },
+          "journalState": "ready",
+          "passed": false
+        },
+        {
+          "name": "forged-headers-no-pixels",
+          "kind": "photo",
+          "start": "2026-11-01T08:52:53.249Z",
+          "end": "2026-11-01T08:53:03.113Z",
+          "clientWallMs": 9864,
+          "inputBytes": 609,
+          "inputSha256": "6989ba2fcc1970278c505256ae84520a4abff5805b763075b793a5ef7a4190c4",
+          "legacyAccepts": false,
+          "policy": "reject",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 321,
+            "sha256": "9f92e69c28a127170ea73f9ba27c0e57af8999ab380b61df32a1a56402f40208",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true
+          },
+          "journalState": "ready",
+          "passed": false
+        },
+        {
+          "name": "truncated-no-EOI",
+          "kind": "photo",
+          "start": "2026-11-01T08:53:08.901Z",
+          "end": "2026-11-01T08:53:09.135Z",
+          "clientWallMs": 233,
+          "inputBytes": 877,
+          "inputSha256": "98c33e41a1458f2a6dd3ac7831bae6c5b235224deacb914772126e01a419dbf5",
+          "legacyAccepts": false,
+          "policy": "reject",
+          "httpStatus": 400,
+          "error1102": false,
+          "object": null,
+          "journalState": "failed",
+          "passed": true
+        },
+        {
+          "name": "PNG-as-JPEG",
+          "kind": "photo",
+          "start": "2026-11-01T08:53:10.941Z",
+          "end": "2026-11-01T08:53:11.169Z",
+          "clientWallMs": 229,
+          "inputBytes": 33,
+          "inputSha256": "9eaf66cb2ab9389f42744617015dfdbfa9a382221513149241ab355a2bd32ea4",
+          "legacyAccepts": false,
+          "policy": "reject",
+          "httpStatus": 400,
+          "error1102": false,
+          "object": null,
+          "journalState": "failed",
+          "passed": true
+        },
+        {
+          "name": "invalid-marker-length",
+          "kind": "photo",
+          "start": "2026-11-01T08:53:12.986Z",
+          "end": "2026-11-01T08:53:13.223Z",
+          "clientWallMs": 237,
+          "inputBytes": 897,
+          "inputSha256": "f2a35b0bde0864938ed155c8a7a085dbbff146f74a654a50dec6b92a048cdfbb",
+          "legacyAccepts": false,
+          "policy": "reject",
+          "httpStatus": 400,
+          "error1102": false,
+          "object": null,
+          "journalState": "failed",
+          "passed": true
+        },
+        {
+          "name": "duplicate-frame",
+          "kind": "photo",
+          "start": "2026-11-01T08:53:14.969Z",
+          "end": "2026-11-01T08:53:15.189Z",
+          "clientWallMs": 219,
+          "inputBytes": 916,
+          "inputSha256": "88fe099a8690e727622a8a45e5dbf25ac8487cfad17deaad54fba31c68f03ebc",
+          "legacyAccepts": false,
+          "policy": "reject",
+          "httpStatus": 400,
+          "error1102": false,
+          "object": null,
+          "journalState": "failed",
+          "passed": true
+        },
+        {
+          "name": "EXIF-GPS",
+          "kind": "photo",
+          "start": "2026-11-01T08:53:16.988Z",
+          "end": "2026-11-01T08:53:17.216Z",
+          "clientWallMs": 228,
+          "inputBytes": 924,
+          "inputSha256": "16b0ef90114aafadda0a24f4cd945c1f06fd672545647acc0371b88d5e62bad6",
+          "legacyAccepts": false,
+          "policy": "reject",
+          "httpStatus": 400,
+          "error1102": false,
+          "object": null,
+          "journalState": "failed",
+          "passed": true
+        }
+      ],
+      "cards": [],
+      "monthlyMeterBefore": "NOT_VERIFIED",
+      "monthlyMeterAfter": "NOT_VERIFIED",
+      "note": "Upload/binding attempt count is not the account billing/unique-transformation meter."
+    },
+    {
+      "file": "full-transformation-themes-initial.json",
+      "sourceCommit": "7add11c96ea21b963aa5ac08d7604b1aea11b5f6",
+      "version": "b6485236-6e6c-441e-8370-e4b2cdff2f7a",
+      "startedAt": "2026-11-01T08:57:17.093Z",
+      "endedAt": "2026-11-01T08:57:45.982Z",
+      "realCloudflare": true,
+      "operatorSeeded": true,
+      "ownerConfirmedImagesFree": true,
+      "ownerApprovedCanonicalRepair": true,
+      "phase": "themes",
+      "maximumAttempts": 20,
+      "requests": 4,
+      "stopReason": "valid-theme-upload-failed",
+      "rows": [
+        {
+          "name": "pink-coquette-photo",
+          "kind": "photo",
+          "start": "2026-11-01T08:57:24.449Z",
+          "end": "2026-11-01T08:57:25.309Z",
+          "clientWallMs": 859,
+          "inputBytes": 55636,
+          "inputSha256": "1826798ea2ea0dc968cfad344c14a067cc3e02b4d4f7b282b58425f2b68f0fe9",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 55616,
+            "sha256": "b1cd83ce8978e55290c4c65de0ca20ecefc93b64458dd1eb0c026dfd4dde57dd",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 900,
+              "height": 675,
+              "psnrDb": 59.235411959777544,
+              "identicalPixels": false,
+              "maxChannelError": 3
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "pink-coquette-cover",
+          "kind": "cover",
+          "start": "2026-11-01T08:57:24.548Z",
+          "end": "2026-11-01T08:57:29.811Z",
+          "clientWallMs": 5263,
+          "inputBytes": 18253,
+          "inputSha256": "61ad593dc856547768a0602be2ed07a243d29e1435e3f2d0c68f36fe9f44c7cb",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 18621,
+            "sha256": "020e5579825e0fac6996654ff38214e44145b5dc9de812de59cf8fd1b4bcf728",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 512,
+              "height": 384,
+              "psnrDb": 59.264983043630444,
+              "identicalPixels": false,
+              "maxChannelError": 3
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "coquette-dream-photo",
+          "kind": "photo",
+          "start": "2026-11-01T08:57:37.152Z",
+          "end": "2026-11-01T08:57:38.006Z",
+          "clientWallMs": 854,
+          "inputBytes": 1028954,
+          "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 400,
+          "error1102": false,
+          "object": null,
+          "journalState": "failed",
+          "passed": false
+        },
+        {
+          "name": "coquette-dream-cover",
+          "kind": "cover",
+          "start": "2026-11-01T08:57:37.238Z",
+          "end": "2026-11-01T08:57:39.983Z",
+          "clientWallMs": 2745,
+          "inputBytes": 17399,
+          "inputSha256": "8d4c85a19095b809b90aa056aebb798125d6f7bf3ec3f1c3f5b6c8f2ee655d13",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 17809,
+            "sha256": "f0dc824df8188e4beae794d3f0e232ba02fe0ac66e8dce1c4ef33011ba875843",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 496,
+              "height": 372,
+              "psnrDb": 59.18926672998039,
+              "identicalPixels": false,
+              "maxChannelError": 3
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        }
+      ],
+      "cards": [
+        {
+          "theme": "pink-coquette",
+          "id": "qqckgyf",
+          "photoAndCoverRead": true,
+          "publicationReplay": true
+        }
+      ],
+      "monthlyMeterBefore": "NOT_VERIFIED",
+      "monthlyMeterAfter": "NOT_VERIFIED",
+      "note": "Upload/binding attempt count is not the account billing/unique-transformation meter."
+    },
+    {
+      "file": "full-transformation-retry.json",
+      "sourceCommit": "d023c1538eed6892e6e584d462caa75cab44108e",
+      "version": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e",
+      "startedAt": "2026-11-01T09:04:35.272Z",
+      "endedAt": "2026-11-01T09:06:17.487Z",
+      "realCloudflare": true,
+      "operatorSeeded": true,
+      "ownerConfirmedImagesFree": true,
+      "ownerApprovedCanonicalRepair": true,
+      "phase": "retry",
+      "maximumGlobalAttemptsIncludingRetries": 30,
+      "requests": 14,
+      "stopReason": null,
+      "rows": [
+        {
+          "name": "valid-progressive",
+          "kind": "photo",
+          "start": "2026-11-01T09:04:42.428Z",
+          "end": "2026-11-01T09:04:43.979Z",
+          "clientWallMs": 1550,
+          "inputBytes": 2023,
+          "inputSha256": "5ef57c7b8983e6b1e081582ac7fb98d786975dce687839a683b47f9f3d3250ef",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 3309,
+            "sha256": "6d3c6efab867d524375eadecfc9eba76682526df70aae3acb44385121624e55e",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 64,
+              "height": 48,
+              "psnrDb": 23.723065251567036,
+              "identicalPixels": false,
+              "maxChannelError": 103
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "truncated-entropy-with-EOI",
+          "kind": "photo",
+          "start": "2026-11-01T09:04:48.360Z",
+          "end": "2026-11-01T09:04:50.363Z",
+          "clientWallMs": 2003,
+          "inputBytes": 610,
+          "inputSha256": "3f53eff522c96005b2bce12d3f0638c474e458ffe5dd2cf1368235b0baa7d5e6",
+          "legacyAccepts": false,
+          "policy": "Owner-approved canonical repair",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 326,
+            "sha256": "f3eb85f07091031ba9b9462c3c9c31dfe8e7d825acb56d263d85e4c4e9b3157d",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "corrupt-entropy-all-zero",
+          "kind": "photo",
+          "start": "2026-11-01T09:04:54.593Z",
+          "end": "2026-11-01T09:04:55.348Z",
+          "clientWallMs": 755,
+          "inputBytes": 897,
+          "inputSha256": "4209a78966cbdc2f8f5fe198e5da482568bf89af92f0018f565765d24d64b962",
+          "legacyAccepts": false,
+          "policy": "Owner-approved canonical repair",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 618,
+            "sha256": "ec098bdee3f962e483fcd3f555e5f797eadf58af90c4d9c794daef2ede2e0fe5",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "forged-headers-no-pixels",
+          "kind": "photo",
+          "start": "2026-11-01T09:04:59.499Z",
+          "end": "2026-11-01T09:05:00.040Z",
+          "clientWallMs": 541,
+          "inputBytes": 609,
+          "inputSha256": "6989ba2fcc1970278c505256ae84520a4abff5805b763075b793a5ef7a4190c4",
+          "legacyAccepts": false,
+          "policy": "Owner-approved canonical repair",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 321,
+            "sha256": "9f92e69c28a127170ea73f9ba27c0e57af8999ab380b61df32a1a56402f40208",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "pink-coquette-photo",
+          "kind": "photo",
+          "start": "2026-11-01T09:05:06.667Z",
+          "end": "2026-11-01T09:05:07.779Z",
+          "clientWallMs": 1112,
+          "inputBytes": 55636,
+          "inputSha256": "1826798ea2ea0dc968cfad344c14a067cc3e02b4d4f7b282b58425f2b68f0fe9",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 55616,
+            "sha256": "b1cd83ce8978e55290c4c65de0ca20ecefc93b64458dd1eb0c026dfd4dde57dd",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 900,
+              "height": 675,
+              "psnrDb": 59.235411959777544,
+              "identicalPixels": false,
+              "maxChannelError": 3
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "pink-coquette-cover",
+          "kind": "cover",
+          "start": "2026-11-01T09:05:06.754Z",
+          "end": "2026-11-01T09:05:12.425Z",
+          "clientWallMs": 5671,
+          "inputBytes": 18253,
+          "inputSha256": "61ad593dc856547768a0602be2ed07a243d29e1435e3f2d0c68f36fe9f44c7cb",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 18621,
+            "sha256": "020e5579825e0fac6996654ff38214e44145b5dc9de812de59cf8fd1b4bcf728",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 512,
+              "height": 384,
+              "psnrDb": 59.264983043630444,
+              "identicalPixels": false,
+              "maxChannelError": 3
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "coquette-dream-cover",
+          "kind": "cover",
+          "start": "2026-11-01T09:05:20.095Z",
+          "end": "2026-11-01T09:05:20.947Z",
+          "clientWallMs": 852,
+          "inputBytes": 17399,
+          "inputSha256": "8d4c85a19095b809b90aa056aebb798125d6f7bf3ec3f1c3f5b6c8f2ee655d13",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 17809,
+            "sha256": "f0dc824df8188e4beae794d3f0e232ba02fe0ac66e8dce1c4ef33011ba875843",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 496,
+              "height": 372,
+              "psnrDb": 59.18926672998039,
+              "identicalPixels": false,
+              "maxChannelError": 3
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "coquette-dream-photo",
+          "kind": "photo",
+          "start": "2026-11-01T09:05:20.020Z",
+          "end": "2026-11-01T09:05:25.554Z",
+          "clientWallMs": 5534,
+          "inputBytes": 1028954,
+          "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 1855090,
+            "sha256": "fb50f775a123f0cd8cca3b1f443cbd99767a308e006e0c01b47b8a272268b7d5",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 1024,
+              "height": 1024,
+              "psnrDb": 36.12193877251181,
+              "identicalPixels": false,
+              "maxChannelError": 27
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "little-memories-cover",
+          "kind": "cover",
+          "start": "2026-11-01T09:05:34.904Z",
+          "end": "2026-11-01T09:05:36.001Z",
+          "clientWallMs": 1096,
+          "inputBytes": 16192,
+          "inputSha256": "3c7dad57cefe15ba88c894a20e0739b37bc20d834e3f68658bfd722406cc48d3",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 16534,
+            "sha256": "f798bb0355fad88ffa6154fdf74291ee00970432460e9f00265d523e9d7f8e97",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 480,
+              "height": 360,
+              "psnrDb": 59.282116035995045,
+              "identicalPixels": false,
+              "maxChannelError": 3
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "little-memories-photo",
+          "kind": "photo",
+          "start": "2026-11-01T09:05:34.812Z",
+          "end": "2026-11-01T09:05:40.180Z",
+          "clientWallMs": 5368,
+          "inputBytes": 1498433,
+          "inputSha256": "6ccb3267423979720bbe371fd3eb96a173c54c67889a6264ef62b5c1d621f43f",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 1936631,
+            "sha256": "06ed3395c30d09ae588f13a5cd0413106f48b3049955bfdf577cda729be877d9",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 1024,
+              "height": 1024,
+              "psnrDb": 36.61922334067219,
+              "identicalPixels": false,
+              "maxChannelError": 25
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "birthday-chat-photo",
+          "kind": "photo",
+          "start": "2026-11-01T09:05:50.049Z",
+          "end": "2026-11-01T09:05:50.995Z",
+          "clientWallMs": 945,
+          "inputBytes": 49366,
+          "inputSha256": "e199f7b2c583e004f901ee9f031f018b0390aeed33de11f0bf3f8a013e24fa91",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 49410,
+            "sha256": "f63b0fbd831c7140706967f01a7f92bef16d260f7be9329cafad0917bb18532d",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 840,
+              "height": 645,
+              "psnrDb": 59.573234429984964,
+              "identicalPixels": false,
+              "maxChannelError": 3
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "birthday-chat-cover",
+          "kind": "cover",
+          "start": "2026-11-01T09:05:50.112Z",
+          "end": "2026-11-01T09:05:57.283Z",
+          "clientWallMs": 7171,
+          "inputBytes": 15356,
+          "inputSha256": "40e695049f49d1c0284e62d089ee561323a5c2a3cd09cc955d1dacefca2574cb",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 15756,
+            "sha256": "225169b192ca57f3c9a4a28845b817cebf2795bc814c673c154aca28919a1da8",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 464,
+              "height": 348,
+              "psnrDb": 59.02934910841598,
+              "identicalPixels": false,
+              "maxChannelError": 3
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "velvet-gift-cover",
+          "kind": "cover",
+          "start": "2026-11-01T09:06:04.646Z",
+          "end": "2026-11-01T09:06:05.555Z",
+          "clientWallMs": 908,
+          "inputBytes": 14185,
+          "inputSha256": "950170031b0dbf5ad2f11eb52b1c267b6cbf41108b34237934f5762854362bc9",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 14479,
+            "sha256": "c7ee91360c032b44120a32ddc31417818ca7da87f4e838eed161fe3757381c33",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 448,
+              "height": 336,
+              "psnrDb": 59.05585538989061,
+              "identicalPixels": false,
+              "maxChannelError": 3
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        },
+        {
+          "name": "velvet-gift-photo",
+          "kind": "photo",
+          "start": "2026-11-01T09:06:04.612Z",
+          "end": "2026-11-01T09:06:10.269Z",
+          "clientWallMs": 5657,
+          "inputBytes": 47834,
+          "inputSha256": "4765a80a100cfae8b82f82ab301ab0c565d085cf80cfae20da995eedb1b0c2bf",
+          "legacyAccepts": true,
+          "policy": "accept",
+          "httpStatus": 201,
+          "error1102": false,
+          "object": {
+            "exists": true,
+            "bytes": 47997,
+            "sha256": "440a543200238d73786b6101d6736893eb0251f1fd108ac7cd7ee0bae59fea7b",
+            "strictlyDecodable": true,
+            "metadataStripped": true,
+            "differentFromInput": true,
+            "quality": {
+              "width": 820,
+              "height": 635,
+              "psnrDb": 59.65282027377063,
+              "identicalPixels": false,
+              "maxChannelError": 3
+            }
+          },
+          "journalState": "ready",
+          "passed": true
+        }
+      ],
+      "cards": [
+        {
+          "theme": "pink-coquette",
+          "id": "6s2y3g7",
+          "photoAndCoverRead": true,
+          "publicationReplay": true
+        },
+        {
+          "theme": "coquette-dream",
+          "id": "5ag75n8",
+          "photoAndCoverRead": true,
+          "publicationReplay": true
+        },
+        {
+          "theme": "little-memories",
+          "id": "mc9zsu5",
+          "photoAndCoverRead": true,
+          "publicationReplay": true
+        },
+        {
+          "theme": "birthday-chat",
+          "id": "xp3sfv4",
+          "photoAndCoverRead": true,
+          "publicationReplay": true
+        },
+        {
+          "theme": "velvet-gift",
+          "id": "s3ud3sj",
+          "photoAndCoverRead": true,
+          "publicationReplay": true
+        }
+      ],
+      "monthlyMeterBefore": "NOT_VERIFIED",
+      "monthlyMeterAfter": "NOT_VERIFIED",
+      "note": "Upload/binding attempt count is not the account billing/unique-transformation meter."
+    },
+    {
+      "file": "full-transformation-cpu-optimized.json",
+      "sourceCommit": "f2b0f691fbdad7a875f29dfe832713e5db6fdfdf",
+      "version": "4b669bb2-91fd-447f-b9f8-1cc9f942185c",
+      "startedAt": "2026-11-01T09:10:22.210Z",
+      "endedAt": "2026-11-01T09:10:44.382Z",
+      "realCloudflare": true,
+      "concurrency": 2,
+      "rows": [
+        {
+          "name": "coquette-dream-photo",
+          "start": "2026-11-01T09:10:22.408Z",
+          "end": "2026-11-01T09:10:24.325Z",
+          "clientWallMs": 1917,
+          "httpStatus": 201,
+          "error1102": false,
+          "inputSha256": "4fae90a3d9b158f5edc79c552a666d7ccd712830f9e319c0ae100ff7b2feb2a2",
+          "journalState": "ready",
+          "output": {
+            "bytes": 1855090,
+            "sha256": "fb50f775a123f0cd8cca3b1f443cbd99767a308e006e0c01b47b8a272268b7d5",
+            "strictlyDecodable": true,
+            "sameOutputAsBeforeOptimization": true
+          }
+        },
+        {
+          "name": "little-memories-photo",
+          "start": "2026-11-01T09:10:22.414Z",
+          "end": "2026-11-01T09:10:24.301Z",
+          "clientWallMs": 1888,
+          "httpStatus": 201,
+          "error1102": false,
+          "inputSha256": "6ccb3267423979720bbe371fd3eb96a173c54c67889a6264ef62b5c1d621f43f",
+          "journalState": "ready",
+          "output": {
+            "bytes": 1936631,
+            "sha256": "06ed3395c30d09ae588f13a5cd0413106f48b3049955bfdf577cda729be877d9",
+            "strictlyDecodable": true,
+            "sameOutputAsBeforeOptimization": true
+          }
+        }
+      ],
+      "finalBudget": 30
+    }
+  ],
+  "cpu": [
+    {
+      "version": "b6485236-6e6c-441e-8370-e4b2cdff2f7a",
+      "n": 9,
+      "cpuMs": {
+        "p50": 8,
+        "p95": 37,
+        "p99": 37
+      },
+      "wallMs": {
+        "p50": 758,
+        "p95": 1404,
+        "p99": 1404
+      },
+      "rawEvents": [
+        {
+          "time": 1793523160819,
+          "outcome": "ok",
+          "cpuTime": 14,
+          "wallTime": 1404,
+          "scriptVersion": {
+            "id": "b6485236-6e6c-441e-8370-e4b2cdff2f7a"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 55616
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523168324,
+          "outcome": "ok",
+          "cpuTime": 6,
+          "wallTime": 739,
+          "scriptVersion": {
+            "id": "b6485236-6e6c-441e-8370-e4b2cdff2f7a"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 3309
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523173357,
+          "outcome": "ok",
+          "cpuTime": 7,
+          "wallTime": 758,
+          "scriptVersion": {
+            "id": "b6485236-6e6c-441e-8370-e4b2cdff2f7a"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 618
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523173361,
+          "outcome": "ok",
+          "cpuTime": 6,
+          "wallTime": 756,
+          "scriptVersion": {
+            "id": "b6485236-6e6c-441e-8370-e4b2cdff2f7a"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 326
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523173357,
+          "outcome": "ok",
+          "cpuTime": 8,
+          "wallTime": 848,
+          "scriptVersion": {
+            "id": "b6485236-6e6c-441e-8370-e4b2cdff2f7a"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 321
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523444700,
+          "outcome": "ok",
+          "cpuTime": 9,
+          "wallTime": 641,
+          "scriptVersion": {
+            "id": "b6485236-6e6c-441e-8370-e4b2cdff2f7a"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 55616
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523444691,
+          "outcome": "ok",
+          "cpuTime": 6,
+          "wallTime": 858,
+          "scriptVersion": {
+            "id": "b6485236-6e6c-441e-8370-e4b2cdff2f7a"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 18621
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523457428,
+          "outcome": "ok",
+          "cpuTime": 37,
+          "wallTime": 626,
+          "scriptVersion": {
+            "id": "b6485236-6e6c-441e-8370-e4b2cdff2f7a"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523457359,
+          "outcome": "ok",
+          "cpuTime": 12,
+          "wallTime": 817,
+          "scriptVersion": {
+            "id": "b6485236-6e6c-441e-8370-e4b2cdff2f7a"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 17809
+            }
+          ],
+          "exceptions": []
+        }
+      ]
+    },
+    {
+      "version": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e",
+      "n": 14,
+      "cpuMs": {
+        "p50": 13,
+        "p95": 53,
+        "p99": 53
+      },
+      "wallMs": {
+        "p50": 865,
+        "p95": 1934,
+        "p99": 1934
+      },
+      "rawEvents": [
+        {
+          "time": 1793523882614,
+          "outcome": "ok",
+          "cpuTime": 23,
+          "wallTime": 1403,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 3309
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523888478,
+          "outcome": "ok",
+          "cpuTime": 13,
+          "wallTime": 1934,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 326
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523894698,
+          "outcome": "ok",
+          "cpuTime": 11,
+          "wallTime": 699,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 618
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523899590,
+          "outcome": "ok",
+          "cpuTime": 6,
+          "wallTime": 500,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 321
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523906863,
+          "outcome": "ok",
+          "cpuTime": 17,
+          "wallTime": 965,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 55616
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523906885,
+          "outcome": "ok",
+          "cpuTime": 14,
+          "wallTime": 945,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 18621
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523920192,
+          "outcome": "ok",
+          "cpuTime": 12,
+          "wallTime": 804,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 17809
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523920270,
+          "outcome": "ok",
+          "cpuTime": 53,
+          "wallTime": 899,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 1855090
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523935274,
+          "outcome": "ok",
+          "cpuTime": 5,
+          "wallTime": 776,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 16534
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523935103,
+          "outcome": "ok",
+          "cpuTime": 51,
+          "wallTime": 960,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 1936631
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523950196,
+          "outcome": "ok",
+          "cpuTime": 6,
+          "wallTime": 849,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 49410
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523950217,
+          "outcome": "ok",
+          "cpuTime": 14,
+          "wallTime": 835,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 15756
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523964739,
+          "outcome": "ok",
+          "cpuTime": 22,
+          "wallTime": 865,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 14479
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793523964723,
+          "outcome": "ok",
+          "cpuTime": 13,
+          "wallTime": 943,
+          "scriptVersion": {
+            "id": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 47997
+            }
+          ],
+          "exceptions": []
+        }
+      ]
+    },
+    {
+      "version": "4b669bb2-91fd-447f-b9f8-1cc9f942185c",
+      "n": 2,
+      "cpuMs": {
+        "p50": 138,
+        "p95": 178,
+        "p99": 178
+      },
+      "wallMs": {
+        "p50": 1594,
+        "p95": 1605,
+        "p99": 1605
+      },
+      "rawEvents": [
+        {
+          "time": 1793524222746,
+          "outcome": "ok",
+          "cpuTime": 178,
+          "wallTime": 1605,
+          "scriptVersion": {
+            "id": "4b669bb2-91fd-447f-b9f8-1cc9f942185c"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 1936631
+            }
+          ],
+          "exceptions": []
+        },
+        {
+          "time": 1793524222782,
+          "outcome": "ok",
+          "cpuTime": 138,
+          "wallTime": 1594,
+          "scriptVersion": {
+            "id": "4b669bb2-91fd-447f-b9f8-1cc9f942185c"
+          },
+          "events": [
+            {
+              "event": "staging_images_transform",
+              "phase": "attempt"
+            },
+            {
+              "event": "staging_images_transform",
+              "phase": "complete",
+              "bytes": 1855090
+            }
+          ],
+          "exceptions": []
+        }
+      ]
+    }
+  ],
+  "fixedVersionSecurity": {
+    "source": "d023c1538eed6892e6e584d462caa75cab44108e",
+    "version": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e",
+    "attempts": 14,
+    "passed": 14,
+    "ownerApprovedCanonicalization": true,
+    "malformedCases": [
+      {
+        "name": "truncated-entropy-with-EOI",
+        "kind": "photo",
+        "start": "2026-11-01T09:04:48.360Z",
+        "end": "2026-11-01T09:04:50.363Z",
+        "clientWallMs": 2003,
+        "inputBytes": 610,
+        "inputSha256": "3f53eff522c96005b2bce12d3f0638c474e458ffe5dd2cf1368235b0baa7d5e6",
+        "legacyAccepts": false,
+        "policy": "Owner-approved canonical repair",
+        "httpStatus": 201,
+        "error1102": false,
+        "object": {
+          "exists": true,
+          "bytes": 326,
+          "sha256": "f3eb85f07091031ba9b9462c3c9c31dfe8e7d825acb56d263d85e4c4e9b3157d",
+          "strictlyDecodable": true,
+          "metadataStripped": true,
+          "differentFromInput": true
+        },
+        "journalState": "ready",
+        "passed": true
+      },
+      {
+        "name": "corrupt-entropy-all-zero",
+        "kind": "photo",
+        "start": "2026-11-01T09:04:54.593Z",
+        "end": "2026-11-01T09:04:55.348Z",
+        "clientWallMs": 755,
+        "inputBytes": 897,
+        "inputSha256": "4209a78966cbdc2f8f5fe198e5da482568bf89af92f0018f565765d24d64b962",
+        "legacyAccepts": false,
+        "policy": "Owner-approved canonical repair",
+        "httpStatus": 201,
+        "error1102": false,
+        "object": {
+          "exists": true,
+          "bytes": 618,
+          "sha256": "ec098bdee3f962e483fcd3f555e5f797eadf58af90c4d9c794daef2ede2e0fe5",
+          "strictlyDecodable": true,
+          "metadataStripped": true,
+          "differentFromInput": true
+        },
+        "journalState": "ready",
+        "passed": true
+      },
+      {
+        "name": "forged-headers-no-pixels",
+        "kind": "photo",
+        "start": "2026-11-01T09:04:59.499Z",
+        "end": "2026-11-01T09:05:00.040Z",
+        "clientWallMs": 541,
+        "inputBytes": 609,
+        "inputSha256": "6989ba2fcc1970278c505256ae84520a4abff5805b763075b793a5ef7a4190c4",
+        "legacyAccepts": false,
+        "policy": "Owner-approved canonical repair",
+        "httpStatus": 201,
+        "error1102": false,
+        "object": {
+          "exists": true,
+          "bytes": 321,
+          "sha256": "9f92e69c28a127170ea73f9ba27c0e57af8999ab380b61df32a1a56402f40208",
+          "strictlyDecodable": true,
+          "metadataStripped": true,
+          "differentFromInput": true
+        },
+        "journalState": "ready",
+        "passed": true
+      }
+    ],
+    "cards": [
+      {
+        "theme": "pink-coquette",
+        "id": "6s2y3g7",
+        "photoAndCoverRead": true,
+        "publicationReplay": true
+      },
+      {
+        "theme": "coquette-dream",
+        "id": "5ag75n8",
+        "photoAndCoverRead": true,
+        "publicationReplay": true
+      },
+      {
+        "theme": "little-memories",
+        "id": "mc9zsu5",
+        "photoAndCoverRead": true,
+        "publicationReplay": true
+      },
+      {
+        "theme": "birthday-chat",
+        "id": "xp3sfv4",
+        "photoAndCoverRead": true,
+        "publicationReplay": true
+      },
+      {
+        "theme": "velvet-gift",
+        "id": "s3ud3sj",
+        "photoAndCoverRead": true,
+        "publicationReplay": true
+      }
+    ]
+  },
+  "quality": {
+    "realCloudflareOutputs": true,
+    "offlineComparison": true,
+    "physicalDevices": false,
+    "results": [
+      {
+        "engine": "Chromium",
+        "name": "birthday-chat-cover.jpg",
+        "width": 464,
+        "height": 348,
+        "psnrDb": 59.555978706409235,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      },
+      {
+        "engine": "Chromium",
+        "name": "birthday-chat-photo.jpg",
+        "width": 840,
+        "height": 645,
+        "psnrDb": 59.62034312619535,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      },
+      {
+        "engine": "Chromium",
+        "name": "coquette-dream-cover.jpg",
+        "width": 496,
+        "height": 372,
+        "psnrDb": 59.47807180642382,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      },
+      {
+        "engine": "Chromium",
+        "name": "coquette-dream-photo.jpg",
+        "width": 1024,
+        "height": 1024,
+        "psnrDb": 36.176749188854316,
+        "identicalPixels": false,
+        "maxChannelError": 28
+      },
+      {
+        "engine": "Chromium",
+        "name": "little-memories-cover.jpg",
+        "width": 480,
+        "height": 360,
+        "psnrDb": 59.784967968763915,
+        "identicalPixels": false,
+        "maxChannelError": 2
+      },
+      {
+        "engine": "Chromium",
+        "name": "little-memories-photo.jpg",
+        "width": 1024,
+        "height": 1024,
+        "psnrDb": 36.670116253627896,
+        "identicalPixels": false,
+        "maxChannelError": 24
+      },
+      {
+        "engine": "Chromium",
+        "name": "pink-coquette-cover.jpg",
+        "width": 512,
+        "height": 384,
+        "psnrDb": 59.52024307720029,
+        "identicalPixels": false,
+        "maxChannelError": 2
+      },
+      {
+        "engine": "Chromium",
+        "name": "pink-coquette-photo.jpg",
+        "width": 900,
+        "height": 675,
+        "psnrDb": 59.490089826737496,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      },
+      {
+        "engine": "Chromium",
+        "name": "typical-900x675.jpg",
+        "width": 900,
+        "height": 675,
+        "psnrDb": 59.490089826737496,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      },
+      {
+        "engine": "Chromium",
+        "name": "valid-progressive.jpg",
+        "width": 64,
+        "height": 48,
+        "psnrDb": 40.63922327609275,
+        "identicalPixels": false,
+        "maxChannelError": 27
+      },
+      {
+        "engine": "Chromium",
+        "name": "velvet-gift-cover.jpg",
+        "width": 448,
+        "height": 336,
+        "psnrDb": 59.57917773064654,
+        "identicalPixels": false,
+        "maxChannelError": 2
+      },
+      {
+        "engine": "Chromium",
+        "name": "velvet-gift-photo.jpg",
+        "width": 820,
+        "height": 635,
+        "psnrDb": 59.83006024961988,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      },
+      {
+        "engine": "WebKit",
+        "name": "birthday-chat-cover.jpg",
+        "width": 464,
+        "height": 348,
+        "psnrDb": 59.555978706409235,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      },
+      {
+        "engine": "WebKit",
+        "name": "birthday-chat-photo.jpg",
+        "width": 840,
+        "height": 645,
+        "psnrDb": 59.62034312619535,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      },
+      {
+        "engine": "WebKit",
+        "name": "coquette-dream-cover.jpg",
+        "width": 496,
+        "height": 372,
+        "psnrDb": 59.47807180642382,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      },
+      {
+        "engine": "WebKit",
+        "name": "coquette-dream-photo.jpg",
+        "width": 1024,
+        "height": 1024,
+        "psnrDb": 36.176749188854316,
+        "identicalPixels": false,
+        "maxChannelError": 28
+      },
+      {
+        "engine": "WebKit",
+        "name": "little-memories-cover.jpg",
+        "width": 480,
+        "height": 360,
+        "psnrDb": 59.784967968763915,
+        "identicalPixels": false,
+        "maxChannelError": 2
+      },
+      {
+        "engine": "WebKit",
+        "name": "little-memories-photo.jpg",
+        "width": 1024,
+        "height": 1024,
+        "psnrDb": 36.670116253627896,
+        "identicalPixels": false,
+        "maxChannelError": 24
+      },
+      {
+        "engine": "WebKit",
+        "name": "pink-coquette-cover.jpg",
+        "width": 512,
+        "height": 384,
+        "psnrDb": 59.52024307720029,
+        "identicalPixels": false,
+        "maxChannelError": 2
+      },
+      {
+        "engine": "WebKit",
+        "name": "pink-coquette-photo.jpg",
+        "width": 900,
+        "height": 675,
+        "psnrDb": 59.490089826737496,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      },
+      {
+        "engine": "WebKit",
+        "name": "typical-900x675.jpg",
+        "width": 900,
+        "height": 675,
+        "psnrDb": 59.490089826737496,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      },
+      {
+        "engine": "WebKit",
+        "name": "valid-progressive.jpg",
+        "width": 64,
+        "height": 48,
+        "psnrDb": 40.63922327609275,
+        "identicalPixels": false,
+        "maxChannelError": 27
+      },
+      {
+        "engine": "WebKit",
+        "name": "velvet-gift-cover.jpg",
+        "width": 448,
+        "height": 336,
+        "psnrDb": 59.57917773064654,
+        "identicalPixels": false,
+        "maxChannelError": 2
+      },
+      {
+        "engine": "WebKit",
+        "name": "velvet-gift-photo.jpg",
+        "width": 820,
+        "height": 635,
+        "psnrDb": 59.83006024961988,
+        "identicalPixels": false,
+        "maxChannelError": 3
+      }
+    ]
+  },
+  "cloudflareAdaptive": {
+    "units": "CPU/wall microseconds; memory bytes",
+    "warning": "Adaptive invocation metrics include publication/read requests during each window, not only uploads. Tail is primary upload CPU evidence.",
+    "rows": [
+      {
+        "file": "full-transformation-remote.json",
+        "sourceCommit": "7add11c96ea21b963aa5ac08d7604b1aea11b5f6",
+        "version": "b6485236-6e6c-441e-8370-e4b2cdff2f7a",
+        "start": "2026-11-01T08:52:33.136Z",
+        "end": "2026-11-01T08:53:22.495Z",
+        "expectedUploadRequests": 10,
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "success"
+            },
+            "quantiles": {
+              "cpuTimeP50": 6708,
+              "cpuTimeP95": 14963,
+              "cpuTimeP99": 14963,
+              "memoryUsageBytesP50": 3766986,
+              "memoryUsageBytesP99": 3795196,
+              "wallTimeP50": 739187,
+              "wallTimeP95": 1404976,
+              "wallTimeP99": 1404976
+            },
+            "sum": {
+              "cpuTimeUs": 58694,
+              "errors": 0,
+              "requests": 9,
+              "subrequests": 5,
+              "wallTime": 5276036
+            }
+          }
+        ]
+      },
+      {
+        "file": "full-transformation-themes-initial.json",
+        "sourceCommit": "7add11c96ea21b963aa5ac08d7604b1aea11b5f6",
+        "version": "b6485236-6e6c-441e-8370-e4b2cdff2f7a",
+        "start": "2026-11-01T08:57:17.093Z",
+        "end": "2026-11-01T08:57:45.982Z",
+        "expectedUploadRequests": 4,
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "success"
+            },
+            "quantiles": {
+              "cpuTimeP50": 6814,
+              "cpuTimeP95": 37529,
+              "cpuTimeP99": 37529,
+              "memoryUsageBytesP50": 1554651,
+              "memoryUsageBytesP99": 6182322,
+              "wallTimeP50": 354472,
+              "wallTimeP95": 858533,
+              "wallTimeP99": 858533
+            },
+            "sum": {
+              "cpuTimeUs": 80932,
+              "errors": 0,
+              "requests": 9,
+              "subrequests": 4,
+              "wallTime": 3832316
+            }
+          }
+        ]
+      },
+      {
+        "file": "full-transformation-retry.json",
+        "sourceCommit": "d023c1538eed6892e6e584d462caa75cab44108e",
+        "version": "0edbfa02-09e8-46e2-ae24-1d1f33c4ac1e",
+        "start": "2026-11-01T09:04:35.272Z",
+        "end": "2026-11-01T09:06:17.487Z",
+        "expectedUploadRequests": 14,
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "success"
+            },
+            "quantiles": {
+              "cpuTimeP50": 4173,
+              "cpuTimeP95": 51189,
+              "cpuTimeP99": 53229,
+              "memoryUsageBytesP50": 2387697,
+              "memoryUsageBytesP99": 14886028,
+              "wallTimeP50": 246184,
+              "wallTimeP95": 1403125,
+              "wallTimeP99": 1934455
+            },
+            "sum": {
+              "cpuTimeUs": 343843,
+              "errors": 0,
+              "requests": 38,
+              "subrequests": 14,
+              "wallTime": 17884314
+            }
+          }
+        ]
+      },
+      {
+        "file": "full-transformation-cpu-optimized.json",
+        "sourceCommit": "f2b0f691fbdad7a875f29dfe832713e5db6fdfdf",
+        "version": "4b669bb2-91fd-447f-b9f8-1cc9f942185c",
+        "start": "2026-11-01T09:10:22.210Z",
+        "end": "2026-11-01T09:10:44.382Z",
+        "expectedUploadRequests": 2,
+        "metrics": [
+          {
+            "dimensions": {
+              "status": "success"
+            },
+            "quantiles": {
+              "cpuTimeP50": 138825,
+              "cpuTimeP95": 178273,
+              "cpuTimeP99": 178273,
+              "memoryUsageBytesP50": 21924168,
+              "memoryUsageBytesP99": 21932360,
+              "wallTimeP50": 1594948,
+              "wallTimeP95": 1605834,
+              "wallTimeP99": 1605834
+            },
+            "sum": {
+              "cpuTimeUs": 317098,
+              "errors": 0,
+              "requests": 2,
+              "subrequests": 2,
+              "wallTime": 3200782
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "localProfiling": {
+    "before": {
+      "localNodeCPU": true,
+      "realCloudflare": false,
+      "samplesMs": [
+        110,
+        16,
+        0,
+        15,
+        15,
+        16,
+        79,
+        15,
+        0,
+        78,
+        0,
+        16,
+        0,
+        15,
+        0,
+        16,
+        15,
+        0,
+        16,
+        0,
+        16,
+        0,
+        15,
+        16,
+        0,
+        16,
+        0,
+        15,
+        0,
+        16,
+        0,
+        15,
+        0,
+        16,
+        0,
+        16,
+        15,
+        0,
+        16,
+        0,
+        16,
+        16,
+        0,
+        15,
+        0,
+        16,
+        0,
+        15,
+        0,
+        16,
+        16,
+        0,
+        15,
+        0,
+        16,
+        0,
+        16,
+        0,
+        15,
+        0
+      ],
+      "p50": 15,
+      "p95": 16
+    },
+    "after": {
+      "localNodeCPU": true,
+      "realCloudflare": false,
+      "samplesMs": [
+        47,
+        0,
+        0,
+        32,
+        0,
+        0,
+        31,
+        0,
+        0,
+        16,
+        0,
+        0,
+        16,
+        0,
+        0,
+        0,
+        15,
+        0,
+        0,
+        31,
+        0,
+        0,
+        0,
+        16,
+        0,
+        0,
+        0,
+        16,
+        0,
+        0,
+        0,
+        15,
+        0,
+        0,
+        0,
+        16,
+        0,
+        0,
+        31,
+        0,
+        0,
+        0,
+        31,
+        0,
+        0,
+        16,
+        0,
+        0,
+        0,
+        16,
+        0,
+        0,
+        0,
+        15,
+        0,
+        0,
+        0,
+        15,
+        0,
+        0
+      ],
+      "p50": 0,
+      "p95": 31
+    },
+    "differential": {
+      "checks": 325,
+      "passed": 325,
+      "failed": 0,
+      "local": true,
+      "description": "Same strict decisions and sanitized bytes before/after native indexOf scan; corpus plus seeded marker/entropy mutations"
+    },
+    "note": "Local process CPU is quantized. indexOf candidate was reverted: remote benefit unproven. The two-largest-images concurrent trial differs from the prior large+cover workload, so no controlled causal regression claim."
+  },
+  "browserChecks": {
+    "newTransformed": [
+      {
+        "name": "desktop",
+        "theme": "pink-coquette",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "desktop",
+        "theme": "coquette-dream",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "desktop",
+        "theme": "little-memories",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "desktop",
+        "theme": "birthday-chat",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "desktop",
+        "theme": "velvet-gift",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "Pixel 7",
+        "theme": "pink-coquette",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "Pixel 7",
+        "theme": "coquette-dream",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "Pixel 7",
+        "theme": "little-memories",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "Pixel 7",
+        "theme": "birthday-chat",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "Pixel 7",
+        "theme": "velvet-gift",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "iPhone 13 WebKit",
+        "theme": "pink-coquette",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "iPhone 13 WebKit",
+        "theme": "coquette-dream",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "iPhone 13 WebKit",
+        "theme": "little-memories",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "iPhone 13 WebKit",
+        "theme": "birthday-chat",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "iPhone 13 WebKit",
+        "theme": "velvet-gift",
+        "realR2ImageAndReload": true
+      },
+      {
+        "status": "PASS",
+        "checks": 15,
+        "actualCloudflareReads": true,
+        "physicalDevices": false
+      }
+    ],
+    "legacy": [
+      {
+        "name": "desktop",
+        "theme": "pink-coquette",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "desktop",
+        "theme": "coquette-dream",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "desktop",
+        "theme": "little-memories",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "desktop",
+        "theme": "birthday-chat",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "desktop",
+        "theme": "velvet-gift",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "Pixel 7",
+        "theme": "pink-coquette",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "Pixel 7",
+        "theme": "coquette-dream",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "Pixel 7",
+        "theme": "little-memories",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "Pixel 7",
+        "theme": "birthday-chat",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "Pixel 7",
+        "theme": "velvet-gift",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "iPhone 13 WebKit",
+        "theme": "pink-coquette",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "iPhone 13 WebKit",
+        "theme": "coquette-dream",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "iPhone 13 WebKit",
+        "theme": "little-memories",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "iPhone 13 WebKit",
+        "theme": "birthday-chat",
+        "realR2ImageAndReload": true
+      },
+      {
+        "name": "iPhone 13 WebKit",
+        "theme": "velvet-gift",
+        "realR2ImageAndReload": true
+      },
+      {
+        "status": "PASS",
+        "checks": 15,
+        "actualCloudflareReads": true,
+        "physicalDevices": false
+      }
+    ],
+    "physicalDevices": false
+  },
+  "cleanup": {
+    "checkedAt": "2026-11-01T09:18:26.181Z",
+    "realStagingResources": true,
+    "observedScheduledPreviewLog": {
+      "event": "media_v3_cleanup",
+      "candidates": 6,
+      "failures": 0
+    },
+    "expiredUnlinkedAfter": 0,
+    "diagnosticBudget": 30,
+    "syntheticV1ImageStatus": 200,
+    "liveReadsAfterCleanup": [
+      {
+        "theme": "pink-coquette",
+        "cardStatus": 200,
+        "photoAndCoverStrictRead": true
+      },
+      {
+        "theme": "coquette-dream",
+        "cardStatus": 200,
+        "photoAndCoverStrictRead": true
+      },
+      {
+        "theme": "little-memories",
+        "cardStatus": 200,
+        "photoAndCoverStrictRead": true
+      },
+      {
+        "theme": "birthday-chat",
+        "cardStatus": 200,
+        "photoAndCoverStrictRead": true
+      },
+      {
+        "theme": "velvet-gift",
+        "cardStatus": 200,
+        "photoAndCoverStrictRead": true
+      }
+    ],
+    "customerDataUsed": false
+  },
+  "observedCronCleanup": [
+    {
+      "time": 1793523633608,
+      "outcome": "ok",
+      "cpuTime": 13,
+      "wallTime": 6958,
+      "scriptVersion": {
+        "id": "b0f3a112-e7a9-4250-b7bb-027e83dca378"
+      },
+      "events": [
+        {
+          "event": "media_v3_cleanup",
+          "candidates": 12,
+          "failures": 0
+        }
+      ],
+      "exceptions": []
+    }
+  ],
+  "finalStaging": {
+    "checkedAt": "2026-11-01T09:23:32.471Z",
+    "version": "b0f3a112-e7a9-4250-b7bb-027e83dca378",
+    "bindings": [
+      {
+        "database_id": "3967493c-55db-4ab8-bb2c-9ed3c157a543",
+        "id": "3967493c-55db-4ab8-bb2c-9ed3c157a543",
+        "name": "DB",
+        "type": "d1"
+      },
+      {
+        "name": "ENVIRONMENT",
+        "text": "staging",
+        "type": "plain_text"
+      },
+      {
+        "bucket_name": "luvnote-media-staging",
+        "name": "MEDIA",
+        "type": "r2_bucket"
+      },
+      {
+        "name": "MEDIA_CLEANUP_ENABLED",
+        "text": "true",
+        "type": "plain_text"
+      },
+      {
+        "name": "MEDIA_JPEG_VALIDATOR",
+        "text": "legacy",
+        "type": "plain_text"
+      },
+      {
+        "name": "MEDIA_V3_UPLOADS_ENABLED",
+        "text": "false",
+        "type": "plain_text"
+      },
+      {
+        "name": "READ_LIMITER",
+        "namespace_id": "472004",
+        "simple": {
+          "limit": 300,
+          "period": 60
+        },
+        "type": "ratelimit"
+      },
+      {
+        "name": "TURNSTILE_HOSTNAMES",
+        "text": "localhost",
+        "type": "plain_text"
+      },
+      {
+        "name": "TURNSTILE_TEST_MODE",
+        "text": "false",
+        "type": "plain_text"
+      },
+      {
+        "name": "WRITE_LIMITER",
+        "namespace_id": "472002",
+        "simple": {
+          "limit": 60,
+          "period": 60
+        },
+        "type": "ratelimit"
+      }
+    ],
+    "publicR2": false,
+    "r2Domains": [],
+    "workerDomains": [],
+    "killSwitch": {
+      "checkedAt": "2026-11-01T09:23:25.982Z",
+      "realCloudflare": true,
+      "health": 200,
+      "writeDenials": [
+        {
+          "path": "/v3/upload-sessions",
+          "status": 503
+        },
+        {
+          "path": "/v3/cards",
+          "status": 503
+        },
+        {
+          "path": "/v3/upload-sessions/11111111-1111-4111-8111-111111111111/media?kind=photo",
+          "status": 503
+        }
+      ]
+    }
+  },
+  "localTests": {
+    "backend": {
+      "passed": 83,
+      "failed": 0
+    },
+    "fullTransformationWorkerd": {
+      "passed": 4,
+      "failed": 0
+    },
+    "fullTransformationFrontend": {
+      "passed": 18,
+      "failed": 0
+    },
+    "typecheck": "PASS",
+    "buildV3OnAndOff": "PASS",
+    "syntaxAndDiff": "PASS",
+    "differentialParserChecks": 325,
+    "note": "The reverted parser experiment changed no accepted bytes in 325 local differential cases; this is not Cloudflare CPU proof.",
+    "templateSafetyRerun": {
+      "passed": 2,
+      "failed": 0,
+      "note": "Subset repeated after comments changed; not additional unique tests."
+    }
+  },
+  "limitations": [
+    "Monthly account Images meter unavailable (OAuth 403); do not infer zero usage.",
+    "No physical devices/installed LINE/real mobile network test.",
+    "Real guest Turnstile action/hostname/replay/expiry acceptance remains open; operator-owned sessions used.",
+    "No sustained Free-plan CPU capacity certification; observed CPU exceeds documented 10 ms budget.",
+    "Generated noisy files grow to 1.86–1.94 MB; output cap is 3 MB, input still 1.5 MB. No production mode or storage quota rollout approved."
+  ],
+  "statuses": {
+    "R2_FULL_TRANSFORMATION_CODE": "PASS",
+    "R2_FULL_TRANSFORMATION_SECURITY": "PASS — bounded corpus under Owner-approved canonical policy",
+    "R2_FULL_TRANSFORMATION_FUNCTIONAL": "PASS",
+    "R2_FULL_TRANSFORMATION_CPU": "FAIL",
+    "R2_STAGING_VERIFIED": "FAIL — CPU/remaining broader acceptance gates",
+    "R2_CPU_ACCEPTANCE": "FAIL",
+    "R2_IMAGES_MONTHLY_METER": "NOT_VERIFIED",
+    "R2_PRODUCTION_DEPLOYED": "NO",
+    "R2_PRODUCTION_READY": "NO"
+  },
+  "officialReferences": [
+    "https://developers.cloudflare.com/images/pricing/",
+    "https://developers.cloudflare.com/images/optimization/binding/",
+    "https://developers.cloudflare.com/workers/platform/limits/"
+  ],
+  "sourceCI": {
+    "runId": 41292160697,
+    "commit": "f4f7d80579c3abdd5c31189f8b9662efe2cd4194",
+    "conclusion": "success",
+    "deploy": "skipped",
+    "backendPass": 83,
+    "infoWorkerdPass": 4,
+    "legacyFrontendPass": 36,
+    "defaultV3Pass": 18,
+    "infoV3Pass": 18,
+    "cleanPassExecutions": 159,
+    "flaky": 0
+  }
+}

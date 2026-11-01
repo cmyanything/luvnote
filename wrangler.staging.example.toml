@@ -12,7 +12,9 @@ ENVIRONMENT = "staging"
 MEDIA_V3_UPLOADS_ENABLED = "false"
 MEDIA_CLEANUP_ENABLED = "true"
 # Images.info() FAILED real corrupt-pixel acceptance. Keep strict decoding and writes disabled.
-# Operator-only diagnostics may explicitly select "images" on staging; never promote this method.
+# Operator-only diagnostics can select "images" (rejected info-only method) or
+# "images-transform" (Full Transformation; Free CPU acceptance still FAILED).
+# Both are staging-only. Keep this default; see the report and exhausted test budget.
 MEDIA_JPEG_VALIDATOR = "legacy"
 TURNSTILE_TEST_MODE = "true"
 TURNSTILE_HOSTNAMES = "localhost,127.0.0.1"
@@ -26,7 +28,8 @@ database_id = "REPLACE_WITH_STAGING_D1_UUID"
 binding = "MEDIA"
 bucket_name = "luvnote-media-staging"
 
-# Read-only image metadata validation; no paid image transformation is invoked.
+# Unused in legacy mode. Full-transformation diagnostics require confirmed Images
+# Free and an explicit staging window; never change billing or production here.
 [images]
 binding = "IMAGES"
 

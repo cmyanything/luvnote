@@ -23,7 +23,11 @@ async function responseJson<T>(res: Response): Promise<T> {
 async function uploadJpeg(
   session: Session, source: string, kind: 'photo' | 'cover', key: string, signal: AbortSignal,
 ): Promise<string> {
-  const dataUrl = await jpeg(source, kind === 'cover' ? 700 : 900, 0.78);
+  // PhotoPicker already resized, normalized orientation and encoded this JPEG.
+  // Avoid decoding/re-encoding it again on every upload or retry.
+  const dataUrl = source.startsWith('data:image/jpeg;base64,')
+    ? source
+    : await jpeg(source, kind === 'cover' ? 700 : 900, 0.78);
   const binary = await fetch(dataUrl, { signal }).then((res) => res.blob());
   if (binary.size > 1_500_000) throw new Error('too_large');
   const res = await fetch(

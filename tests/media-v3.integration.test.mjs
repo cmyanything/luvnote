@@ -28,9 +28,15 @@ test('rejects JSON null without a server error', async () => {
   assert.equal(res.status,400);
 });
 
-test('expiry between validation and batch cannot consume or publish a session', async () => {
+test('expiry between validation and batch cannot consume or publish a session', async (t) => {
   const f = await fixture();
-  f.env.beforeBatch = () => { f.sql.prepare('UPDATE media_upload_sessions SET expires_at=? WHERE id=?').run(Date.now()-1,sid); };
+  const realNow = Date.now();
+  // Simulate a stale JS timestamp while the database clock moves forward.
+  // The expiry check must run inside SQLite at statement execution time.
+  f.env.beforeBatch = () => {
+    f.sql.prepare('UPDATE media_upload_sessions SET expires_at=? WHERE id=?').run(realNow - 1000, sid);
+  };
+  t.mock.method(Date, 'now', () => realNow - 60000);
   const res = await f.publish();
   assert.ok([403,409].includes(res.status));
   assert.equal(f.sql.prepare('SELECT used_at FROM media_upload_sessions').get().used_at,null);

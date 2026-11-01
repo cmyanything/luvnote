@@ -186,9 +186,12 @@ async function publishCard(req, env, json, cleanV2, newId) {
       const result = await env.DB.batch([
         env.DB.prepare(
           'INSERT INTO theme_cards(id,theme,data,created_at,expires_at) SELECT ?,?,?,?,? ' +
-          'WHERE EXISTS(SELECT 1 FROM media_upload_sessions WHERE id=? AND token_hash=? AND used_at IS NULL AND expires_at>?) ' +
+          // Evaluate expiry at SQL execution, not at an earlier JS timestamp.
+          // JS time can become stale while hashing credentials or waiting for D1.
+          "WHERE EXISTS(SELECT 1 FROM media_upload_sessions WHERE id=? AND token_hash=? AND used_at IS NULL " +
+          "AND expires_at > CAST((julianday('now') - 2440587.5) * 86400000 AS INTEGER)) " +
           "AND (SELECT count(*) FROM media_assets m JOIN media_upload_jobs j ON j.asset_id=m.id WHERE m.session_id=? AND m.card_id IS NULL AND j.state='ready' AND m.id IN (" + placeholders + '))=?'
-        ).bind(cardId,theme,JSON.stringify(data),now,expires,sid,await tokenHash(bearer(req)),now,sid,...all,all.length),
+        ).bind(cardId,theme,JSON.stringify(data),now,expires,sid,await tokenHash(bearer(req)),sid,...all,all.length),
         // A zero-row INSERT may coincide with an already existing random card ID.
         // Test this statement's changes(), not existence of that unrelated card.
         env.DB.prepare('INSERT INTO media_publications(session_id,card_id,payload_hash,expires_at) SELECT ?,?,?,? WHERE changes()=1 AND EXISTS(SELECT 1 FROM theme_cards WHERE id=?)')

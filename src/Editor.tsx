@@ -11,7 +11,7 @@ import {
   type InvalidField,
 } from './lib/card';
 import { createCard } from './lib/api';
-import { R2_MEDIA_ENABLED, TURNSTILE_SITE_KEY, editR2Card, loadCardForEdit } from './lib/media-v3';
+import { R2_MEDIA_ENABLED, TURNSTILE_SITE_KEY, checkEditKey, editR2Card, loadCardForEdit } from './lib/media-v3';
 import { UploadVerification } from './components/UploadVerification';
 import { Hero } from './components/Hero';
 import { Section } from './components/Section';
@@ -44,9 +44,12 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     chat: hasChat ? structuredClone(CHAT_TEMPLATES[0]) : [],
   }));
   // Owner edit mode: `?edit=<card>#key=<secret>` loads the card and saves over it.
-  const editing = useMemo(() => editTarget(window.location), []);
-  const [loadState, setLoadState] = useState<'idle' | 'loading' | 'ready' | 'error'>(
-    editing ? 'loading' : 'idle',
+  // After a new card is created the editor switches to editing that card, so a second click on
+  // "save" fixes the link already sent instead of creating a duplicate card.
+  const linkTarget = useMemo(() => editTarget(window.location), []);
+  const [editing, setEditing] = useState(linkTarget);
+  const [loadState, setLoadState] = useState<'idle' | 'loading' | 'ready' | 'error' | 'denied' | 'expired'>(
+    linkTarget ? 'loading' : 'idle',
   );
   const [errors, setErrors] = useState<InvalidField[]>([]);
   const [musicAllowed, setMusicAllowed] = useState(false);
@@ -58,6 +61,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
   const [created, setCreated] = useState<{
     result: CreatedCard;
     recipient: string;
+    edited: boolean;
   } | null>(null);
   const [message, setMessage] = useState('');
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
@@ -72,23 +76,26 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     [],
   );
   useEffect(() => {
-    if (!editing) return;
+    if (!linkTarget) return;
     if (!R2_MEDIA_ENABLED) {
       setLoadState('error');
       return;
     }
     const controller = new AbortController();
-    loadCardForEdit(editing.id, controller.signal)
-      .then((card) => {
+    checkEditKey(linkTarget.id, linkTarget.key, controller.signal)
+      .then(async (access) => {
+        if (access !== 'ok') return setLoadState(access);
+        const card = await loadCardForEdit(linkTarget.id, controller.signal);
         if (card.theme !== theme.id) throw new Error('theme_mismatch');
         setState(stateFromCard(card.data, theme, hasChat ? structuredClone(CHAT_TEMPLATES[0]) : []));
         setLoadState('ready');
       })
-      .catch(() => {
-        if (!controller.signal.aborted) setLoadState('error');
+      .catch((error) => {
+        if (controller.signal.aborted) return;
+        setLoadState(error instanceof Error && error.message === 'expired' ? 'expired' : 'error');
       });
     return () => controller.abort();
-  }, [editing, theme, hasChat]);
+  }, [linkTarget, theme, hasChat]);
   function toast(text: string) {
     setMessage(text);
     clearTimeout(toastTimer.current);
@@ -157,7 +164,9 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     if (request.current || photosBusy || !validate()) return;
     if (editing && loadState !== 'ready') return;
     if (R2_MEDIA_ENABLED && !verificationToken) {
-      toast('กรุณายืนยันตัวตนก่อนสร้างการ์ดนะ');
+      // The invisible security check may still be loading or may have failed: retry it.
+      setVerificationVersion((n) => n + 1);
+      toast('กำลังตรวจสอบความปลอดภัย รอสักครู่แล้วกดอีกครั้งนะ');
       return;
     }
     const controller = new AbortController();
@@ -166,17 +175,33 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     const timer = setTimeout(() => controller.abort(), R2_MEDIA_ENABLED ? 120000 : 30000);
     try {
       const data = cardData(state, theme, musicAllowed);
+      const wasEditing = !!editing;
       const result = editing
         ? await editR2Card(theme.id, editing.id, editing.key, data, verificationToken || '', controller.signal)
         : await createCard(theme.id, data, controller.signal, verificationToken || undefined);
-      setCreated({ result, recipient: data.to });
+      setCreated({ result, recipient: data.to, edited: wasEditing });
+      if (!wasEditing && result.editKey) {
+        setEditing({ id: result.id, key: result.editKey });
+        setLoadState('ready');
+        try {
+          history.replaceState(null, '', `?edit=${result.id}#key=${result.editKey}`);
+        } catch { /* the address bar is optional */ }
+      }
     } catch (error) {
       const reason = error instanceof Error ? error.message : '';
+      if (reason === 'edit_denied') setLoadState('denied');
+      if (reason === 'expired') setLoadState('expired');
       toast(
         reason === 'too_large'
           ? 'รูปใหญ่เกินไป ลองลดจำนวนรูปนะ'
           : reason === 'quota_exceeded' || reason === 'rate_limited'
             ? 'ตอนนี้มีคนใช้งานเยอะ รอสักครู่แล้วลองใหม่นะ'
+          : reason === 'edit_denied'
+            ? 'ลิงก์แก้ไขนี้ใช้ไม่ได้แล้ว ทัก LINE ร้านเพื่อขอลิงก์ใหม่นะ'
+          : reason === 'expired'
+            ? 'การ์ดใบนี้หมดอายุแล้ว แก้ไขไม่ได้'
+          : reason === 'verification_failed'
+            ? 'ยืนยันความปลอดภัยไม่ผ่าน ลองกดอีกครั้งนะ'
           : editing
             ? 'บันทึกไม่สำเร็จ ลองใหม่อีกครั้งนะ'
             : 'สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ',
@@ -248,7 +273,11 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
             {loadState === 'ready' &&
               '✏️ กำลังแก้ไขการ์ดเดิม กดบันทึกแล้วลิงก์เดิมจะแสดงข้อมูลใหม่ทันที'}
             {loadState === 'error' &&
-              'เปิดการ์ดเพื่อแก้ไขไม่ได้ ลิงก์อาจไม่ถูกต้องหรือการ์ดหมดอายุแล้ว'}
+              'เปิดการ์ดเพื่อแก้ไขไม่ได้ ลองรีเฟรชหน้านี้อีกครั้ง หรือเช็กว่าลิงก์ครบถ้วน'}
+            {loadState === 'denied' &&
+              'ลิงก์แก้ไขนี้ใช้ไม่ได้แล้ว (อาจมีการออกลิงก์ใหม่ให้) ทัก LINE ร้านเพื่อขอลิงก์ล่าสุดนะ'}
+            {loadState === 'expired' &&
+              'การ์ดใบนี้หมดอายุแล้ว จึงแก้ไขไม่ได้ ถ้าอยากต่ออายุ ทัก LINE ร้านได้เลย'}
           </p>
         )}
         <Hero theme={theme} onDemo={() => setPreview({})} />
@@ -620,7 +649,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
           theme={theme}
           result={created.result}
           recipient={created.recipient}
-          edited={!!editing}
+          edited={created.edited}
           onClose={() => setCreated(null)}
           toast={toast}
         />

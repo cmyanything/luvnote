@@ -157,3 +157,19 @@ export async function loadCardForEdit(cardId: string, signal: AbortSignal): Prom
   const cover = card.data.cover ? await asDataUrl(card.data.cover, signal) : null;
   return { ...card, data: { ...card.data, photos, cover } };
 }
+
+export type EditKeyState = 'ok' | 'denied' | 'expired';
+// Ask the API whether this edit link still works. Network or unknown failures count as "ok":
+// the server enforces the key again on save, so a flaky check never blocks the owner.
+export async function checkEditKey(cardId: string, editKey: string, signal: AbortSignal): Promise<EditKeyState> {
+  try {
+    const res = await fetch(API + '/v3/cards/' + cardId + '/edit-check', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ editKey }), signal,
+    });
+    if (res.status === 403) return 'denied';
+    if (res.status === 410) return 'expired';
+  } catch (error) {
+    if (signal.aborted) throw error;
+  }
+  return 'ok';
+}

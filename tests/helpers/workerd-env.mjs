@@ -3,15 +3,15 @@ import { build } from 'esbuild';
 import { readFile } from 'node:fs/promises';
 
 const bundle = await build({ entryPoints: ['worker/index.js'], bundle: true, write: false, format: 'esm', platform: 'browser' });
-export async function workerdFixture({ realTurnstile = false } = {}) {
+export async function workerdFixture({ realTurnstile = false, bindings: extra = {} } = {}) {
   const mf = new Miniflare(convertV4MiniflareOptions({
     workers: [{
       name: 'luvnote-test', modules: true, script: bundle.outputFiles[0].text,
       compatibilityDate: '2025-01-01',
       d1Databases: ['DB'], r2Buckets: ['MEDIA'],
-      ratelimits: { WRITE_LIMITER: { namespace_id: '472099', simple: { limit: 60, period: 60 } } },
+      ratelimits: { WRITE_LIMITER: { namespace_id: '472099', simple: { limit: 300, period: 60 } } }, // mirrors wrangler.toml
       bindings: { ENVIRONMENT: 'staging', MEDIA_V3_UPLOADS_ENABLED: 'true', MEDIA_CLEANUP_ENABLED: 'true', TURNSTILE_TEST_MODE: 'true',
-        TURNSTILE_HOSTNAMES: 'localhost,127.0.0.1', TURNSTILE_SECRET_KEY: '1x0000000000000000000000000000000AA' },
+        TURNSTILE_HOSTNAMES: 'localhost,127.0.0.1', TURNSTILE_SECRET_KEY: '1x0000000000000000000000000000000AA', ...extra },
       ...(realTurnstile ? {} : { outboundService: 'turnstile-double' }),
     }, ...realTurnstile ? [] : [{
       name: 'turnstile-double', modules: true,

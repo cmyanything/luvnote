@@ -1,20 +1,13 @@
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import { build } from 'esbuild';
 import { readFile } from 'node:fs/promises';
-import {resolve} from 'node:path';
 
-const nativeSearch = process.env.TEST_JPEG_SEARCH === 'native';
-const bundle = await build({ entryPoints: [nativeSearch ? 'worker/staging-native.js' : 'worker/index.js'],
-  bundle: true, write: false, format: 'esm', platform: 'browser', external: ['*.wasm'] });
-const workerSource = nativeSearch ? {modules:[
-  {type:'ESModule',path:resolve('worker/index-test.mjs'),contents:bundle.outputFiles[0].text},
-  {type:'CompiledWasm',path:resolve('worker/jpeg-scan.wasm'),contents:await readFile('worker/jpeg-scan.wasm')},
-]} : {modules:true,script:bundle.outputFiles[0].text};
+const bundle = await build({ entryPoints: ['worker/index.js'], bundle: true, write: false, format: 'esm', platform: 'browser' });
 export async function workerdFixture({ realTurnstile = false, jpegValidator = process.env.TEST_JPEG_VALIDATOR || 'legacy' } = {}) {
   if (!['legacy','images','images-transform'].includes(jpegValidator)) throw Error('Invalid test JPEG validator');
   const mf = new Miniflare(convertV4MiniflareOptions({
     workers: [{
-      name: 'luvnote-test', ...workerSource,
+      name: 'luvnote-test', modules: true, script: bundle.outputFiles[0].text,
       compatibilityDate: '2025-01-01',
       d1Databases: ['DB'], r2Buckets: ['MEDIA'],
       ...(jpegValidator !== 'legacy' ? {images:{binding:'IMAGES'}} : {}),

@@ -28,7 +28,6 @@ jobs:
       - run: node --test tests/media-v3.workerd.test.mjs
         env:
           TEST_JPEG_VALIDATOR: 'images-transform'
-          TEST_JPEG_SEARCH: 'native'
       # Legacy compatibility tests use the old creation API.
       - run: npm run build
         env:
@@ -51,7 +50,6 @@ jobs:
         env:
           VITE_R2_MEDIA_ENABLED: 'true'
           TEST_JPEG_VALIDATOR: 'images-transform'
-          TEST_JPEG_SEARCH: 'native'
       # Never ship the Cloudflare testing site key or a missing real key to production.
       - name: Check production Turnstile rollout guard
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

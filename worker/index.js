@@ -115,7 +115,7 @@ const THEMES = ["pink-coquette", "coquette-dream", "little-memories", "birthday-
 const STICKERS = ["heart", "cake", "gift", "hug"];
 const V2_MAX = 1900000; // bytes of JSON body
 const DAY = 864e5;
-const LIFE_DAYS = 15;
+const LIFE_DAYS = 90;
 
 function cleanV2(d) {
   const s = (v, n) => (typeof v === "string" ? v.slice(0, n) : "");

@@ -112,3 +112,47 @@ export function cardLink(theme: ThemeConfig, id: string): string {
   );
   return `${base}/#${theme.prefix}${id}`;
 }
+
+export function editLink(theme: ThemeConfig, id: string, key: string): string {
+  const base = (import.meta.env.VITE_SITE_URL || 'https://luvnote.fun').replace(
+    /\/$/,
+    '',
+  );
+  return `${base}/themes/${theme.id}/?edit=${id}#key=${key}`;
+}
+
+// Read `?edit=<card>#key=<secret>` from the editor URL.
+export function editTarget(location: Location): { id: string; key: string } | null {
+  const id = new URLSearchParams(location.search).get('edit') || '';
+  const key = /(?:^#|&)key=([0-9a-f]{64})(?:&|$)/.exec(location.hash)?.[1] || '';
+  return /^[a-z0-9]{7}$/.test(id) && key ? { id, key } : null;
+}
+
+function clock(total: number): string {
+  return total ? `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}` : '';
+}
+
+// Inverse of cardData(): turn a stored card back into editor fields.
+export function stateFromCard(
+  data: Omit<CardData, 'expires'>,
+  theme: ThemeConfig,
+  fallbackChat: ChatRow[],
+): EditorState {
+  return {
+    to: data.to || '',
+    from: data.from || '',
+    age: data.age ? String(data.age) : '',
+    letter: data.letter || '',
+    secret: data.secret || '',
+    lock: data.lock?.type === 'code' ? 'code' : theme.defaultLock,
+    code: data.lock?.code || '',
+    hint: data.lock?.hint || '',
+    youtube: data.music?.type === 'youtube' ? `https://www.youtube.com/watch?v=${data.music.id}` : '',
+    musicStart: data.music?.type === 'youtube' ? clock(data.music.start) : '',
+    effect: theme.effects.some((e) => e.value === data.effect) ? data.effect : theme.effects[0].value,
+    endMsg: data.endMsg && data.endMsg !== theme.defaultEnd ? data.endMsg : '',
+    photos: (data.photos || []).map((p) => ({ src: p.src, cap: p.cap || '' })),
+    cover: data.cover || null,
+    chat: data.chat?.length ? data.chat : fallbackChat,
+  };
+}

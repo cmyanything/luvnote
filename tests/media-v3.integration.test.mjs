@@ -66,6 +66,14 @@ test('parallel uploads reserve at most five photo slots', async () => {
   assert.equal(f.objects.size,5); assert.equal(f.sql.prepare('SELECT photo_count n FROM media_upload_sessions').get().n,5);
 });
 
+test('a full upload session rejects new requests before reading or decoding their body', async () => {
+  const f=await fixture(); await Promise.all(Array.from({length:5},()=>f.upload()));
+  let reads=0;
+  const body=new ReadableStream({pull(c){reads++;c.enqueue(image);c.close();}},{highWaterMark:0});
+  const res=await f.request(`/v3/upload-sessions/${sid}/media?kind=photo`,{method:'POST',duplex:'half',headers:{'Content-Type':'image/jpeg','Idempotency-Key':crypto.randomUUID()},body});
+  assert.equal(res.status,409); assert.equal(reads,0);
+});
+
 test('concurrent duplicate request keys never duplicate R2 writes', async () => {
   const f = await fixture(), key = crypto.randomUUID();
   const results = await Promise.all([f.upload(image,key),f.upload(image,key)]);
@@ -121,12 +129,13 @@ test('missing R2 object and unfinished upload intent cannot be published', async
   assert.equal((await f.publish([{id:asset.id}])).status,400);
 });
 
-test('interrupted request streams cannot create R2 objects or consume slots', async () => {
+test('interrupted request streams retain bounded failed intents without R2 objects', async () => {
   const f = await fixture();
   const body = new ReadableStream({ start(c) { c.enqueue(image.subarray(0,20)); c.error(Error('interrupted')); } });
   const res = await f.request(`/v3/upload-sessions/${sid}/media?kind=photo`,{method:'POST',duplex:'half',headers:{'Content-Type':'image/jpeg','Idempotency-Key':crypto.randomUUID()},body});
   assert.equal(res.status,500); assert.equal(f.objects.size,0);
-  assert.equal(f.sql.prepare('SELECT photo_count n FROM media_upload_sessions').get().n,0);
+  assert.equal(f.sql.prepare('SELECT photo_count n FROM media_upload_sessions').get().n,1);
+  assert.equal(f.sql.prepare('SELECT state FROM media_upload_jobs').get().state,'failed');
 });
 
 test('failed R2 put retains a discoverable journal and denies publication', async () => {

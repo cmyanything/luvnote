@@ -94,8 +94,9 @@ test('oversized streaming upload is rejected before touching R2 even without Con
   let writes = 0;
   const env = {
     DB: {
-      prepare() {
-        return { bind() { return { first: async () => ({ id: uuid }) }; } };
+      batch: async () => [{meta:{changes:1}}],
+      prepare(query) {
+        return { bind() { return { first: async () => query.includes('SELECT j.asset_id') ? null : ({ id: uuid }), run: async () => ({meta:{changes:1}}) }; } };
       },
     },
     MEDIA: { put: async () => { writes++; } },

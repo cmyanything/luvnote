@@ -81,42 +81,53 @@ async function uploadPhoto(req, env, url, sid, json) {
   if (!await sessionFor(req, env, sid)) return json(req, { error: "session_invalid" }, 403);
   if ((req.headers.get("Content-Type") || "").toLowerCase() !== "image/jpeg")
     return json(req, { error: "jpeg_only" }, 415);
-  const raw = await readLimitedBody(req, MAX_JPEG);
-  if (raw === null) return json(req, { error: "too_large" }, 413);
-  const bytes = validateJpeg(raw);
-  if (!bytes) return json(req, { error: "invalid_jpeg" }, 400);
-  const hash = await digest(bytes);
   const previous = await env.DB.prepare(
     'SELECT j.asset_id,j.content_hash,j.state,m.kind FROM media_upload_jobs j JOIN media_assets m ON m.id=j.asset_id WHERE j.session_id=? AND j.request_key=?'
   ).bind(sid,requestKey).first();
   if (previous) {
-    if (previous.content_hash !== hash || previous.kind !== kind) return json(req, { error: 'idempotency_conflict' }, 409);
-    return previous.state === 'ready' ? json(req, { id: previous.asset_id }, 201)
-      : json(req, { error: previous.state === 'failed' ? 'upload_failed' : 'upload_in_progress' }, 409, { 'Retry-After': '2' });
+    if (previous.kind !== kind) return json(req, { error: 'idempotency_conflict' }, 409);
+    if (previous.state !== 'ready') return json(req, { error: previous.state === 'failed' ? 'upload_failed' : 'upload_in_progress' }, 409, { 'Retry-After': '2' });
+    const raw = await readLimitedBody(req, MAX_JPEG);
+    if (raw === null) return json(req, { error: 'too_large' }, 413);
+    // The original bytes were already validated. Replays need only a bounded hash,
+    // not another expensive decode, and cannot change the stored object.
+    if (previous.content_hash !== await digest(raw)) return json(req, { error: 'idempotency_conflict' }, 409);
+    return json(req, { id: previous.asset_id }, 201);
   }
   const field = kind === 'photo' ? 'photo_count' : 'cover_count', max = kind === 'photo' ? 5 : 1;
   const id = crypto.randomUUID(), key = 'v3/' + sid + '/' + id + '.jpg';
   const reserved = await env.DB.batch([
     env.DB.prepare('INSERT INTO media_assets(id,session_id,object_key,kind,size,created_at) ' +
       'SELECT ?,?,?,?,?,? FROM media_upload_sessions WHERE id=? AND token_hash=? AND expires_at>? AND used_at IS NULL AND ' + field + ' < ?')
-      .bind(id,sid,key,kind,bytes.byteLength,Date.now(),sid,await tokenHash(bearer(req)),Date.now(),max),
+      .bind(id,sid,key,kind,0,Date.now(),sid,await tokenHash(bearer(req)),Date.now(),max),
     env.DB.prepare('INSERT INTO media_upload_jobs(asset_id,session_id,request_key,content_hash,state) ' +
       "SELECT ?,?,?,?,'writing' WHERE EXISTS(SELECT 1 FROM media_assets WHERE id=?)")
-      .bind(id,sid,requestKey,hash,id),
+      .bind(id,sid,requestKey,'pending',id),
     env.DB.prepare('UPDATE media_upload_sessions SET ' + field + '=' + field + '+1 WHERE id=? AND EXISTS(SELECT 1 FROM media_assets WHERE id=?)').bind(sid,id),
   ]).catch(error => {
     if (String(error.message).includes('UNIQUE')) return null;
     throw error;
   });
   if (!reserved || reserved[0]?.meta?.changes !== 1) return json(req, { error: 'upload_limit_or_conflict' }, 409);
-  // Intent and key are durable before R2 put. Any later failure remains discoverable by cleanup.
+  // Reserve BEFORE reading/decoding. Even malformed or interrupted uploads consume
+  // a bounded slot, so one valid guest capability cannot repeatedly spend decoder CPU.
+  let putStarted = false;
   try {
+    const raw = await readLimitedBody(req, MAX_JPEG);
+    if (raw === null) throw Object.assign(Error('too_large'), { status: 413 });
+    const bytes = validateJpeg(raw);
+    if (!bytes) throw Object.assign(Error('invalid_jpeg'), { status: 400 });
+    await env.DB.batch([
+      env.DB.prepare('UPDATE media_assets SET size=? WHERE id=?').bind(bytes.byteLength,id),
+      env.DB.prepare('UPDATE media_upload_jobs SET content_hash=? WHERE asset_id=?').bind(await digest(raw),id),
+    ]);
+    putStarted = true;
     await env.MEDIA.put(key, bytes, { httpMetadata: { contentType: 'image/jpeg' } });
     const completed = await env.DB.prepare("UPDATE media_upload_jobs SET state='ready' WHERE asset_id=? AND state='writing'").bind(id).run();
     if (completed.meta?.changes !== 1) throw Error('upload_completion_lost');
   } catch (error) {
     // Retain the reservation and journal; a new session may retry, cleanup reclaims this slot/object.
-    try { await env.MEDIA.delete(key); } catch { console.error('media_v3_compensation_failed'); }
+    if (putStarted) try { await env.MEDIA.delete(key); } catch { console.error('media_v3_compensation_failed'); }
     try { await env.DB.prepare("UPDATE media_upload_jobs SET state='failed' WHERE asset_id=?").bind(id).run(); } catch { /* writing intent still survives */ }
     throw error;
   }

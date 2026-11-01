@@ -68,3 +68,18 @@ CREATE TABLE IF NOT EXISTS media_cleanup_state (
   id TEXT PRIMARY KEY,
   cursor TEXT
 );
+
+-- Owner edit capability: SHA-256 of the publishing upload token. Rows are removed with their card.
+CREATE TABLE IF NOT EXISTS card_edit_keys (
+  card_id TEXT PRIMARY KEY,
+  key_hash TEXT NOT NULL,
+  created_at INTEGER NOT NULL
+);
+-- Idempotency receipts for owner edits, one per upload session.
+CREATE TABLE IF NOT EXISTS card_edits (
+  session_id TEXT PRIMARY KEY,
+  card_id TEXT NOT NULL,
+  payload_hash TEXT NOT NULL,
+  created_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS card_edits_by_card ON card_edits(card_id);

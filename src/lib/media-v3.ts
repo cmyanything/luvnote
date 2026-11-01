@@ -47,12 +47,15 @@ async function uploadJpeg(
   return uploaded.id;
 }
 
-export async function createR2Card(
-  theme: ThemeId, data: CardData, turnstileToken: string, signal: AbortSignal,
-): Promise<CreatedCard> {
+type Send = (session: Session, payload: Record<string, unknown>) => Promise<Response>;
+
+// Upload every photo once into a fresh guest session, then send the card (new or edit).
+async function uploadAndSend(
+  target: string, theme: ThemeId, data: CardData, turnstileToken: string, signal: AbortSignal, send: Send,
+): Promise<CreatedCard & { session: Session }> {
   if (!turnstileToken) throw new Error('verification_required');
   signal.throwIfAborted();
-  const fingerprint = JSON.stringify({ theme, data });
+  const fingerprint = JSON.stringify({ target, theme, data });
   if (!pending || pending.fingerprint !== fingerprint || pending.session.expires <= Date.now()) {
   const sessionResponse = await fetch(API + '/v3/upload-sessions', {
     method: 'POST',
@@ -91,18 +94,66 @@ export async function createR2Card(
     expires: undefined,
   };
   signal.throwIfAborted();
-  const response = await fetch(API + '/v3/cards', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + session.uploadToken,
-    },
-    body: JSON.stringify({ theme, sessionId: session.sessionId, data: payload }),
-    signal,
-  });
-  const card = await responseJson<CreatedCard>(response);
+  const card = await responseJson<CreatedCard>(await send(session, payload));
   if (!/^[a-z0-9]{7}$/.test(card.id) || !Number.isFinite(card.expires))
     throw new Error('bad_card_receipt');
   pending = null;
-  return card;
+  return { id: card.id, expires: card.expires, session };
+}
+
+export async function createR2Card(
+  theme: ThemeId, data: CardData, turnstileToken: string, signal: AbortSignal,
+): Promise<CreatedCard> {
+  const card = await uploadAndSend('new', theme, data, turnstileToken, signal, (session, payload) =>
+    fetch(API + '/v3/cards', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + session.uploadToken },
+      body: JSON.stringify({ theme, sessionId: session.sessionId, data: payload }),
+      signal,
+    }));
+  // The publishing token becomes the owner's edit key; the server keeps only its hash.
+  return { id: card.id, expires: card.expires, editKey: card.session.uploadToken };
+}
+
+export async function editR2Card(
+  theme: ThemeId, cardId: string, editKey: string, data: CardData, turnstileToken: string, signal: AbortSignal,
+): Promise<CreatedCard> {
+  const card = await uploadAndSend('edit:' + cardId, theme, data, turnstileToken, signal, (session, payload) =>
+    fetch(API + '/v3/cards/' + cardId + '/edit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + session.uploadToken },
+      body: JSON.stringify({ theme, sessionId: session.sessionId, editKey, data: payload }),
+      signal,
+    }));
+  return { id: card.id, expires: card.expires, editKey };
+}
+
+export interface LoadedCard {
+  theme: ThemeId;
+  expires: number;
+  data: Omit<CardData, 'expires'>;
+}
+
+async function asDataUrl(url: string, signal: AbortSignal): Promise<string> {
+  const res = await fetch(url, { signal });
+  if (!res.ok) throw new Error('media_unavailable');
+  const blob = await res.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(new Error('media_unavailable'));
+    reader.readAsDataURL(blob);
+  });
+}
+
+// Load an existing card for its owner. Photos become data URLs so the editor treats them like new picks.
+export async function loadCardForEdit(cardId: string, signal: AbortSignal): Promise<LoadedCard> {
+  const res = await fetch(API + '/v2/cards/' + cardId, { signal });
+  if (res.status === 410) throw new Error('expired');
+  const card = await responseJson<LoadedCard>(res);
+  const photos = await Promise.all((card.data.photos || []).map(async (p) => ({
+    src: await asDataUrl(p.src, signal), cap: p.cap || '',
+  })));
+  const cover = card.data.cover ? await asDataUrl(card.data.cover, signal) : null;
+  return { ...card, data: { ...card.data, photos, cover } };
 }

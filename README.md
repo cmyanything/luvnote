@@ -61,3 +61,16 @@ card links. To use another environment, copy `.env.example` to `.env.local` and 
 `VITE_API_URL` and `VITE_SITE_URL` before building. Vite embeds these public values in
 the browser bundle; never place credentials in a `VITE_` variable. The API must permit
 the frontend origin through its CORS configuration for local writes.
+
+## Card lifetime, owner edits and paid renewal
+
+- New cards open for **90 days** (`LIFE_DAYS` in `worker/index.js`, `CARD_LIFE_MS` in `worker/media-v3.js`).
+- **Owner edits (R2 cards):** after creating a card, the share sheet shows a private edit link
+  `/themes/<theme>/?edit=<card>#key=<secret>`. Opening it loads the card into the editor; saving
+  replaces text and photos behind the same card link and keeps its expiry. The secret is the
+  publishing upload token; D1 stores only its SHA-256 in `card_edit_keys`. Replaced photos are
+  retired immediately and removed from R2 by the hourly cleanup.
+- **Renewal (29 THB/year, paid via LINE):** GitHub → Actions → **Extend card (paid renewal)** →
+  Run workflow, paste the card link or id and choose the years paid. Renew photo cards **before**
+  they expire: cleanup deletes an expired card's photos within the hour, and the workflow refuses
+  to revive them. Legacy Base64 cards keep their data and can be renewed after expiry.

@@ -9,6 +9,13 @@ button:disabled{cursor:wait}
 .btn:disabled{opacity:.65}
 #qr canvas{display:block;max-width:100%;height:auto;margin:auto}
 #covTxt{position:relative;z-index:1}
+.editbanner{margin:12px 0 0;padding:10px 14px;border-radius:14px;background:#FFF1F5;border:1.5px solid #E9B8C8;font-family:'Mitr';font-size:14px;color:var(--wine);text-align:center}
+.owner{margin:14px 0 4px;text-align:left}
+.owner-title{font-family:'Mitr';font-size:14px;color:var(--wine);margin:0}
+.owner .link{margin:8px 0 6px}
+.owner-note,.renew{font-family:'Athiti';font-weight:600;font-size:13px;color:var(--mute);margin:0}
+.renew{margin-top:10px;text-align:center}
+.renew a{color:var(--wine)}
 :focus-visible{outline:2px solid var(--wine);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}

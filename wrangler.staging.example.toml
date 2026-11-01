@@ -6,6 +6,12 @@ main = "worker/index.js"
 compatibility_date = "2026-10-31"
 workers_dev = true
 
+# STAGING ONLY. Never copy test configuration into production.
+[vars]
+ENVIRONMENT = "staging"
+TURNSTILE_TEST_MODE = "true"
+TURNSTILE_HOSTNAMES = "localhost,127.0.0.1"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "luvnote-staging"

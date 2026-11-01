@@ -1,0 +1,107 @@
+name: R2 staging CPU acceptance
+
+# Staging only: deploys luvnote-api-staging (never api.luvnote.fun), runs synthetic uploads,
+# records Cloudflare tail CPU, then always turns staging uploads back off.
+on:
+  push:
+    branches: [claude/r2-staging-acceptance]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: r2-staging
+  cancel-in-progress: false
+
+jobs:
+  staging:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: cee7f572be6cf7e3de1e4526f6d250d2
+      STAGING_D1_ID: 3967493c-55db-4ab8-bb2c-9ed3c157a543
+      STAGING_API_URL: https://luvnote-api-staging.c-myanything.workers.dev
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Write isolated staging config (uploads on)
+        run: |
+          write_config() {
+            sed -e "s/REPLACE_WITH_STAGING_D1_UUID/$STAGING_D1_ID/" \
+                -e "s/^MEDIA_V3_UPLOADS_ENABLED = .*/MEDIA_V3_UPLOADS_ENABLED = \"$1\"/" \
+                -e 's/^TURNSTILE_TEST_MODE = .*/TURNSTILE_TEST_MODE = "false"/' \
+                wrangler.staging.example.toml > wrangler.staging.toml
+          }
+          declare -f write_config > /tmp/write_config.sh
+          write_config true
+          grep -E '^(name|ENVIRONMENT|MEDIA_V3_UPLOADS_ENABLED|MEDIA_CLEANUP_ENABLED|TURNSTILE_TEST_MODE|database_name|database_id|bucket_name)' wrangler.staging.toml
+
+      - name: Verify staging identity before any write
+        run: node --input-type=module -e "import {verifyStagingResources} from './scripts/staging-safety.mjs'; console.log(verifyStagingResources())"
+
+      - name: Deploy staging with uploads on
+        run: npx wrangler deploy --config wrangler.staging.toml
+
+      - name: Measure synthetic uploads with live tail
+        id: measure
+        continue-on-error: true
+        env:
+          ALLOW_STAGING_WRITE: '1'
+          STAGING_SOURCE_COMMIT: ${{ github.sha }}
+        run: |
+          (npx wrangler tail luvnote-api-staging --format json > tail.json 2> tail.err &) 
+          sleep 15
+          node scripts/measure-r2-staging.mjs
+          sleep 15
+          pkill -f "wrangler.*tail" || true
+
+      - name: Always turn staging uploads back off
+        if: always()
+        run: |
+          source /tmp/write_config.sh
+          write_config false
+          npx wrangler deploy --config wrangler.staging.toml
+          curl -fsS "$STAGING_API_URL/health"
+
+      - name: Summarize Cloudflare CPU
+        if: always()
+        run: |
+          node --input-type=module -e '
+          import fs from "node:fs";
+          const text = fs.existsSync("tail.json") ? fs.readFileSync("tail.json","utf8") : "";
+          const cpu = [...text.matchAll(/"cpuTime":\s*(\d+(?:\.\d+)?)/g)].map(m => +m[1]).sort((a,b)=>a-b);
+          const outcomes = [...text.matchAll(/"outcome":\s*"(\w+)"/g)].map(m => m[1]);
+          const count = o => outcomes.filter(x => x === o).length;
+          const q = p => cpu.length ? cpu[Math.min(cpu.length-1, Math.ceil(p*cpu.length)-1)] : "n/a";
+          const lines = [
+            "## R2 staging CPU (Cloudflare tail)",
+            `tail events: ${outcomes.length}, ok: ${count("ok")}, exceededCpu: ${count("exceededCpu")}`,
+            `cpuTime ms p50/p95/max: ${q(0.5)} / ${q(0.95)} / ${cpu.length ? cpu.at(-1) : "n/a"}`,
+            cpu.length ? "" : "No cpuTime in tail output: check tail.err / Workers Metrics in the dashboard.",
+          ];
+          console.log(lines.join("\n"));
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join("\n\n") + "\n");
+          if (count("exceededCpu") > 0) process.exit(1);
+          '
+          cat tail.err 2>/dev/null | tail -20 || true
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: r2-staging-acceptance
+          path: |
+            tail.json
+            tail.err
+            .wrangler/acceptance/performance.json
+          retention-days: 14
+
+      - name: Fail if uploads did not all succeed
+        if: steps.measure.outcome != 'success'
+        run: exit 1

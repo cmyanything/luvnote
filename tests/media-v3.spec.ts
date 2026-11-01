@@ -184,3 +184,44 @@ test('an invalid or expired edit link explains the problem and blocks saving', a
   await expect(page.locator('#editBanner')).toContainText('เปิดการ์ดเพื่อแก้ไขไม่ได้');
   await expect(page.locator('#mkBtn')).toBeDisabled();
 });
+
+test('Our Story sends its start date and photo dates with R2 photo references', async ({ page }) => {
+  const cors = { 'access-control-allow-origin': '*' };
+  let published: { theme: string; data: { startDate: string; photos: { id: string; cap: string; date?: string }[] } } | null = null;
+  await page.route(/^https:\/\/fonts\.(googleapis|gstatic)\.com\//, (route) => route.abort());
+  await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit', (route) => route.fulfill({
+    status: 200, contentType: 'text/javascript',
+    body: "window.turnstile={render:function(el,opts){el.textContent='verified';opts.callback('t');return 'w';},remove:function(){}};",
+  }));
+  await page.route('https://api.luvnote.fun/v3/upload-sessions', (route) => route.fulfill({
+    status: 201, headers: cors, json: { sessionId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', uploadToken: 'f'.repeat(64), expires: Date.now() + 100000 },
+  }));
+  await page.route(/https:\/\/api\.luvnote\.fun\/v3\/upload-sessions\/.+\/media\?kind=photo$/, (route) => route.fulfill({
+    status: 201, json: { id: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc' }, headers: cors,
+  }));
+  await page.route('https://api.luvnote.fun/v3/cards', async (route) => {
+    published = route.request().postDataJSON();
+    await route.fulfill({ status: 201, headers: cors, json: { id: 'abc2345', expires: Date.now() + 90 * 86400000 } });
+  });
+  await page.goto('/themes/anniversary-journey/');
+  await page.getByLabel('ชื่อผู้รับ').fill('เธอ');
+  await page.getByLabel('ชื่อผู้ส่ง').fill('ฉัน');
+  await page.getByLabel('วันที่เราเริ่มคบกัน').fill('2022-06-14');
+  await page.locator('#file').setInputFiles({
+    name: 'us.png', mimeType: 'image/png',
+    buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aWQ0AAAAASUVORK5CYII=', 'base64'),
+  });
+  await page.getByLabel('คำบรรยายรูปที่ 1').fill('วันแรกของเรา');
+  await page.getByLabel('วันที่ของรูปที่ 1').fill('2022-06-14');
+  await page.locator('#letter').fill('รักนะ');
+  await page.locator('#secret').fill('ความลับ');
+  await expect(page.getByText('verified')).toBeVisible();
+  await page.locator('#mkBtn').click();
+  await expect(page.locator('#sheet')).toBeVisible();
+  expect(published).not.toBeNull();
+  const body = published as unknown as { theme: string; data: { startDate: string; photos: { id: string; cap: string; date?: string }[] } };
+  expect(body.theme).toBe('anniversary-journey');
+  expect(body.data.startDate).toBe('2022-06-14');
+  expect(body.data.photos).toEqual([{ id: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', cap: 'วันแรกของเรา', date: '2022-06-14' }]);
+  await expect(page.locator('#editLnk')).toContainText('/themes/anniversary-journey/?edit=abc2345#key=');
+});

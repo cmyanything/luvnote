@@ -83,7 +83,7 @@ async function uploadAndSend(
   for (const [index, photo] of data.photos.entries()) {
     signal.throwIfAborted();
     const id = await upload(photo.src, 'photo', 'photo:' + index);
-    photos.push({ id, cap: photo.cap });
+    photos.push({ id, cap: photo.cap, ...(photo.date ? { date: photo.date } : {}) });
   }
   const cover_id = data.cover ? await upload(data.cover, 'cover', 'cover') : null;
   const payload = {
@@ -152,7 +152,7 @@ export async function loadCardForEdit(cardId: string, signal: AbortSignal): Prom
   if (res.status === 410) throw new Error('expired');
   const card = await responseJson<LoadedCard>(res);
   const photos = await Promise.all((card.data.photos || []).map(async (p) => ({
-    src: await asDataUrl(p.src, signal), cap: p.cap || '',
+    src: await asDataUrl(p.src, signal), cap: p.cap || '', ...(p.date ? { date: p.date } : {}),
   })));
   const cover = card.data.cover ? await asDataUrl(card.data.cover, signal) : null;
   return { ...card, data: { ...card.data, photos, cover } };

@@ -61,3 +61,10 @@ export async function guardWrite(req, env) {
   const aggregate = await env.WRITE_LIMITER.limit({ key: 'aggregate' });
   return local.success && aggregate.success ? null : 'rate_limited';
 }
+
+// Calendar date "YYYY-MM-DD" (anniversary start / photo dates); "" when invalid.
+export function civilDate(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value) || value < "1900-01-01") return "";
+  const date = new Date(value + "T00:00:00Z");
+  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value ? value : "";
+}

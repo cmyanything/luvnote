@@ -20,13 +20,16 @@ import { MusicPicker } from './components/MusicPicker';
 import { ChatEditor } from './components/ChatEditor';
 import { PreviewDialog } from './components/PreviewDialog';
 import { ShareDialog } from './components/ShareDialog';
+import { dateLabel, daysTogether, today, validDate } from './lib/dates';
 
 export function Editor({ theme }: { theme: ThemeConfig }) {
   const hasChat = theme.id === 'birthday-chat';
+  const anniversary = theme.occasion === 'anniversary';
   const [state, setState] = useState<EditorState>(() => ({
     to: '',
     from: '',
     age: '',
+    startDate: '',
     letter: '',
     secret: '',
     code: '',
@@ -96,7 +99,10 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     setErrors((previous) => previous.filter((field) => field !== key));
   }
   const complete = {
-    names: !!(state.to.trim() && state.from.trim()),
+    names:
+      !!(state.to.trim() && state.from.trim()) &&
+      (!anniversary ||
+        (validDate(state.startDate) && state.startDate <= today())),
     photos: state.photos.length > 0,
     letter: !!state.letter.trim(),
     secret:
@@ -114,7 +120,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
       Object.values(complete).length) *
     100;
   function validate() {
-    const bad = invalidFields(state, hasChat);
+    const bad = invalidFields(state, hasChat, anniversary);
     setErrors(bad);
     if (!bad.length) return true;
     const element =
@@ -131,7 +137,11 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     return false;
   }
   function openPreview() {
-    if (!state.to.trim() || !state.from.trim()) {
+    if (
+      !state.to.trim() ||
+      !state.from.trim() ||
+      (anniversary && invalidFields(state, hasChat, true).includes('startDate'))
+    ) {
       validate();
       return;
     }
@@ -203,6 +213,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
   const offset = hasChat ? 1 : 0;
   return (
     <div
+      className={anniversary ? 'anniversary-editor' : undefined}
       onKeyDown={(event) => {
         if (event.key === 'Enter' && event.target instanceof HTMLInputElement) {
           event.preventDefault();
@@ -285,20 +296,52 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
                   ใส่ชื่อผู้ส่งด้วยนะ
                 </p>
               </div>
-              <div style={{ flex: 0.55 }}>
-                <label htmlFor="age">ครบกี่ปี</label>
-                <input
-                  type="number"
-                  id="age"
-                  inputMode="numeric"
-                  min={1}
-                  max={120}
-                  placeholder="ไม่ใส่ก็ได้"
-                  value={state.age}
-                  onChange={(e) => update('age', e.target.value)}
-                />
-              </div>
+              {!anniversary && (
+                <div style={{ flex: 0.55 }}>
+                  <label htmlFor="age">ครบกี่ปี</label>
+                  <input
+                    type="number"
+                    id="age"
+                    inputMode="numeric"
+                    min={1}
+                    max={120}
+                    placeholder="ไม่ใส่ก็ได้"
+                    value={state.age}
+                    onChange={(e) => update('age', e.target.value)}
+                  />
+                </div>
+              )}
             </div>
+            {anniversary && (
+              <div className={fieldClass('startDate')} id="f-startDate">
+                <label htmlFor="startDate">
+                  วันที่เราเริ่มคบกัน <span className="req">*</span>
+                </label>
+                <input
+                  id="startDate"
+                  type="date"
+                  min="1900-01-01"
+                  max={today()}
+                  value={state.startDate}
+                  aria-required="true"
+                  aria-invalid={errors.includes('startDate')}
+                  aria-describedby="startDate-error"
+                  onChange={(e) => update('startDate', e.target.value)}
+                />
+                <p className="emsg" id="startDate-error">
+                  เลือกวันเริ่มคบที่ไม่เกินวันนี้นะ
+                </p>
+                {validDate(state.startDate) && state.startDate <= today() && (
+                  <p className="together-hint">
+                    ตั้งแต่ {dateLabel(state.startDate)} · มีกันมาแล้ว{' '}
+                    <b>
+                      {daysTogether(state.startDate).toLocaleString('th-TH')}
+                    </b>{' '}
+                    วัน ♡
+                  </p>
+                )}
+              </div>
+            )}
           </>,
         )}
         {hasChat &&
@@ -350,17 +393,23 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
           theme.letterTitle,
           <>
             <div className="tpls" id="tpls">
-              {['💗 หวานๆ', '🥹 ซึ้งๆ', '😆 ขำๆ', '👫 ถึงเพื่อน'].map(
-                (label, index) => (
-                  <button
-                    type="button"
-                    key={label}
-                    onClick={() => update('letter', theme.templates[index])}
-                  >
-                    {label}
-                  </button>
-                ),
-              )}
+              {(anniversary
+                ? [
+                    '♡ รักเรียบง่าย',
+                    '✎ จากใจ',
+                    '☺ ขำ ๆ ของเรา',
+                    '∞ สัญญาด้วยกัน',
+                  ]
+                : ['💗 หวานๆ', '🥹 ซึ้งๆ', '😆 ขำๆ', '👫 ถึงเพื่อน']
+              ).map((label, index) => (
+                <button
+                  type="button"
+                  key={label}
+                  onClick={() => update('letter', theme.templates[index])}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
             <div className={fieldClass('letter')} id="f-letter">
               <textarea

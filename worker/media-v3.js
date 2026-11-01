@@ -1,4 +1,4 @@
-import { readLimitedBody, readJson, digest, reserveBudget } from './guards.js';
+import { readLimitedBody, readJson, digest, reserveBudget, civilDate } from './guards.js';
 import { validateJpeg } from './jpeg.js';
 import { QUOTAS } from './quotas.js';
 // LuvNote Media API V3: private R2 images with short-lived guest upload capabilities.
@@ -8,7 +8,7 @@ const SESSION_MS = 30 * 60 * 1000;
 // Cards stay readable for 90 days; owners can pay to extend (see .github/workflows/extend-card.yml).
 export const CARD_LIFE_MS = 90 * DAY;
 const MAX_JPEG = 1_500_000;
-const THEMES = new Set(["pink-coquette", "coquette-dream", "little-memories", "birthday-chat", "velvet-gift"]);
+const THEMES = new Set(["pink-coquette", "coquette-dream", "little-memories", "birthday-chat", "velvet-gift", "anniversary-journey"]);
 const SID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const ASSET = SID;
 const CARD = /^[a-z0-9]{7}$/;
@@ -150,12 +150,16 @@ async function parseCardBody(body, cleanV2) {
   for (const p of photos) {
     if (!p || !ASSET.test(p.id || "") || Object.hasOwn(p, "src")) return { error: "bad_media" };
     photoIds.push(p.id);
-    cleanPhotos.push({ id: p.id, cap: typeof p.cap === "string" ? p.cap.slice(0, 40) : "" });
+    const photo = { id: p.id, cap: typeof p.cap === "string" ? p.cap.slice(0, 40) : "" };
+    const date = civilDate(p.date);
+    if (date) photo.date = date;
+    cleanPhotos.push(photo);
   }
   const all = [...photoIds, ...(coverId ? [coverId] : [])];
   if (new Set(all).size !== all.length) return { error: "duplicate_media" };
   const safe = cleanV2({ ...rawData, photos: [], cover: null });
   if (!safe.to || !safe.from || !safe.letter) return { error: "missing" };
+  if (body.theme === "anniversary-journey" && !safe.startDate) return { error: "missing_start_date" };
   const data = { ...safe, media_version: 3, photos: cleanPhotos };
   if (coverId) data.cover_id = coverId;
   const payloadHash = await digest(JSON.stringify({ theme: body.theme, data }));
@@ -314,7 +318,7 @@ export function materializeV3Card(data, cardId, origin) {
   if (data?.media_version !== 3) return data;
   const mediaUrl = id => origin + "/v3/cards/" + cardId + "/media/" + id;
   const photos = (Array.isArray(data.photos) ? data.photos : []).map(p => ({
-    src: mediaUrl(p.id), cap: p.cap || ""
+    src: mediaUrl(p.id), cap: p.cap || "", ...(p.date ? { date: p.date } : {})
   }));
   const result = { ...data, photos };
   if (data.cover_id) result.cover = mediaUrl(data.cover_id);

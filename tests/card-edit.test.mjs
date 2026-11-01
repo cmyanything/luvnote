@@ -108,6 +108,26 @@ test('a session cannot both publish a card and edit another', async () => {
   void edit; void image;
 });
 
+test('Our Story R2 cards require a start date and keep photo dates', async () => {
+  const f = await fixture();
+  const asset = await (await f.upload()).json();
+  const publish = (data) => f.request('/v3/cards', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ theme: 'anniversary-journey', sessionId: sid, data: { to: 'A', from: 'B', letter: 'L', ...data } }),
+  });
+  assert.equal((await publish({ photos: [{ id: asset.id }] })).status, 400);
+  assert.equal((await publish({ startDate: '2023-02-30', photos: [{ id: asset.id }] })).status, 400);
+  const res = await publish({ startDate: '2024-02-29', photos: [{ id: asset.id, cap: 'first trip', date: '2024-03-15' }] });
+  assert.equal(res.status, 201);
+  const card = await res.json();
+  const read = await (await f.request('/v2/cards/' + card.id)).json();
+  assert.equal(read.theme, 'anniversary-journey');
+  assert.equal(read.data.startDate, '2024-02-29');
+  assert.equal(read.data.photos[0].date, '2024-03-15');
+  assert.equal(read.data.photos[0].cap, 'first trip');
+  assert.match(read.data.photos[0].src, /\/v3\/cards\/[a-z0-9]{7}\/media\//);
+});
+
 const ADMIN = 'owner-admin-key-'.padEnd(40, 'x');
 const reissue = (f, cardId, key = ADMIN) => f.request('/v3/admin/edit-key', {
   method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Key': key }, body: JSON.stringify({ cardId }),

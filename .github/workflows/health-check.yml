@@ -33,7 +33,7 @@ jobs:
         run: |
           curl -fsS --retry 3 --retry-delay 10 -o home.html https://luvnote.fun/
           grep -q 'LuvNote' home.html
-          for theme in pink-coquette coquette-dream little-memories birthday-chat velvet-gift; do
+          for theme in pink-coquette coquette-dream little-memories birthday-chat velvet-gift anniversary-journey; do
             page=$(curl -fsS --retry 3 --retry-delay 10 "https://luvnote.fun/themes/$theme/")
             asset=$(printf '%s' "$page" | grep -oE 'src="[^"]*assets/[^"]+\.js"' | head -1 | sed -E 's/^src="(\.\.\/)*\.?\/?//; s/"$//')
             [ -n "$asset" ] || { echo "::error::$theme editor has no script"; exit 1; }

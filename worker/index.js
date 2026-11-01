@@ -1,11 +1,11 @@
-import { readJson, guardWrite, reserveBudget, digest } from './guards.js';
+import { readJson, guardWrite, reserveBudget, digest, civilDate } from './guards.js';
 import { QUOTAS } from './quotas.js';
 import { handleMediaV3, materializeV3Card, cleanupMediaV3 } from "./media-v3.js";
 // LuvNote card API — Cloudflare Worker + D1
 // POST /cards            {t,to,msg,from,secret,img(base64 jpeg)} -> {id}
 // GET  /cards/:id        -> {t,to,msg,from,secret,hasImg}
 // GET  /cards/:id/img    -> image/jpeg
-// POST /v2/cards         {theme, data}  -> {id, expires}   (theme cards, photos inline as data:image/jpeg)
+// POST /v2/cards         {theme, data}  -> {id, expires}   (anniversary cards add startDate and optional photos[].date)
 // GET  /v2/cards/:id     -> {theme, data, expires}  (410 when expired)
 
 const ORIGINS = [
@@ -112,7 +112,7 @@ async function getImage(req, env, id) {
 }
 
 /* ---------- theme cards (v2) ---------- */
-const THEMES = ["pink-coquette", "coquette-dream", "little-memories", "birthday-chat", "velvet-gift"];
+const THEMES = ["pink-coquette", "coquette-dream", "little-memories", "birthday-chat", "velvet-gift", "anniversary-journey"];
 const STICKERS = ["heart", "cake", "gift", "hug"];
 const V2_MAX = 1900000; // bytes of JSON body
 const DAY = 864e5;
@@ -134,6 +134,8 @@ function cleanV2(d) {
       : { type: "demo" },
     photos: [],
   };
+  const startDate = civilDate(d.startDate);
+  if (startDate) out.startDate = startDate;
   if (typeof d.cover === "string" && d.cover.length < 400000 && /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(d.cover)) out.cover = d.cover;
   if (Array.isArray(d.chat)) {
     out.chat = d.chat.slice(0, 20).map((r) => {
@@ -147,7 +149,10 @@ function cleanV2(d) {
   }
   for (const p of photos) {
     if (!p || typeof p.src !== "string" || !/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(p.src)) continue;
-    out.photos.push({ src: p.src, cap: s(p.cap, 40) });
+    const photo = { src: p.src, cap: s(p.cap, 40) };
+    const date = civilDate(p.date);
+    if (date) photo.date = date;
+    out.photos.push(photo);
   }
   return out;
 }
@@ -158,6 +163,7 @@ async function createV2(req, env) {
   if (!THEMES.includes(theme)) return json(req, env, { error: "bad_theme" }, 400);
   const data = cleanV2(body.data || {});
   if (!data.to || !data.from || !data.letter) return json(req, env, { error: "missing" }, 400);
+  if (theme === "anniversary-journey" && !data.startDate) return json(req, env, { error: "missing_start_date" }, 400);
   const now = Date.now(), exp = now + LIFE_DAYS * DAY;
   for (let i = 0; i < 5; i++) {
     const id = newId();
@@ -214,7 +220,7 @@ export default {
       }
     }
 
-    if (url.pathname === "/" || url.pathname === "/health") return json(req, env, { ok: true, service: "luvnote-api" });
+    if (url.pathname === "/" || url.pathname === "/health") return json(req, env, { ok: true, service: "luvnote-api", themes: THEMES });
 
     const v2 = url.pathname.match(/^\/v2\/cards(?:\/([a-z0-9]{7}))?\/?$/);
     if (v2) {

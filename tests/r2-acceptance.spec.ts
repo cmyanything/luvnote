@@ -66,6 +66,7 @@ for (const theme of themes) {
       await page.getByLabel('ชื่อผู้ส่ง').fill('Synthetic Sender');
       await page.locator('#letter').fill('A synthetic memory');
       await page.locator('#secret').fill('Synthetic secret');
+      if (theme.occasion === 'anniversary') await page.getByLabel('วันที่เราเริ่มคบกัน').fill('2022-06-14');
       await page.locator('#file').setInputFiles([file,{...file,name:'second.jpg'}]);
       await expect(page.locator('#pc')).toHaveText('2');
       await page.getByLabel('ลบรูปที่ 2',{exact:true}).click();
@@ -97,7 +98,10 @@ for (const theme of themes) {
       await expect(page.locator('.js-to').first()).toHaveText('Synthetic Recipient');
       await page.reload();
       await expect(page.locator('.js-to').first()).toHaveText('Synthetic Recipient');
-      const card=await page.evaluate<{photos:{src:string}[];cover?:string}>('CARD');
+      // The Our Story viewer is React and has no CARD global; read what it loaded from the API.
+      const card=theme.occasion === 'anniversary'
+        ? (await (await f.request('/v2/cards/'+id)).json() as {data:{photos:{src:string}[];cover?:string}}).data
+        : await page.evaluate<{photos:{src:string}[];cover?:string}>('CARD');
       for (const source of [card.photos[0].src,...card.cover?[card.cover]:[]]) {
         expect(new URL(source).pathname).toMatch(/^\/v3\/cards\//);
         const response=await f.request(new URL(source).pathname); expect(response.status).toBe(200);

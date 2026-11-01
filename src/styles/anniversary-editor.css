@@ -1,0 +1,103 @@
+.photo-fields {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.anniversary-editor {
+  --wine: #665c42;
+  --wine2: #9b644f;
+  --soft: #f1eadb;
+  --cream: #faf5eb;
+  --ink: #443e32;
+  --mute: #8a7c68;
+  --line: #e6ddcc;
+  --pink: #b6baa3;
+}
+body[data-theme='anniversary-journey'] {
+  background: #fcfaf4;
+}
+.anniversary-editor .hero {
+  background: linear-gradient(130deg, #ecebdb, #f7e9d9);
+}
+.anniversary-editor .phone {
+  background: #665b45;
+  box-shadow: 0 12px 24px #665b4526;
+}
+.anniversary-editor .sec {
+  background: #fffdf8;
+}
+.anniversary-editor .sec:focus-within {
+  border-color: #b8b69c;
+  box-shadow: 0 8px 24px #665b4510;
+}
+.anniversary-editor .seg button.on,
+.anniversary-editor .fx.on {
+  background: #efeddf;
+}
+.anniversary-editor input[type='date'] {
+  width: 100%;
+  min-height: 50px;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 11px 12px;
+  background: #fffdf9;
+  font:
+    300 16px 'Mitr',
+    sans-serif;
+  color: var(--ink);
+  color-scheme: light;
+}
+.anniversary-editor .err input[type='date'] {
+  border-color: var(--wine2);
+}
+.together-hint {
+  font:
+    500 14px/1.7 'Athiti',
+    sans-serif;
+  color: var(--mute);
+  margin-top: 8px;
+}
+.together-hint b {
+  color: var(--wine);
+}
+.anniversary-editor .ph {
+  align-items: center;
+  padding: 8px;
+  gap: 6px;
+  flex-wrap: wrap;
+  background: #fffdf8;
+}
+.anniversary-editor .ph .th {
+  align-self: flex-start;
+}
+.anniversary-editor .ph .photo-fields {
+  gap: 5px;
+}
+.anniversary-editor .ph .photo-fields input {
+  border-radius: 8px;
+  padding: 8px !important;
+  font-size: 14px !important;
+}
+.photo-order {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.photo-order button {
+  width: 26px;
+  height: 25px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--soft);
+  color: var(--wine);
+  cursor: pointer;
+}
+.photo-order button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.anniversary-editor .ph .x {
+  width: 24px;
+  height: 28px;
+}

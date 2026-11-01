@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import { copyFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { themes as editorThemes } from './src/themes.ts';
 
 const root = dirname(fileURLToPath(import.meta.url));
 const themes = [
@@ -40,12 +41,16 @@ export default defineConfig({
   base: './',
   build: {
     rollupOptions: {
-      input: Object.fromEntries(
-        themes.map((theme) => [
-          theme,
-          resolve(root, `themes/${theme}/index.html`),
+      input: Object.fromEntries([
+        ...editorThemes.map((theme) => [
+          theme.id,
+          resolve(root, `themes/${theme.id}/index.html`),
         ]),
-      ),
+        [
+          'anniversary-card',
+          resolve(root, 'themes/anniversary-journey/card.html'),
+        ],
+      ]),
     },
   },
 });

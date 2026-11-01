@@ -2,10 +2,9 @@ import { R2_MEDIA_ENABLED, TURNSTILE_SITE_KEY, createR2Card } from './media-v3';
 import type { CardData, CreatedCard, ThemeId } from '../types';
 import { jpeg } from './images';
 
-const API = (import.meta.env.VITE_API_URL || 'https://api.luvnote.fun').replace(
-  /\/$/,
-  '',
-);
+export const API = (
+  import.meta.env.VITE_API_URL || 'https://api.luvnote.fun'
+).replace(/\/$/, '');
 const BODY_LIMIT = 1_850_000;
 
 export async function createCard(

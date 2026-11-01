@@ -45,8 +45,8 @@ test('full transformation fails closed on provider, output type/size/dimension o
   const responses=[
     ()=>new Response(input,{status:503,headers:{'Content-Type':'image/jpeg'}}),
     ()=>new Response(input,{headers:{'Content-Type':'image/png'}}),
-    ()=>new Response(input,{headers:{'Content-Type':'image/jpeg','Content-Length':'1500001'}}),
-    ()=>new Response(new Uint8Array(1500001),{headers:{'Content-Type':'image/jpeg'}}),
+    ()=>new Response(input,{headers:{'Content-Type':'image/jpeg','Content-Length':'3000001'}}),
+    ()=>new Response(new Uint8Array(3000001),{headers:{'Content-Type':'image/jpeg'}}),
     ()=>new Response(corpus.find(c=>c.name==='EXIF-GPS').bytes,{headers:{'Content-Type':'image/jpeg'}}),
     ()=>new Response(corpus.find(c=>c.name==='maximum-dimensions').bytes,{headers:{'Content-Type':'image/jpeg'}}),
     ()=>new Response('not an image',{headers:{'Content-Type':'image/jpeg'}}),
@@ -59,5 +59,16 @@ test('full transformation fails closed on provider, output type/size/dimension o
   const unavailable={input(){calls++;throw Error('must not call for marker-invalid/metadata input');}};
   for(const name of ['EXIF-GPS','malformed-structure','truncated-no-EOI','over-byte-limit'])
     assert.equal(await validateJpegTransformed(corpus.find(c=>c.name===name).bytes,unavailable),null);
+  assert.equal(calls,0);
+});
+
+test('larger generated output does not raise the raw JPEG input limit',async()=>{
+  const raw=corpus.find(c=>c.name==='exact-byte-limit-comments').bytes;
+  const larger=Buffer.concat([raw.subarray(0,2),Buffer.from([255,254,0,6,0,0,0,0]),raw.subarray(2)]);
+  assert.ok(larger.length>1500000);assert.equal(validateJpeg(larger),null);
+  const output=await validateJpegTransformed(corpus[0].bytes,{input:()=>({output:async()=>({response:()=>new Response(larger,{headers:{'Content-Type':'image/jpeg'}})})})});
+  assert.deepEqual(output,validateJpeg(corpus[0].bytes));
+  let calls=0;
+  assert.equal(await validateJpegTransformed(larger,{input(){calls++;}}),null);
   assert.equal(calls,0);
 });

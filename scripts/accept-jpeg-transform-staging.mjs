@@ -1,4 +1,4 @@
-// Real isolated staging only. Operator-owned synthetic inputs; at most 20 uploads.
+// Real isolated staging only. <=20 distinct synthetic inputs; <=30 attempts including retries.
 // The Owner must confirm Images Free first. No billing/zone settings are changed.
 import assert from 'node:assert/strict';
 import {readFileSync,writeFileSync,mkdirSync,unlinkSync} from 'node:fs';
@@ -10,6 +10,9 @@ import {validateJpeg} from '../worker/jpeg.js';
 
 assert.equal(process.env.ALLOW_STAGING_WRITE,'1');
 assert.equal(process.env.STAGING_IMAGES_FREE_CONFIRMED,'1');
+assert.equal(process.env.STAGING_ACCEPT_CANONICAL_REPAIR,'1');
+const phase=process.argv[2]||'all';assert.ok(['all','themes','retry'].includes(phase));
+const repairCases=new Set(['truncated-entropy-with-EOI','corrupt-entropy-all-zero','forged-headers-no-pixels']);
 const endpoint=stagingTarget(process.env.STAGING_API_URL||'');
 const {config}=verifyStagingResources();
 const text=readFileSync(config,'utf8');
@@ -22,6 +25,7 @@ const db=sql=>JSON.parse(wrangler(['d1','execute','luvnote-staging','--remote','
 const sessions=[],rows=[],cards=[];let requests=0,stopReason=null;
 const startedAt=new Date().toISOString();
 mkdirSync('.wrangler/acceptance/transform-objects',{recursive:true});
+mkdirSync('.wrangler/acceptance/transform-inputs',{recursive:true});
 function session() {
   const sid=crypto.randomUUID(),token=crypto.getRandomValues(new Uint8Array(32));
   const secret=Buffer.from(token).toString('hex');
@@ -36,33 +40,41 @@ function quality(input,output) {
   const mse=sum/a.data.length;return {width:b.width,height:b.height,psnrDb:mse?10*Math.log10(255*255/mse):null,identicalPixels:mse===0,maxChannelError:max};
 }
 async function upload(s,c,kind='photo') {
-  assert.ok(++requests<=20,'operator transformation attempt cap');
+  assert.ok(++requests<=20,'per-run operator attempt cap; D1 enforces 30 across all runs');
   const key=crypto.randomUUID(),start=new Date().toISOString(),wall=performance.now();
   let r,body;
   try {
     r=await fetch(`${endpoint}/v3/upload-sessions/${s.sid}/media?kind=${kind}`,{method:'POST',headers:{Authorization:'Bearer '+s.secret,'Content-Type':c.mime||'image/jpeg','Idempotency-Key':key},body:c.bytes,signal:AbortSignal.timeout(30000)});
     body=await r.text();
   } catch(e) {r={status:0};body=e.name;}
-  const row={name:c.name,kind,start,end:new Date().toISOString(),clientWallMs:Math.round(performance.now()-wall),inputBytes:c.bytes.length,inputSha256:hash(c.bytes),legacyAccepts:!!validateJpeg(c.bytes),policy:c.accept?'accept':'reject',httpStatus:r.status,error1102:/1102/.test(body),object:null};
+  const accepts=c.accept||repairCases.has(c.name);
+  const row={name:c.name,kind,start,end:new Date().toISOString(),clientWallMs:Math.round(performance.now()-wall),inputBytes:c.bytes.length,inputSha256:hash(c.bytes),legacyAccepts:!!validateJpeg(c.bytes),policy:repairCases.has(c.name)?'Owner-approved canonical repair':c.accept?'accept':'reject',httpStatus:r.status,error1102:/1102/.test(body),object:null};
   const metadata=db(`SELECT m.id,m.object_key,m.size,j.state FROM media_upload_jobs j JOIN media_assets m ON m.id=j.asset_id WHERE j.session_id='${s.sid}' AND j.request_key='${key}'`)[0];
   row.journalState=metadata?.state||null;
   if(r.status===201) {
     const file='.wrangler/acceptance/transform-objects/'+crypto.randomUUID()+'.jpg';
     try {
       wrangler(['r2','object','get','luvnote-media-staging/'+metadata.object_key,'--remote','--config',config,'--file',file]);
-      const output=readFileSync(file),strict=validateJpeg(output);
+      const output=readFileSync(file),strict=validateJpeg(output,3000000);
       row.object={exists:true,bytes:output.length,sha256:hash(output),strictlyDecodable:!!strict,
         metadataStripped:!!strict&&Buffer.from(strict).equals(output),differentFromInput:hash(output)!==hash(c.bytes),
         ...(row.legacyAccepts&&strict?{quality:quality(c.bytes,output)}:{})};
-      if(c.accept)writeFileSync('.wrangler/acceptance/transform-objects/'+c.name+'.jpg',output);
+      if(c.accept){writeFileSync('.wrangler/acceptance/transform-objects/'+c.name+'.jpg',output);writeFileSync('.wrangler/acceptance/transform-inputs/'+c.name+'.jpg',c.bytes);}
     } finally {try{unlinkSync(file);}catch{}}
   }
-  row.passed=c.accept?r.status===201&&row.object?.strictlyDecodable===true&&row.object?.metadataStripped===true:r.status===400;
+  row.passed=accepts?r.status===201&&row.object?.strictlyDecodable===true&&row.object?.metadataStripped===true&&row.object?.differentFromInput===true:r.status===400;
   rows.push(row);console.log(JSON.stringify(row));
   return {row,id:metadata?.id};
 }
 try {
   const corpus=jpegCorpus(),get=name=>corpus.find(c=>c.name===name);
+  if(phase==='retry') {
+    const s=session();
+    await upload(s,get('valid-progressive'));
+    for(const name of repairCases)await upload(s,get(name));
+    if(rows.some(r=>!r.passed))stopReason='canonical-output-recheck-failed';
+  }
+  if(phase==='all') {
   const s=session();
   // A valid positive control prevents a missing service/quota from masquerading as security rejection.
   const control=await upload(s,{name:'typical-900x675',bytes:syntheticJpeg(900,675),accept:true});
@@ -74,6 +86,7 @@ try {
     const negative=session();
     for(const name of ['truncated-no-EOI','PNG-as-JPEG','invalid-marker-length','duplicate-frame','EXIF-GPS'])await upload(negative,get(name));
     if(rows.some(r=>!r.passed))stopReason='security-matrix-failed-stop-before-publication';
+  }
   }
   if(!stopReason) {
     const themes=['pink-coquette','coquette-dream','little-memories','birthday-chat','velvet-gift'];
@@ -92,7 +105,7 @@ try {
       const returned=await (await fetch(endpoint+'/v2/cards/'+card.id)).json();assert.equal(returned.theme,theme);
       for(const src of [returned.data.photos[0].src,returned.data.cover]) {
         const url=new URL(src);assert.equal(url.origin,endpoint);
-        const read=await fetch(url);assert.equal(read.status,200);assert.ok(validateJpeg(new Uint8Array(await read.arrayBuffer())));
+        const read=await fetch(url);assert.equal(read.status,200);assert.ok(validateJpeg(new Uint8Array(await read.arrayBuffer()),3000000));
       }
       cards.push({theme,id:card.id,photoAndCoverRead:true,publicationReplay:true});
     }
@@ -100,8 +113,8 @@ try {
 } catch(error) {stopReason='operator-check-failed';throw error;}
 finally {
   for(const s of sessions.filter(s=>!s.published))db(`UPDATE media_upload_sessions SET expires_at=${Date.now()-7200000} WHERE id='${s.sid}'`);
-  const result={sourceCommit:process.env.STAGING_SOURCE_COMMIT,version:process.env.STAGING_VERSION,startedAt,endedAt:new Date().toISOString(),realCloudflare:true,operatorSeeded:true,ownerConfirmedImagesFree:true,maximumAttempts:20,requests,stopReason,rows,cards,
+  const result={sourceCommit:process.env.STAGING_SOURCE_COMMIT,version:process.env.STAGING_VERSION,startedAt,endedAt:new Date().toISOString(),realCloudflare:true,operatorSeeded:true,ownerConfirmedImagesFree:true,ownerApprovedCanonicalRepair:true,phase,maximumGlobalAttemptsIncludingRetries:30,requests,stopReason,rows,cards,
     monthlyMeterBefore:'NOT_VERIFIED',monthlyMeterAfter:'NOT_VERIFIED',note:'Upload/binding attempt count is not the account billing/unique-transformation meter.'};
-  writeFileSync('.wrangler/acceptance/full-transformation-remote.json',JSON.stringify(result,null,2));
+  writeFileSync('.wrangler/acceptance/full-transformation-'+phase+'.json',JSON.stringify(result,null,2));
 }
 if(stopReason)process.exitCode=1;

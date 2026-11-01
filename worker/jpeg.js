@@ -3,8 +3,8 @@ import {readLimitedBody} from './guards.js';
 
 // Reject out-of-bounds JPEG markers, dimensions and EXIF/IPTC metadata without decoding pixels.
 // The client normalizes rotation before uploading. Native inspection is experimental, staging only.
-function parseJpeg(bytes) {
-  if (bytes.length < 32 || bytes.length > 1500000 || bytes[0] !== 255 || bytes[1] !== 216 ||
+function parseJpeg(bytes, maxBytes = 1500000) {
+  if (bytes.length < 32 || bytes.length > maxBytes || bytes[0] !== 255 || bytes[1] !== 216 ||
       bytes[bytes.length-2] !== 255 || bytes[bytes.length-1] !== 217) return null;
   let offset = 2, frame = false, ended = false, scans = 0, frameDimensions = null;
   const parts = [bytes.subarray(0,2)];
@@ -54,8 +54,8 @@ function parseJpeg(bytes) {
 }
 
 /** Legacy strict validation: retains the existing decoder until remote native acceptance passes. */
-export function validateJpeg(bytes) {
-  const parsed = parseJpeg(bytes);
+export function validateJpeg(bytes, maxBytes = 1500000) {
+  const parsed = parseJpeg(bytes, maxBytes);
   if (!parsed) return null;
   try {
     const decoded = jpeg.decode(parsed.bytes, {
@@ -88,9 +88,9 @@ export async function validateJpegNative(bytes, images) {
 }
 
 /** Staging experiment only: require full JPEG re-encoding, never store the input.
- * The caller enforces the staging environment and a 20-attempt diagnostic budget.
- * Parser checks still apply on both sides; remote rejection of corrupt entropy
- * must be established by adversarial acceptance, not inferred from output success.
+ * The caller enforces the staging environment and a bounded diagnostic budget.
+ * Owner-approved policy allows canonical repair, provided only the newly encoded
+ * complete image is stored. Input byte/pixel/metadata limits remain unchanged.
  */
 export async function validateJpegTransformed(bytes, images) {
   const parsed = parseJpeg(bytes);
@@ -101,8 +101,14 @@ export async function validateJpegTransformed(bytes, images) {
       .output({format:'image/jpeg',quality:95});
     const response = result.response();
     if (!response.ok || response.headers.get('Content-Type')?.split(';')[0].trim().toLowerCase() !== 'image/jpeg') return null;
-    const output = await readLimitedBody(response, 1500000);
-    const clean = output && parseJpeg(output);
+    // High-quality re-encoding can enlarge a valid noisy JPEG. This distinct bound
+    // applies only to trusted service OUTPUT, never to the 1.5 MB upload contract.
+    const output = await readLimitedBody(response, 3000000);
+    if (!output) {
+      console.log(JSON.stringify({event:'staging_images_transform',phase:'rejected',reason:'output_size'}));
+      return null;
+    }
+    const clean = parseJpeg(output, 3000000);
     if (!clean || clean.width !== parsed.width || clean.height !== parsed.height) return null;
     console.log(JSON.stringify({event:'staging_images_transform',phase:'complete',bytes:clean.bytes.length}));
     return clean.bytes;

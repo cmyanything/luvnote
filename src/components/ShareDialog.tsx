@@ -1,19 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import type { CreatedCard, ThemeConfig } from '../types';
-import { cardLink } from '../lib/card';
+import { cardLink, editLink } from '../lib/card';
 import { useModal } from '../hooks/useModal';
 
 export function ShareDialog({
   theme,
   result,
   recipient,
+  edited = false,
   onClose,
   toast,
 }: {
   theme: ThemeConfig;
   result: CreatedCard;
   recipient: string;
+  edited?: boolean;
   onClose: () => void;
   toast: (message: string) => void;
 }) {
@@ -22,6 +24,7 @@ export function ShareDialog({
   const [qrError, setQrError] = useState(false);
   const url = cardLink(theme, result.id);
   const message = `${theme.shareMessage} ${recipient} 💗 แตะเปิดเลย ${url}`;
+  const ownerLink = result.editKey ? editLink(theme, result.id, result.editKey) : '';
   useEffect(() => {
     let active = true;
     if (canvas.current)
@@ -36,13 +39,13 @@ export function ShareDialog({
       active = false;
     };
   }, [url]);
-  async function copy() {
+  async function copy(text = url) {
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(text);
       toast('คัดลอกลิงก์แล้ว ♡');
     } catch {
       const input = document.createElement('textarea');
-      input.value = url;
+      input.value = text;
       input.style.position = 'fixed';
       input.style.opacity = '0';
       dialog.current?.appendChild(input);
@@ -71,9 +74,13 @@ export function ShareDialog({
     >
       <div className="grab" />
       <div className="okheart">{theme.successIcon}</div>
-      <h3 id="share-title">การ์ดของคุณพร้อมแล้ว!</h3>
+      <h3 id="share-title">{edited ? 'บันทึกการแก้ไขแล้ว!' : 'การ์ดของคุณพร้อมแล้ว!'}</h3>
       <p className="sub">
-        ส่งลิงก์นี้ให้ <span id="sTo">{recipient}</span> ได้เลย
+        {edited ? (
+          <>ลิงก์เดิมแสดงข้อมูลใหม่แล้ว ถ้าเคยส่งให้ <span id="sTo">{recipient}</span> ไม่ต้องส่งใหม่</>
+        ) : (
+          <>ส่งลิงก์นี้ให้ <span id="sTo">{recipient}</span> ได้เลย</>
+        )}
       </p>
       <div className="link">
         <span id="lnk">{url.replace(/^https?:\/\//, '')}</span>
@@ -117,6 +124,26 @@ export function ShareDialog({
           month: 'long',
           year: 'numeric',
         })}
+      </p>
+      {ownerLink && (
+        <div className="owner" id="ownerBox">
+          <p className="owner-title">🔒 ลิงก์แก้ไขการ์ด (สำหรับคุณคนเดียว)</p>
+          <div className="link">
+            <span id="editLnk">{ownerLink.replace(/^https?:\/\//, '')}</span>
+            <button type="button" id="copyEdit" onClick={() => void copy(ownerLink)}>
+              คัดลอก
+            </button>
+          </div>
+          <p className="owner-note">
+            เก็บลิงก์นี้ไว้เพื่อกลับมาเปลี่ยนรูปหรือข้อความได้ตลอดอายุการ์ด อย่าส่งให้คนอื่นนะ
+          </p>
+        </div>
+      )}
+      <p className="renew" id="renew">
+        อยากเก็บการ์ดไว้นานกว่านี้? ต่ออายุปีละ 29 บาท{' '}
+        <a href="https://line.me/ti/p/~yingchonstom39" target="_blank" rel="noopener noreferrer">
+          ทัก LINE
+        </a>
       </p>
       <button type="button" className="again" id="again" onClick={onClose}>
         กลับไปแก้ไข

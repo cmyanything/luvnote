@@ -1,0 +1,77 @@
+name: Extend card (paid renewal)
+
+# Owner tool: after a customer pays (29 THB per year via LINE), extend one card.
+# Actions → "Extend card (paid renewal)" → Run workflow → paste the card link or its 7-letter id.
+on:
+  workflow_dispatch:
+    inputs:
+      card:
+        description: Card link (e.g. https://luvnote.fun/#pabc2345) or 7-letter card id
+        required: true
+        type: string
+      years:
+        description: Years paid for (29 THB each)
+        required: true
+        type: choice
+        options: ['1', '2', '3', '5']
+        default: '1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-card-api
+  cancel-in-progress: false
+
+jobs:
+  extend:
+    if: github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      PRODUCTION_D1_ID: ${{ vars.PRODUCTION_D1_ID }}
+      CARD_INPUT: ${{ inputs.card }}
+      YEARS: ${{ inputs.years }}
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Parse card id
+        run: |
+          id=$(printf '%s' "$CARD_INPUT" | tr -d '[:space:]' | grep -oE '[a-z0-9]{7}$' || true)
+          if ! [[ "$id" =~ ^[a-z0-9]{7}$ ]] || ! [[ "$YEARS" =~ ^[1-5]$ ]]; then
+            echo "::error::Could not read a 7-letter card id from '$CARD_INPUT'"; exit 1
+          fi
+          echo "CARD_ID=$id" >> "$GITHUB_ENV"
+          node --input-type=module -e 'import fs from "node:fs"; const id=process.env.PRODUCTION_D1_ID;if(!/^[0-9a-f-]{36}$/.test(id))process.exit(1);fs.writeFileSync("wrangler.toml",fs.readFileSync("wrangler.toml","utf8").replace("__D1_ID__",id));'
+
+      - name: Check the card can still be renewed
+        run: |
+          now="CAST((julianday('now') - 2440587.5) * 86400000 AS INTEGER)"
+          npx wrangler d1 execute luvnote --remote --json --command "SELECT id, theme, expires_at, expires_at < $now AS expired, json_extract(data,'\$.media_version') AS v FROM theme_cards WHERE id='$CARD_ID'" > before.json
+          node -e '
+            const r=require("./before.json")[0].results[0];
+            if(!r){console.log("::error::Card "+process.env.CARD_ID+" not found");process.exit(1)}
+            console.log("Before:", r.theme, new Date(r.expires_at).toISOString());
+            if(r.expired && r.v===3){console.log("::error::This photo card already expired; its photos are deleted within an hour of expiry, so it cannot be restored.");process.exit(1)}'
+
+      - name: Extend card and its photos
+        run: |
+          now="CAST((julianday('now') - 2440587.5) * 86400000 AS INTEGER)"
+          add=$(( YEARS * 365 * 86400000 ))
+          npx wrangler d1 execute luvnote --remote --command "
+            UPDATE theme_cards SET expires_at = MAX(expires_at, $now) + $add WHERE id='$CARD_ID';
+            UPDATE media_assets SET expires_at = (SELECT expires_at FROM theme_cards WHERE id='$CARD_ID') WHERE card_id='$CARD_ID' AND expires_at > 0;
+            UPDATE media_publications SET expires_at = (SELECT expires_at FROM theme_cards WHERE id='$CARD_ID') WHERE card_id='$CARD_ID';"
+          npx wrangler d1 execute luvnote --remote --json --command "SELECT expires_at FROM theme_cards WHERE id='$CARD_ID'" > after.json
+          node -e '
+            const e=require("./after.json")[0].results[0].expires_at;
+            const th=new Date(e).toLocaleDateString("th-TH",{day:"numeric",month:"long",year:"numeric",timeZone:"Asia/Bangkok"});
+            const line="Card "+process.env.CARD_ID+" now opens until "+th+" ("+new Date(e).toISOString()+")";
+            console.log(line);require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY,"### ต่ออายุสำเร็จ\n"+line+"\n")'

@@ -1,14 +1,18 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { CardData, CreatedCard, EditorState, ThemeConfig } from './types';
 import { CHAT_TEMPLATES } from './themes';
 import {
   cardData,
   cleanChat,
+  editTarget,
   invalidFields,
+  stateFromCard,
   youtubeId,
   type InvalidField,
 } from './lib/card';
 import { createCard } from './lib/api';
+import { R2_MEDIA_ENABLED, TURNSTILE_SITE_KEY, editR2Card, loadCardForEdit } from './lib/media-v3';
+import { UploadVerification } from './components/UploadVerification';
 import { Hero } from './components/Hero';
 import { Section } from './components/Section';
 import { PhotoPicker } from './components/PhotoPicker';
@@ -39,10 +43,17 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     cover: null,
     chat: hasChat ? structuredClone(CHAT_TEMPLATES[0]) : [],
   }));
+  // Owner edit mode: `?edit=<card>#key=<secret>` loads the card and saves over it.
+  const editing = useMemo(() => editTarget(window.location), []);
+  const [loadState, setLoadState] = useState<'idle' | 'loading' | 'ready' | 'error'>(
+    editing ? 'loading' : 'idle',
+  );
   const [errors, setErrors] = useState<InvalidField[]>([]);
   const [musicAllowed, setMusicAllowed] = useState(false);
   const [photosBusy, setPhotosBusy] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [verificationToken, setVerificationToken] = useState<string | null>(null);
+  const [verificationVersion, setVerificationVersion] = useState(0);
   const [preview, setPreview] = useState<Partial<CardData> | null>(null);
   const [created, setCreated] = useState<{
     result: CreatedCard;
@@ -60,6 +71,24 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     },
     [],
   );
+  useEffect(() => {
+    if (!editing) return;
+    if (!R2_MEDIA_ENABLED) {
+      setLoadState('error');
+      return;
+    }
+    const controller = new AbortController();
+    loadCardForEdit(editing.id, controller.signal)
+      .then((card) => {
+        if (card.theme !== theme.id) throw new Error('theme_mismatch');
+        setState(stateFromCard(card.data, theme, hasChat ? structuredClone(CHAT_TEMPLATES[0]) : []));
+        setLoadState('ready');
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setLoadState('error');
+      });
+    return () => controller.abort();
+  }, [editing, theme, hasChat]);
   function toast(text: string) {
     setMessage(text);
     clearTimeout(toastTimer.current);
@@ -121,27 +150,43 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
       ...data,
       letter: data.letter || '(ยังไม่ได้เขียนจดหมาย)',
       secret: data.secret || '(ยังไม่ได้ใส่ข้อความลับ)',
-      expires: new Date(Date.now() + 15 * 864e5).toISOString(),
+      expires: new Date(Date.now() + 90 * 864e5).toISOString(),
     });
   }
   async function submit() {
     if (request.current || photosBusy || !validate()) return;
+    if (editing && loadState !== 'ready') return;
+    if (R2_MEDIA_ENABLED && !verificationToken) {
+      toast('กรุณายืนยันตัวตนก่อนสร้างการ์ดนะ');
+      return;
+    }
     const controller = new AbortController();
     request.current = controller;
     setBusy(true);
-    const timer = setTimeout(() => controller.abort(), 30000);
+    const timer = setTimeout(() => controller.abort(), R2_MEDIA_ENABLED ? 120000 : 30000);
     try {
       const data = cardData(state, theme, musicAllowed);
-      const result = await createCard(theme.id, data, controller.signal);
+      const result = editing
+        ? await editR2Card(theme.id, editing.id, editing.key, data, verificationToken || '', controller.signal)
+        : await createCard(theme.id, data, controller.signal, verificationToken || undefined);
       setCreated({ result, recipient: data.to });
     } catch (error) {
+      const reason = error instanceof Error ? error.message : '';
       toast(
-        error instanceof Error && error.message === 'too_large'
+        reason === 'too_large'
           ? 'รูปใหญ่เกินไป ลองลดจำนวนรูปนะ'
-          : 'สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ',
+          : reason === 'quota_exceeded' || reason === 'rate_limited'
+            ? 'ตอนนี้มีคนใช้งานเยอะ รอสักครู่แล้วลองใหม่นะ'
+          : editing
+            ? 'บันทึกไม่สำเร็จ ลองใหม่อีกครั้งนะ'
+            : 'สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ',
       );
     } finally {
       clearTimeout(timer);
+      if (R2_MEDIA_ENABLED) {
+        setVerificationToken(null);
+        setVerificationVersion((n) => n + 1);
+      }
       request.current = null;
       setBusy(false);
     }
@@ -196,7 +241,16 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
           <i id="prog" style={{ width: `${progress}%` }} />
         </div>
       </header>
-      <main className="wrap" aria-busy={busy}>
+      <main className="wrap" aria-busy={busy || loadState === 'loading'}>
+        {editing && (
+          <p className="editbanner" role="status" id="editBanner">
+            {loadState === 'loading' && 'กำลังโหลดการ์ดเดิม…'}
+            {loadState === 'ready' &&
+              '✏️ กำลังแก้ไขการ์ดเดิม กดบันทึกแล้วลิงก์เดิมจะแสดงข้อมูลใหม่ทันที'}
+            {loadState === 'error' &&
+              'เปิดการ์ดเพื่อแก้ไขไม่ได้ ลิงก์อาจไม่ถูกต้องหรือการ์ดหมดอายุแล้ว'}
+          </p>
+        )}
         <Hero theme={theme} onDemo={() => setPreview({})} />
         {section(
           'names',
@@ -520,6 +574,13 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
           'ไม่ใส่ก็ได้',
         )}
       </main>
+      {R2_MEDIA_ENABLED && (
+        <div style={{ textAlign: 'center', padding: '12px 0' }}>
+          {TURNSTILE_SITE_KEY
+            ? <UploadVerification key={verificationVersion} onToken={setVerificationToken} />
+            : <p role="alert">ระบบอัปโหลดรูปยังไม่พร้อม กรุณาติดต่อผู้ดูแล</p>}
+        </div>
+      )}
       <div className="bar">
         <div className="in">
           <button
@@ -527,7 +588,10 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
             className="btn sec2"
             id="pvBtn"
             disabled={photosBusy || busy}
-            onClick={openPreview}
+            onClick={(event) => {
+              event.currentTarget.focus({ preventScroll: true });
+              openPreview();
+            }}
           >
             👀 ดูตัวอย่าง
           </button>
@@ -535,10 +599,12 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
             type="button"
             className="btn pri"
             id="mkBtn"
-            disabled={busy || photosBusy}
+            disabled={busy || photosBusy || (!!editing && loadState !== 'ready')}
             onClick={() => void submit()}
           >
-            {busy ? 'กำลังสร้างลิงก์…' : 'สร้างลิงก์ ♡'}
+            {editing
+              ? busy ? 'กำลังบันทึก…' : 'บันทึกการแก้ไข ♡'
+              : busy ? 'กำลังสร้างลิงก์…' : 'สร้างลิงก์ ♡'}
           </button>
         </div>
       </div>
@@ -554,6 +620,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
           theme={theme}
           result={created.result}
           recipient={created.recipient}
+          edited={!!editing}
           onClose={() => setCreated(null)}
           toast={toast}
         />

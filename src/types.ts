@@ -87,4 +87,6 @@ export interface CardData {
 export interface CreatedCard {
   id: string;
   expires: number;
+  /** Owner-only secret for editing this card later (R2 cards only). */
+  editKey?: string;
 }

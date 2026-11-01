@@ -166,6 +166,24 @@ for (const theme of themes) {
   });
 }
 
+test('rejects very large original photos and covers before decoding', async ({ page }) => {
+  await page.goto('/themes/little-memories/');
+  const oversized = {
+    name: 'oversized.jpg',
+    mimeType: 'image/jpeg',
+    buffer: Buffer.alloc(15 * 1024 * 1024 + 1),
+  };
+  await page.locator('#file').setInputFiles(oversized);
+  await expect(page.locator('#toast')).toContainText('15 MB');
+  await expect(page.locator('#photos .ph')).toHaveCount(0);
+  await page.locator('#covFile').setInputFiles(oversized);
+  await expect(page.locator('#toast')).toContainText('15 MB');
+  await expect(page.locator('#covImg')).toHaveCount(0);
+  // Valid photos must remain usable after an oversized attempt.
+  await page.locator('#file').setInputFiles(photo);
+  await expect(page.locator('#photos .ph')).toHaveCount(1);
+});
+
 test('image limit, removal, cover removal and templates remain editable', async ({
   page,
 }) => {

@@ -70,8 +70,9 @@ autoplay preview used in the catalog. New shared links use the `/#a` prefix.
 The editor requires `startDate` (`YYYY-MM-DD`). Up to five photos can have optional
 dates and captions; the viewer preserves the order chosen in the editor. Calendar
 dates are validated in the client and Worker, and day arithmetic uses UTC civil dates
-so daylight saving does not add or remove a day. Images remain resized JPEG data URLs.
-The existing D1 JSON storage needs no schema migration.
+so daylight saving does not add or remove a day. Photos follow the site's storage mode: private R2
+references when `VITE_R2_MEDIA_ENABLED=true` (photo dates travel with each reference), otherwise
+resized JPEG data URLs. No schema migration is needed beyond the existing R2 tables.
 
 The Worker now advertises supported themes at `/health`. Frontend deployment waits
 for the anniversary capability so the new editor cannot go live before the updated
@@ -80,3 +81,37 @@ Worker. Both existing deployment workflows are triggered when this feature merge
 Tests cover anniversary dates, leap days, photo ordering, preview handoff, saved-card
 loading, letter/PIN interactions, error states, catalog links, and an in-memory D1
 round-trip through the real Worker. No production cards are written during tests.
+
+## Card lifetime, owner edits and paid renewal
+
+- New cards open for **90 days** (`LIFE_DAYS` in `worker/index.js`, `CARD_LIFE_MS` in `worker/media-v3.js`).
+- **Owner edits (R2 cards):** after creating a card, the share sheet shows a private edit link
+  `/themes/<theme>/?edit=<card>#key=<secret>`. Opening it loads the card into the editor; saving
+  replaces text and photos behind the same card link and keeps its expiry. The secret is the
+  publishing upload token; D1 stores only its SHA-256 in `card_edit_keys`. Replaced photos are
+  retired immediately and removed from R2 by the hourly cleanup.
+- **Renewal (29 THB/year, paid via LINE):** GitHub → Actions → **Extend card (paid renewal)** →
+  Run workflow, paste the card link or id and choose the years paid. Renew photo cards **before**
+  they expire: cleanup deletes an expired card's photos within the hour, and the workflow refuses
+  to revive them. Legacy Base64 cards keep their data and can be renewed after expiry.
+
+## Operations
+
+- **Quotas** live in `worker/quotas.js` (R2 upload sessions: 20 per IP per hour, 1000 per day site-wide;
+  one session per card created or edited). `WRITE_LIMITER` in `wrangler.toml` allows 300 writes per
+  minute per IP and per Cloudflare location. Raise both as traffic grows, then redeploy the API.
+- **Health check:** `.github/workflows/health-check.yml` runs hourly (API health, 404s on unknown
+  cards/photos, homepage and all six editors with their JS). GitHub emails the owner when a scheduled
+  run fails. GitHub pauses schedules in public repos after 60 days without commits; re-enable under
+  Actions if that happens.
+- **Backups:** `.github/workflows/backup-d1.yml` exports production D1 every Monday 03:23 Bangkok time to
+  the private R2 bucket `luvnote-backups` (`d1/luvnote-<timestamp>.sql.gz`) and verifies the upload.
+  Never store exports in GitHub (public repo). To restore: download the file from the Cloudflare
+  dashboard, `gunzip`, create a new D1 database and `npx wrangler d1 execute <new-db> --remote --file
+  <file>.sql`, verify, then point `PRODUCTION_D1_ID` at it. D1 Time Travel also allows point-in-time
+  restore for recent days. Photos in `luvnote-media` are not part of this export.
+- **Staging CPU test:** push to `claude/r2-staging-acceptance` (workflow on that branch) to measure real
+  Cloudflare CPU for upload changes before release.
+- **Rollback:** set the repository variable `VITE_R2_MEDIA_ENABLED=false` and rerun "Frontend checks and
+  deployment"; set `MEDIA_V3_UPLOADS_ENABLED = "false"` in `wrangler.toml` and redeploy the API to stop
+  R2 writes. Existing cards stay readable.

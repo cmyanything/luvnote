@@ -4,7 +4,7 @@
 
 ## 1. Provisioning and configuration plan
 
-1. Resolve account R2 activation/billing error 10042 through the Owner's Cloudflare Dashboard. Complete isolated staging in `R2-STAGING-SETUP.md` first. Do not substitute production bindings.
+1. Complete isolated staging certification in `R2-STAGING-SETUP.md` first. Initial R2 error 10042 cleared externally; staging resources and five real R2 flows are verified. Interrupted requests and real non-dummy widget/operational acceptance remain open. Do not substitute production bindings.
 2. After separate approval, create/verify private R2 Standard bucket `luvnote-media`. Disable r2.dev access; attach no public domain. Worker binding is `MEDIA`; no browser/S3 credentials are issued. Keep bucket CORS empty: browsers talk to Worker endpoints. No DNS changes are required or authorized.
 3. After retention policy approval, configure a lifecycle backstop for prefix `v3/` to expire objects at **21 days after upload**. Card access lasts 15 days after publication, and sessions last 30 minutes, so this exceeds the normal live interval. This is a deletion policy: obtain approval, test on staging, and document backup/restore implications before enabling it. It bounds retained crash orphans even if scheduled cleanup is unavailable. Do not apply a lifecycle to legacy D1 records.
 4. Create a production Managed Turnstile widget limited to actual editor domains (`luvnote.fun`, `www.luvnote.fun`, and only a genuinely used preview hostname). Action is `luvnote_media_upload`. Put the real secret in Worker secret `TURNSTILE_SECRET_KEY` via an authorized operator session. Only the public site key may enter `VITE_TURNSTILE_SITE_KEY`. Do not enable `TURNSTILE_TEST_MODE` or permit localhost/dummy responses in production.
@@ -61,9 +61,9 @@ During an incident, freeze writes, disable scheduled cleanup and pause lifecycle
 
 ## 7. Operational acceptance checklist
 
-- [ ] R2 billing activated by Owner; isolated staging bucket/Worker/D1 identities and private access verified.
-- [ ] Real staging smoke passes all five themes with direct R2 object and D1 verification.
-- [ ] Real staging adversarial/concurrency/expiry/cleanup/failure recovery tests recorded.
+- [x] Isolated staging bucket/Worker/D1 identities and private access verified after R2 became available externally. Billing activation/changes were not performed by this task.
+- [x] Real staging smoke passes all five themes with direct R2 object and D1 verification.
+- [ ] Complete real staging adversarial acceptance: 36 passed/zero failed/one unverified; interrupted transport and lifecycle still open. Natural cron succeeded at 05:00:32 UTC.
 - [ ] Real staging widget/action/hostname/replay tested; production dummy configuration rejected.
 - [ ] Remote CPU/memory/plan, burst protections, exact quotas, WAF ingress and cost impact reviewed.
 - [ ] Physical iPhone and Android, installed LINE handoff, slow/cellular network and image quality accepted.

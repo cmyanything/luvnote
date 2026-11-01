@@ -4,10 +4,10 @@ compatibility_date = "2025-01-01"
 workers_dev = true
 routes = [{ pattern = "api.luvnote.fun", custom_domain = true }]
 
-# Prepared only; keep uploads disabled through backend verification and Owner approval.
+# Enabled 2026-11-01 after staging CPU acceptance and Owner approval. Set "false" + redeploy to stop new V3 uploads.
 [vars]
-MEDIA_V3_UPLOADS_ENABLED = "false"
-MEDIA_CLEANUP_ENABLED = "false"
+MEDIA_V3_UPLOADS_ENABLED = "true"
+MEDIA_CLEANUP_ENABLED = "true"
 
 [[ratelimits]]
 name = "WRITE_LIMITER"

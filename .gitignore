@@ -5,3 +5,8 @@ playwright-report/
 .env
 .env.local
 .wrangler/
+
+# Never commit local Cloudflare staging bindings or development secrets.
+wrangler.staging.toml
+.dev.vars
+.dev.vars.*

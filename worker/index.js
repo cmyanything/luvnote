@@ -1,4 +1,5 @@
 import { readJson, guardWrite, reserveBudget, digest } from './guards.js';
+import { QUOTAS } from './quotas.js';
 import { handleMediaV3, materializeV3Card, cleanupMediaV3 } from "./media-v3.js";
 // LuvNote card API — Cloudflare Worker + D1
 // POST /cards            {t,to,msg,from,secret,img(base64 jpeg)} -> {id}
@@ -196,7 +197,7 @@ export default {
         const path = new URL(req.url).pathname;
         if (['/cards','/v2/cards'].includes(path.replace(/\/$/,''))) {
           const ip = await digest(req.headers.get('CF-Connecting-IP'));
-          if (!await reserveBudget(env,'legacy:'+ip,10,3600000) || !await reserveBudget(env,'legacy:global',100,DAY))
+          if (!await reserveBudget(env,'legacy:'+ip,QUOTAS.legacyPerIpPerHour,3600000) || !await reserveBudget(env,'legacy:global',QUOTAS.legacyPerDay,DAY))
             return json(req,env,{ error: 'quota_exceeded' },429,{ 'Retry-After': '3600' });
         }
       } catch { return json(req,env,{ error: 'abuse_protection_unavailable' },503); }

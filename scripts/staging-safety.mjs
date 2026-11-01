@@ -12,7 +12,7 @@ export function stagingTarget(endpoint) {
 export function stagingConfig(text) {
   const clean=text.replace(/#[^\n]*/g,'');
   for (const section of clean.matchAll(/^\s*\[+([^\]]+)\]+\s*$/gm))
-    if (!['vars','d1_databases','r2_buckets','triggers','ratelimits'].includes(section[1])) throw Error('Unexpected staging section');
+    if (!['vars','d1_databases','r2_buckets','triggers','ratelimits','images'].includes(section[1])) throw Error('Unexpected staging section');
   for (const key of ['name','database_name','bucket_name','database_id','ENVIRONMENT']) {
     // Rate-limiter names are the only permitted additional `name` keys.
     if (key !== 'name' && [...clean.matchAll(new RegExp('^'+key+'\\s*=','gm'))].length !== 1)
@@ -25,6 +25,12 @@ export function stagingConfig(text) {
   }
   for (const [key,value] of Object.entries({name:'luvnote-api-staging',database_name:'luvnote-staging',bucket_name:'luvnote-media-staging',ENVIRONMENT:'staging'}))
     if (!new RegExp('^'+key+'\\s*=\\s*"'+value+'"\\s*$','m').test(clean)) throw Error('Invalid staging '+key);
+  const imageBlocks=[...clean.matchAll(/^\s*\[images\]([\s\S]*?)(?=\n\s*\[|$)/gm)];
+  if (imageBlocks.length > 1 ||
+      (imageBlocks.length === 1 && !/^binding\s*=\s*"IMAGES"\s*$/m.test(imageBlocks[0][1])))
+    throw Error('Invalid staging Images binding');
+  if (/^MEDIA_JPEG_VALIDATOR\s*=\s*"images"\s*$/m.test(clean) && imageBlocks.length !== 1)
+    throw Error('Native JPEG validation requires isolated staging IMAGES binding');
   if (/^\s*(routes?|remote)\s*=/m.test(clean) || /\[env\./.test(clean)) throw Error('Staging routes/environments are forbidden');
   const match=/^database_id\s*=\s*"([0-9a-f-]{36})"\s*$/m.exec(clean);
   if (!match) throw Error('A real isolated staging D1 UUID is required');

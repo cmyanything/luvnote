@@ -72,7 +72,7 @@ test('full transformation is staging-only, stores output once and enforces its e
   assert.deepEqual([...f.objects.values()][0],validateJpeg(output));
   const budget=f.sql.prepare("SELECT count FROM media_write_budgets WHERE budget_key='images-transform:staging'").get();
   assert.equal(budget.count,1);
-  f.sql.prepare("UPDATE media_write_budgets SET count=108 WHERE budget_key='images-transform:staging'").run();
+  f.sql.prepare("UPDATE media_write_budgets SET count=30 WHERE budget_key='images-transform:staging'").run();
   assert.equal((await f.upload()).status,429);assert.equal(calls,1);assert.equal(f.objects.size,1);
 });
 

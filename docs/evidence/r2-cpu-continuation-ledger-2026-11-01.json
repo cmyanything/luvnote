@@ -7,6 +7,9 @@
   "cumulativeStagingDiagnosticLimit": 108,
   "existingDiagnosticCount": 30,
   "counterReset": false,
+  "retainedCodeDiagnosticLimit": 30,
+  "finalCounter": 108,
+  "simplification": "Removed all Wasm/string scanner files, alternate entry points and runtime flags. Restored the original 30-attempt limit after testing; never reset the stored counter. Retain bounded native body fill and single-chunk Images input only.",
   "costBasis": "Owner-confirmed Images Free; official docs specify no Free overage charge and repeat source/parameter combinations count once per calendar month. Reuse synthetic inputs. Monthly account meter remains unavailable (403).",
   "experiments": [
     {"method":"Latin-1 string indexOf", "localOnly":true, "decision":"rejected: substantially slower, no remote service calls"},

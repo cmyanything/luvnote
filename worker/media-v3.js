@@ -128,7 +128,7 @@ async function uploadPhoto(req, env, url, sid, json) {
     // valid capability is used during the window. Every attempt counts conservatively,
     // including parser rejection; ready idempotent replays return before this block.
     if (validationMode === 'images-transform' &&
-        !await reserveBudget(env, 'images-transform:staging', 108, DAY))
+        !await reserveBudget(env, 'images-transform:staging', 30, DAY))
       throw Object.assign(Error('transformation_test_budget_exceeded'), {status:429});
     const bytes = validationMode === 'images' ? await validateJpegNative(raw, env.IMAGES)
       : validationMode === 'images-transform' ? await validateJpegTransformed(raw, env.IMAGES)

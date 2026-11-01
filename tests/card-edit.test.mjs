@@ -127,3 +127,45 @@ test('Our Story R2 cards require a start date and keep photo dates', async () =>
   assert.equal(read.data.photos[0].cap, 'first trip');
   assert.match(read.data.photos[0].src, /\/v3\/cards\/[a-z0-9]{7}\/media\//);
 });
+
+const ADMIN = 'owner-admin-key-'.padEnd(40, 'x');
+const reissue = (f, cardId, key = ADMIN) => f.request('/v3/admin/edit-key', {
+  method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Key': key }, body: JSON.stringify({ cardId }),
+});
+
+test('admin reissue is disabled without a strong ADMIN_KEY and rejects wrong keys', async () => {
+  const { f, card } = await created();
+  assert.equal((await reissue(f, card.id)).status, 503);
+  f.env.ADMIN_KEY = 'short';
+  assert.equal((await reissue(f, card.id)).status, 503);
+  f.env.ADMIN_KEY = ADMIN;
+  assert.equal((await reissue(f, card.id, 'wrong-key')).status, 403);
+  assert.equal((await reissue(f, card.id, '')).status, 403);
+  assert.equal((await reissue(f, 'zzzzzzz')).status, 404);
+  assert.equal((await reissue(f, 'BAD')).status, 400);
+});
+
+test('admin reissue replaces the edit key: the old link stops working and the new one edits', async () => {
+  const { f, card, upload2, edit } = await created();
+  f.env.ADMIN_KEY = ADMIN;
+  const res = await reissue(f, card.id);
+  assert.equal(res.status, 200);
+  const issued = await res.json();
+  assert.equal(issued.cardId, card.id);
+  assert.equal(issued.theme, 'pink-coquette');
+  assert.match(issued.editKey, /^[0-9a-f]{64}$/);
+  assert.equal(issued.expires, card.expires);
+  const fresh = await (await upload2()).json();
+  assert.equal((await edit([{ id: fresh.id }])).status, 403);
+  assert.equal((await edit([{ id: fresh.id }], { editKey: issued.editKey })).status, 200);
+});
+
+test('admin reissue gives legacy cards an edit key and refuses expired cards', async () => {
+  const f = await fixture();
+  f.env.ADMIN_KEY = ADMIN;
+  f.sql.prepare('INSERT INTO theme_cards VALUES(?,?,?,?,?)').run('legacy1', 'velvet-gift', JSON.stringify({ to: 'A', from: 'B', letter: 'L', photos: [] }), Date.now(), Date.now() + 100000);
+  f.sql.prepare('INSERT INTO theme_cards VALUES(?,?,?,?,?)').run('oldcard', 'velvet-gift', JSON.stringify({ to: 'A', from: 'B', letter: 'L', photos: [] }), Date.now() - 200000, Date.now() - 100000);
+  assert.equal((await reissue(f, 'legacy1')).status, 200);
+  assert.equal(f.sql.prepare('SELECT count(*) n FROM card_edit_keys WHERE card_id=?').get('legacy1').n, 1);
+  assert.equal((await reissue(f, 'oldcard')).status, 410);
+});

@@ -283,6 +283,37 @@ async function editCard(req, env, json, cleanV2, cardId) {
   return json(req, { id: cardId, expires: card.expires_at }, 200, { 'Cache-Control': 'no-store' });
 }
 
+// POST /v3/admin/edit-key {cardId} with header X-Admin-Key: owner support tool for customers who
+// lost their edit link. Issues a fresh edit key (old link stops working) for any unexpired card.
+// ADMIN_KEY is a Worker secret (>= 32 chars); without it the route is disabled.
+async function sameSecret(a, b) {
+  const [x, y] = await Promise.all([tokenHash(a), tokenHash(b)]);
+  let diff = 0;
+  for (let i = 0; i < x.length; i++) diff |= x.charCodeAt(i) ^ y.charCodeAt(i);
+  return diff === 0;
+}
+async function adminReissueEditKey(req, env, json) {
+  const configured = typeof env.ADMIN_KEY === 'string' && env.ADMIN_KEY.length >= 32 ? env.ADMIN_KEY : '';
+  if (!configured) return json(req, { error: 'admin_not_configured' }, 503);
+  const supplied = req.headers.get('X-Admin-Key') || '';
+  if (!supplied || supplied.length > 256 || !await sameSecret(supplied, configured))
+    return json(req, { error: 'admin_denied' }, 403);
+  const body = await readJson(req, 1024);
+  const cardId = String(body.cardId || '');
+  if (!CARD.test(cardId)) return json(req, { error: 'bad_request' }, 400);
+  const card = await env.DB.prepare('SELECT theme,expires_at FROM theme_cards WHERE id=?').bind(cardId).first();
+  if (!card) return json(req, { error: 'not_found' }, 404);
+  if (card.expires_at <= Date.now()) return json(req, { error: 'expired', expires: card.expires_at }, 410);
+  if (!THEMES.has(card.theme)) return json(req, { error: 'not_editable' }, 400);
+  const editKey = randomSecret(), now = Date.now();
+  await env.DB.prepare(
+    'INSERT INTO card_edit_keys(card_id,key_hash,created_at) VALUES(?,?,?) ' +
+    'ON CONFLICT(card_id) DO UPDATE SET key_hash=excluded.key_hash, created_at=excluded.created_at'
+  ).bind(cardId, await tokenHash(editKey), now).run();
+  console.log(JSON.stringify({ event: 'admin_edit_key_reissued', card: cardId }));
+  return json(req, { cardId, theme: card.theme, editKey, expires: card.expires_at }, 200, { 'Cache-Control': 'no-store' });
+}
+
 export function materializeV3Card(data, cardId, origin) {
   if (data?.media_version !== 3) return data;
   const mediaUrl = id => origin + "/v3/cards/" + cardId + "/media/" + id;
@@ -323,6 +354,8 @@ export async function handleMediaV3(req, env, url, helpers) {
   if (upload && req.method === "POST") return uploadPhoto(req, env, url, upload[1], json);
   if (url.pathname === "/v3/cards" && req.method === "POST")
     return publishCard(req, env, json, cleanV2, newId);
+  if (url.pathname === "/v3/admin/edit-key" && req.method === "POST")
+    return adminReissueEditKey(req, env, json);
   const edit = /^\/v3\/cards\/([a-z0-9]{7})\/edit$/.exec(url.pathname);
   if (edit && req.method === "POST")
     return editCard(req, env, json, cleanV2, edit[1]);

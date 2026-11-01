@@ -13,6 +13,33 @@ test('rejects JPEG-shaped garbage before storing an object', async () => {
   assert.equal(f.objects.size,0);
 });
 
+test('native Images validation is opt-in and fail-closed without the binding', async () => {
+  const f = await fixture();
+  f.env.MEDIA_JPEG_VALIDATOR = 'images';
+  assert.equal((await f.upload()).status, 503);
+  assert.equal(f.sql.prepare('SELECT photo_count n FROM media_upload_sessions').get().n, 0);
+  assert.equal(f.objects.size, 0);
+
+  let calls = 0;
+  f.env.IMAGES = { async info(stream) {
+    calls++;
+    const input = new Uint8Array(await new Response(stream).arrayBuffer());
+    const decoded = jpeg.decode(input, { useTArray: true, tolerantDecoding: false });
+    return { format: 'image/jpeg', fileSize: input.byteLength, width: decoded.width, height: decoded.height };
+  } };
+  assert.equal((await f.upload(image)).status, 201);
+  assert.equal(calls, 1);
+  assert.equal(f.objects.size, 1);
+
+  f.env.IMAGES.info = async () => ({format:'image/png',width:8,height:8});
+  assert.equal((await f.upload(image)).status, 400);
+  f.env.IMAGES.info = async () => ({format:'image/jpeg',width:1024,height:1024});
+  assert.equal((await f.upload(image)).status, 400);
+  f.env.IMAGES.info = async () => { throw Error('native image inspection unavailable'); };
+  assert.equal((await f.upload(image)).status, 400);
+  assert.equal(f.objects.size, 1);
+});
+
 test('a D1 completion failure keeps durable cleanup metadata for an R2 object', async () => {
   const f = await fixture();
   f.env.failSQL = query => f.objects.size > 0 && /INSERT INTO media_assets|UPDATE media_upload_jobs SET state='ready'/.test(query);

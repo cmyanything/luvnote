@@ -8,6 +8,8 @@ if(process.env.ALLOW_STAGING_WRITE!=='1') throw Error('ALLOW_STAGING_WRITE=1 is 
 const endpoint=stagingTarget(process.env.STAGING_API_URL||'');
 const {config}=verifyStagingResources();
 const publish=process.env.STAGING_BROWSER_PUBLISH==='1';
+const readOnly=process.env.STAGING_BROWSER_READ_ONLY==='1';
+assert.ok(!(readOnly&&publish),'Read-only acceptance cannot publish');
 const origin='http://127.0.0.1:4173';
 const rows=JSON.parse(wrangler(['d1','execute','luvnote-staging','--remote','--config',config,'--json','--command',
   "SELECT id,theme FROM theme_cards WHERE json_extract(data,'$.letter')='Non-customer staging integration' AND expires_at>"+Date.now()+' ORDER BY created_at DESC'])).at(-1).results;
@@ -57,6 +59,7 @@ for(const [name,type,device] of [['desktop',chromium,devices['Desktop Chrome']],
       }
       results.push({browser:name,theme,scenario:'published card, reload, real R2 image decode',passed:true});
     }
+    if(readOnly){console.log(JSON.stringify({progress:name,passed:results.length,readOnly:true}));continue;}
     await page.goto(origin+'/themes/little-memories/');
     await page.getByLabel('ชื่อผู้รับ').fill('Synthetic Browser');
     await page.getByLabel('ชื่อผู้ส่ง').fill('LuvNote QA');

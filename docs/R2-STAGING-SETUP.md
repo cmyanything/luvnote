@@ -2,7 +2,9 @@
 
 The authorized local Wrangler OAuth session works. On 2026-11-01 R2 initially returned **10042**, then became available externally at approximately 04:30 UTC. This task did not activate billing. Isolated D1 `luvnote-staging`, private bucket `luvnote-media-staging` and Worker `luvnote-api-staging` are now deployed and tested. Production resources were not modified. Current endpoint: `https://luvnote-api-staging.c-myanything.workers.dev`.
 
-**Current parked state:** V3 uploads are disabled after acceptance, cleanup remains enabled and existing cards/images remain readable. Final version: `96e4c13f-6363-4942-9002-ad80e0e74c70`. To rerun write acceptance, review and enable only the ignored staging config's `MEDIA_V3_UPLOADS_ENABLED`, deploy only with that config, then disable it again after the run. Never enable production flags as a substitute.
+**Current parked state (latest source 5d77a9b):** V3 uploads disabled, cleanup enabled, test mode false, allowed hostname localhost, real staging Turnstile secret installed. Active version **2182edbd-aff4-4bfa-b90f-204cace586a6**. Existing cards/images remain readable. A real CPU failure is now a launch blocker; Owner chose to retain the current plan. Do not reopen write acceptance as though it already passed. A controlled future window must remain staging-only and close afterward.
+
+Latest local/CI suite: **103 PASS**. Latest real adversarial run: **35 PASS, 1 FAIL (CPU/503), 1 NOT_VERIFIED**. Real browser read-only run: **15 PASS**. See the current [readiness report](R2-PRODUCTION-READINESS-REPORT.md); older dummy-key successes below are historical, not non-dummy certification.
 
 ## Verify and reuse the existing isolated resources
 
@@ -26,7 +28,7 @@ npx wrangler d1 execute luvnote-staging --remote --file worker/schema.sql --conf
 npx wrangler secret put TURNSTILE_SECRET_KEY --config wrangler.staging.toml
 ```
 
-For this staging Worker only, use Cloudflare's public dummy test secret from its [testing documentation](https://developers.cloudflare.com/turnstile/troubleshooting/testing/). Never substitute a production secret. Keep test mode and host restrictions in the staging file. Real production token replay, hostname and widget behavior still require later controlled acceptance with a separate real staging widget.
+The existing **LuvNote staging acceptance** Managed widget is separate from production, public site key `0x4AAAAAAFu3P7KP1Kckzd3a`, limited to localhost/127.0.0.1. Its secret is already installed securely; do not print it or overwrite it with a dummy secret for real acceptance. Keep `TURNSTILE_TEST_MODE=false` and server allowlist localhost. Automated real-widget attempts did not issue tokens; action/hostname/replay/expiry acceptance needs an interactive browser. Dummy keys remain useful only for explicitly isolated automation, as described in [Cloudflare testing documentation](https://developers.cloudflare.com/turnstile/troubleshooting/testing/); such results are not real-widget proof.
 
 ```sh
 npx wrangler deploy --config wrangler.staging.toml
@@ -35,6 +37,8 @@ npx wrangler deploy --config wrangler.staging.toml
 Verify the resulting hostname is exactly `luvnote-api-staging.<account-subdomain>.workers.dev`, inspect deployment bindings, and confirm the R2 bucket has neither r2.dev public access nor a public custom domain. Do not add production routes or DNS.
 
 ## Real synthetic integration
+
+The smoke command below is the historical public-dummy-key flow. Its hardcoded test token will be rejected by the current non-dummy configuration. Do not replace the real secret or relax validation merely to rerun it; keep any future dummy automation window explicitly isolated and do real-widget acceptance separately. Read-only browser acceptance works with the parked configuration.
 
 In PowerShell, after deployment:
 
@@ -52,7 +56,7 @@ For real fault tests, start the remote scheduled preview in another terminal:
 npx wrangler dev --remote --test-scheduled --port 8788 --config wrangler.staging.toml
 ```
 
-With the same staging environment variables, run `node scripts/test-r2-staging.mjs`. It verifies the preview sees the same actual staging card before invoking `/__scheduled`. It seeds only synthetic operator-owned sessions, preserving guest security and quota settings; failures are injected by narrowly scoped temporary D1 triggers removed in finally blocks. Its recorded result was **36 passed, zero failed, one unverified** out of 37 checks. A maximum noisy 1024-square JPEG uploaded successfully. Missing/expired assets, concurrent slots/publication, actual D1 rollback and R2-delete/D1-failure cleanup retry passed; an incomplete aborted request was buffered before reaching the Worker, so that case remains unverified. Provider outages are not certified by this test. Separately, `wrangler tail --config wrangler.staging.toml --format pretty` observed the natural deployed cron at 05:00:32 UTC, candidates 0/failures 0. Lifecycle remains unconfigured.
+During an approved staging write window, run `node scripts/test-r2-staging.mjs` with the same variables. It verifies the preview sees actual staging D1 before `/__scheduled`, and seeds only synthetic operator-owned sessions without changing guest protections. Scoped temporary D1 triggers are removed in finally blocks. The earlier result was 36 passed/zero failed/one unverified; the **latest source result is 35 passed/one maximum-JPEG CPU failure/one interrupted-request unverified**, out of 37. Missing/expired assets, concurrency, actual D1 rollback and R2-delete/D1-failure cleanup retry passed. Provider outages are not certified. Natural cron was separately observed at 05:00:32 UTC; lifecycle remains unconfigured.
 
 Smoke and browser cards expire normally after 15 days. Failed/orphan test intents follow the existing grace/cleanup rules. Do not delete customer or legacy data. No production fault triggers or fixtures are permitted.
 
@@ -62,7 +66,13 @@ Use a local build pointed to the staging Worker with `VITE_API_URL`, `VITE_R2_ME
 
 Run `node scripts/accept-r2-staging.mjs` against the local staging build. It reads the five smoke fixtures through real staging in desktop Chromium, Pixel 7 Chromium and iPhone 13 WebKit emulation, edits synthetic images and waits for the actual public test widget. Set `STAGING_BROWSER_PUBLISH=1` to additionally publish three synthetic cards, verify LINE hrefs and normalize EXIF orientation through actual R2. It rewrites only preserved viewers' hardcoded production API origin to staging; responses and images are real network fetches, not mocks. No LINE messages are sent. Keep the browser on loopback port 4173.
 
-Recorded run at 05:00 UTC: **22 passed** (21 browser checks plus a remote preview kill-switch check). For the latter, start the remote preview command above with `--var MEDIA_V3_UPLOADS_ENABLED:false --var MEDIA_CLEANUP_ENABLED:false` and set `STAGING_READ_ONLY_PREVIEW=1`. Real browser publications normalized EXIF orientation to 24×32 and reloaded successfully on all three profiles.
+Historical run at 05:00 UTC: **22 passed**, before PR #4, using the public dummy widget. Latest-source read-only run: set `STAGING_BROWSER_READ_ONLY=1`, `STAGING_BROWSER_PUBLISH=0`, then run `node scripts/accept-r2-staging.mjs`: **15 passed**, all five themes/three profiles using actual staging R2. Do not count this as interactive widget or physical-device acceptance.
+
+`node scripts/measure-r2-staging.mjs` creates a bounded synthetic workload; capture CPU/wall/memory separately from actual Cloudflare Analytics. Latest workload was 9/13 successful uploads, with four runtime CPU failures. Client wall times are not CPU measurements. No plan/CPU limit was changed.
+
+`node scripts/test-r2-interruption-staging.mjs` uses an incomplete HTTPS body. Latest result remains NOT_VERIFIED because the request did not reach the Worker before cancellation. `node scripts/test-r2-orphan-staging.mjs` proved fresh-orphan grace with a real object; its existing fixture can be checked for aged deletion after **2026-11-02 06:18:29.566 UTC**. Do not create another fixture unnecessarily or shorten grace. Lifecycle remains unconfigured.
+
+An actual staging rollback to the V3-read-capable 96e4c13f version preserved all five themes' legacy and V3 reads and denied new sessions. Rollback restored that version's older secret; latest-source deployment and the genuine staging secret were then restored securely. Always verify secrets/config as well as code after rollback. Do not use a pre-V3 reader.
 
 Check multiple uploads, removal, replacement cover, preview, publication, published link/reload, LINE share destination, lost upload/publication receipts, slow connections, quality and EXIF orientation in every theme. Physical iPhone/Android, installed LINE handoff, real cellular conditions, HEIC and subjective quality remain manual acceptance items. A real non-dummy staging widget/action/hostname/replay test remains required even when the public dummy widget passes.
 

@@ -2,21 +2,25 @@
 
 **Prepared, not executed.** Production provisioning, migrations, deployment, DNS changes, data deletion and PR merge are not authorized by this document. Obtain explicit Owner approval for the exact operation/commit and record it in the release ticket. Never treat passing local tests as production approval.
 
+**Current hard stop:** source 5d77a9b passes 103 automated cases, but real permitted JPEG uploads fail with Cloudflare CPU limit errors. Owner explicitly chose to retain the existing plan and record the blocker. Do not merge/roll out V3 while this remains unresolved. The separately approved read-only production D1 backup and isolated restore did run successfully; no production schema/rows were changed.
+
 ## 1. Provisioning and configuration plan
 
 1. Complete isolated staging certification in `R2-STAGING-SETUP.md` first. Initial R2 error 10042 cleared externally; staging resources and five real R2 flows are verified. Interrupted requests and real non-dummy widget/operational acceptance remain open. Do not substitute production bindings.
 2. After separate approval, create/verify private R2 Standard bucket `luvnote-media`. Disable r2.dev access; attach no public domain. Worker binding is `MEDIA`; no browser/S3 credentials are issued. Keep bucket CORS empty: browsers talk to Worker endpoints. No DNS changes are required or authorized.
 3. After retention policy approval, configure a lifecycle backstop for prefix `v3/` to expire objects at **21 days after upload**. Card access lasts 15 days after publication, and sessions last 30 minutes, so this exceeds the normal live interval. This is a deletion policy: obtain approval, test on staging, and document backup/restore implications before enabling it. It bounds retained crash orphans even if scheduled cleanup is unavailable. Do not apply a lifecycle to legacy D1 records.
 4. Create a production Managed Turnstile widget limited to actual editor domains (`luvnote.fun`, `www.luvnote.fun`, and only a genuinely used preview hostname). Action is `luvnote_media_upload`. Put the real secret in Worker secret `TURNSTILE_SECRET_KEY` via an authorized operator session. Only the public site key may enter `VITE_TURNSTILE_SITE_KEY`. Do not enable `TURNSTILE_TEST_MODE` or permit localhost/dummy responses in production.
-5. Confirm the production Worker plan and CPU budget can decode a maximum-size noisy JPEG without exceeding limits; benchmark p50/p95/p99 CPU, memory, concurrency, request duration and error rate on staging. The 32 MiB decoder allocation guard is not a guarantee that total isolate memory/CPU fits every plan. Set an Owner-approved Worker CPU limit only after measuring it. A free-plan CPU assumption is not acceptable.
+5. Resolve the actual CPU failure before rollout. Measured staging CPU p50 for a typical synthetic JPEG was 122.442 ms; successful maximum-upload p99 was 572.206 ms. Maximum sequence failed 1/5, concurrency three failed 3/3 with runtime CPU termination. These are diagnostic samples, not capacity certification. Keep JPEG validation. No plan/CPU-limit change is authorized now; Owner chose to retain the current plan. Retest after an explicitly approved resolution. The 32 MiB decoder allocation guard does not establish runtime CPU/memory acceptance.
 6. Confirm `WRITE_LIMITER` (namespace 472001) and `READ_LIMITER` (472003) do not collide with another Worker's namespaces. Staging uses 472002/472004. Verify native rate-limit bindings remotely. They are approximate per-location controls, so retain exact D1 daily quotas and WAF protections.
 7. Configure GitHub `production` environment with the Owner as required reviewer and a main-only deployment rule. This repository change does not create or verify those rules. Set explicit `CLOUDFLARE_ACCOUNT_ID`, `PRODUCTION_D1_ID` and a least-privilege deployment token in protected configuration; do not select the first returned Cloudflare account. Review token scopes without printing token values.
 
 ## 2. D1 backup and additive migration
 
-Before requesting migration approval, record the current Worker version, deployed frontend commit/artifact, production D1 UUID, schema and row counts (counts only, no customer data in reports). Export D1 to an encrypted, access-controlled location using the current Wrangler `d1 export` command and record a Time Travel bookmark if available on the account's plan. Check the current [Time Travel limits](https://developers.cloudflare.com/d1/reference/time-travel/) in the account. Never commit SQL exports or logs containing card content.
+Before requesting migration approval, record the current Worker version, deployed frontend commit/artifact, production D1 UUID, schema and row counts (counts only). Export D1 to an approved encrypted, access-controlled location and record a Time Travel bookmark if available. Standard Wrangler export prints a signed download URL and writes plaintext SQL; capture sensitive output privately and encrypt safely, or use the authenticated export API with in-memory encryption as in this drill. Never commit SQL exports, signed URLs or logs containing card content. Check current [Time Travel limits](https://developers.cloudflare.com/d1/reference/time-travel/) for the account.
 
-Restore that backup into a separate recovery database and verify V1/V2 row counts, representative synthetic records, schema, expiry behavior and an application's read-only compatibility checks. Backup existence alone is not a restore drill. Record backup timestamp, digest, bookmark, encryption/access location, restore duration and result. Customer data handling for a recovery drill requires Owner authorization and restricted access; none was performed in this task.
+Completed with explicit Owner approval: encrypted **luvnote-production-2026-11-01T06-11-29.727Z.lnvb** in `C:/Users/User/AppData/Local/LuvNote/Backups`, AES-256-GCM with Windows DPAPI CurrentUser and restricted ACL. Restored to private/unbound **luvnote-restore-20261101 / 1578a192-8066-4aaf-a4c8-43e9dd31992c**. All 15 rows and normalized schema hashes matched; ciphertext tampering was rejected. No plaintext SQL files or production-row mutations. Details and digest are in the readiness report. Managed file ingestion failed; bound-parameter restoration through the official D1 query API succeeded. Do not delete or overwrite that recovery database without approval.
+
+The tested restore utility/operator helper are saved beside the encrypted backup. Run from the repository with pinned Wrangler dependencies and the explicit approval marker; they retrieve credentials in memory. This is a local-profile recovery proof, not off-host DR: preserve DPAPI/profile material and establish a separate approved off-site/key-recovery/retention policy. The encrypted file alone cannot be restored by a different Windows account. Take a fresh approved backup if production changes before the eventual migration. This backup approval does not authorize migration or deployment.
 
 `worker/schema.sql` adds six media tables and indexes to the two legacy tables. It uses `CREATE ... IF NOT EXISTS` and does not alter, migrate or delete existing Base64 content. Review the exact diff and backup reference, then request explicit Owner approval for the production schema operation. Apply with the explicit production config/UUID only after approval. Verify all six media tables and indexes; test a no-op rerun on staging. Do not drop tables during rollback.
 
@@ -43,7 +47,7 @@ These are **proposed, not configured/verified**:
 
 ## 5. Rollback
 
-Rollback code paths passed local tests; an actual Cloudflare rollback drill is still required.
+Rollback passed local tests and a real staging version drill (latest testing version to 96e4c13f, then latest source restored). All five V2/V3 reads survived; new sessions returned 503. Production artifact/config/secret recovery remains unverified. Version rollback also restores that version's secret values: securely restore the intended real secret and verify configuration afterward, never assume only code changed.
 
 1. Disable frontend V3 uploads (`VITE_R2_MEDIA_ENABLED=false`) and redeploy the reviewed frontend artifact. New cards resume the compatible, rate-limited V2 creation path.
 2. Disable `MEDIA_V3_UPLOADS_ENABLED` in an Owner-approved Worker configuration and redeploy. Preserve `GET /v2/cards/:id`, `GET /v3/cards/:cardId/media/:assetId`, the D1 metadata tables and `MEDIA` binding. Keep R2 objects. Disabling writes was tested to leave V3 media readable locally.
@@ -55,7 +59,7 @@ Rollback code paths passed local tests; an actual Cloudflare rollback drill is s
 
 Set recovery objectives with the Owner before launch. Proposed targets: RPO 24 hours for off-platform encrypted exports/object snapshots, and RTO 4 hours; **neither is verified**. D1 Time Travel availability/retention must be confirmed for the account. R2 strong consistency does not provide a cross-service transaction or a backup.
 
-Keep encrypted D1 exports plus a manifest of referenced object keys/checksums and copies of those objects in a separately protected backup location (another private R2 bucket or an Owner-controlled encrypted export). Backups must include both data and media for a usable card. Obtain approval for backup resources, retention and customer-data access; none were created here. Document deletion requests and backup retention so restoration does not resurrect removed content improperly.
+Keep encrypted D1 exports plus referenced-object manifests/checksums and copies in a separately approved protected location. Backups must include both data and media for a usable V3 card. This task created only the approved encrypted D1 backup and isolated recovery DB; production R2 is not provisioned and no production R2 media snapshot was made. Further backup resources/retention/customer-data access require approval. Document deletion requests and backup retention so restoration does not resurrect removed content improperly.
 
 During an incident, freeze writes, disable scheduled cleanup and pause lifecycle deletion with approval. Preserve the failing deployment and logs without exporting customer content into the incident report. Restore D1 and media into isolated recovery resources, verify reference coverage, decoded synthetic images, all themes, V1/V2 reads, expiries and permissions, then request Owner approval for cutover. Do not repoint production at an empty/older D1 while cleanup is enabled: the orphan scanner could treat valid media as unreferenced. Never overwrite production to test recovery. Re-enable retention only after full reconciliation. If no matching object backup exists, deleted R2 media is not recoverable from D1 metadata alone.
 
@@ -63,12 +67,14 @@ During an incident, freeze writes, disable scheduled cleanup and pause lifecycle
 
 - [x] Isolated staging bucket/Worker/D1 identities and private access verified after R2 became available externally. Billing activation/changes were not performed by this task.
 - [x] Real staging smoke passes all five themes with direct R2 object and D1 verification.
-- [ ] Complete real staging adversarial acceptance: 36 passed/zero failed/one unverified; interrupted transport and lifecycle still open. Natural cron succeeded at 05:00:32 UTC.
+- [ ] Complete latest staging acceptance: 35 passed/one CPU failure/one unverified. Interrupted transport, aged orphan and lifecycle remain open. Natural cron previously succeeded.
 - [ ] Real staging widget/action/hostname/replay tested; production dummy configuration rejected.
-- [ ] Remote CPU/memory/plan, burst protections, exact quotas, WAF ingress and cost impact reviewed.
+- [ ] Resolve CPU acceptance FAIL; retain current plan per Owner decision. WAF/alerts/billing APIs return 403 under current OAuth; complete through an authorized operator.
 - [ ] Physical iPhone and Android, installed LINE handoff, slow/cellular network and image quality accepted.
 - [ ] Owner accepts the link-accessible card policy, 35-bit IDs and client-side PIN limitation; confidential-content claims prohibited.
-- [ ] Encrypted backups, isolated restore drill, read-capable rollback artifact and disaster recovery drill verified.
+- [x] Explicitly approved encrypted production D1 backup and isolated restore verified (15 row hashes and schema hash match).
+- [x] Staging V3-read-capable version rollback and write kill verified; latest source/real staging secret restored afterward.
+- [ ] Off-host backup/key recovery, retention, production artifact/configuration and disaster recovery objectives verified.
 - [ ] Alerts, notification delivery, escalation owner, usage budget and kill-switch drill verified.
 - [ ] Protected GitHub production environment, least-privilege token and explicit resource IDs verified.
 - [ ] Exact production migration/deployment/retention/frontend enablement actions separately approved by Owner.

@@ -25,6 +25,7 @@ export default defineConfig({
           'index.html',
           'intro-preview.html',
           'app/index.html',
+          'admin/index.html',
           'CNAME',
           ...themes.map((t) => `themes/${t}/card.html`),
         ]) {

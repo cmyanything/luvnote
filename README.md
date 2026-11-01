@@ -75,6 +75,14 @@ the frontend origin through its CORS configuration for local writes.
   they expire: cleanup deletes an expired card's photos within the hour, and the workflow refuses
   to revive them. Legacy Base64 cards keep their data and can be renewed after expiry.
 
+- **Lost edit link:** open `https://luvnote.fun/admin/`, enter the admin key and the customer's card
+  link, then send the new edit link to the customer (copy or LINE button). The old edit link stops
+  working immediately; the card link is unchanged. Works for any unexpired card, including legacy
+  Base64 cards (saving an edit moves their photos to R2). The page calls `POST /v3/admin/edit-key`
+  with `X-Admin-Key`; set the Worker secret `ADMIN_KEY` (at least 32 random characters) in Cloudflare →
+  Workers → `luvnote-api` → Settings → Variables and Secrets. Without it the route answers 503. Edit
+  keys are never written to GitHub (public repo), only shown on this page.
+
 ## Operations
 
 - **Quotas** live in `worker/quotas.js` (R2 upload sessions: 20 per IP per hour, 1000 per day site-wide;

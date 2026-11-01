@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>LuvNote · เครื่องมือเจ้าของร้าน</title>
+<style>
+  :root{--wine:#800020;--mute:#8a7a80;--line:#E9B8C8}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#FFF7F9;color:#3b2a30}
+  main{max-width:520px;margin:0 auto;padding:24px 18px 48px}
+  h1{font-size:20px;color:var(--wine);margin:0 0 4px}
+  p.sub{margin:0 0 20px;color:var(--mute);font-size:14px}
+  section{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
+  h2{font-size:16px;margin:0 0 10px;color:var(--wine)}
+  label{display:block;font-size:14px;margin:10px 0 4px}
+  input[type=text],input[type=password]{width:100%;font-size:16px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px}
+  .row{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mute);margin-top:8px}
+  button,.btn{display:inline-block;font-size:15px;border:none;border-radius:10px;padding:10px 16px;background:var(--wine);color:#fff;cursor:pointer;text-decoration:none;margin-top:12px}
+  button:disabled{opacity:.6;cursor:wait}
+  .ghost{background:#fff;color:var(--wine);border:1.5px solid var(--wine)}
+  #result{display:none}
+  #result.show{display:block}
+  .link{word-break:break-all;background:#FFFAFB;border:1.5px dashed var(--line);border-radius:10px;padding:10px;font-size:14px;margin:8px 0}
+  .msg{min-height:20px;font-size:14px;margin-top:10px}
+  .err{color:#b00020}
+  .note{font-size:13px;color:var(--mute);margin:8px 0 0}
+</style>
+</head>
+<body>
+<main>
+  <h1>เครื่องมือเจ้าของร้าน</h1>
+  <p class="sub">ออกลิงก์แก้ไขใหม่ให้ลูกค้าที่ทำลิงก์หาย · หน้านี้สำหรับเจ้าของร้านเท่านั้น</p>
+
+  <section>
+    <h2>1. รหัสผู้ดูแล</h2>
+    <label for="adminKey">รหัสผู้ดูแล (ADMIN_KEY ที่ตั้งไว้ใน Cloudflare)</label>
+    <input type="password" id="adminKey" autocomplete="current-password">
+    <label class="row"><input type="checkbox" id="remember"> จำรหัสไว้ในเครื่องนี้ (ใช้เฉพาะมือถือ/คอมของคุณเอง)</label>
+  </section>
+
+  <section>
+    <h2>2. การ์ดของลูกค้า</h2>
+    <label for="card">ลิงก์การ์ด หรือรหัส 7 ตัวท้ายลิงก์</label>
+    <input type="text" id="card" placeholder="เช่น https://luvnote.fun/#pabc2345" autocapitalize="off" autocomplete="off" spellcheck="false">
+    <button type="button" id="issue">ออกลิงก์แก้ไขใหม่</button>
+    <p class="note">ลิงก์แก้ไขเดิมของการ์ดใบนี้จะใช้ไม่ได้ทันที ลิงก์ที่ใช้เปิดการ์ดยังเหมือนเดิม</p>
+    <p class="msg" id="msg" role="status" aria-live="polite"></p>
+  </section>
+
+  <section id="result">
+    <h2>ลิงก์แก้ไขใหม่</h2>
+    <p class="note" id="info"></p>
+    <div class="link" id="editLink"></div>
+    <button type="button" id="copy">คัดลอกลิงก์</button>
+    <a class="btn ghost" id="line" target="_blank" rel="noopener noreferrer">ส่งให้ลูกค้าทาง LINE</a>
+  </section>
+</main>
+<script>
+(function () {
+  var API = 'https://api.luvnote.fun';
+  var STORE = 'luvnote:admin-key';
+  var NAMES = {
+    'pink-coquette': 'Pink Coquette', 'coquette-dream': 'Coquette Dream', 'little-memories': 'Our Little Memories',
+    'birthday-chat': 'Birthday Chat', 'velvet-gift': 'Velvet', 'anniversary-journey': 'Our Story'
+  };
+  var ERRORS = {
+    admin_not_configured: 'ยังไม่ได้ตั้งรหัสผู้ดูแล (ADMIN_KEY) ใน Cloudflare',
+    admin_denied: 'รหัสผู้ดูแลไม่ถูกต้อง',
+    not_found: 'ไม่พบการ์ดนี้ ลองเช็กลิงก์อีกครั้ง',
+    expired: 'การ์ดนี้หมดอายุแล้ว ต่ออายุก่อน แล้วค่อยออกลิงก์แก้ไข',
+    not_editable: 'การ์ดแบบนี้แก้ไขผ่านเว็บไม่ได้',
+    rate_limited: 'ลองบ่อยเกินไป รอสักครู่แล้วลองใหม่',
+    bad_request: 'อ่านรหัสการ์ดไม่ได้'
+  };
+  var $ = function (id) { return document.getElementById(id); };
+  var saved = localStorage.getItem(STORE);
+  if (saved) { $('adminKey').value = saved; $('remember').checked = true; }
+  $('remember').addEventListener('change', function () {
+    if (!this.checked) localStorage.removeItem(STORE);
+  });
+  function cardId(text) {
+    var match = String(text).trim().match(/([a-z0-9]{7})\/?$/);
+    return match ? match[1] : '';
+  }
+  function say(text, error) { $('msg').textContent = text; $('msg').className = 'msg' + (error ? ' err' : ''); }
+  $('issue').addEventListener('click', function () {
+    var key = $('adminKey').value.trim(), id = cardId($('card').value);
+    $('result').classList.remove('show');
+    if (!key) return say('ใส่รหัสผู้ดูแลก่อนนะ', true);
+    if (!id) return say('อ่านรหัสการ์ดไม่ได้ ลองวางลิงก์การ์ดเต็ม ๆ', true);
+    if ($('remember').checked) localStorage.setItem(STORE, key);
+    $('issue').disabled = true; say('กำลังออกลิงก์…');
+    fetch(API + '/v3/admin/edit-key', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Key': key },
+      body: JSON.stringify({ cardId: id })
+    }).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (data) { return { ok: res.ok, data: data }; });
+    }).then(function (r) {
+      if (!r.ok || !/^[0-9a-f]{64}$/.test(r.data.editKey || '')) throw new Error(r.data.error || 'failed');
+      var link = location.origin + '/themes/' + r.data.theme + '/?edit=' + r.data.cardId + '#key=' + r.data.editKey;
+      var until = new Date(r.data.expires).toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('info').textContent = 'การ์ด ' + r.data.cardId + ' · ธีม ' + (NAMES[r.data.theme] || r.data.theme) + ' · เปิดได้ถึง ' + until;
+      $('editLink').textContent = link;
+      $('line').href = 'https://line.me/R/msg/text/?' + encodeURIComponent('ลิงก์แก้ไขการ์ด LuvNote ของคุณ (เก็บไว้ อย่าส่งต่อนะ) ' + link);
+      $('result').classList.add('show');
+      say('ออกลิงก์ใหม่แล้ว ลิงก์แก้ไขเดิมใช้ไม่ได้แล้ว');
+    }).catch(function (error) {
+      say(ERRORS[error.message] || 'ทำไม่สำเร็จ ลองใหม่อีกครั้ง', true);
+    }).then(function () { $('issue').disabled = false; });
+  });
+  $('copy').addEventListener('click', function () {
+    var text = $('editLink').textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () {
+      say('คัดลอกลิงก์แล้ว');
+    }, function () { say('กดค้างที่ลิงก์เพื่อคัดลอก'); });
+  });
+})();
+</script>
+</body>
+</html>

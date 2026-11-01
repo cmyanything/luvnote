@@ -2,7 +2,17 @@
 export async function readLimitedBody(request, limit) {
   if (Number(request.headers.get('Content-Length') || 0) > limit) return null;
   if (!request.body) return new Uint8Array();
-  const reader = request.body.getReader();
+  // Native byte streams can fill a bounded buffer without a JS promise/copy per
+  // network chunk. Keep the default reader for JSON and non-byte test streams.
+  let reader, nativeFill = false;
+  if (limit >= 1500000) {
+    try {
+      const candidate = request.body.getReader({mode:'byob'});
+      if (typeof candidate.readAtLeast === 'function') { reader = candidate; nativeFill = true; }
+      else candidate.releaseLock();
+    } catch { /* Not a native byte stream. */ }
+  }
+  reader ??= request.body.getReader();
   const parts = [];
   let total = 0, timer;
   const timeout = new Promise((_, reject) => {
@@ -12,8 +22,19 @@ export async function readLimitedBody(request, limit) {
     }, 20000);
   });
   try {
+    const consume = async () => {
+    if (nativeFill) {
+      const {value,done} = await reader.readAtLeast(limit+1, new Uint8Array(limit+1));
+      if (value?.byteLength > limit) { await reader.cancel().catch(() => {}); return null; }
+      if (!done) {
+        const end = await reader.read(new Uint8Array(1));
+        if (end.value?.byteLength) { await reader.cancel().catch(() => {}); return null; }
+        if (!end.done) throw new Error('body_incomplete');
+      }
+      return value || new Uint8Array();
+    }
     while (true) {
-      const { value, done } = await Promise.race([reader.read(), timeout]);
+      const { value, done } = await reader.read();
       if (done) break;
       total += value.byteLength;
       if (total > limit) { await reader.cancel().catch(() => {}); return null; }
@@ -23,6 +44,9 @@ export async function readLimitedBody(request, limit) {
     let offset = 0;
     for (const part of parts) { bytes.set(part, offset); offset += part.byteLength; }
     return bytes;
+    };
+    // Race the complete operation, so cancellation can never accept a prefix.
+    return await Promise.race([consume(), timeout]);
   } finally { clearTimeout(timer); reader.releaseLock(); }
 }
 

@@ -2,13 +2,16 @@ import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import { build } from 'esbuild';
 import { readFile } from 'node:fs/promises';
 
-const bundle = await build({ entryPoints: ['worker/index.js'], bundle: true, write: false, format: 'esm', platform: 'browser' });
+const nativeSearch = process.env.TEST_JPEG_SEARCH === 'native';
+const bundle = await build({ entryPoints: [nativeSearch ? 'worker/staging-native.js' : 'worker/index.js'],
+  bundle: true, write: false, format: 'esm', platform: 'browser', external: ['node:buffer'] });
 export async function workerdFixture({ realTurnstile = false, jpegValidator = process.env.TEST_JPEG_VALIDATOR || 'legacy' } = {}) {
   if (!['legacy','images','images-transform'].includes(jpegValidator)) throw Error('Invalid test JPEG validator');
   const mf = new Miniflare(convertV4MiniflareOptions({
     workers: [{
       name: 'luvnote-test', modules: true, script: bundle.outputFiles[0].text,
       compatibilityDate: '2025-01-01',
+      ...(nativeSearch ? {compatibilityFlags:['nodejs_compat']} : {}),
       d1Databases: ['DB'], r2Buckets: ['MEDIA'],
       ...(jpegValidator !== 'legacy' ? {images:{binding:'IMAGES'}} : {}),
       ratelimits: { WRITE_LIMITER: { namespace_id: '472099', simple: { limit: 60, period: 60 } } },

@@ -10,6 +10,10 @@ const ORIGINS = [
   "https://luvnote.fun",
   "https://www.luvnote.fun",
   "https://cmyanything.github.io",
+  "http://127.0.0.1:5173",
+  "http://localhost:5173",
+  "http://127.0.0.1:4173",
+  "http://localhost:4173",
 ];
 const ID_CHARS = "abcdefghijkmnpqrstuvwxyz23456789"; // 32 chars, no look-alikes
 const ID_LEN = 7;

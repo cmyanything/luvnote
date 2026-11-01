@@ -1,0 +1,155 @@
+{
+  "sourceCommit": "41bef36a1427de16acaf48532413577a997ff664",
+  "ownerDashboardConfirmation": {
+    "source": "Owner message, 2026-11-01",
+    "workersPlan": "Workers Free — Active",
+    "r2Plan": "R2 Paid — Active",
+    "zone": "luvnote.fun",
+    "zoneTransformationsEnabled": false,
+    "analyticsRequests24Hours": 0,
+    "imagesPlan": "NOT_CONFIRMED",
+    "accountMonthlyUniqueTransformations": "NOT_CONFIRMED",
+    "note": "Owner-reported Dashboard facts, not an operator account-plan API result. 24-hour traffic is not monthly included allowance."
+  },
+  "accountCostReadAttempts": {
+    "checkedAt": "2026-11-01T08:42:28.903Z",
+    "account": "cee7f572be6cf7e3de1e4526f6d250d2",
+    "checks": [
+      {
+        "endpoint": "/subscriptions",
+        "ok": false,
+        "error": "Cloudflare 403 [{\"code\":10000,\"message\":\"Authentication error\"}]"
+      },
+      {
+        "endpoint": "/images/v1/stats",
+        "ok": false,
+        "error": "Cloudflare 403 [{\"code\":10000,\"message\":\"Authentication error\"}]"
+      }
+    ]
+  },
+  "dashboard": {
+    "result": "Redirected to Cloudflare sign-in; no authenticated Images session available",
+    "browser": "Available Codex in-app browser"
+  },
+  "staging": {
+    "checkedAt": "2026-11-01T08:42:34.255Z",
+    "activeVersion": "b0f3a112-e7a9-4250-b7bb-027e83dca378",
+    "bindings": [
+      {
+        "database_id": "3967493c-55db-4ab8-bb2c-9ed3c157a543",
+        "id": "3967493c-55db-4ab8-bb2c-9ed3c157a543",
+        "name": "DB",
+        "type": "d1"
+      },
+      {
+        "name": "ENVIRONMENT",
+        "text": "staging",
+        "type": "plain_text"
+      },
+      {
+        "bucket_name": "luvnote-media-staging",
+        "name": "MEDIA",
+        "type": "r2_bucket"
+      },
+      {
+        "name": "MEDIA_CLEANUP_ENABLED",
+        "text": "true",
+        "type": "plain_text"
+      },
+      {
+        "name": "MEDIA_JPEG_VALIDATOR",
+        "text": "legacy",
+        "type": "plain_text"
+      },
+      {
+        "name": "MEDIA_V3_UPLOADS_ENABLED",
+        "text": "false",
+        "type": "plain_text"
+      },
+      {
+        "name": "READ_LIMITER",
+        "namespace_id": "472004",
+        "simple": {
+          "limit": 300,
+          "period": 60
+        },
+        "type": "ratelimit"
+      },
+      {
+        "name": "TURNSTILE_HOSTNAMES",
+        "text": "localhost",
+        "type": "plain_text"
+      },
+      {
+        "name": "TURNSTILE_TEST_MODE",
+        "text": "false",
+        "type": "plain_text"
+      },
+      {
+        "name": "WRITE_LIMITER",
+        "namespace_id": "472002",
+        "simple": {
+          "limit": 60,
+          "period": 60
+        },
+        "type": "ratelimit"
+      }
+    ],
+    "publicR2": false,
+    "r2CustomDomains": [],
+    "workerCustomDomains": [],
+    "mutationsThisContinuation": 0
+  },
+  "killSwitch": {
+    "checkedAt": "2026-11-01T08:44:19.829Z",
+    "realCloudflare": true,
+    "health": 200,
+    "writeDenials": [
+      {
+        "path": "/v3/upload-sessions",
+        "status": 503
+      },
+      {
+        "path": "/v3/cards",
+        "status": 503
+      },
+      {
+        "path": "/v3/upload-sessions/11111111-1111-4111-8111-111111111111/media?kind=photo",
+        "status": 503
+      }
+    ]
+  },
+  "testWindow": {
+    "requestedSyntheticImages": "10–20",
+    "maximumProposedTransformationCalls": 20,
+    "actualRemoteTransformationCalls": 0,
+    "additionalImagesTransformationsFromThisContinuation": 0,
+    "quotaBefore": "NOT_VERIFIED",
+    "quotaAfter": "NOT_VERIFIED",
+    "cpu": "NOT_VERIFIED",
+    "errors1102": "NOT_VERIFIED — no workload",
+    "quality": "NOT_VERIFIED",
+    "newUploads": "NOT_VERIFIED"
+  },
+  "sourceCI": {
+    "runId": 41289105528,
+    "commit": "41bef36a1427de16acaf48532413577a997ff664",
+    "conclusion": "success",
+    "backendPass": 79,
+    "nativeWorkerdPass": 4,
+    "legacyFrontendPass": 36,
+    "defaultV3Pass": 18,
+    "nativeV3Pass": 18,
+    "cleanPassExecutions": 155,
+    "flaky": 0,
+    "deploy": "skipped",
+    "note": "Existing application/local-emulator regression CI, not real Full Transformation acceptance. No suites rerun locally in this read-only cost recheck."
+  },
+  "decision": "NO-GO pending account Images plan/monthly allowance evidence; stop before remote transformation per Owner instruction",
+  "officialReferences": [
+    "https://developers.cloudflare.com/images/pricing/",
+    "https://developers.cloudflare.com/images/optimization/binding/",
+    "https://developers.cloudflare.com/billing/manage/billable-usage/",
+    "https://developers.cloudflare.com/changelog/product/images/"
+  ]
+}

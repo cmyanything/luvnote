@@ -78,7 +78,12 @@ async function checkTurnstile(req, env, token) {
   const verified = await res.json();
   const hosts = (env.TURNSTILE_HOSTNAMES || "luvnote.fun,www.luvnote.fun,cmyanything.github.io")
     .split(",").map(h => h.trim()).filter(Boolean);
-  return verified.success === true && verified.action === "luvnote_media_upload" &&
+  const isolatedTest = env.ENVIRONMENT === "staging" &&
+    env.TURNSTILE_TEST_MODE === "true" &&
+    env.TURNSTILE_SECRET_KEY === "1x0000000000000000000000000000000AA" &&
+    verified.action === "test";
+  return verified.success === true &&
+    (verified.action === "luvnote_media_upload" || isolatedTest) &&
     hosts.includes(verified.hostname);
 }
 async function startSession(req, env, json) {

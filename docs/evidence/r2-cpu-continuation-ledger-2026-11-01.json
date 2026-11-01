@@ -3,14 +3,18 @@
   "initialSource": "86cece35fca20880e95515ba456baa735fdcfc70",
   "productionDeployed": false,
   "billingChanged": false,
-  "newWindowMaximumAttempts": 30,
-  "cumulativeStagingDiagnosticLimit": 60,
+  "newWindowMaximumAttempts": 36,
+  "cumulativeStagingDiagnosticLimit": 66,
   "existingDiagnosticCount": 30,
   "counterReset": false,
   "costBasis": "Owner-confirmed Images Free; official docs specify no Free overage charge and repeat source/parameter combinations count once per calendar month. Reuse synthetic inputs. Monthly account meter remains unavailable (403).",
   "experiments": [
     {"method":"Latin-1 string indexOf", "localOnly":true, "decision":"rejected: substantially slower, no remote service calls"},
     {"method":"Latin-1 regular expression", "localOnly":true, "differentialChecks":2029, "decision":"rejected: 10-13 times slower locally; no remote service calls"},
-    {"method":"Uint8Array indexOf", "localOnly":true, "differentialChecks":325, "decision":"paired remote comparison required; earlier two-image concurrency test was inconclusive"}
+    {"method":"Uint8Array indexOf", "realCloudflare":true, "differentialChecks":325, "decision":"6/6 uploads, CPU 10/36/49/20/77/128 ms; rejected as Free CPU fix"},
+    {"method":"Buffer native string search", "realCloudflare":true, "differentialChecks":2029, "decision":"6/6 uploads, CPU 24/84/142/14/80/95 ms; rejected"},
+    {"method":"Native bounded body fill", "realCloudflare":true, "decision":"6/6 uploads; ready replays fell to 4-6 ms from up to 34 ms, full upload still 19-77 ms"},
+    {"method":"177-byte Wasm entropy scan", "realCloudflare":true, "decision":"6/6 uploads; CPU 28/58/49/18/36/54 ms; not sufficient alone"},
+    {"method":"Blob input stream and R2 payload", "decision":"six additional bounded calls reusing the same synthetic hashes; no counter reset or billing change"}
   ]
 }

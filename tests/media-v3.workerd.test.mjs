@@ -6,6 +6,16 @@ import jpeg from 'jpeg-js';
 const image=jpeg.encode({width:24,height:16,data:new Uint8Array(24*16*4).fill(180)},80).data;
 const themes=['pink-coquette','coquette-dream','little-memories','birthday-chat','velvet-gift'];
 
+test('native request reader preserves chunked JPEG bytes and rejects unknown-length overflow before R2',async t=>{
+  const f=await workerdFixture();t.after(()=>f.mf.dispose());const s=await f.session();
+  const stream=(bytes,size)=>{let offset=0;return new ReadableStream({pull(c){if(offset===bytes.length){c.close();return;}c.enqueue(bytes.subarray(offset,Math.min(bytes.length,offset+size)));offset=Math.min(bytes.length,offset+size);}});};
+  const upload=body=>f.request(`/v3/upload-sessions/${s.sessionId}/media?kind=photo`,{method:'POST',headers:{Authorization:'Bearer '+s.uploadToken,'Content-Type':'image/jpeg','Idempotency-Key':crypto.randomUUID()},body,duplex:'half'});
+  const good=await upload(stream(image,17));assert.equal(good.status,201,await good.clone().text());
+  assert.equal((await f.bucket.list()).objects.length,1);
+  const bad=await upload(stream(new Uint8Array(1500001),65536));assert.equal(bad.status,413,await bad.clone().text());
+  assert.equal((await f.bucket.list()).objects.length,1);
+});
+
 test('workerd with local D1/R2: all five themes publish, verify actual bindings and retain V2 reads', async t => {
   const f=await workerdFixture(); t.after(()=>f.mf.dispose());
   for (const theme of themes) {

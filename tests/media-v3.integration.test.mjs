@@ -72,7 +72,7 @@ test('full transformation is staging-only, stores output once and enforces its e
   assert.deepEqual([...f.objects.values()][0],validateJpeg(output));
   const budget=f.sql.prepare("SELECT count FROM media_write_budgets WHERE budget_key='images-transform:staging'").get();
   assert.equal(budget.count,1);
-  f.sql.prepare("UPDATE media_write_budgets SET count=60 WHERE budget_key='images-transform:staging'").run();
+  f.sql.prepare("UPDATE media_write_budgets SET count=66 WHERE budget_key='images-transform:staging'").run();
   assert.equal((await f.upload()).status,429);assert.equal(calls,1);assert.equal(f.objects.size,1);
 });
 
@@ -370,4 +370,20 @@ test('a stalled body times out rather than accepting the prefix after cancellati
   const result=assert.rejects(pending,error=>error.status===408);
   await new Promise(resolve=>setImmediate(resolve)); t.mock.timers.tick(20001);
   await result;
+});
+
+test('native bounded fill rejects excess bytes, incomplete EOF and cancelled prefixes', async t => {
+  let cancelled=0,released=0;
+  const request=reader=>({headers:new Headers(),body:{getReader:()=>({...reader,
+    cancel:async()=>{cancelled++;},releaseLock:()=>{released++;}})}});
+  assert.equal(await readLimitedBody(request({readAtLeast:async()=>({value:new Uint8Array(1500001),done:false})}),1500000),null);
+  assert.equal(await readLimitedBody(request({readAtLeast:async()=>({value:new Uint8Array(20),done:false}),read:async()=>({value:new Uint8Array(1),done:false})}),1500000),null);
+  await assert.rejects(readLimitedBody(request({readAtLeast:async()=>({value:new Uint8Array(20),done:false}),read:async()=>({value:new Uint8Array(),done:false})}),1500000),/body_incomplete/);
+  assert.equal(cancelled,2);assert.equal(released,3);
+  t.mock.timers.enable({apis:['setTimeout']});
+  let close;
+  const reader={readAtLeast:()=>new Promise(resolve=>{close=resolve;}),cancel:async()=>close({value:new Uint8Array([1]),done:true}),releaseLock(){}};
+  const pending=readLimitedBody({headers:new Headers(),body:{getReader:()=>reader}},1500000);
+  const rejection=assert.rejects(pending,error=>error.status===408);
+  t.mock.timers.tick(20001);await rejection;
 });

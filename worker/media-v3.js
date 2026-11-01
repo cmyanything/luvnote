@@ -128,7 +128,7 @@ async function uploadPhoto(req, env, url, sid, json) {
     // valid capability is used during the window. Every attempt counts conservatively,
     // including parser rejection; ready idempotent replays return before this block.
     if (validationMode === 'images-transform' &&
-        !await reserveBudget(env, 'images-transform:staging', 60, DAY))
+        !await reserveBudget(env, 'images-transform:staging', 66, DAY))
       throw Object.assign(Error('transformation_test_budget_exceeded'), {status:429});
     const bytes = validationMode === 'images' ? await validateJpegNative(raw, env.IMAGES)
       : validationMode === 'images-transform' ? await validateJpegTransformed(raw, env.IMAGES, env.JPEG_MARKER_SEARCH)
@@ -139,7 +139,8 @@ async function uploadPhoto(req, env, url, sid, json) {
       env.DB.prepare('UPDATE media_upload_jobs SET content_hash=? WHERE asset_id=?').bind(await digest(raw),id),
     ]);
     putStarted = true;
-    await env.MEDIA.put(key, bytes, { httpMetadata: { contentType: 'image/jpeg' } });
+    await env.MEDIA.put(key, validationMode === 'images-transform' ? new Blob([bytes]) : bytes,
+      { httpMetadata: { contentType: 'image/jpeg' } });
     const completed = await env.DB.prepare("UPDATE media_upload_jobs SET state='ready' WHERE asset_id=? AND state='writing'").bind(id).run();
     if (completed.meta?.changes !== 1) throw Error('upload_completion_lost');
   } catch (error) {

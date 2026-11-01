@@ -18,7 +18,7 @@ export async function fixture() {
     TURNSTILE_SECRET_KEY: 'unit-test-secret',
     WRITE_LIMITER: { limit: async () => ({ success: true }) },
     MEDIA: {
-      async put(key, bytes) { objects.set(key, new Uint8Array(bytes)); return { key }; },
+      async put(key, bytes) { objects.set(key, new Uint8Array(bytes instanceof Blob ? await bytes.arrayBuffer() : bytes)); return { key }; },
       async get(key) { return objects.has(key) ? { body: new Response(objects.get(key)).body } : null; },
       async head(key) { return objects.has(key) ? { key, size: objects.get(key).byteLength } : null; },
       async delete(key) { objects.delete(key); },

@@ -1,7 +1,7 @@
 import jpeg from 'jpeg-js';
 
 // Reject out-of-bounds JPEG markers, dimensions and EXIF/IPTC metadata without decoding pixels.
-// The client normalizes rotation before uploading. Native decoding is optional and staging-gated.
+// The client normalizes rotation before uploading. Native inspection is experimental, staging only.
 function parseJpeg(bytes) {
   if (bytes.length < 32 || bytes.length > 1500000 || bytes[0] !== 255 || bytes[1] !== 216 ||
       bytes[bytes.length-2] !== 255 || bytes[bytes.length-1] !== 217) return null;
@@ -66,11 +66,11 @@ export function validateJpeg(bytes) {
 }
 
 /**
- * Experimental native validation, opt-in on isolated staging only.
+ * REJECTED for promotion: metadata inspection, opt-in on isolated staging only.
  * Cloudflare Images .info() runs outside the Worker JS JPEG decoder and is free.
- * A structural check + native format/dimension check is NOT proven equivalent to
- * a full pixel decode for all corrupt entropy streams. Adversarial remote tests
- * are required before enabling this mode on production.
+ * Actual Cloudflare acceptance admitted truncated/corrupt/missing entropy bytes
+ * that strict decoding rejects. Format/dimensions do not certify decodability.
+ * Do not enable this implementation for customer uploads or production.
  * Missing/failing binding is fail-closed, never a silent fallback to CPU-heavy JS.
  */
 export async function validateJpegNative(bytes, images) {

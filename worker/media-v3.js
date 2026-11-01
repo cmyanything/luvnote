@@ -85,7 +85,7 @@ async function uploadPhoto(req, env, url, sid, json) {
   // Never silently downgrade from native inspection to header-only checks.
   const validationMode = env.MEDIA_JPEG_VALIDATOR || 'legacy';
   if (!['legacy', 'images'].includes(validationMode) ||
-      (validationMode === 'images' && typeof env.IMAGES?.info !== 'function'))
+      (validationMode === 'images' && (env.ENVIRONMENT !== 'staging' || typeof env.IMAGES?.info !== 'function')))
     return json(req, { error: 'image_validation_unavailable' }, 503);
   const previous = await env.DB.prepare(
     'SELECT j.asset_id,j.content_hash,j.state,m.kind FROM media_upload_jobs j JOIN media_assets m ON m.id=j.asset_id WHERE j.session_id=? AND j.request_key=?'

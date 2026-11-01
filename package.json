@@ -11,7 +11,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "tsc --noEmit",
-    "test:api": "node --test tests/media-v3.test.mjs tests/media-v3.integration.test.mjs tests/media-v3.workerd.test.mjs tests/staging-safety.test.mjs",
+    "test:api": "node --test tests/media-v3.test.mjs tests/media-v3.integration.test.mjs tests/media-v3.workerd.test.mjs tests/staging-safety.test.mjs tests/jpeg-native.test.mjs",
     "test": "playwright test"
   },
   "dependencies": {

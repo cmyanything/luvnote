@@ -21,6 +21,10 @@ jobs:
       - run: npm ci
       - run: node --check worker/media-v3.js && node --check scripts/smoke-r2-staging.mjs
       - run: npm run test:api
+      # Local Images is low-fidelity: compatibility only, not Cloudflare security acceptance.
+      - run: node --test tests/media-v3.workerd.test.mjs
+        env:
+          TEST_JPEG_VALIDATOR: 'images'
       # Legacy compatibility tests use the old creation API.
       - run: npm run build
         env:
@@ -35,6 +39,10 @@ jobs:
       - run: npx playwright test tests/media-v3.spec.ts tests/r2-acceptance.spec.ts
         env:
           VITE_R2_MEDIA_ENABLED: 'true'
+      - run: npx playwright test tests/media-v3.spec.ts tests/r2-acceptance.spec.ts
+        env:
+          VITE_R2_MEDIA_ENABLED: 'true'
+          TEST_JPEG_VALIDATOR: 'images'
       # Never ship the Cloudflare testing site key or a missing real key to production.
       - name: Check production Turnstile rollout guard
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

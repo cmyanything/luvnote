@@ -9,11 +9,11 @@ workers_dev = true
 # STAGING ONLY. Never copy test configuration into production.
 [vars]
 ENVIRONMENT = "staging"
-MEDIA_V3_UPLOADS_ENABLED = "true"
+MEDIA_V3_UPLOADS_ENABLED = "false"
 MEDIA_CLEANUP_ENABLED = "true"
-# STAGING EXPERIMENT ONLY: use native Cloudflare Images.info() instead of JS jpeg-js decoding.
-# Do not copy this value to production until real CPU and adversarial-image tests pass.
-MEDIA_JPEG_VALIDATOR = "images"
+# Images.info() FAILED real corrupt-pixel acceptance. Keep strict decoding and writes disabled.
+# Operator-only diagnostics may explicitly select "images" on staging; never promote this method.
+MEDIA_JPEG_VALIDATOR = "legacy"
 TURNSTILE_TEST_MODE = "true"
 TURNSTILE_HOSTNAMES = "localhost,127.0.0.1"
 

@@ -1,5 +1,5 @@
 import type { Miniflare } from 'miniflare';
-export function workerdFixture(options?: { realTurnstile?: boolean }): Promise<{
+export function workerdFixture(options?: { realTurnstile?: boolean; jpegValidator?: 'legacy' | 'images' }): Promise<{
   mf: Miniflare;
   db: Awaited<ReturnType<Miniflare['getD1Database']>>;
   bucket: { list(): Promise<{ objects: { key: string }[] }> };

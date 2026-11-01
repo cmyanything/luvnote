@@ -16,6 +16,7 @@ test('rejects JPEG-shaped garbage before storing an object', async () => {
 test('native Images validation is opt-in and fail-closed without the binding', async () => {
   const f = await fixture();
   f.env.MEDIA_JPEG_VALIDATOR = 'images';
+  f.env.ENVIRONMENT = 'staging';
   assert.equal((await f.upload()).status, 503);
   assert.equal(f.sql.prepare('SELECT photo_count n FROM media_upload_sessions').get().n, 0);
   assert.equal(f.objects.size, 0);
@@ -38,6 +39,19 @@ test('native Images validation is opt-in and fail-closed without the binding', a
   f.env.IMAGES.info = async () => { throw Error('native image inspection unavailable'); };
   assert.equal((await f.upload(image)).status, 400);
   assert.equal(f.objects.size, 1);
+});
+
+test('native inspection cannot be enabled outside staging even with an Images binding', async () => {
+  for (const environment of [undefined, 'production']) {
+    const f=await fixture(); f.env.ENVIRONMENT=environment; f.env.MEDIA_JPEG_VALIDATOR='images';
+    f.env.IMAGES={info(){throw Error('must not inspect production input');}};
+    assert.equal((await f.upload()).status,503);
+    assert.equal(f.objects.size,0);
+    assert.equal(f.sql.prepare('SELECT photo_count n FROM media_upload_sessions').get().n,0);
+  }
+  const f=await fixture();f.env.MEDIA_JPEG_VALIDATOR='typo';
+  assert.equal((await f.upload()).status,503);
+  assert.equal(f.objects.size,0);
 });
 
 test('a D1 completion failure keeps durable cleanup metadata for an R2 object', async () => {

@@ -8,3 +8,12 @@ routes = [{ pattern = "api.luvnote.fun", custom_domain = true }]
 binding = "DB"
 database_name = "luvnote"
 database_id = "__D1_ID__" # filled in by the deploy workflow
+
+# Provision the private bucket before deploying this binding.
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "luvnote-media"
+
+# Check expired uploads and published card media hourly.
+[triggers]
+crons = ["0 * * * *"]

@@ -1,11 +1,11 @@
 import jpeg from 'jpeg-js';
 
-// Decode bounded pixels, reject orientation/GPS metadata, strip other application/comment
-// segments without recompressing pixels. Canvas in the editor already normalizes orientation.
-export function validateJpeg(bytes) {
+// Reject out-of-bounds JPEG markers, dimensions and EXIF/IPTC metadata without decoding pixels.
+// The client normalizes rotation before uploading. Native decoding is optional and staging-gated.
+function parseJpeg(bytes) {
   if (bytes.length < 32 || bytes.length > 1500000 || bytes[0] !== 255 || bytes[1] !== 216 ||
       bytes[bytes.length-2] !== 255 || bytes[bytes.length-1] !== 217) return null;
-  let offset = 2, frame = false, ended = false, scans = 0;
+  let offset = 2, frame = false, ended = false, scans = 0, frameDimensions = null;
   const parts = [bytes.subarray(0,2)];
   try {
     while (offset < bytes.length) {
@@ -38,7 +38,7 @@ export function validateJpeg(bytes) {
         const width = (bytes[offset+5] << 8) | bytes[offset+6];
         if (length < 8 || bytes[offset+2] !== 8 || ![1,3].includes(bytes[offset+7]) ||
             frame || !width || !height || width > 1024 || height > 1024 || width*height > 1048576) return null;
-        frame = true;
+        frame = true; frameDimensions = { width, height };
       } else if (![0xc4,0xdb,0xdd,0xfe].includes(marker) && !(marker >= 0xe0 && marker <= 0xef)) return null;
       if (!(marker >= 0xe0 && marker <= 0xef) && marker !== 0xfe)
         parts.push(bytes.subarray(start, offset+length));
@@ -48,8 +48,40 @@ export function validateJpeg(bytes) {
     const clean = new Uint8Array(parts.reduce((n,p) => n+p.length,0));
     let position = 0;
     for (const part of parts) { clean.set(part,position); position += part.length; }
-    const decoded = jpeg.decode(clean, { useTArray: true, formatAsRGBA: false,
-      tolerantDecoding: false, maxResolutionInMP: 1.05, maxMemoryUsageInMB: 32 });
-    return decoded.width && decoded.height ? clean : null;
+    return { bytes: clean, ...frameDimensions };
+  } catch { return null; }
+}
+
+/** Legacy strict validation: retains the existing decoder until remote native acceptance passes. */
+export function validateJpeg(bytes) {
+  const parsed = parseJpeg(bytes);
+  if (!parsed) return null;
+  try {
+    const decoded = jpeg.decode(parsed.bytes, {
+      useTArray: true, formatAsRGBA: false, tolerantDecoding: false,
+      maxResolutionInMP: 1.05, maxMemoryUsageInMB: 32,
+    });
+    return decoded.width === parsed.width && decoded.height === parsed.height ? parsed.bytes : null;
+  } catch { return null; }
+}
+
+/**
+ * Experimental native validation, opt-in on isolated staging only.
+ * Cloudflare Images .info() runs outside the Worker JS JPEG decoder and is free.
+ * A structural check + native format/dimension check is NOT proven equivalent to
+ * a full pixel decode for all corrupt entropy streams. Adversarial remote tests
+ * are required before enabling this mode on production.
+ * Missing/failing binding is fail-closed, never a silent fallback to CPU-heavy JS.
+ */
+export async function validateJpegNative(bytes, images) {
+  const parsed = parseJpeg(bytes);
+  if (!parsed || typeof images?.info !== 'function') return null;
+  try {
+    const stream = new Response(parsed.bytes).body;
+    if (!stream) return null;
+    const info = await images.info(stream);
+    return info?.format === 'image/jpeg' &&
+      info.width === parsed.width && info.height === parsed.height
+      ? parsed.bytes : null;
   } catch { return null; }
 }

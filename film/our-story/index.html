@@ -1,0 +1,375 @@
+<!doctype html>
+<html
+  lang="th"
+  data-resolution="portrait"
+  data-composition-variables='[
+    {"id":"her","type":"string","label":"ชื่อผู้รับ","default":"มิ้นท์","maxLength":16},
+    {"id":"him","type":"string","label":"ชื่อผู้ส่ง","default":"ต้น","maxLength":16},
+    {"id":"est","type":"string","label":"ปีที่เริ่มคบ","default":"est. 2022","maxLength":16},
+    {"id":"since","type":"string","label":"วันที่เริ่มต้น","default":"ตั้งแต่ 14 มิถุนายน 2565","maxLength":40},
+    {"id":"days","type":"number","label":"จำนวนวันที่อยู่ด้วยกัน","default":1601,"min":0,"max":40000,"step":1},
+    {"id":"cap1","type":"string","label":"คำบรรยายรูป 1","default":"ร้านกาแฟร้านแรก","maxLength":30},
+    {"id":"date1","type":"string","label":"วันที่รูป 1","default":"14 มิถุนายน 2565","maxLength":30},
+    {"id":"cap2","type":"string","label":"คำบรรยายรูป 2","default":"ทะเลครั้งแรกของเรา","maxLength":30},
+    {"id":"date2","type":"string","label":"วันที่รูป 2","default":"20 สิงหาคม 2565","maxLength":30},
+    {"id":"cap3","type":"string","label":"คำบรรยายรูป 3","default":"ชิงช้าสวรรค์คืนนั้น","maxLength":30},
+    {"id":"date3","type":"string","label":"วันที่รูป 3","default":"31 ธันวาคม 2565","maxLength":30},
+    {"id":"cap4","type":"string","label":"คำบรรยายรูป 4","default":"ปิกนิกวันหยุด","maxLength":30},
+    {"id":"date4","type":"string","label":"วันที่รูป 4","default":"12 มีนาคม 2566","maxLength":30},
+    {"id":"cap5","type":"string","label":"คำบรรยายรูป 5","default":"หิมะแรกด้วยกัน","maxLength":30},
+    {"id":"date5","type":"string","label":"วันที่รูป 5","default":"18 ธันวาคม 2566","maxLength":30},
+    {"id":"photo1","type":"string","label":"รูป 1","default":"assets/photos/cafe.jpg"},
+    {"id":"photo2","type":"string","label":"รูป 2","default":"assets/photos/beach.jpg"},
+    {"id":"photo3","type":"string","label":"รูป 3","default":"assets/photos/wheel.jpg"},
+    {"id":"photo4","type":"string","label":"รูป 4","default":"assets/photos/picnic.jpg"},
+    {"id":"photo5","type":"string","label":"รูป 5","default":"assets/photos/snow.jpg"},
+    {"id":"line1","type":"string","label":"จดหมาย บรรทัด 1","default":"ขอบคุณที่อยู่ข้างกันในวันธรรมดา","maxLength":40},
+    {"id":"line2","type":"string","label":"จดหมาย บรรทัด 2","default":"และจับมือกันแน่นในวันที่ไม่ง่าย","maxLength":40},
+    {"id":"line3","type":"string","label":"จดหมาย บรรทัด 3","default":"ทุกความทรงจำในนี้ มีเธออยู่เสมอ","maxLength":40},
+    {"id":"line4","type":"string","label":"จดหมาย บรรทัด 4","default":"ปีหน้า… ไปสร้างเรื่องใหม่ด้วยกันนะ","maxLength":40},
+    {"id":"wish","type":"string","label":"คำอวยพรตอนจบ","default":"สุขสันต์วันครบรอบนะ","maxLength":30}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/lib/gsap.min.js"></script>
+    <style>
+      /* Our Story palette (themes/anniversary-journey), sized for a 1080×1920 film. */
+      @font-face { font-family: "Mali"; font-weight: 400; src: url("assets/fonts/mali-thai-400-normal.woff2") format("woff2"); unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC; }
+      @font-face { font-family: "Mali"; font-weight: 400; src: url("assets/fonts/mali-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+2190-21FF, U+2600-27BF; }
+      @font-face { font-family: "Mali"; font-weight: 500; src: url("assets/fonts/mali-thai-500-normal.woff2") format("woff2"); unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC; }
+      @font-face { font-family: "Mali"; font-weight: 500; src: url("assets/fonts/mali-latin-500-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+2190-21FF, U+2600-27BF; }
+      @font-face { font-family: "Sarabun"; font-weight: 300; src: url("assets/fonts/sarabun-thai-300-normal.woff2") format("woff2"); unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC; }
+      @font-face { font-family: "Sarabun"; font-weight: 300; src: url("assets/fonts/sarabun-latin-300-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+2000-206F; }
+      @font-face { font-family: "Sarabun"; font-weight: 400; src: url("assets/fonts/sarabun-thai-400-normal.woff2") format("woff2"); unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC; }
+      @font-face { font-family: "Sarabun"; font-weight: 400; src: url("assets/fonts/sarabun-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+2000-206F; }
+      @font-face { font-family: "Cormorant Garamond"; font-weight: 500; font-style: normal; src: url("assets/fonts/cormorant-garamond-latin-500-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Cormorant Garamond"; font-weight: 500; font-style: italic; src: url("assets/fonts/cormorant-garamond-latin-500-italic.woff2") format("woff2"); }
+      @font-face { font-family: "Cormorant Garamond"; font-weight: 400; font-style: italic; src: url("assets/fonts/cormorant-garamond-latin-400-italic.woff2") format("woff2"); }
+
+      :root {
+        --paper: #f3eee2;
+        --paper-deep: #e6dfcc;
+        --ink: #45493a;
+        --olive: #5b6547;
+        --sage: #6b7657;
+        --rose: #a8705d;
+        --display: "Cormorant Garamond", serif;
+        --hand: "Mali", "Sarabun", cursive;
+        --body: "Sarabun", sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--paper); }
+      #root { width: 100%; height: 100%; position: relative; color: var(--ink); font-family: var(--body); }
+
+      /* persistent ground */
+      #ground { position: absolute; inset: 0; z-index: 0; }
+      #ground .paper { position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 0%, #faf6ec 0%, var(--paper) 55%, var(--paper-deep) 100%); }
+
+      .scene { position: absolute; inset: 0; z-index: 2; }
+      .center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 34px; padding: 0 90px; }
+
+      .eyebrow { font-family: var(--display); font-style: italic; font-weight: 500; letter-spacing: 0.04em; color: var(--sage); font-size: 46px; }
+      .title-th { font-family: var(--body); font-weight: 400; font-size: 60px; line-height: 1.55; color: var(--ink); }
+      .title-th span { display: inline-block; }
+      .small { font-size: 42px; color: #686a58; font-weight: 400; }
+      .names { font-family: var(--hand); font-weight: 500; font-size: 112px; color: var(--olive); line-height: 1.35; white-space: nowrap; }
+      .amp { font-family: var(--display); font-style: italic; color: var(--rose); padding: 0 0.15em; }
+      .date { font-family: var(--display); font-style: italic; font-weight: 500; font-size: 50px; color: var(--rose); }
+      .date-th { font-family: var(--body); font-style: normal; font-weight: 300; font-size: 44px; color: var(--rose); }
+
+      /* cover */
+      #cover-cam { position: absolute; left: 50%; top: 50%; width: 700px; height: 940px; margin: -540px 0 0 -350px; perspective: 2600px; }
+      .book-page { position: absolute; inset: 0; border-radius: 10px 26px 26px 10px; background: #fffdf6; box-shadow: 0 40px 90px rgba(70, 60, 30, 0.28); padding: 110px 80px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+      .book-page .eyebrow { font-size: 40px; }
+      #cover-lid { position: absolute; inset: 0; border-radius: 10px 26px 26px 10px; background: linear-gradient(135deg, #dcd6bd, #cfc7a8); box-shadow: inset 24px 0 0 #c3b994; padding: 70px 60px 60px 86px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; transform-origin: 0% 50%; backface-visibility: hidden; }
+      #cover-lid .ribbon { position: absolute; right: 40px; top: 0; bottom: 0; width: 16px; background: #8a9470; }
+      #cover-lid h1 { font-family: var(--display); font-style: italic; font-weight: 500; font-size: 150px; line-height: 0.88; color: var(--olive); }
+      #cover-lid .for { font-family: var(--display); font-style: italic; color: #6f6c53; font-size: 42px; line-height: 1.5; }
+      #cover-lid .for b { font-family: var(--hand); font-weight: 500; font-style: normal; color: var(--ink); font-size: 48px; }
+      #cover-hint { position: absolute; left: 0; right: 0; top: 1500px; text-align: center; }
+
+      /* counter */
+      .ring-wrap { position: relative; width: 600px; height: 600px; display: grid; place-items: center; }
+      .ring-wrap svg { position: absolute; inset: 0; }
+      .counter { font-family: var(--display); font-weight: 500; font-size: 220px; line-height: 1; color: var(--olive); font-variant-numeric: lining-nums tabular-nums; }
+
+      /* polaroid moments */
+      .moment .date-th { position: absolute; left: 0; right: 0; top: 290px; text-align: center; font-size: 50px; }
+      .pol { position: absolute; left: 50%; top: 420px; width: 800px; margin-left: -400px; background: #fffdf7; padding: 28px 28px 130px; box-shadow: 0 34px 80px rgba(60, 50, 30, 0.26); }
+      .pol .frame { overflow: hidden; width: 744px; height: 893px; background: #ddd; }
+      .pol .frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+      .pol .cap { position: absolute; left: 0; right: 0; bottom: 34px; font-family: var(--hand); font-weight: 400; font-size: 52px; color: var(--ink); text-align: center; }
+      .pol .tape { position: absolute; top: -28px; left: 50%; width: 270px; height: 62px; margin-left: -135px; background: rgba(205, 200, 170, 0.78); }
+
+      /* film strip */
+      .strip { position: absolute; left: 0; right: 0; top: 640px; height: 640px; overflow: hidden; }
+      .strip-track { position: absolute; top: 0; bottom: 0; left: 0; width: 5200px; display: flex; gap: 24px; padding: 52px 24px; background: #2e2b25; }
+      .strip-track .holes { position: absolute; left: 0; right: 0; height: 22px; background: repeating-linear-gradient(90deg, transparent 0 18px, #e9e2cf 18px 38px, transparent 38px 60px); opacity: 0.8; }
+      .strip-track img { height: 536px; width: 446px; object-fit: cover; display: block; flex: none; }
+      #strip-eyebrow { position: absolute; left: 0; right: 0; top: 470px; text-align: center; }
+      #strip-line { position: absolute; left: 0; right: 0; top: 1370px; text-align: center; }
+
+      /* letter */
+      .letter { position: absolute; left: 70px; right: 70px; top: 520px; height: 820px; background: #fffdf6; padding: 80px 70px; box-shadow: 0 26px 70px rgba(60, 50, 30, 0.2); background-image: repeating-linear-gradient(transparent 0 103px, #e5dcc6 103px 105px); background-position: 0 70px; line-height: 105px; font-size: 46px; font-weight: 400; }
+      .letter p { white-space: nowrap; }
+      .letter .hi, .letter .sign { font-family: var(--hand); font-weight: 500; color: var(--olive); font-size: 56px; }
+      .letter .sign { text-align: right; }
+
+      /* collage */
+      .collage { position: absolute; left: 0; right: 0; top: 260px; height: 1180px; }
+      .collage .pol { width: 400px; margin-left: -200px; padding: 16px 16px 66px; top: 380px; }
+      .collage .pol .frame { width: 368px; height: 442px; }
+      .collage .pol .cap { font-size: 32px; bottom: 14px; }
+      #collage-line { position: absolute; left: 0; right: 0; top: 1500px; text-align: center; }
+
+      /* overlays */
+      .overlay { position: absolute; inset: 0; pointer-events: none; }
+      #fx-dust { z-index: 7; }
+      #fx-dust i { position: absolute; border-radius: 50%; background: #fff6dc; }
+      #fx-leak { z-index: 8; }
+      #leak-glow { position: absolute; left: -20%; top: -20%; width: 140%; height: 140%; background: radial-gradient(40% 35% at 15% 20%, rgba(255, 190, 140, 0.55), transparent 70%), radial-gradient(35% 30% at 85% 75%, rgba(255, 160, 170, 0.42), transparent 70%); }
+      #fx-grain { z-index: 9; }
+      #grain-tex { position: absolute; inset: 0; background: url("assets/tex/grain.png"); background-size: 256px 256px; opacity: 0.06; mix-blend-mode: multiply; image-rendering: pixelated; }
+      #fx-vignette { z-index: 10; background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(70, 60, 40, 0.2) 100%); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="66" data-fps="30" data-width="1080" data-height="1920">
+      <!-- ground: the paper never cuts -->
+      <div id="ground" class="clip" data-start="0" data-duration="66" data-track-index="0" data-track-kind="graphics"><div class="paper"></div></div>
+
+      <!-- 1 · cover: the book is on screen at frame 0, then opens and the camera falls into its first page -->
+      <div id="s-cover" class="scene clip" data-start="0" data-duration="5" data-track-index="1" data-track-kind="graphics" data-layout-allow-overflow>
+        <div id="cover-cam">
+          <div class="book-page" id="cover-page">
+            <p class="eyebrow">chapter 01</p>
+            <p class="eyebrow" style="color: var(--rose)">the beginning</p>
+          </div>
+          <div id="cover-lid">
+            <span class="ribbon"></span>
+            <div><p class="eyebrow" style="font-size: 40px; color: #6f6c53"><span data-var-text="est">est. 2022</span> · vol. 01</p><h1>our<br />story.</h1></div>
+            <p class="for">a little film for <b data-var-text="her">มิ้นท์</b><br />with love, <b data-var-text="him">ต้น</b></p>
+          </div>
+        </div>
+        <p id="cover-hint" class="small">หนังสั้นของเรา ♪</p>
+      </div>
+
+      <!-- 2 · chapter line -->
+      <div id="s-chapter" class="scene clip" data-start="5" data-duration="4" data-track-index="1" data-track-kind="graphics">
+        <div class="center">
+          <p class="eyebrow" id="ch-eyebrow">chapter 01 — the beginning</p>
+          <p class="title-th" id="ch-line"><span>เรื่องราวดี ๆ</span><br /><span>มักเริ่มจาก</span><span>วันธรรมดา</span><span>วันหนึ่ง</span></p>
+        </div>
+      </div>
+
+      <!-- 3 · names written by hand -->
+      <div id="s-names" class="scene clip" data-start="9" data-duration="4.4" data-track-index="1" data-track-kind="graphics">
+        <div class="center">
+          <p class="names" id="names-line"><span data-var-text="her">มิ้นท์</span><span class="amp">&amp;</span><span data-var-text="him">ต้น</span></p>
+          <p class="date-th" id="names-since" data-var-text="since">ตั้งแต่ 14 มิถุนายน 2565</p>
+        </div>
+      </div>
+
+      <!-- 4 · days together -->
+      <div id="s-count" class="scene clip" data-start="13.4" data-duration="5" data-track-index="1" data-track-kind="graphics">
+        <div class="center">
+          <p class="small" id="count-pre">เราเดินมาด้วยกันแล้ว</p>
+          <div class="ring-wrap" id="count-ring">
+            <svg viewBox="0 0 600 600"><circle id="ring-line" cx="300" cy="300" r="290" fill="none" stroke="#9aa588" stroke-width="3" stroke-dasharray="1822" stroke-dashoffset="1822" transform="rotate(-96 300 300)" /></svg>
+            <div class="counter" id="count-num">0</div>
+          </div>
+          <p class="eyebrow" id="count-post">days… and counting</p>
+        </div>
+      </div>
+
+      <!-- 5–9 · five moments -->
+      <div id="s-m1" class="scene moment clip" data-start="18.4" data-duration="4.4" data-track-index="1" data-track-kind="graphics" data-layout-allow-overflow>
+        <p class="date-th" id="m1-date" data-var-text="date1">14 มิถุนายน 2565</p>
+        <figure class="pol" id="m1-pol"><span class="tape"></span><div class="frame"><img id="m1-img" src="assets/photos/cafe.jpg" data-var-src="photo1" alt="" /></div><figcaption class="cap" id="m1-cap" data-var-text="cap1">ร้านกาแฟร้านแรก</figcaption></figure>
+      </div>
+      <div id="s-m2" class="scene moment clip" data-start="22.8" data-duration="4.4" data-track-index="1" data-track-kind="graphics" data-layout-allow-overflow>
+        <p class="date-th" id="m2-date" data-var-text="date2">20 สิงหาคม 2565</p>
+        <figure class="pol" id="m2-pol"><span class="tape"></span><div class="frame"><img id="m2-img" src="assets/photos/beach.jpg" data-var-src="photo2" alt="" /></div><figcaption class="cap" id="m2-cap" data-var-text="cap2">ทะเลครั้งแรกของเรา</figcaption></figure>
+      </div>
+      <div id="s-m3" class="scene moment clip" data-start="27.2" data-duration="4.4" data-track-index="1" data-track-kind="graphics" data-layout-allow-overflow>
+        <p class="date-th" id="m3-date" data-var-text="date3">31 ธันวาคม 2565</p>
+        <figure class="pol" id="m3-pol"><span class="tape"></span><div class="frame"><img id="m3-img" src="assets/photos/wheel.jpg" data-var-src="photo3" alt="" /></div><figcaption class="cap" id="m3-cap" data-var-text="cap3">ชิงช้าสวรรค์คืนนั้น</figcaption></figure>
+      </div>
+      <div id="s-m4" class="scene moment clip" data-start="31.6" data-duration="4.4" data-track-index="1" data-track-kind="graphics" data-layout-allow-overflow>
+        <p class="date-th" id="m4-date" data-var-text="date4">12 มีนาคม 2566</p>
+        <figure class="pol" id="m4-pol"><span class="tape"></span><div class="frame"><img id="m4-img" src="assets/photos/picnic.jpg" data-var-src="photo4" alt="" /></div><figcaption class="cap" id="m4-cap" data-var-text="cap4">ปิกนิกวันหยุด</figcaption></figure>
+      </div>
+      <div id="s-m5" class="scene moment clip" data-start="36" data-duration="4.4" data-track-index="1" data-track-kind="graphics" data-layout-allow-overflow>
+        <p class="date-th" id="m5-date" data-var-text="date5">18 ธันวาคม 2566</p>
+        <figure class="pol" id="m5-pol"><span class="tape"></span><div class="frame"><img id="m5-img" src="assets/photos/snow.jpg" data-var-src="photo5" alt="" /></div><figcaption class="cap" id="m5-cap" data-var-text="cap5">หิมะแรกด้วยกัน</figcaption></figure>
+      </div>
+
+      <!-- 10 · film strip -->
+      <div id="s-strip" class="scene clip" data-start="40.4" data-duration="6" data-track-index="1" data-track-kind="graphics" data-layout-allow-overflow>
+        <p class="eyebrow" id="strip-eyebrow">every little moment</p>
+        <div class="strip" id="strip-box">
+          <div class="strip-track" id="strip-track">
+            <span class="holes" style="top: 14px"></span><span class="holes" style="bottom: 14px"></span>
+            <img src="assets/photos/cafe.jpg" data-var-src="photo1" alt="" /><img src="assets/photos/beach.jpg" data-var-src="photo2" alt="" /><img src="assets/photos/wheel.jpg" data-var-src="photo3" alt="" /><img src="assets/photos/picnic.jpg" data-var-src="photo4" alt="" /><img src="assets/photos/snow.jpg" data-var-src="photo5" alt="" />
+            <img src="assets/photos/cafe.jpg" data-var-src="photo1" alt="" /><img src="assets/photos/beach.jpg" data-var-src="photo2" alt="" /><img src="assets/photos/wheel.jpg" data-var-src="photo3" alt="" /><img src="assets/photos/picnic.jpg" data-var-src="photo4" alt="" /><img src="assets/photos/snow.jpg" data-var-src="photo5" alt="" />
+          </div>
+        </div>
+        <p class="title-th" id="strip-line">ทุกช่วงเวลาเล็ก ๆ ที่มีเธอ</p>
+      </div>
+
+      <!-- 11 · the letter -->
+      <div id="s-letter" class="scene clip" data-start="46.4" data-duration="9.2" data-track-index="1" data-track-kind="graphics">
+        <div class="letter" id="letter-sheet">
+          <p class="hi" id="ln0">ถึง<span data-var-text="her">มิ้นท์</span>,</p>
+          <p id="ln1" data-var-text="line1">ขอบคุณที่อยู่ข้างกันในวันธรรมดา</p>
+          <p id="ln2" data-var-text="line2">และจับมือกันแน่นในวันที่ไม่ง่าย</p>
+          <p id="ln3" data-var-text="line3">ทุกความทรงจำในนี้ มีเธออยู่เสมอ</p>
+          <p id="ln4" data-var-text="line4">ปีหน้า… ไปสร้างเรื่องใหม่ด้วยกันนะ</p>
+          <p class="sign" id="ln5">— <span data-var-text="him">ต้น</span></p>
+        </div>
+      </div>
+
+      <!-- 12 · collage -->
+      <div id="s-collage" class="scene clip" data-start="55.6" data-duration="5.4" data-track-index="1" data-track-kind="graphics" data-layout-allow-overflow data-layout-allow-overlap>
+        <div class="collage" id="collage-cam">
+          <figure class="pol" id="c1"><div class="frame"><img src="assets/photos/cafe.jpg" data-var-src="photo1" alt="" /></div><figcaption class="cap" data-var-text="cap1">ร้านกาแฟร้านแรก</figcaption></figure>
+          <figure class="pol" id="c2"><div class="frame"><img src="assets/photos/beach.jpg" data-var-src="photo2" alt="" /></div><figcaption class="cap" data-var-text="cap2">ทะเลครั้งแรกของเรา</figcaption></figure>
+          <figure class="pol" id="c3"><div class="frame"><img src="assets/photos/wheel.jpg" data-var-src="photo3" alt="" /></div><figcaption class="cap" data-var-text="cap3">ชิงช้าสวรรค์คืนนั้น</figcaption></figure>
+          <figure class="pol" id="c4"><div class="frame"><img src="assets/photos/picnic.jpg" data-var-src="photo4" alt="" /></div><figcaption class="cap" data-var-text="cap4">ปิกนิกวันหยุด</figcaption></figure>
+          <figure class="pol" id="c5"><div class="frame"><img src="assets/photos/snow.jpg" data-var-src="photo5" alt="" /></div><figcaption class="cap" data-var-text="cap5">หิมะแรกด้วยกัน</figcaption></figure>
+        </div>
+        <p class="title-th" id="collage-line">และเรื่องของเรา…</p>
+      </div>
+
+      <!-- 13 · end card -->
+      <div id="s-end" class="scene clip" data-start="61" data-duration="5" data-track-index="1" data-track-kind="graphics">
+        <div class="center">
+          <p class="eyebrow" id="end-eyebrow">to be continued, together.</p>
+          <p class="names" id="end-names"><span data-var-text="him">ต้น</span> <span id="end-heart" style="display: inline-block; color: var(--rose)">♡</span> <span data-var-text="her">มิ้นท์</span></p>
+          <p class="small" id="end-wish" data-var-text="wish">สุขสันต์วันครบรอบนะ</p>
+        </div>
+      </div>
+
+      <!-- atmosphere over everything -->
+      <div id="fx-dust" class="overlay clip" data-start="0" data-duration="66" data-track-index="2" data-track-kind="graphics" data-layout-ignore><div id="dust-field"></div></div>
+      <div id="fx-leak" class="overlay clip" data-start="0" data-duration="66" data-track-index="3" data-track-kind="graphics" data-layout-ignore><div id="leak-glow"></div></div>
+      <div id="fx-grain" class="overlay clip" data-start="0" data-duration="66" data-track-index="4" data-track-kind="graphics" data-layout-ignore><div id="grain-tex"></div></div>
+      <div id="fx-vignette" class="overlay clip" data-start="0" data-duration="66" data-track-index="5" data-track-kind="graphics" data-layout-ignore></div>
+
+      <audio id="music" class="clip" src="assets/audio/music-box.m4a" data-start="0" data-duration="66" data-track-index="6" data-volume="1"></audio>
+    </div>
+
+    <script>
+      (function () {
+        const vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};
+        const DAYS = Number.isFinite(Number(vars.days)) ? Math.max(0, Math.round(Number(vars.days))) : 1601;
+
+        // seeded PRNG: every frame is a function of time alone
+        let seed = 61414;
+        const rand = () => { seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+
+        const tl = gsap.timeline({ paused: true });
+        const blurIn = (sel, at, dur = 0.9, from = 10) => tl.fromTo(sel, { opacity: 0, filter: `blur(${from}px)` }, { opacity: 1, filter: "blur(0px)", duration: dur, ease: "power3.out" }, at);
+        const blurOut = (sel, at, dur = 0.35) => tl.to(sel, { opacity: 0, filter: "blur(8px)", duration: dur, ease: "power2.in" }, at);
+        const leak = (at) => tl.fromTo("#leak-glow", { opacity: 0, x: -90 }, { keyframes: [{ opacity: 0.85, x: -20, duration: 0.6, ease: "power2.out" }, { opacity: 0, x: 90, duration: 1.4, ease: "power1.in" }] }, at);
+
+        /* 1 · cover (0–5) — the book is already there at frame 0 */
+        tl.fromTo("#cover-cam", { y: 26, scale: 0.97 }, { y: 0, scale: 1, duration: 2.2, ease: "power2.out" }, 0);
+        tl.fromTo("#cover-hint", { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power2.out" }, 0.5);
+        blurOut("#cover-hint", 2.4, 0.3);
+        tl.fromTo("#cover-lid", { rotationY: 0 }, { rotationY: -168, duration: 1.5, ease: "power2.inOut" }, 2.5);
+        // the camera falls into the first page: the page becomes the world
+        tl.fromTo("#cover-cam", { scale: 1, y: 0 }, { scale: 3.4, y: 160, duration: 1.0, ease: "power3.in", immediateRender: false }, 3.9);
+        tl.to("#cover-page", { opacity: 0, duration: 0.25, ease: "power1.in" }, 4.7);
+
+        /* 2 · chapter (5–9) */
+        blurIn("#ch-eyebrow", 5.0, 0.6, 8);
+        tl.fromTo("#ch-line span", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.5, ease: "power3.out", stagger: 0.32 }, 5.5);
+        blurOut("#s-chapter .center", 8.6);
+
+        /* 3 · names (9–13.4) — written left to right like a pen */
+        tl.fromTo("#names-line", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% -4% 0% 0%)", duration: 2.0, ease: "power2.inOut" }, 9.3);
+        tl.fromTo("#names-line", { y: 18 }, { y: 0, duration: 2.0, ease: "power2.out" }, 9.3);
+        blurIn("#names-since", 10.9, 0.8, 8);
+        blurOut("#s-names .center", 13.0);
+
+        /* 4 · counter (13.4–18.4) */
+        blurIn("#count-pre", 13.5, 0.6, 8);
+        tl.fromTo("#count-ring", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.9, ease: "expo.out" }, 13.8);
+        tl.fromTo("#ring-line", { strokeDashoffset: 1822 }, { strokeDashoffset: 0, duration: 2.8, ease: "power2.inOut" }, 13.9);
+        const counter = { v: 0 };
+        const num = document.getElementById("count-num");
+        tl.fromTo(counter, { v: 0 }, { v: DAYS, duration: 2.6, ease: "power3.out", onUpdate: () => { num.textContent = Math.round(counter.v).toLocaleString("en-US"); } }, 14.1);
+        blurIn("#count-post", 16.3, 0.6, 8);
+        blurOut("#s-count .center", 18.0);
+
+        /* 5–9 · moments — each polaroid arrives its own way, the photo drifts inside, the caption is typed */
+        const moments = [
+          { at: 18.4, rot: -3, kb: [4, -3], from: { y: -1200, rotation: -16 }, out: { x: -1250, rotation: -18 } },
+          { at: 22.8, rot: 2.5, kb: [-5, 2], from: { x: -1250, rotation: 12 }, out: { y: 1500, rotation: 8 } },
+          { at: 27.2, rot: -2, kb: [3, 4], from: { rotationY: -85, transformPerspective: 2200 }, out: { x: 1250, rotation: 16 } },
+          { at: 31.6, rot: 3, kb: [-4, -2], from: { y: 1500, rotation: -6 }, out: { y: -1500, rotation: -10 } },
+          { at: 36.0, rot: -1.5, kb: [2, -4], from: { scale: 1.5, opacity: 0 }, out: { scale: 0.6, y: -260, opacity: 0 } },
+        ];
+        moments.forEach((m, i) => {
+          const n = i + 1, a = m.at;
+          blurIn(`#m${n}-date`, a + 0.15, 0.7, 8);
+          tl.fromTo(`#m${n}-pol`, { x: 0, y: 0, scale: 1, opacity: 1, rotationY: 0, ...m.from }, { x: 0, y: 0, scale: 1, opacity: 1, rotationY: 0, rotation: m.rot, duration: 1.15, ease: "expo.out" }, a + 0.05);
+          tl.fromTo(`#m${n}-img`, { scale: 1.24, xPercent: m.kb[0], yPercent: m.kb[1] }, { scale: 1.02, xPercent: 0, yPercent: 0, duration: 4.3, ease: "sine.out" }, a);
+          tl.fromTo(`#m${n}-cap`, { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "steps(16)" }, a + 1.2);
+          // leave in one clean move, faster than the arrival
+          tl.to(`#m${n}-pol`, { ...m.out, duration: 0.5, ease: "power3.in" }, a + 3.85);
+          blurOut(`#m${n}-date`, a + 3.85, 0.3);
+          leak(a - 0.2);
+        });
+
+        /* 10 · film strip (40.4–46.4) */
+        blurIn("#strip-eyebrow", 40.6, 0.7, 8);
+        tl.fromTo("#strip-box", { opacity: 0, scaleY: 0.2 }, { opacity: 1, scaleY: 1, duration: 0.7, ease: "expo.out" }, 40.45);
+        tl.fromTo("#strip-track", { x: 0 }, { x: -2350, duration: 6, ease: "none" }, 40.4);
+        blurIn("#strip-line", 41.8, 0.8, 8);
+        tl.to("#strip-box", { scaleY: 0, opacity: 0, duration: 0.4, ease: "power3.in" }, 45.95);
+        blurOut("#strip-eyebrow, #strip-line", 45.95, 0.3);
+
+        /* 11 · letter (46.4–55.6) — the sheet slides up, each line is written in */
+        tl.fromTo("#letter-sheet", { y: 1300, rotation: 2 }, { y: 0, rotation: 0, duration: 1.1, ease: "expo.out" }, 46.4);
+        ["#ln0", "#ln1", "#ln2", "#ln3", "#ln4", "#ln5"].forEach((sel, i) => {
+          tl.fromTo(sel, { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% -2% 0% 0%)", duration: i === 0 || i === 5 ? 0.9 : 1.15, ease: "power1.inOut" }, 47.3 + i * 1.25);
+        });
+        tl.to("#letter-sheet", { y: -60, scale: 0.94, opacity: 0, filter: "blur(6px)", duration: 0.45, ease: "power3.in" }, 55.1);
+
+        /* 12 · collage (55.6–61) */
+        const spots = [[-230, -330, -8], [220, -280, 6], [-215, 260, 5], [235, 300, -7], [0, -10, -2]];
+        spots.forEach(([x, y, r], i) => {
+          tl.fromTo(`#c${i + 1}`, { x: 0, y: 700, scale: 0.6, rotation: 0, opacity: 0 }, { x, y, scale: 1, rotation: r, opacity: 1, duration: 1.2, ease: "expo.out" }, 55.75 + i * 0.22);
+        });
+        tl.fromTo("#collage-cam", { scale: 1.16 }, { scale: 0.96, duration: 5.2, ease: "power2.out" }, 55.6);
+        blurIn("#collage-line", 57.6, 0.8, 8);
+        blurOut("#collage-cam, #collage-line", 60.6, 0.35);
+        leak(55.4);
+
+        /* 13 · end (61–66) */
+        blurIn("#end-eyebrow", 61.1, 0.7, 8);
+        tl.fromTo("#end-names", { opacity: 0, filter: "blur(10px)", y: 14 }, { opacity: 1, filter: "blur(0px)", y: 0, duration: 1.0, ease: "power3.out" }, 61.6);
+        tl.fromTo("#end-heart", { scale: 1 }, { keyframes: [{ scale: 1.2, duration: 0.18, ease: "power2.out" }, { scale: 1, duration: 0.22, ease: "power2.in" }, { scale: 1.12, duration: 0.18, ease: "power2.out" }, { scale: 1, duration: 0.4, ease: "power2.in" }], repeat: 2, repeatDelay: 0.25 }, 62.4);
+        blurIn("#end-wish", 62.5, 0.8, 8);
+
+        /* atmosphere — dust drifts up, grain flickers, all driven by the timeline */
+        const field = document.getElementById("dust-field");
+        for (let i = 0; i < 30; i++) {
+          const d = document.createElement("i");
+          const r = 3 + rand() * 6;
+          d.style.cssText = `left:${(rand() * 1080).toFixed(0)}px;top:${(rand() * 1920).toFixed(0)}px;width:${r.toFixed(1)}px;height:${r.toFixed(1)}px;opacity:${(0.15 + rand() * 0.45).toFixed(2)}`;
+          field.appendChild(d);
+          tl.fromTo(d, { y: 0, x: 0 }, { y: -(220 + rand() * 420), x: (rand() - 0.5) * 80, duration: 66, ease: "none" }, 0);
+        }
+        tl.fromTo("#grain-tex", { backgroundPosition: "0px 0px" }, { backgroundPosition: "32010px 21450px", duration: 66, ease: "steps(330)" }, 0);
+        tl.fromTo("#fx-leak", { opacity: 1 }, { opacity: 1, duration: 0.01 }, 0);
+
+        window.__timelines["main"] = tl;
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-02T11:30:16.440Z",
+  "records": [
+    {
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "errors": [],
+      "overflow": false
+    },
+    {
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "errors": [],
+      "overflow": false
+    }
+  ]
+}

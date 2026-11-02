@@ -1,38 +1,37 @@
 {
   "date": "2026-11-02",
-  "summary": "350/350 checks ผ่าน · Polaroid ใหม่4ช่วง · อีก11แบบผ่าน regression",
-  "implementationCommit": "54403fe401a54a21bd963e18ef3530e404495062",
-  "sourceSnapshotSha256": "fbe274b4a54b01923cc2745b780fe77329bd1eec8d689f4eef0ab0d8c35de9ce",
+  "summary": "Polaroid รอบความคิดถึง: 40/40 checks ผ่าน · ขอบเขตเฉพาะ Polaroid",
+  "implementationCommit": "462ad67246794225eebc7b1065809284cedc90bd",
   "projects": {
     "360": {
-      "passed": 70,
+      "passed": 8,
       "failed": 0,
       "skipped": 0
     },
     "390": {
-      "passed": 70,
+      "passed": 8,
       "failed": 0,
       "skipped": 0
     },
     "768": {
-      "passed": 70,
+      "passed": 8,
       "failed": 0,
       "skipped": 0
     },
     "desktop": {
-      "passed": 70,
+      "passed": 8,
       "failed": 0,
       "skipped": 0
     },
     "webkit": {
-      "passed": 70,
+      "passed": 8,
       "failed": 0,
       "skipped": 0
     }
   },
   "physicalDevicesVerified": false,
   "customerThemesEnabled": false,
-  "reviewScope": "Polaroid full visual/experience review plus F1 fix closure",
+  "reviewScope": "Targeted Polaroid interaction, Axe and screenshots; full regression/release results in the follow-up PR",
   "pacingTarget": {
     "template": "polaroid",
     "minutes": [
@@ -40,11 +39,5 @@
       5
     ],
     "measuredHumanSessions": false
-  },
-  "nestedRouteChecks": {
-    "passed": 56,
-    "failed": 0,
-    "skipped": 0,
-    "flaky": 0
   }
 }

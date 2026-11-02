@@ -1,0 +1,103 @@
+{
+  "kind": "Actual settled browser screenshots, synthetic developer content; no mockups or customer data",
+  "files": [
+    {
+      "file": "capsule-long-name-desktop.png",
+      "width": 1280,
+      "height": 900,
+      "sha256": "09d33c5965bd1e2ccfef2d35d1ada7b5afb7d18aacbb83825cc27f898b7eecd5",
+      "sourceCommit": "9991e805232ce7d1bd53f563082dca29e761e6bb"
+    },
+    {
+      "file": "capsule-long-name-mobile.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "13ac3ae45fe375ea51c907c0ec6384503d097cb5913f94414b23bac827ac9a87",
+      "sourceCommit": "9991e805232ce7d1bd53f563082dca29e761e6bb"
+    },
+    {
+      "file": "diary-entry-1-desktop.png",
+      "width": 1280,
+      "height": 1356,
+      "sha256": "e829668ea7b82b72f87527f56ed5d13b7b8862e25d08347b5cc52ab1c10173b3",
+      "sourceCommit": "9991e805232ce7d1bd53f563082dca29e761e6bb"
+    },
+    {
+      "file": "diary-entry-1-mobile.png",
+      "width": 390,
+      "height": 1316,
+      "sha256": "09117c0fab634b73e3ac3edc089d6b388dcbdf8b988efc605a1187c77a079a78",
+      "sourceCommit": "9991e805232ce7d1bd53f563082dca29e761e6bb"
+    },
+    {
+      "file": "diary-entry-2-desktop.png",
+      "width": 1280,
+      "height": 1356,
+      "sha256": "9285c22a3260f7257f1ec48846160f9def131752a8f3f10140f362d5d65f83da",
+      "sourceCommit": "9991e805232ce7d1bd53f563082dca29e761e6bb"
+    },
+    {
+      "file": "diary-entry-2-mobile.png",
+      "width": 390,
+      "height": 1263,
+      "sha256": "9296ccd9222bc7c2fe0ba88a2993632a060e6b4b21518c7f17611ae14530bf1e",
+      "sourceCommit": "9991e805232ce7d1bd53f563082dca29e761e6bb"
+    },
+    {
+      "file": "diary-entry-3-desktop.png",
+      "width": 1280,
+      "height": 1627,
+      "sha256": "9b3af7e2fb3719859e3100a4aeeba7030a188613bc599320eae1008686438398",
+      "sourceCommit": "9991e805232ce7d1bd53f563082dca29e761e6bb"
+    },
+    {
+      "file": "diary-entry-3-mobile.png",
+      "width": 390,
+      "height": 1288,
+      "sha256": "2b13a3abead0e91d1164b798ccf3c930ea41b636fd985c9a5b062c42603536c4",
+      "sourceCommit": "9991e805232ce7d1bd53f563082dca29e761e6bb"
+    },
+    {
+      "file": "diary-entry-4-desktop.png",
+      "width": 1280,
+      "height": 1676,
+      "sha256": "4373d06a3f64b1d12075366e815e00149ab46420ef09f657ac0b3ee92f2fa8cc",
+      "sourceCommit": "9991e805232ce7d1bd53f563082dca29e761e6bb"
+    },
+    {
+      "file": "diary-entry-4-mobile.png",
+      "width": 390,
+      "height": 1620,
+      "sha256": "326e7cfbfff9e6dbd302c6dd219786b3a43f23345c584ffcbc8335f1c9a7bff1",
+      "sourceCommit": "9991e805232ce7d1bd53f563082dca29e761e6bb"
+    },
+    {
+      "file": "diary-undated-desktop.png",
+      "width": 1280,
+      "height": 1628,
+      "sha256": "19510b3af60b12222c371d73157345ee81d0db6b11b802903ed5ae9136d85336",
+      "sourceCommit": "2f2c341d40acbe91ec6929b2f55c17c0750c0dd6"
+    },
+    {
+      "file": "diary-undated-mobile.png",
+      "width": 390,
+      "height": 1613,
+      "sha256": "6f748b49b97a2e25f6004e7d24a4f8693b8f19114804b78b369c1a25a0512fa3",
+      "sourceCommit": "2f2c341d40acbe91ec6929b2f55c17c0750c0dd6"
+    },
+    {
+      "file": "studio-desktop.png",
+      "width": 1280,
+      "height": 8966,
+      "sha256": "a74e48f6671c1fc33541eaec743fef16b3660ffc107182ae6994a094865e7f63",
+      "sourceCommit": "9991e805232ce7d1bd53f563082dca29e761e6bb"
+    },
+    {
+      "file": "studio-mobile.png",
+      "width": 390,
+      "height": 10620,
+      "sha256": "7533ee31111bf1db85dacbadad675600d6a9633d6e8ae8a4161238007a068981",
+      "sourceCommit": "9991e805232ce7d1bd53f563082dca29e761e6bb"
+    }
+  ]
+}

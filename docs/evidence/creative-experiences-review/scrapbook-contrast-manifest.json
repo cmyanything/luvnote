@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-02T06:36:35.174Z",
+  "captures": [
+    {
+      "file": "scrapbook-turn-2-mobile.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sourceCommit": "62d68e52346c4ac6c732611d1990e4acabc03c83",
+      "state": "Page-turn frozen at 0ms; text reveal finished for inspection",
+      "sha256": "75132869534179b21c6fd412a858bfd7d5dd76c2cd8a72ba8c8cfffdba1308a7"
+    },
+    {
+      "file": "scrapbook-turn-3-mobile.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sourceCommit": "62d68e52346c4ac6c732611d1990e4acabc03c83",
+      "state": "Page-turn frozen at 0ms; text reveal finished for inspection",
+      "sha256": "6df1d035f9974deeee4730f238cb53c96a7b8fa9f1313098a5ca677f95d84011"
+    },
+    {
+      "file": "scrapbook-turn-2-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "sourceCommit": "62d68e52346c4ac6c732611d1990e4acabc03c83",
+      "state": "Page-turn frozen at 0ms; text reveal finished for inspection",
+      "sha256": "adeaf3f5250c15174bb70aa17ccc950e391cf5f5e842a2ca9b0a88c828f48ffb"
+    },
+    {
+      "file": "scrapbook-turn-3-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "sourceCommit": "62d68e52346c4ac6c732611d1990e4acabc03c83",
+      "state": "Page-turn frozen at 0ms; text reveal finished for inspection",
+      "sha256": "c0c223361582f5540a0a2bbc4c48a2e74657c9a96b41f215edf6dae9196b4c14"
+    }
+  ]
+}

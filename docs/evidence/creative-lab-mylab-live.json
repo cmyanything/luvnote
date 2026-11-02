@@ -1,0 +1,346 @@
+{
+  "checkedAt": "2026-11-02T04:47:38.720Z",
+  "origin": "https://luvnote.fun",
+  "labPath": "/mylab/",
+  "authenticationSupplied": false,
+  "publishedCommit": "189ed52fa4269aaaea70e1f674637676a4829185",
+  "workflow": "https://github.com/cmyanything/luvnote/actions/runs/41389732278",
+  "sourceCommit": "c3567746b9657b055a702ac392fe7bcd71b8745f",
+  "routes": [
+    {
+      "path": "/mylab",
+      "status": 301,
+      "redirect": "https://luvnote.fun/mylab/"
+    },
+    {
+      "path": "/mylab/",
+      "status": 200,
+      "redirect": null
+    }
+  ],
+  "customerBaseline": [
+    {
+      "path": "CNAME",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "admin/index.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "app/index.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "assets/Movie-ChBPoml_.js",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "assets/Movie-XTKNR66R.css",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "assets/anniversary-card-C1lEMhvj.js",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "assets/anniversary-card-C_FVWsGe.css",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "assets/main-DT-9bCOm.js",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "assets/main-R7HSOh5u.css",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "assets/useModal-CRwibxRu.js",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "intro-preview.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "themes/anniversary-journey/card.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "themes/anniversary-journey/index.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "themes/birthday-chat/card.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "themes/birthday-chat/index.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "themes/coquette-dream/card.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "themes/coquette-dream/index.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "themes/little-memories/card.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "themes/little-memories/index.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "themes/pink-coquette/card.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "themes/pink-coquette/index.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "themes/velvet-gift/card.html",
+      "status": 200,
+      "sha256Matches": true
+    },
+    {
+      "path": "themes/velvet-gift/index.html",
+      "status": 200,
+      "sha256Matches": true
+    }
+  ],
+  "interactions": [
+    {
+      "id": "love-letter",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "id": "polaroid",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "id": "cinema",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "id": "stars",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "id": "garden",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "id": "capsule",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "id": "scrapbook",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "id": "world",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "id": "choose",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "id": "diary",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "id": "constellation",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "id": "surprise",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "id": "iframe/reset",
+      "viewport": 1280,
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "status": "PASS",
+  "deployment": {
+    "id": 7484493494,
+    "commit": "189ed52fa4269aaaea70e1f674637676a4829185",
+    "environment": "github-pages",
+    "workflowRun": 41389732278,
+    "workflowResult": "success"
+  },
+  "preMergeCi": {
+    "sourceCommit": "c3567746b9657b055a702ac392fe7bcd71b8745f",
+    "frontend": 41388885823,
+    "lab": [
+      41388885782,
+      41388882311
+    ],
+    "result": "success",
+    "publishedTreeMatchesTestedTree": true
+  },
+  "releaseArtifactComparison": {
+    "commit": "189ed52fa4269aaaea70e1f674637676a4829185",
+    "workflow": 41389732278,
+    "baselineCommit": "a8bc1f386c14f9e48f154573a010b17e07dc6901",
+    "files": [
+      {
+        "path": "CNAME",
+        "sha256Matches": true
+      },
+      {
+        "path": "admin/index.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "app/index.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "assets/Movie-ChBPoml_.js",
+        "sha256Matches": true
+      },
+      {
+        "path": "assets/Movie-XTKNR66R.css",
+        "sha256Matches": true
+      },
+      {
+        "path": "assets/anniversary-card-C1lEMhvj.js",
+        "sha256Matches": true
+      },
+      {
+        "path": "assets/anniversary-card-C_FVWsGe.css",
+        "sha256Matches": true
+      },
+      {
+        "path": "assets/main-DT-9bCOm.js",
+        "sha256Matches": true
+      },
+      {
+        "path": "assets/main-R7HSOh5u.css",
+        "sha256Matches": true
+      },
+      {
+        "path": "assets/useModal-CRwibxRu.js",
+        "sha256Matches": true
+      },
+      {
+        "path": "index.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "intro-preview.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "themes/anniversary-journey/card.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "themes/anniversary-journey/index.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "themes/birthday-chat/card.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "themes/birthday-chat/index.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "themes/coquette-dream/card.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "themes/coquette-dream/index.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "themes/little-memories/card.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "themes/little-memories/index.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "themes/pink-coquette/card.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "themes/pink-coquette/index.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "themes/velvet-gift/card.html",
+        "sha256Matches": true
+      },
+      {
+        "path": "themes/velvet-gift/index.html",
+        "sha256Matches": true
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "creative-lab-mylab-mobile.jpg",
+      "sha256": "1a739acbf5a5b578b6f1d5896af96c360f9f2a1d51459ca8975b0b88d8b3a6b1"
+    },
+    {
+      "file": "creative-lab-mylab-desktop.jpg",
+      "sha256": "ec8ae98b8d524a8df08d84b2cb75cf375ea8653dd0cae731e5c3b668916d2602"
+    }
+  ],
+  "limitations": [
+    "Chromium browser emulation at 390 and 1280 widths; not physical devices.",
+    "Live checks used synthetic Lab content and static customer HTML/assets only; no existing card records or customer media were accessed."
+  ]
+}

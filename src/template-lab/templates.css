@@ -1095,7 +1095,6 @@
 @keyframes page-turn {
   from {
     transform: perspective(1000px) rotateY(-8deg);
-    opacity: 0.75;
   }
 }
 .book-binding {
@@ -1214,7 +1213,7 @@
   transform: rotate(4deg);
 }
 .scrap-page-1 .scrap-sign {
-  color: #697e66;
+  color: #52654f;
 }
 .scrap-nav {
   max-width: 1000px;

@@ -2,11 +2,14 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 import type { Story } from '../data';
 import { Button, Icon, Modal, Photo, useStill } from '../shared';
+import { LetterCopy } from '../recipient';
 
 export default function Polaroid({ story }: { story: Story }) {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [zoom, setZoom] = useState(false);
+  const [read, setRead] = useState<number[]>([]);
+  const [final, setFinal] = useState(false);
   const still = useStill();
   const moment = story.moments[index];
   function move(direction: number) {
@@ -19,9 +22,13 @@ export default function Polaroid({ story }: { story: Story }) {
     <main className="experience polaroid">
       <div className="polaroid-heading">
         <h1>
-          A little
-          <br />
-          pile of us.
+          {story.headline || (
+            <>
+              A little
+              <br />
+              pile of us.
+            </>
+          )}
         </h1>
         <span className="hand">
           เก็บไว้
@@ -29,6 +36,18 @@ export default function Polaroid({ story }: { story: Story }) {
           คิดถึงกัน
         </span>
       </div>
+      <p className="polaroid-dedication">
+        {story.intro || story.title}
+        <span>
+          ถึง {story.to} · จาก {story.from}
+        </span>
+      </p>
+      {story.cover && (
+        <figure className="polaroid-cover">
+          <img src={story.cover} alt={`ปกอัลบั้มถึง ${story.to}`} />
+          <figcaption className="hand">อัลบั้มเล็ก ๆ ที่ทำให้เธอ</figcaption>
+        </figure>
+      )}
       <div className="polaroid-table">
         {[2, 1].map((offset) => (
           <div
@@ -80,6 +99,7 @@ export default function Polaroid({ story }: { story: Story }) {
                 tabIndex={0}
               >
                 <p>{moment.note}</p>
+                {moment.aside && <p className="hand">{moment.aside}</p>}
               </div>
               <span>— {story.from}</span>
             </div>
@@ -93,7 +113,11 @@ export default function Polaroid({ story }: { story: Story }) {
         </button>
         <Button
           variant="quiet"
-          onClick={() => setFlipped((f) => !f)}
+          onClick={() => {
+            if (!flipped)
+              setRead((r) => (r.includes(index) ? r : [...r, index]));
+            setFlipped((f) => !f);
+          }}
           aria-pressed={flipped}
         >
           {flipped ? 'กลับมาดูรูป' : 'พลิกอ่านข้อความ'}
@@ -105,7 +129,49 @@ export default function Polaroid({ story }: { story: Story }) {
       <p className="polaroid-hint" aria-live="polite">
         {index + 1} / {story.moments.length} <span>ปัดรูป หรือแตะลูกศร</span>
       </p>
-      <p className="polaroid-closing">{story.closing}</p>
+      <div className="polaroid-contact" aria-label="รูปทั้งหมดในกอง">
+        {story.moments.map((m, i) => (
+          <button
+            key={m.id}
+            onClick={() => {
+              setIndex(i);
+              setFlipped(false);
+            }}
+            aria-label={`เลือกรูป ${i + 1}: ${m.title}`}
+            aria-pressed={index === i}
+          >
+            <img src={m.image} alt="" loading="lazy" />
+            <span>
+              {i + 1}
+              {read.includes(i) && <Icon name="check" size={12} />}
+            </span>
+          </button>
+        ))}
+      </div>
+      <div className="polaroid-last-print">
+        <span className="hand">
+          อ่านข้อความหลังรูปแล้ว {read.length} / {story.moments.length}
+        </span>
+        <Button
+          variant="quiet"
+          onClick={() => setFinal((v) => !v)}
+          aria-expanded={final}
+        >
+          {final ? 'เก็บรูปใบสุดท้าย' : 'ยังมีรูปใบสุดท้ายถึงเธอ'}
+        </Button>
+        {final && (
+          <section className="polaroid-letter-print">
+            <span className="hand">ภาพที่ยังไม่ได้ถ่าย</span>
+            <h2>{story.title}</h2>
+            <LetterCopy story={story} />
+            <p className="hand" role="status">
+              {story.secret}
+            </p>
+            <p>{story.closing}</p>
+            <span className="hand">ถ่ายหน้าต่อไปด้วยกันนะ, {story.to}</span>
+          </section>
+        )}
+      </div>
       {zoom && (
         <Modal title={moment.title} onClose={() => setZoom(false)}>
           <Photo moment={moment} eager />

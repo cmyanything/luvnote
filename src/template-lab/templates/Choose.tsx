@@ -1,36 +1,18 @@
 import { useState } from 'react';
 import type { Story } from '../data';
 import { AnimatedGroup, Button, Icon, Photo } from '../shared';
+import { defaultChoices } from '../data';
+import { MemoryView, ReadLetter, coverMoment } from '../recipient';
 
 export default function Choose({ story }: { story: Story }) {
   const [choices, setChoices] = useState<number[]>([]);
+  const [scene, setScene] = useState(0);
+  const content = story.choices || defaultChoices;
   const step = choices.length;
-  const places = ['ออกไปหลงทาง', 'อยู่บ้านด้วยกัน'];
-  const times = ['แสงเช้า', 'ดวงดาว'];
+  const places = content.options[0];
+  const times = content.options[1];
   const index = (choices[0] || 0) * 2 + (choices[1] || 0);
-  const endings = [
-    {
-      title: 'เช้าวันใหม่ บนถนนเส้นใหม่',
-      text: 'เราออกเดินทางก่อนเมืองจะตื่น ไม่ต้องรู้ว่าปลายทางคือไหน แค่มีเธออยู่ข้าง ๆ',
-      image: 1,
-    },
-    {
-      title: 'หลงทางไปใต้ดวงดาว',
-      text: 'ปิดแผนที่ลงสักคืน แล้วให้ท้องฟ้าพาเราไปหาความทรงจำใหม่ด้วยกัน',
-      image: 2,
-    },
-    {
-      title: 'กาแฟช้า ๆ ที่บ้านของเรา',
-      text: 'ไม่ต้องมีตั๋วเดินทาง แค่เช้าที่ไม่ต้องรีบ กาแฟสองแก้ว และคนที่อยากนั่งด้วย',
-      image: 0,
-    },
-    {
-      title: 'คืนธรรมดา ที่พิเศษที่สุด',
-      text: 'ทำอาหารง่าย ๆ เปิดเพลงเบา ๆ แล้วเล่าเรื่องของวันนี้ให้กันฟัง นี่แหละวันในฝันของเรา',
-      image: 3,
-    },
-  ];
-  const ending = endings[index];
+  const ending = { ...content.endings[index], image: [1, 2, 0, 3][index] };
   return (
     <main className={`experience choose choose-step-${step}`}>
       <header>
@@ -54,9 +36,13 @@ export default function Choose({ story }: { story: Story }) {
           <h1>
             {step === 0 ? (
               <>
-                Where shall
-                <br />
-                we go?
+                {story.headline || (
+                  <>
+                    Where shall
+                    <br />
+                    we go?
+                  </>
+                )}
               </>
             ) : (
               <>
@@ -66,11 +52,21 @@ export default function Choose({ story }: { story: Story }) {
               </>
             )}
           </h1>
-          <p>
-            {step === 0
-              ? 'ถ้าพรุ่งนี้มีเวลาให้กันทั้งวัน เธออยาก…'
-              : 'แล้วอยากให้วันของเราเริ่มด้วยอะไร?'}
-          </p>
+          <p>{content.questions[step]}</p>
+          {step === 0 ? (
+            <div className="choose-prologue">
+              <MemoryView moment={coverMoment(story)} />
+              <p>{story.intro || story.title}</p>
+            </div>
+          ) : (
+            <div className="choose-branch-scene">
+              <span className="hand">เมื่อเธอเลือก {places[choices[0]]}</span>
+              <p>
+                {story.moments[choices[0] % story.moments.length].aside ||
+                  story.moments[choices[0] % story.moments.length].note}
+              </p>
+            </div>
+          )}
           <AnimatedGroup className="choice-options">
             {(step === 0 ? places : times).map((label, i) => (
               <Button
@@ -78,25 +74,11 @@ export default function Choose({ story }: { story: Story }) {
                 className={`choice-option option-${i}`}
                 onClick={() => setChoices((c) => [...c, i])}
               >
-                <span>
-                  {step === 0
-                    ? i === 0
-                      ? 'ไป'
-                      : 'อยู่'
-                    : i === 0
-                      ? 'เช้า'
-                      : 'ค่ำ'}
-                </span>
+                <span aria-hidden="true">{i === 0 ? 'A' : 'B'}</span>
                 <div>
                   {label}
                   <small>
-                    {step === 0
-                      ? i === 0
-                        ? 'ถนนใหม่ ๆ กับคนเดิม'
-                        : 'ไม่ไปไหน ก็มีความสุข'
-                      : i === 0
-                        ? 'โลกที่ยังเงียบ และกาแฟหอม ๆ'
-                        : 'โลกที่ช้าลง และเพลงโปรด'}
+                    {i === 0 ? 'ทางเลือกหนึ่งของเรา' : 'อีกทางที่ไปด้วยกันได้'}
                   </small>
                 </div>
                 <Icon name="arrow" />
@@ -107,6 +89,7 @@ export default function Choose({ story }: { story: Story }) {
       ) : (
         <section className="choice-ending" key={index}>
           <span className="hand">เส้นเรื่องที่เธอเลือก</span>
+          <p className="choice-dedication">{story.title}</p>
           <h1>{ending.title}</h1>
           <Photo
             moment={story.moments[ending.image % story.moments.length]}
@@ -119,6 +102,33 @@ export default function Choose({ story }: { story: Story }) {
           <span>
             {places[choices[0]]} + {times[choices[1]]}
           </span>
+          <section className="choice-memories">
+            <h2>ระหว่างทางที่มีเรา</h2>
+            <nav aria-label="ความทรงจำในเส้นเรื่อง">
+              {story.moments.map((m, i) => (
+                <button
+                  key={m.id}
+                  aria-pressed={scene === i}
+                  onClick={() => setScene(i)}
+                >
+                  {i + 1}
+                  <span>{m.title}</span>
+                </button>
+              ))}
+            </nav>
+            <MemoryView moment={story.moments[scene]} />
+            <h3>{story.moments[scene].title}</h3>
+            <p>{story.moments[scene].note}</p>
+            {story.moments[scene].aside && (
+              <p className="hand">{story.moments[scene].aside}</p>
+            )}
+          </section>
+          <ReadLetter
+            story={story}
+            label="อ่านจดหมายของเส้นทางนี้"
+            className="choice-letter"
+          />
+          <p className="hand choice-closing">{story.closing}</p>
         </section>
       )}
       <nav className="choose-nav" aria-label="เปลี่ยนเส้นทาง">
@@ -131,7 +141,13 @@ export default function Choose({ story }: { story: Story }) {
           </Button>
         )}
         {step === 2 && (
-          <Button variant="quiet" onClick={() => setChoices([])}>
+          <Button
+            variant="quiet"
+            onClick={() => {
+              setChoices([]);
+              setScene(0);
+            }}
+          >
             เลือกเส้นทางใหม่
           </Button>
         )}

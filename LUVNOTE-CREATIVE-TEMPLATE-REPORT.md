@@ -1,6 +1,81 @@
 # LuvNote Creative Template Lab
 
-วันที่ตรวจ: 2 พฤศจิกายน 2026 · Branch: `lab/creative-templates`
+## รอบพัฒนาการ์ดเต็มเรื่อง — 2 พฤศจิกายน 2026
+
+Branch: `feat/complete-template-experiences` · Final recipient source: **`62d68e52346c4ac6c732611d1990e4acabc03c83`**.
+
+Implementation commits: `fd0b748` (12 full stories/Studio), `fbc4b85` (star-cover targets), `ee07390` (fast pointer release), `9991e80` (reading frames/mobile width/hover contrast), `2f2c341` (undated Diary navigation), `62d68e5` (Scrapbook contrast during page turns). `eaae611` preserves the prior main-domain Lab deployment record.
+
+Owner ยืนยันให้คงบุคลิกทั้ง 12 แบบตามแนวเดิม และเพิ่มเนื้อหา/ประสบการณ์ให้ครบ งานรอบนี้จึงขยาย renderer เดิม ไม่สร้าง template engine, database, queue, marketplace หรือ dependency ใหม่ และไม่เปลี่ยนธีมลูกค้าเดิม
+
+### สิ่งที่เปลี่ยนในทั้ง 12 แบบ
+
+| Template | ประสบการณ์ฉบับเต็มที่เพิ่ม | การกลับมาอ่าน |
+|---|---|---|
+| Love Letter | ปกภาพบนโต๊ะ → เปิดซอง → จดหมายเต็มและภาพแนบทุกความทรงจำ → ป.ล. → คำสัญญา | เลือกภาพแนบ ขยายภาพ พับกลับเข้าซอง |
+| Polaroid | รูปที่ปัด/พลิกได้ → บันทึกด้านหลังแต่ละใบ → contact sheet → รูปใบสุดท้ายพร้อมจดหมายลงชื่อ | เลือกภาพตรง ๆ, นับรูปที่อ่านหลังแล้ว, พับรูปสุดท้าย |
+| Cinema | คำบรรยายครบตั้งแต่ฉากแรก → ฉากแต่ละความทรงจำ → ฟิล์มย้อนดู → เครดิตส่วนตัวและบันทึกหลังเลนส์ → ฉากต่อไป | เลือกฉาก, ขยายภาพจากฟิล์ม, active scene navigation |
+| Stars | สำรวจความทรงจำพร้อมภาพ/วันที่/สถานที่ → นำทางไปดาวที่ยังไม่อ่าน → หอดูดาวพร้อมจดหมายและคำสัญญา | กลับท้องฟ้าโดยเก็บดาวที่ค้นพบไว้ |
+| Garden | ดอกไม้แต่ละดอกเล่าเรื่อง → ช่อดอกไม้ → แท็กภาพ/บันทึกของทุกดอก → จดหมายที่ผูกไว้กับช่อ | เลือกแท็กหรือกลับสวนโดยดอกที่บานยังอยู่ |
+| Capsule | เปิดกล่อง → ของที่ระลึกที่ผู้ส่งตั้งชื่อและเลือกชนิดเอง → ภาพ/เรื่อง/วันที่ → ช่องลับพร้อมจดหมายลงชื่อ | ไปชิ้นที่ยังไม่เปิด หรือกลับดูของโดยไม่เริ่มใหม่ |
+| Scrapbook | สารบัญ → หน้าคู่ที่พลิก/ลอกเทปได้ → บันทึกส่วนตัวจริง → หน้าสุดท้ายและซองคำลับ | เลือกหน้าโดยตรง, ขยายภาพที่เปิดแล้ว, ย้อนหน้าก่อน |
+| Little World | พาสปอร์ต/ปก → แผนที่ → รูปและเรื่องแต่ละสถานที่ → ประทับตราด้วยตัวเอง → จดหมายที่บ้าน | กลับแผนที่, การไปถึงสถานที่ไม่แอบนับเป็นเก็บตรา |
+| Choose Our Story | คำถาม/ตัวเลือกแก้ได้ → เรื่องระหว่างทาง → 4 ตอนจบที่เขียนเอง → ภาพความทรงจำ/จดหมายของเส้นทาง | ย้อนคำตอบ/เลือกใหม่โดยไม่ต้อง reload |
+| Diary | สารบัญวันที่ → บันทึกและ marginalia ส่วนตัวแต่ละวัน → โน้ตพับ → afterword และจดหมายเต็ม | ก่อน/ถัดไปหรือเลือกวันที่ตรง ๆ |
+| Constellation | เส้นทางเวลา → ภาพ/เรื่อง/วันที่/สถานที่อ่านได้ทันที → จุดหมายพร้อมคำอุทิศ/จดหมาย | ถอยจุดเวลา, ขยายภาพ, ย้อนวันแรก |
+| Grand Surprise | ปกของขวัญ → ริบบิ้น → คำใบ้จากความทรงจำ → เปิดม่าน → รูปทุกใบ/ชื่อโอกาสพิเศษ/จดหมาย/ข้อความลับ | ย้อนรูป เปิดจดหมาย หรือผูกริบบิ้นเริ่มใหม่ |
+
+ทุก renderer รับข้อมูล `Story` ร่วมกัน แต่จัดวางเนื้อหาในวัสดุและลำดับของตัวเอง ไม่มีการต่อ Hero + Gallery + Message แบบเดียวกันท้ายทุกธีม Shared code เพิ่มเฉพาะ content/interaction primitives: `LetterCopy`, `ReadLetter`, `MemoryView`, `RecipientTools`.
+
+### Studio ที่ใช้แต่งการ์ดได้จริง
+
+- แก้ผู้รับ/ผู้ส่ง ชื่อโอกาส วันที่ ปก คำเกริ่น จดหมาย ข้อความลับ และคำปิดท้ายด้วยฟอร์มปกติ
+- เพิ่มหลายรูป, เปลี่ยน, ลบ, เรียงลำดับ และใส่ title/date/place/story/aside/alt ของแต่ละรูป รองรับ 1–8 ความทรงจำ
+- Capsule เลือกชนิดของที่ระลึก; Choose แก้สองคำถาม สี่ตัวเลือก และสี่ตอนจบได้
+- เพลงกล่องดนตรีใช้ Web Audio helper เดิม; YouTube ฝังเมื่อผู้รับกดเปิดเท่านั้น ปิดเพลง/ออกจากหน้า/เริ่มใหม่แล้วหยุด playback
+- อัปเดต iframe ผ่าน origin/source checked handshake เดิม; บันทึก/โหลด/ลบร่างใน localStorage และนำเข้า/ส่งออกไฟล์ JSON ได้
+- เปิด **ข้อมูลที่แต่งจริง** ในแท็บใหม่และ reload ได้ในเบราว์เซอร์เดียวกัน ร่างหาย/เสียจะแจ้งตรง ๆ ไม่มีการแทนด้วย demo เงียบ ๆ
+- JPEG/PNG/WebP ที่เลือกแปลงในเครื่องด้วย helper เดิม จำกัด original 15 MiB, ด้านยาว 1080 px, 750,000 ตัวอักษรต่อ data URL, รวมร่างไม่เกิน 4.5 ล้านตัวอักษร; ตรวจวันที่จริง, ids, URL schemes, choices และ music ก่อนใช้
+
+**ขอบเขตที่ต้องบอกตรง ๆ:** ร่างในเครื่องและไฟล์ร่างเป็นเครื่องมือทดลองสำหรับผู้พัฒนา ยังไม่ใช่ customer share link. ชุดใหม่ยังไม่ได้เพิ่มเข้า allowlist การ publish/R2/แก้การ์ดของ Worker และไม่ได้ตั้งราคา/เปิดชำระเงิน จึงยังไม่รับรองว่า “ขายและส่งลิงก์ลูกค้าได้ทันที”. งาน integration ต้องใช้ระบบเดิมและทดสอบการเผยแพร่/เปิด/แก้/หมดอายุครบ ก่อนเปิดให้ลูกค้าเลือก
+
+### การตรวจและหลักฐานรอบนี้
+
+| คำสั่ง / การตรวจ | ผลที่รันจริง |
+|---|---|
+| `npm run typecheck` | PASS |
+| `npm run build` | PASS; normal customer build ไม่มี Lab |
+| `node scripts/check-template-lab-isolation.mjs` | PASS,25ไฟล์ |
+| `npm run lab:build` | PASS |
+| `npm run test:lab` | **320 passed,0failed,0skipped,0flaky**;64 checks ×5projects,503.7วินาที |
+| `LAB_URL=http://127.0.0.1:4318 npm run lab:capture` |48ภาพจริง,0page/HTTPerrors |
+| `LAB_BASE_PATH=/mylab/ npm run lab:build` + `node scripts/package-template-lab.mjs` | PASS;เพิ่มเฉพาะ`/mylab` และ25ไฟล์ลูกค้าเดิมไม่เปลี่ยน |
+| `npx playwright test --config playwright.mylab.config.ts` | **56 passed,0failed,0skipped,0flaky**,45.3วินาที |
+| Independent finish review | ship เฉพาะขอบเขตที่ตรวจ; finding สุดท้าย resolved |
+
+Source/test snapshot SHA-256: **`2b4e644fc1dcc1035b029d4167cb6684f25ec771219fc4e4bdff6b2332c866f5`**. ชุด320รวมการเปิดอ่านทุกความทรงจำและจดหมายส่วนตัวทั้ง12แบบ,1/8รูป,ข้อความไทยยาว,ตอนจบ/ย้อนอ่าน/Reset,upload/replace/remove/reorder/cover,local save/load/import/export/new-tab/reload,4editable endings,invalid data,undated Diary upload,keyboard/touch/modal,hover contrast/axe และ reduced motion. การทดสอบ provider ตรวจ opt-in และการถอด iframe ไม่ได้ทดสอบเพลงจาก YouTube ว่าเล่นจบจริง
+
+ผล final, source hashes และ browser matrix อยู่ใน [verification](docs/evidence/creative-experiences-verification.json); [48 screenshots พร้อม hash](template-lab/public/previews/screenshots.json) มาจาก source commit ด้านบนจริง มีทั้งภาพเปิดและภาพตอนจบเต็มของทุกแบบที่390/1280px ไม่มี page/HTTP error ในการ capture. [Independent review และ defect ledger](docs/evidence/creative-experiences-review.md) บันทึกการตรวจแยก การแก้ไข และ verdict **ship เฉพาะ finish ของ Lab ที่ตรวจ** โดยไม่มี finding ค้างใน fix list
+
+CI บน Linux รอบแรกที่`4001917` พบ311ผ่าน/4ไม่ผ่าน แม้ local315ผ่านก่อนหน้านั้น: แอนิเมชัน Scrapbook ลด opacity ทั้งหน้า และบันทึกสีเขียวบางหน้ามี contrast ไม่พอแม้หยุดเคลื่อนไหว แก้ที่`62d68e5`โดยคงการหมุนหน้า ตัดการจางทั้งแผ่น และเพิ่มความเข้มสีเขียว พร้อม regression ตรวจ0/190/380msทั้งสองรูปแบบหน้าในทุก browser project ไม่เพิ่ม retry/เวลารอหรือยกเว้น Axe ผู้ตรวจแยกให้**ship เฉพาะการแก้สองจุดนี้**;รูปหลักฐานเพิ่ม4ภาพพร้อม[manifest](docs/evidence/creative-experiences-review/scrapbook-contrast-manifest.json). ผลชุดเต็มด้านบนเป็นรอบหลังแก้;ผล CI ของ head ที่เผยแพร่ตรวจได้ที่[PR15](https://github.com/cmyanything/luvnote/pull/15).
+
+ทดสอบ browser emulation ที่360,390,768,1280 และ WebKit/iPhone emulation; ไม่ใช่หลักฐานเครื่อง iPhone/Android จริง การตรวจปุ่มเพลง/iframe ไม่รับรองว่าเพลง YouTube ทุกเพลงเปิดให้ฝังได้ ภาพตัวอย่างเดิมมี license/origin ตาม baseline และไม่ได้เพิ่ม asset/library ที่มีข้อจำกัดการขายใหม่
+
+[Performance diagnostic รอบปัจจุบัน](docs/evidence/creative-experiences-performance.json): Chromium390px,4×CPU throttle,ตัวอย่างสั้นประมาณ900msต่อแบบหลัง full suite จบ; CLSอยู่ที่0–0.0002 และ frame interval p95สูงสุด16.8msในตัวอย่างนี้ มี interaction long tasks บางครั้งตามไฟล์หลักฐาน จึงไม่อ้างว่าเครื่องจริงทุกเครื่องหรือทุกความยาวเนื้อหาจะคง60fpsตลอด ไม่มี dependency เพิ่ม; entry129.45kB gzip, CSS16.06kB gzip, renderer แต่ละแบบ lazy-load และ shader ยังคง opt-in
+
+**GO: เผยแพร่ฉบับเต็มใน developer Lab `/mylab/` ตามที่ขอ**. **ยังไม่เปิด12ธีมใหม่นี้ใน customer publish flow**; ขอบเขต integration ที่เหลือระบุด้านล่าง Rollback ของ Lab ใช้ revert PR/frontend artifact เดิม ไม่ต้องแตะข้อมูลการ์ดหรือ Worker
+
+ตรวจ isolation ของ build ปกติ25ไฟล์ผ่าน และสร้างจาก Git archive แบบLFด้วย frontend vars ของ repository แล้วเทียบSHA-256กับเว็บปัจจุบัน: **ไฟล์ลูกค้าที่เปิดสาธารณะ24/24เหมือนกันทุกไบต์** (`.nojekyll` เป็น Pages marker ไม่ใช่ public route). [หลักฐาน](docs/evidence/creative-experiences-customer-baseline.json). ไม่มีการเปลี่ยน customer editor/theme/Worker/D1/R2/auth/payment/DNS/dependency หรือ API deployment workflow งานเผยแพร่รอบนี้จำกัด `/mylab/` ผ่าน Pages workflow เดิม
+
+**ข้อจำกัดก่อนขายจริง:** ต้องต่อ theme allowlist/payload/editor/publish/read/edit/expiry เข้าระบบเดิมและ R2, ทดสอบ LINE sharing กับลิงก์ลูกค้าจริง และตรวจ physical devices. เริ่ม integration ด้วย Letter/Polaroid ได้ก่อนเพราะลำดับอ่านตรงไปตรงมา แต่ไม่ตัดอีก10แบบออกจากงานที่ส่งมอบ รอบนี้ทั้ง12แบบมี full-story experience และ Studio ครบใน Lab แล้ว
+
+อ่านรายละเอียด baseline ที่ศึกษา Skills/Licenses และ audit ระบบเดิมด้านล่าง โดย **จำนวน 170 tests และสถานะ Working prototype ด้านล่างเป็นผลรอบก่อน ไม่ใช่ final acceptance ของรอบพัฒนานี้**.
+
+---
+
+## Prototype baseline และการศึกษาแหล่งที่มา (ประวัติ)
+
+วันที่ตรวจ baseline: 2 พฤศจิกายน 2026 · Branch: `lab/creative-templates`
 
 ## ผลส่งมอบและวิธีเปิด
 
@@ -313,3 +388,15 @@ Owner ระบุให้เผยแพร่ที่ `luvnote.fun/mylab` �
 ตรวจ customer build กับ artifact ที่เผยแพร่อยู่จาก run `41367555706`: 24 ไฟล์เนื้อหาเหมือนเดิม — 8 non-HTML ตรง hash ทุก byte, 16 HTML ต่างเฉพาะ CR ก่อน LF จาก Windows/Vite เมื่อเทียบกับ Linux. ตัว package ตรวจเพิ่มว่าไฟล์ customer build ปัจจุบันทั้ง 25 ไฟล์ไม่เปลี่ยนแม้แต่ byte เดียวหลังเพิ่ม `/mylab`.
 
 ใช้ `npm run test:lab` สำหรับ interaction/accessibility เดิม และ `npx playwright test --config playwright.mylab.config.ts` สำหรับ path deployment จริงใน static output (12 players, รูป/ฟอนต์, catalogue, comparison, iframe/reset/config และไม่มี request หลุดออกจาก `/mylab/`). ผลรอบนี้เก็บใน [creative-lab-mylab-local.json](docs/evidence/creative-lab-mylab-local.json); หลักฐาน live publication แยกจากผล local และ Sites snapshot เก่า.
+
+### ผลเผยแพร่และตรวจเว็บจริง
+
+**LIVE_MAIN_DOMAIN_PREVIEW = PASS** — [https://luvnote.fun/mylab/](https://luvnote.fun/mylab/) เปิดได้โดยไม่ต้องลงชื่อเข้าใช้. `/mylab` ตอบ 301 ไป `/mylab/` และปลายทางตอบ 200. PR #14 merge เป็น `189ed52fa4269aaaea70e1f674637676a4829185`; tree ตรงกับ source `c3567746b9657b055a702ac392fe7bcd71b8745f` ที่ตรวจผ่านทุกไฟล์.
+
+[Frontend CI ของ PR](https://github.com/cmyanything/luvnote/actions/runs/41388885823) และ Lab CI สองรอบผ่าน. [Main frontend deployment](https://github.com/cmyanything/luvnote/actions/runs/41389732278) completed/success; GitHub Pages deployment ID `7484493494`. ใช้ policy `main` เดิม ไม่มีการข้าม protection หรือ deploy API.
+
+ผล local หลังแก้ path: **170/170 Lab tests** และ **56/56 subdirectory tests** ผ่าน. ตรวจ release artifact ที่ build บน Linux และตรวจ HTTP จากเว็บจริง: ไฟล์เว็บลูกค้าเดิม **24/24 ตรง SHA-256 ทุก byte** กับ release ก่อนหน้า โดยไม่ต้อง normalize HTML.
+
+Live browser acceptance: interaction หลัก **12/12** ที่ 390px และ iframe/reset ที่ 1280px ผ่าน รวม **13 checks**, browser runtime errors **0**, ภาพ catalogue และฟอนต์โหลดใต้ `/mylab/`. มี screenshot ของเว็บจริง mobile/desktop. ใช้เฉพาะข้อมูลสังเคราะห์และ static HTML/assets ไม่อ่านการ์ดหรือรูปของลูกค้า ไม่อ้างว่าเป็น physical-device หรือ LINE testing.
+
+หลักฐานทั้งหมด: [creative-lab-mylab-live.json](docs/evidence/creative-lab-mylab-live.json).

@@ -15,8 +15,12 @@ import { alternate, demo, type Story } from './data';
 import { findTemplate, templates, type TemplateId } from './registry';
 import { Button, Icon } from './shared';
 import { labAsset, labHome } from './paths';
+import { validateStory, draftKey } from './validation';
+import { RecipientTools } from './recipient';
+import Studio from './Studio';
 import './lab.css';
 import './templates.css';
+import './complete.css';
 
 const players = {
   'love-letter': lazy(() => import('./templates/Letter')),
@@ -55,47 +59,24 @@ class ExperienceBoundary extends Component<
   }
 }
 
-export function validateStory(value: unknown): value is Story {
-  if (!value || typeof value !== 'object') return false;
-  const s = value as Story;
-  if (
-    !['to', 'from', 'date', 'title', 'letter', 'secret', 'closing'].every(
-      (k) =>
-        typeof s[k as keyof Story] === 'string' &&
-        (s[k as keyof Story] as string).length <= 8000,
-    )
-  )
-    return false;
-  if (!s.to.trim() || !s.from.trim() || !/^\d{4}-\d{2}-\d{2}$/.test(s.date))
-    return false;
-  if (!Array.isArray(s.moments) || !s.moments.length || s.moments.length > 8)
-    return false;
-  const ids = new Set();
-  return s.moments.every((m) => {
-    if (
-      !m ||
-      !['id', 'date', 'title', 'note', 'image', 'alt', 'place'].every(
-        (k) =>
-          typeof m[k as keyof typeof m] === 'string' &&
-          m[k as keyof typeof m].length <= 8000,
-      )
-    )
-      return false;
-    if (!m.id || ids.has(m.id) || !/^[a-zA-Z0-9_-]+$/.test(m.id)) return false;
-    ids.add(m.id);
-    return (
-      /^\/(?!\/)/.test(m.image) ||
-      /^data:image\/(?:jpeg|png|webp);base64,/i.test(m.image) ||
-      /^https:\/\//.test(m.image)
-    );
-  });
-}
-
 function Player({ id }: { id: TemplateId }) {
   const params = new URLSearchParams(location.search);
-  const [story, setStory] = useState(
-    params.get('dataset') === 'alternate' ? alternate : demo,
-  );
+  const [replay, setReplay] = useState(0);
+  const [story, setStory] = useState<Story | null>(() => {
+    if (params.get('draft') === '1') {
+      try {
+        const saved = JSON.parse(localStorage.getItem(draftKey(id)) || 'null');
+        return saved?.version === 1 &&
+          saved.template === id &&
+          validateStory(saved.story)
+          ? saved.story
+          : null;
+      } catch {
+        return null;
+      }
+    }
+    return params.get('dataset') === 'alternate' ? alternate : demo;
+  });
   useEffect(() => {
     const listener = (event: MessageEvent) => {
       if (
@@ -112,6 +93,17 @@ function Player({ id }: { id: TemplateId }) {
     return () => window.removeEventListener('message', listener);
   }, []);
   const Template = players[id];
+  if (!story)
+    return (
+      <main className="load-failure">
+        <h1>ไม่พบฉบับร่างในเครื่องนี้</h1>
+        <p>
+          ลิงก์ร่างใช้กับเบราว์เซอร์ที่บันทึกไว้เท่านั้น
+          กลับไปโหลดหรือนำเข้าไฟล์ร่างเพื่อดูการ์ดของคุณ
+        </p>
+        <a href={labHome + '?template=' + id}>กลับไปปรับแต่งการ์ด</a>
+      </main>
+    );
   return (
     <ExperienceBoundary>
       <Suspense
@@ -121,7 +113,15 @@ function Player({ id }: { id: TemplateId }) {
           </p>
         }
       >
-        <Template story={story} />
+        <RecipientTools
+          key={replay}
+          story={story}
+          replay={() => {
+            setReplay((n) => n + 1);
+            window.scrollTo({ top: 0 });
+          }}
+        />
+        <Template key={`${id}-${replay}`} story={story} />
       </Suspense>
     </ExperienceBoundary>
   );
@@ -236,49 +236,6 @@ function DevicePicker({
         </label>
       ))}
     </fieldset>
-  );
-}
-
-function ConfigEditor({ onApply }: { onApply: (story: Story) => void }) {
-  const [json, setJson] = useState(JSON.stringify(demo, null, 2));
-  const [error, setError] = useState('');
-  return (
-    <details className="config-editor">
-      <summary>แก้ไขข้อมูลตัวอย่าง</summary>
-      <p>
-        ข้อมูลอยู่ในหน้านี้เท่านั้น รองรับชื่อ ข้อความ วันที่ และภาพ 1–8 ภาพ
-      </p>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          try {
-            const value: unknown = JSON.parse(json);
-            if (!validateStory(value)) throw new Error();
-            onApply(value);
-            setError('');
-          } catch {
-            setError(
-              'ตรวจ JSON อีกครั้ง: ต้องมีชื่อผู้ส่ง ผู้รับ และ moments 1–8 รายการที่มี id ไม่ซ้ำ พร้อม image, title, note, date, alt, place',
-            );
-          }
-        }}
-      >
-        <label htmlFor="story-json">Story configuration (JSON)</label>
-        <textarea
-          id="story-json"
-          name="story"
-          autoComplete="off"
-          spellCheck={false}
-          value={json}
-          onChange={(e) => setJson(e.target.value)}
-          aria-describedby="config-error"
-        />
-        <p id="config-error" role="status">
-          {error}
-        </p>
-        <Button type="submit">ใช้ข้อมูลนี้กับต้นแบบ</Button>
-      </form>
-    </details>
   );
 }
 
@@ -461,10 +418,13 @@ function Lab() {
                   'ทดลองจังหวะการเล่าเรื่องของแต่ละแบบ แล้วเลือกสิ่งที่รู้สึกใช่'}
               </p>
             </div>
-            <span className="prototype-badge">Working prototype</span>
+            <span className="prototype-badge">ฉบับพัฒนาประสบการณ์เต็ม</span>
           </div>
           <div className="lab-toolbar">
             <DevicePicker value={device} onChange={setDevice} />
+            <a className="studio-jump" href="#studio">
+              ปรับชื่อและรูปของคุณ
+            </a>
             <span className="device-measure">
               {devices[device].width} × {devices[device].height}
             </span>
@@ -519,6 +479,24 @@ function Lab() {
               </section>
             ))}
           </div>
+          <Studio
+            key={
+              ids.join(',') + (dataset === 'alternate' ? '-alternate' : '-demo')
+            }
+            id={selected?.id || ids[0]}
+            initial={
+              dataset === 'custom' && custom
+                ? custom
+                : dataset === 'alternate'
+                  ? alternate
+                  : demo
+            }
+            onApply={(story) => {
+              setCustom(story);
+              setDataset('custom');
+              setReset((n) => n + 1);
+            }}
+          />
           <div className="detail-notes">
             {ids.map((id) => {
               const t = findTemplate(id)!;
@@ -554,13 +532,6 @@ function Lab() {
               );
             })}
           </div>
-          <ConfigEditor
-            onApply={(story) => {
-              setCustom(story);
-              setDataset('custom');
-              setReset((n) => n + 1);
-            }}
-          />
         </main>
       )}
       <footer className="lab-footer">

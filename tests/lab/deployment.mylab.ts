@@ -61,7 +61,7 @@ test('embedded interaction, reset, configuration and back link', async ({ page }
   await expect(frame.getByRole('article')).toBeVisible();
   await page.getByRole('button', { name: 'Reset interaction' }).click();
   await expect(frame.getByRole('button', { name: 'เปิดซองจดหมาย', exact: true })).toBeVisible();
-  await page.locator('.config-editor summary').click();
+  await page.locator('.studio-json > summary').click();
   const input = page.getByLabel('Story configuration (JSON)');
   const story = JSON.parse(await input.inputValue());
   story.letter = 'Subdirectory configuration acceptance';

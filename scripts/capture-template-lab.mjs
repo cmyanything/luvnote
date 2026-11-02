@@ -2,6 +2,7 @@ import { chromium } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { finishStory } from '../tests/lab/journeys.ts';
 
 const ids = [
   'love-letter',
@@ -30,6 +31,8 @@ try {
     desktop: { width: 1280, height: 900 },
   })) {
     const page = await browser.newPage({ viewport, reducedMotion: 'reduce' });
+    await page.goto(`${base}/template-lab/?template=love-letter`);
+    const story = JSON.parse(await page.getByLabel('Story configuration (JSON)').inputValue());
     for (const id of ids) {
       const errors = [];
       const listener = (error) => errors.push(error.message);
@@ -59,37 +62,15 @@ try {
         sha256: createHash('sha256').update(buffer).digest('hex'),
         errors,
       });
-      if (
-        ['love-letter', 'polaroid', 'garden', 'capsule', 'surprise'].includes(
-          id,
-        )
-      ) {
-        if (id === 'love-letter') {
-          await page
-            .getByRole('button', { name: 'เปิดซองจดหมาย', exact: true })
-            .click();
-          await page.getByRole('button', { name: /ยังมีอีกบรรทัด/ }).click();
+      {
+        await finishStory(page, id, story, true);
+        // Loading=lazy content below the fold must be loaded before a full-page capture.
+        for (const img of await page.locator('main img').all()) {
+          await img.scrollIntoViewIfNeeded();
+          await img.evaluate((el) => el.complete ? Promise.resolve() : new Promise((r) => { el.addEventListener('load', r, {once:true}); el.addEventListener('error', r, {once:true}); }));
         }
-        if (id === 'polaroid')
-          await page.getByRole('button', { name: 'พลิกอ่านข้อความ' }).click();
-        if (id === 'garden') {
-          for (const button of await page.locator('.garden-flower').all())
-            await button.click();
-          await page.getByRole('button', { name: 'ผูกเป็นช่อให้เธอ' }).click();
-        }
-        if (id === 'capsule')
-          await page
-            .getByRole('button', { name: 'เปิดกล่องความทรงจำ' })
-            .click();
-        if (id === 'surprise') {
-          await page
-            .getByRole('button', { name: 'แตะเพื่อคลายริบบิ้น' })
-            .click();
-          await page
-            .getByRole('button', { name: 'เปิดของขวัญชิ้นนี้' })
-            .click();
-        }
-        const stateFile = `${id}-opened-${device}.jpg`;
+        await page.evaluate(() => window.scrollTo(0, 0));
+        const stateFile = `${id}-complete-${device}.jpg`;
         const stateBuffer = await page.screenshot({
           path: `${folder}/${stateFile}`,
           type: 'jpeg',
@@ -98,7 +79,7 @@ try {
         });
         evidence.push({
           template: id,
-          state: 'opened',
+          state: 'complete',
           device,
           viewport,
           file: stateFile,

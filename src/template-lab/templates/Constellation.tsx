@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { Story } from '../data';
 import { Button, Icon, Modal, Photo } from '../shared';
+import { ReadLetter, MemoryView } from '../recipient';
+import { shortDate } from '../data';
 
 const points = [
   [12, 72],
@@ -30,10 +32,24 @@ export default function Constellation({ story }: { story: Story }) {
     <main className="experience constellation">
       <header>
         <h1>
-          Nothing was
-          <br />a straight line.
+          {story.headline || (
+            <>
+              Nothing was
+              <br />a straight line.
+            </>
+          )}
         </h1>
-        <p>ทุกจุดที่ผ่านมาพาให้เราได้เจอกัน</p>
+        <p>
+          {story.intro ||
+            `ทุกจุดที่ผ่านมาพา ${story.from} และ ${story.to} มาเจอกัน`}
+        </p>
+        {story.cover && (
+          <img
+            className="constellation-cover"
+            src={story.cover}
+            alt={`ภาพปกเส้นทางของ ${story.to}`}
+          />
+        )}
       </header>
       <div className="constellation-stage">
         <div className="constellation-map">
@@ -84,7 +100,18 @@ export default function Constellation({ story }: { story: Story }) {
             <small>/ {String(count).padStart(2, '0')}</small>
           </span>
           <h2>{story.moments[time].title}</h2>
+          <div className="constellation-photo">
+            <MemoryView moment={story.moments[time]} />
+          </div>
           <p>{story.moments[time].note}</p>
+          <small>
+            {[shortDate(story.moments[time].date), story.moments[time].place]
+              .filter(Boolean)
+              .join(' · ')}
+          </small>
+          {story.moments[time].aside && (
+            <p className="hand">{story.moments[time].aside}</p>
+          )}
           <button className="const-detail" onClick={() => setDetail(time)}>
             เปิดความทรงจำนี้ <Icon name="expand" size={18} />
           </button>
@@ -107,6 +134,13 @@ export default function Constellation({ story }: { story: Story }) {
           <span>{story.moments[count - 1].date.slice(0, 4)}</span>
         </div>
         <Button
+          variant="quiet"
+          disabled={time === 0}
+          onClick={() => setTime((t) => Math.max(0, t - 1))}
+        >
+          ช่วงเวลาก่อนหน้า
+        </Button>
+        <Button
           onClick={() => setTime((t) => Math.min(count - 1, t + 1))}
           disabled={time === count - 1}
         >
@@ -114,11 +148,19 @@ export default function Constellation({ story }: { story: Story }) {
         </Button>
       </div>
       {time === count - 1 && (
-        <p className="constellation-ending" role="status">
-          ทุกเส้นทาง ต่อกันเป็นเรา
-          <br />
-          <strong>{story.secret}</strong>
-        </p>
+        <section className="constellation-dedication">
+          <h2>{story.title}</h2>
+          <p className="constellation-ending" role="status">
+            ทุกเส้นทาง ต่อกันเป็นเรา
+            <br />
+            <strong>{story.secret}</strong>
+          </p>
+          <ReadLetter story={story} label="อ่านข้อความที่จุดหมายของเรา" />
+          <p className="hand">{story.closing}</p>
+          <Button variant="quiet" onClick={() => setTime(0)}>
+            ย้อนกลับไปวันแรก
+          </Button>
+        </section>
       )}
       {detail !== null && (
         <Modal

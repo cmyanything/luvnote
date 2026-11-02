@@ -1,14 +1,20 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, type PointerEvent } from 'react';
 import type { Story } from '../data';
 import { Button, Icon, Photo, useStill } from '../shared';
+import { MemoryView, ReadLetter, coverMoment } from '../recipient';
 
 export default function Surprise({ story }: { story: Story }) {
   const [stage, setStage] = useState(0);
   const [pull, setPull] = useState(0);
+  const [clue, setClue] = useState(0);
+  const [memory, setMemory] = useState(0);
   const start = useRef<number | null>(null);
   const still = useStill();
-  function release() {
-    if (pull > 65) {
+  function release(event: PointerEvent<HTMLButtonElement>) {
+    // Pointer events can be batched before React paints the last drag frame.
+    // The release position is authoritative; pull only drives the visual.
+    const distance = start.current === null ? 0 : event.clientY - start.current;
+    if (distance > 65) {
       setStage(1);
       setPull(0);
     } else setPull(0);
@@ -23,9 +29,13 @@ export default function Surprise({ story }: { story: Story }) {
             <h1>
               {stage === 0 ? (
                 <>
-                  One more
-                  <br />
-                  little thing.
+                  {story.headline || (
+                    <>
+                      One more
+                      <br />
+                      little thing.
+                    </>
+                  )}
                 </>
               ) : (
                 <>
@@ -37,12 +47,15 @@ export default function Surprise({ story }: { story: Story }) {
             </h1>
             <p>
               {stage === 0
-                ? 'มีเรื่องหนึ่งที่อยากบอกเธอมานานแล้ว'
+                ? story.intro || 'มีเรื่องหนึ่งที่อยากบอกเธอมานานแล้ว'
                 : 'บางคำ อยากให้เธอได้อ่านด้วยตัวเอง'}
             </p>
           </header>
           <div className="surprise-package">
             <div className="gift-label">
+              <div className="surprise-cover">
+                <Photo moment={coverMoment(story)} eager />
+              </div>
               <span>To {story.to}</span>
               <Icon size={38} />
               <span>with love, {story.from}</span>
@@ -86,6 +99,27 @@ export default function Surprise({ story }: { story: Story }) {
               </button>
             )}
           </div>
+          {stage === 1 && (
+            <section className="surprise-clues">
+              <span className="hand">ก่อนเปิด ลองนึกถึงวันเหล่านี้</span>
+              <div>
+                <MemoryView moment={story.moments[clue]} />
+                <p>{story.moments[clue].aside || story.moments[clue].note}</p>
+              </div>
+              <nav aria-label="คำใบ้ในของขวัญ">
+                {story.moments.map((m, i) => (
+                  <button
+                    key={m.id}
+                    aria-pressed={clue === i}
+                    onClick={() => setClue(i)}
+                    aria-label={`ดูคำใบ้ ${i + 1}: ${m.title}`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </nav>
+            </section>
+          )}
           <div className="surprise-action">
             <Button onClick={() => setStage((s) => s + 1)}>
               {stage === 0 ? 'แตะเพื่อคลายริบบิ้น' : 'เปิดของขวัญชิ้นนี้'}{' '}
@@ -118,22 +152,42 @@ export default function Surprise({ story }: { story: Story }) {
             </div>
           )}
           <span>Surprise, {story.to}.</span>
-          <h1>
-            You are
-            <br />
-            my favourite
-            <br />
-            <em>everything.</em>
-          </h1>
+          <h1>{story.title}</h1>
           <div className="surprise-photo">
-            <Photo moment={story.moments[story.moments.length - 1]} eager />
+            <MemoryView moment={story.moments[memory]} />
           </div>
+          <nav className="surprise-photo-tabs" aria-label="รูปในของขวัญ">
+            {story.moments.map((m, i) => (
+              <button
+                key={m.id}
+                aria-pressed={memory === i}
+                onClick={() => setMemory(i)}
+              >
+                <img src={m.image} alt="" loading="lazy" />
+                <span>{m.title}</span>
+              </button>
+            ))}
+          </nav>
+          <h2>{story.moments[memory].title}</h2>
+          <p>{story.moments[memory].note}</p>
           <p className="surprise-message" role="status">
             {story.secret}
           </p>
           <p>{story.closing}</p>
+          <ReadLetter
+            story={story}
+            label="จดหมายที่ใส่ไว้ในของขวัญ"
+            className="surprise-letter"
+          />
           <p className="hand">รัก, {story.from}</p>
-          <Button variant="quiet" onClick={() => setStage(0)}>
+          <Button
+            variant="quiet"
+            onClick={() => {
+              setStage(0);
+              setMemory(0);
+              setClue(0);
+            }}
+          >
             ผูกริบบิ้น เล่นอีกครั้ง
           </Button>
         </section>

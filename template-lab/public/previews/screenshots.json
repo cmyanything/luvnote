@@ -1,7 +1,7 @@
 {
-  "date": "2026-11-02T03:46:31.787Z",
-  "sourceCommit": "c555b7f6e9ecb7521526a5a1a596372e07b0c9f6",
-  "note": "Captured from the working tree before the implementation commit; the unchanged runtime source was subsequently verified against that commit. Real rendered viewports, no generated mockups.",
+  "date": "2026-11-02T06:41:26.227Z",
+  "sourceCommit": "62d68e52346c4ac6c732611d1990e4acabc03c83",
+  "note": "Working tree captures; compare report for final source commit. Real rendered viewports, no generated mockups.",
   "evidence": [
     {
       "template": "love-letter",
@@ -11,19 +11,19 @@
         "height": 844
       },
       "file": "love-letter-mobile.jpg",
-      "sha256": "82367ac8de903de90b8fb8c38d472e34ffd486ce9710305f335053ff05d8a32b",
+      "sha256": "c584e8a27325339e4eca12dd978e3f6c46a26c8059de5989ba1dd61d5dd104f2",
       "errors": []
     },
     {
       "template": "love-letter",
-      "state": "opened",
+      "state": "complete",
       "device": "mobile",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "file": "love-letter-opened-mobile.jpg",
-      "sha256": "727f60387dfd94fa3d47091c82c5f5becb2610da26bb59d54bea9665a9624c0d",
+      "file": "love-letter-complete-mobile.jpg",
+      "sha256": "baeca4c7ac0d3f729a2f6bc548f127b7c542df14a4d64bcf86d7aa78fcf37737",
       "errors": []
     },
     {
@@ -34,19 +34,19 @@
         "height": 844
       },
       "file": "polaroid-mobile.jpg",
-      "sha256": "37b115e15b40d233af883ced035852a07f3f0da1e97de91da0dee3a29ac61e86",
+      "sha256": "4d42e1ecf4fb532c20308b302cbb1f27a44fc3877479c4300d222bcc3af599f0",
       "errors": []
     },
     {
       "template": "polaroid",
-      "state": "opened",
+      "state": "complete",
       "device": "mobile",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "file": "polaroid-opened-mobile.jpg",
-      "sha256": "b9959c5f1f565a7c15cadcc4eae7bb4682e8bc04628ad3cc5b0bc27d0214a5de",
+      "file": "polaroid-complete-mobile.jpg",
+      "sha256": "639e899f3d819d2b8e3c8a8b9accaec9d70a11bd672d2225b3e8ca8464a11c12",
       "errors": []
     },
     {
@@ -57,7 +57,19 @@
         "height": 844
       },
       "file": "cinema-mobile.jpg",
-      "sha256": "00c6392e3ff987d98f38f18538690d393ff2aaa6c39df1e4e4640419f02c966d",
+      "sha256": "e72916cd9c824e00b5ff9c692600d898eb1363d7cf63350c0dcdd0ef458c133a",
+      "errors": []
+    },
+    {
+      "template": "cinema",
+      "state": "complete",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "file": "cinema-complete-mobile.jpg",
+      "sha256": "d6fa4cb6518f655345c2a5b19df1559ff455d047b929f394e8c3cc60ff9691a5",
       "errors": []
     },
     {
@@ -68,7 +80,19 @@
         "height": 844
       },
       "file": "stars-mobile.jpg",
-      "sha256": "ee8f9b71eb5126631d87cd431042f37173851ee823cf9cd7b7d1758e6f8bcb0d",
+      "sha256": "16e38e30acb3d0fdd8a74c23a238426aefbb8ed653f950c58867a3a2076f57f1",
+      "errors": []
+    },
+    {
+      "template": "stars",
+      "state": "complete",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "file": "stars-complete-mobile.jpg",
+      "sha256": "b5e6bc04bc90488fba5fdd82b26654b0da266bc11133545d4533a47c71fe3ca6",
       "errors": []
     },
     {
@@ -79,19 +103,19 @@
         "height": 844
       },
       "file": "garden-mobile.jpg",
-      "sha256": "fa38fc468c3ca8bfbddd41b6b99d48c3a34ad115deab5863d6a68c79958d7429",
+      "sha256": "2def4d2a73398dbe2362f4fa179ec24fb42e4737839338e04acd1409982fb02d",
       "errors": []
     },
     {
       "template": "garden",
-      "state": "opened",
+      "state": "complete",
       "device": "mobile",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "file": "garden-opened-mobile.jpg",
-      "sha256": "d4799fbe5b9376402e432ddffe8116e454209578f27acbd49b9694ef4b413de4",
+      "file": "garden-complete-mobile.jpg",
+      "sha256": "bfe5828919d1ec68233f1e75ab02adaec8e2bc4fe2ecb79f5c24140d7c42b17d",
       "errors": []
     },
     {
@@ -102,19 +126,19 @@
         "height": 844
       },
       "file": "capsule-mobile.jpg",
-      "sha256": "1d18ae2186b9b29633e64eaabea9ff9e7c19ed41f261b62d65610b5c8cfec4d4",
+      "sha256": "604cce88135b150b4d519a90fec7cc3600596f27af98529541a43cd44b881a6d",
       "errors": []
     },
     {
       "template": "capsule",
-      "state": "opened",
+      "state": "complete",
       "device": "mobile",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "file": "capsule-opened-mobile.jpg",
-      "sha256": "9be18d27699f435caac2e563fb5aba1ddc5f356505d07bc4fa31191461ed98c0",
+      "file": "capsule-complete-mobile.jpg",
+      "sha256": "f346d638a2d9c75102261f5cafc9d8013fcd55f9cfca104010195e1496ed1ca0",
       "errors": []
     },
     {
@@ -125,7 +149,19 @@
         "height": 844
       },
       "file": "scrapbook-mobile.jpg",
-      "sha256": "41e86708a93f78d83a6eb0b03f36ad7a30295fb59cf864f91cf3a299b6b05988",
+      "sha256": "91df4809699d4c2bbfc751457b4ba592a0cf9b8bae16c6f8b58818a10a4ea83c",
+      "errors": []
+    },
+    {
+      "template": "scrapbook",
+      "state": "complete",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "file": "scrapbook-complete-mobile.jpg",
+      "sha256": "3d2915711a915d1c76239acbe212e499207010257e10dda42f6f782606649141",
       "errors": []
     },
     {
@@ -136,7 +172,19 @@
         "height": 844
       },
       "file": "world-mobile.jpg",
-      "sha256": "5c7606829b70db9d5e8692e440ca18e74d3ea1c73dc512baf05b3e25ae5c6b51",
+      "sha256": "c839f5445c13d2089dad5dd9b43090275de8367e449b0150ced3b494ea5a1934",
+      "errors": []
+    },
+    {
+      "template": "world",
+      "state": "complete",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "file": "world-complete-mobile.jpg",
+      "sha256": "f02de3bb8c572847fb6351d1fd0fb1178dc0cda01f95a4fd69905bb48b3ad57b",
       "errors": []
     },
     {
@@ -147,7 +195,19 @@
         "height": 844
       },
       "file": "choose-mobile.jpg",
-      "sha256": "53d8cc1d2a939bba04df4cf45f3b78fb839fef2fb218e49beb98b7772206f3eb",
+      "sha256": "9da0a36b7fb2764fe9f7160d41f25497c4bb43988aca742d49769461abb6719b",
+      "errors": []
+    },
+    {
+      "template": "choose",
+      "state": "complete",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "file": "choose-complete-mobile.jpg",
+      "sha256": "53df43998c3dcf4742c7a1d09b690c7dfdd1bbfa3a51bcd8473c80832c95221b",
       "errors": []
     },
     {
@@ -158,7 +218,19 @@
         "height": 844
       },
       "file": "diary-mobile.jpg",
-      "sha256": "93d1e1b0190d7b5cbc4792718ef1c50214564679316cc21e714146a98f9cd4de",
+      "sha256": "30eb193dbb187f607ce64efde27f581894f4d3e033d593510ce15b860093976b",
+      "errors": []
+    },
+    {
+      "template": "diary",
+      "state": "complete",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "file": "diary-complete-mobile.jpg",
+      "sha256": "7c67886188110b40d3474d903eb9f90ecac37c8ece007d083b3cc7e5f6bf7599",
       "errors": []
     },
     {
@@ -169,7 +241,19 @@
         "height": 844
       },
       "file": "constellation-mobile.jpg",
-      "sha256": "d3bac3ecf6efa87856d5d42afc56abee19ad61bd137310f2501a4c5ccbd6829e",
+      "sha256": "3ee6a050dfd4e9c05584358824915f7a18afcf1cda5178a65b6293eb303f993c",
+      "errors": []
+    },
+    {
+      "template": "constellation",
+      "state": "complete",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "file": "constellation-complete-mobile.jpg",
+      "sha256": "80a31c2e81ba93ed7df6a6d1eb1cc8c7ab139517400ce4e79b5b024fa576c320",
       "errors": []
     },
     {
@@ -180,19 +264,19 @@
         "height": 844
       },
       "file": "surprise-mobile.jpg",
-      "sha256": "46152105b74902ba12ea6262d65905d354baf129c0a92cf492a777825100ecbb",
+      "sha256": "2b38b13787d104fda2204fd6234f95dada38ec9f847545c3a59459aa733ec83f",
       "errors": []
     },
     {
       "template": "surprise",
-      "state": "opened",
+      "state": "complete",
       "device": "mobile",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "file": "surprise-opened-mobile.jpg",
-      "sha256": "796ef20fc855a50579daa58ff36d5c5439cd755fd9a30385db69b51588e712ae",
+      "file": "surprise-complete-mobile.jpg",
+      "sha256": "f7459e7693fe753804200709bc07aaa7cab0500205ffd314dc291b2d772cddc6",
       "errors": []
     },
     {
@@ -203,19 +287,19 @@
         "height": 900
       },
       "file": "love-letter-desktop.jpg",
-      "sha256": "d603214d2be9e623988d1d93fc5c3dae211970ecebb1e2b38ecf227fb1d2a9f8",
+      "sha256": "30159b3d43939aa13b27c0bf6051821e8a6e4e6e9cae172942adff389246683c",
       "errors": []
     },
     {
       "template": "love-letter",
-      "state": "opened",
+      "state": "complete",
       "device": "desktop",
       "viewport": {
         "width": 1280,
         "height": 900
       },
-      "file": "love-letter-opened-desktop.jpg",
-      "sha256": "d4fe64e6143ae5c212ec57c83c52b933dc81638258bad0cbef944033474bffba",
+      "file": "love-letter-complete-desktop.jpg",
+      "sha256": "d0d283bb8f13f86d7cdc37b5b0164808b8b1b1f00b27af9e03ad0fcccc196742",
       "errors": []
     },
     {
@@ -226,19 +310,19 @@
         "height": 900
       },
       "file": "polaroid-desktop.jpg",
-      "sha256": "9a4f58b32e787c41a62f05cc194d16f510ac060a45e90d9fea5d56cc572728f4",
+      "sha256": "a300c450fb893632fa403e1e5ee77d5439bb2a93e814fcadb6dbd1bb22f910e3",
       "errors": []
     },
     {
       "template": "polaroid",
-      "state": "opened",
+      "state": "complete",
       "device": "desktop",
       "viewport": {
         "width": 1280,
         "height": 900
       },
-      "file": "polaroid-opened-desktop.jpg",
-      "sha256": "4411f0dc6b14408791a763f73cefa68514d981e095b794d4603a201afc370932",
+      "file": "polaroid-complete-desktop.jpg",
+      "sha256": "d6da058b6dab8d47800a9b3e193e4f6e34e356a6cbb0fc5799f91a9a88099df6",
       "errors": []
     },
     {
@@ -249,7 +333,19 @@
         "height": 900
       },
       "file": "cinema-desktop.jpg",
-      "sha256": "b8b9116eefbda783b98e24c3b71a1e5d25313377149de65b57a391c4ed6cf0cd",
+      "sha256": "82c062fa17de0ffd4cca841b5a1cf30b3b212787b883488e90db91b7100a6154",
+      "errors": []
+    },
+    {
+      "template": "cinema",
+      "state": "complete",
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "cinema-complete-desktop.jpg",
+      "sha256": "e212aba48cd846e67dbb14eabd990df0a7b480737702293bed298e259a05bdb7",
       "errors": []
     },
     {
@@ -260,7 +356,19 @@
         "height": 900
       },
       "file": "stars-desktop.jpg",
-      "sha256": "4754752841421474bdd436fa23dc395a5f2a126b90a41f4849afd94a0855933a",
+      "sha256": "a762c1c79486be1cc0100029c04d12a0bc707b1829e88f596c0ea545b05645bf",
+      "errors": []
+    },
+    {
+      "template": "stars",
+      "state": "complete",
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "stars-complete-desktop.jpg",
+      "sha256": "b2c27b3039843e7852e5d93df8539dd26d1160241ea3f2f976f1ac21e78d4047",
       "errors": []
     },
     {
@@ -271,19 +379,19 @@
         "height": 900
       },
       "file": "garden-desktop.jpg",
-      "sha256": "94953ce8b923884fb30f6df093160c39a402e5f6b92b3875fdd98e20dbd5b93f",
+      "sha256": "80b0fa30d7ab92d8bd704a7343a7f73acd025405630cf5658aab7d234dc8919d",
       "errors": []
     },
     {
       "template": "garden",
-      "state": "opened",
+      "state": "complete",
       "device": "desktop",
       "viewport": {
         "width": 1280,
         "height": 900
       },
-      "file": "garden-opened-desktop.jpg",
-      "sha256": "c608b6ca9b02b9d8fe0a352f8be6f465f6a16e59b730bff22f68e77149f90573",
+      "file": "garden-complete-desktop.jpg",
+      "sha256": "9319abb957540e0c20ec26045eb6999495d8543f27aad59ed92e0b6f4c31bb7a",
       "errors": []
     },
     {
@@ -294,19 +402,19 @@
         "height": 900
       },
       "file": "capsule-desktop.jpg",
-      "sha256": "8a0a7449c3705f439fb06f67b3191a5b0115ac703ca8d9c4b074ecae65250c7a",
+      "sha256": "372667a68f5198f3f8947d12dbad1cc4b588c5d21db7e0ae3473573c70dc3a4e",
       "errors": []
     },
     {
       "template": "capsule",
-      "state": "opened",
+      "state": "complete",
       "device": "desktop",
       "viewport": {
         "width": 1280,
         "height": 900
       },
-      "file": "capsule-opened-desktop.jpg",
-      "sha256": "edcce74dc0caea33b0ace04994937beb94819beb91c9c66352425a63542d95b3",
+      "file": "capsule-complete-desktop.jpg",
+      "sha256": "c53af92b9d6702de09291b1d8564d6d78ac7b06374aa18edde600a184cc4f76b",
       "errors": []
     },
     {
@@ -317,7 +425,19 @@
         "height": 900
       },
       "file": "scrapbook-desktop.jpg",
-      "sha256": "10d7fb7d34d7e11337d032af1006fac8824247f2a4b2b73bafe56f1108c12ece",
+      "sha256": "b49be55dde23ea02fec472846eed52d91cff587fac34af5dec16d7e134304af5",
+      "errors": []
+    },
+    {
+      "template": "scrapbook",
+      "state": "complete",
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "scrapbook-complete-desktop.jpg",
+      "sha256": "dc4288ace665e342decc55a769a258338e9fbe0f6d5446fb42ac0c322eacf609",
       "errors": []
     },
     {
@@ -328,7 +448,19 @@
         "height": 900
       },
       "file": "world-desktop.jpg",
-      "sha256": "eab70c4b5ce9adbc2a296fb73dd88f72a2f2dd038707476a5a194c41cbe4e3e9",
+      "sha256": "e873ca5c79688b6163a74908a61fa51fd933c7b4989b142c8d793f95cf7a9813",
+      "errors": []
+    },
+    {
+      "template": "world",
+      "state": "complete",
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "world-complete-desktop.jpg",
+      "sha256": "483407195ad80e30610b146c5ecf0085c710037eec9c4f1b505a5f2b541e0fcc",
       "errors": []
     },
     {
@@ -339,7 +471,19 @@
         "height": 900
       },
       "file": "choose-desktop.jpg",
-      "sha256": "0d97f3cbe76401eafe64cee0d17b2f7663fea1e4526585bed56f43800d53fd31",
+      "sha256": "b4b2927b8cf69c3a923bf1519b0a792f8f28e5ab91cef22045b2c1c7372c3956",
+      "errors": []
+    },
+    {
+      "template": "choose",
+      "state": "complete",
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "choose-complete-desktop.jpg",
+      "sha256": "7e1b5497b0525acac587078d124ca9b3be813970eda98a353702964191004758",
       "errors": []
     },
     {
@@ -350,7 +494,19 @@
         "height": 900
       },
       "file": "diary-desktop.jpg",
-      "sha256": "7a57b502a52826dabd280b98affe44e16f4644d340c7db25aa7da57a1e06ecb9",
+      "sha256": "72e8346fa6ebe50771856c3e87e86b0569926f12d3b0a428b7f4aebb41691aa6",
+      "errors": []
+    },
+    {
+      "template": "diary",
+      "state": "complete",
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "diary-complete-desktop.jpg",
+      "sha256": "599921ec30465e1713e382526489878368f79d9218bce5eb9afa509b423a884e",
       "errors": []
     },
     {
@@ -361,7 +517,19 @@
         "height": 900
       },
       "file": "constellation-desktop.jpg",
-      "sha256": "93d1f3b8a9b1716d06257e1f6412653fecab459248adde5e9db7c256ecb1b834",
+      "sha256": "cea2d2adeff8c034bc871d5ea347f95de0408d9d6b3b0f8cdd6a9425816cfb32",
+      "errors": []
+    },
+    {
+      "template": "constellation",
+      "state": "complete",
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "constellation-complete-desktop.jpg",
+      "sha256": "47a8ef70f97a18e8ee73c70abfcddf0921c5f965f848f270ff48797b149cf947",
       "errors": []
     },
     {
@@ -372,22 +540,20 @@
         "height": 900
       },
       "file": "surprise-desktop.jpg",
-      "sha256": "9536a1696d9fcbbd18a8439ad0bb7ad0aab501302bdde09631e3710fef4bc29f",
+      "sha256": "294997f4e390b44bb17240cd5d956bf25e6dff5d6ad5479c565c298e826d1d54",
       "errors": []
     },
     {
       "template": "surprise",
-      "state": "opened",
+      "state": "complete",
       "device": "desktop",
       "viewport": {
         "width": 1280,
         "height": 900
       },
-      "file": "surprise-opened-desktop.jpg",
-      "sha256": "5a4909176a012d4112e6648118d25ce83945f5ce65444994c60736d51b4793e0",
+      "file": "surprise-complete-desktop.jpg",
+      "sha256": "a15984f99ef339dfe76ecd52951355a7abc904ee9c7bc7625032ddb95941fda0",
       "errors": []
     }
-  ],
-  "captureParentCommit": "a8bc1f386c14f9e48f154573a010b17e07dc6901",
-  "sourceSnapshotSha256": "044e2ca99cf41e4e13642d225f72a41bb7c210ada80ec820a94d548877e033c4"
+  ]
 }

@@ -1,6 +1,6 @@
 # LuvNote Creative Template Lab
 
-Local team preview of twelve independent interactive card prototypes. No card API, database, upload or customer-account connection.
+Developer studio for twelve independent, complete recipient journeys. No card API, database or customer-account connection. Images chosen in the studio are processed locally.
 
 ## Shared developer preview
 
@@ -24,7 +24,7 @@ Open **http://127.0.0.1:4317/template-lab/**. The terminal's `/` URL is the repo
 
 The controls simulate real iframe viewport widths (390, 768, 1280); the surrounding shell scales them to fit. Tests also exercise 360px. Open the player for unscaled touch testing.
 
-Use **แก้ไขข้อมูลตัวอย่าง** in a preview to edit the Story JSON. Data stays in that page's memory and is delivered to its preview frames only. It is not saved or published. Reloading loses edits. Custom-data full-screen export is intentionally not offered; preset players open in a new tab.
+Use **ปรับชื่อและรูปของคุณ** / **ปรับแต่งการ์ดนี้** to edit names, cover, messages, 1–8 memories and music without JSON. Capsule keepsakes and Choose questions/endings have dedicated fields. Apply updates the preview. Save/load/delete a browser-local draft, download/import a versioned draft file, or open that exact draft in a new tab. The new tab survives reload in the same browser; it is **not a customer sharing link**. Missing/corrupt drafts show a recovery message. JSON remains available under developer controls.
 
 `src/template-lab/data.ts` defines Story/Moment and provides two samples plus `fromCardData(CardData)`. Configuration accepts 1–8 uniquely identified moments, plain text, local paths, HTTPS image URLs and bounded JPEG/PNG/WebP data URLs. Empty legacy photo sets get a fallback. No HTML input is evaluated.
 
@@ -37,7 +37,7 @@ npm run lab:build
 npm run test:lab
 ```
 
-For fresh screenshots, keep `lab:dev` running in one terminal and run `npm run lab:capture` in another. It captures the actual players at mobile and desktop sizes, including five opened states, into `template-lab/public/previews/`. No generated mockups are used.
+For fresh screenshots, keep `lab:dev` running in one terminal and run `npm run lab:capture` in another (`LAB_URL=http://127.0.0.1:4318` for built preview). It captures all twelve actual players at mobile and desktop sizes, both the opening viewport and the complete ending with the full letter: 48 images in `template-lab/public/previews/`. Lazy images are loaded before final captures. No generated mockups are used.
 
 `npm run lab:preview` serves the separate `dist-lab` output on **http://127.0.0.1:4318/template-lab/**. `node scripts/measure-template-lab.mjs` measures diagnostic browser performance against that local built preview.
 
@@ -48,6 +48,7 @@ For fresh screenshots, keep `lab:dev` running in one terminal and run `npm run l
 - Existing deployment workflows upload `dist` only. The new Lab workflow runs checks and uploads test evidence; it has no deployment job or credentials.
 - The frontend Pages workflow explicitly builds with `LAB_BASE_PATH=/mylab/`, then runs `node scripts/package-template-lab.mjs` and `npx playwright test --config playwright.mylab.config.ts` before uploading `dist`. Packaging adds only `dist/mylab` and verifies that every existing customer file remains byte-for-byte unchanged. A normal `npm run build` still excludes the Lab.
 - Both local servers bind to loopback. Hosted access is public by the Owner's explicit request; `noindex` is advisory, not authentication. The Owner approved `/mylab/` on the main domain; customer navigation and existing card routes are unchanged.
-- Nothing here creates a Marketplace, a database or a shared-template service. Hosting uses a single isolated static Site.
+- Nothing here creates a Marketplace, a database or a shared-template service. The canonical Lab is statically hosted on the existing GitHub Pages site under `/mylab/`.
+- These new renderers are not yet in the production card API's theme allowlist. Publishing, editing, expiration, LINE sharing and physical-device acceptance must be integrated and verified before customer sale. The studio labels the distinction explicitly.
 
 See [the complete report](../LUVNOTE-CREATIVE-TEMPLATE-REPORT.md), [source coverage](../docs/evidence/creative-lab-sources.json) and [material notices](public/licenses/NOTICE.md).

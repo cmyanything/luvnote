@@ -1,0 +1,95 @@
+{
+  "checkedAt": "2026-11-02T04:18:22.792Z",
+  "origin": "https://luvnote-template-lab.brsblack79.chatgpt.site",
+  "accessMode": "public",
+  "accessRevision": 2,
+  "authenticationSupplied": false,
+  "deploymentId": "appgdep_6ae80ee1c4b8819183828af3b51011a5",
+  "version": 1,
+  "sourceCommit": "11571be49a7ad8e2b619a5e8a7bc63e4a9911170",
+  "requests": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/template-lab/",
+      "status": 200
+    },
+    {
+      "path": "/assets/index-B9EiulQu.js",
+      "status": 200
+    },
+    {
+      "path": "/images/lake.jpg",
+      "status": 200
+    },
+    {
+      "path": "/previews/love-letter-mobile.jpg",
+      "status": 200
+    },
+    {
+      "path": "/fonts/fonts.css",
+      "status": 200
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200
+    }
+  ],
+  "players": [
+    {
+      "id": "love-letter",
+      "status": "PASS"
+    },
+    {
+      "id": "polaroid",
+      "status": "PASS"
+    },
+    {
+      "id": "cinema",
+      "status": "PASS"
+    },
+    {
+      "id": "stars",
+      "status": "PASS"
+    },
+    {
+      "id": "garden",
+      "status": "PASS"
+    },
+    {
+      "id": "capsule",
+      "status": "PASS"
+    },
+    {
+      "id": "scrapbook",
+      "status": "PASS"
+    },
+    {
+      "id": "world",
+      "status": "PASS"
+    },
+    {
+      "id": "choose",
+      "status": "PASS"
+    },
+    {
+      "id": "diary",
+      "status": "PASS"
+    },
+    {
+      "id": "constellation",
+      "status": "PASS"
+    },
+    {
+      "id": "surprise",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "robotsDisallowsIndexing": true,
+  "catalogueCount": 12,
+  "embeddedLetterAndReset": "PASS",
+  "status": "PASS"
+}

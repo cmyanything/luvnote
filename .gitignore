@@ -1,5 +1,8 @@
 node_modules/
 dist/
+dist-lab/
+lab-results/
+lab-playwright-report/
 test-results/
 playwright-report/
 .env

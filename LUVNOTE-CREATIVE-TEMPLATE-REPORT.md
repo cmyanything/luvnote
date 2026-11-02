@@ -13,11 +13,11 @@ npm run lab:dev
 
 เปิด **http://127.0.0.1:4317/template-lab/**
 
-เว็บทดลองสำหรับผู้พัฒนา: **https://luvnote-template-lab.brsblack79.chatgpt.site/template-lab/** — เปิดเป็น public ตามคำขอ Owner ล่าสุด ผู้มีลิงก์ดูได้ทุกแบบโดยไม่ต้องใส่รหัสหรือลงชื่อเข้าใช้ ยังคง noindex แต่ไม่ได้จำกัดสิทธิ์ผู้ชม. รายละเอียดใน [hosting operations](docs/CREATIVE-LAB-HOSTING.md) และ [หลักฐาน anonymous access ล่าสุด](docs/evidence/creative-lab-public-access.json)
+เว็บทดลองสำหรับผู้พัฒนาตาม URL ที่ Owner ขอ: **https://luvnote.fun/mylab/** — ผู้มีลิงก์ดูได้ทุกแบบโดยไม่ต้องใส่รหัสหรือลงชื่อเข้าใช้ ยังคง noindex แต่ไม่ได้จำกัดสิทธิ์ผู้ชม. รายละเอียดการเผยแพร่ผ่าน GitHub Pages เดิมใน [hosting operations](docs/CREATIVE-LAB-HOSTING.md). [Sites snapshot เดิม](https://luvnote-template-lab.brsblack79.chatgpt.site/template-lab/) และหลักฐาน anonymous access ของ snapshot นั้นเก็บเป็นประวัติแยก
 
 คู่มือ: [template-lab/README.md](template-lab/README.md) · โค้ด: [src/template-lab](src/template-lab) · ภาพ: [template-lab/public/previews](template-lab/public/previews)
 
-**สถานะ:** Working prototypes สำหรับเลือก Creative Direction และพัฒนาต่อ เผยแพร่เว็บทดลองแยกและเปิดให้ผู้มีลิงก์เข้าชมตามคำขอ Owner แล้ว ยังไม่ได้เชื่อมเผยแพร่การ์ดหรือเปิดเป็นธีมให้ลูกค้า และไม่ได้ deploy เว็บหรือ backend production ของ LuvNote
+**สถานะ:** Working prototypes สำหรับเลือก Creative Direction และพัฒนาต่อ Owner ขอเผยแพร่หน้า Lab เพิ่มที่ `/mylab/` บนเว็บหลักโดยตรงผ่าน frontend deployment เดิม ยังไม่ได้เชื่อมเผยแพร่การ์ดหรือเปิดเป็นธีมให้ลูกค้า และไม่ได้เปลี่ยน backend production ของ LuvNote
 
 **LAB_PROTOTYPE_ACCEPTANCE = PASS** — `npm run test:lab`: **170 passed, 0 failed, 0 skipped, 0 flaky** (34 checks x 5 projects, 216.6 วินาที). TypeScript, production build และ Lab build ผ่าน; production isolation ตรวจ 25 output files ผ่าน.
 
@@ -27,7 +27,7 @@ Source/test snapshot SHA-256: `044e2ca99cf41e4e13642d225f72a41bb7c210ada80ec820a
 
 หลักฐาน: [ผล final แยกตาม project และ file hash](docs/evidence/creative-lab-verification.json) · [34 screenshots พร้อม hash](template-lab/public/previews/screenshots.json) · [independent review/defect ledger](docs/evidence/creative-lab-review.md). ตรวจเทียบ source/test hashes กับ implementation commit แล้ว
 
-**GO สำหรับทดลองและเลือกต้นแบบภายใน / NO-GO สำหรับเปิด Production ตอนนี้**: ต้องทำ integration และ physical-device acceptance ของแบบที่เลือกก่อน; exploratory system audit เดิมยังมี WebKit failure ที่ไม่ได้อ้างว่าปิดแล้ว
+**GO สำหรับหน้า Lab เพื่อเลือกต้นแบบ / NO-GO สำหรับใช้ต้นแบบสร้างการ์ดลูกค้าจริงตอนนี้**: ต้องทำ integration และ physical-device acceptance ของแบบที่เลือกก่อน; exploratory system audit เดิมยังมี WebKit failure ที่ไม่ได้อ้างว่าปิดแล้ว
 
 ## 1. Repository audit
 
@@ -41,7 +41,7 @@ Source/test snapshot SHA-256: `044e2ca99cf41e4e13642d225f72a41bb7c210ada80ec820a
 
 ## 2. โครงสร้างที่เลือก
 
-`vite.lab.config.ts` มี entry และ public directory ของตัวเอง → `dist-lab/`; build ปกติยังออก `dist/` และไม่มี Lab ไม่มีการเพิ่ม route หรือปุ่ม Lab ในหน้าเว็บลูกค้า
+`vite.lab.config.ts` มี entry และ public directory ของตัวเอง → `dist-lab/`; build ปกติยังออก `dist/` และไม่มี Lab. ตามคำขอ Owner ล่าสุด frontend workflow จึง build Lab แยกด้วย base `/mylab/` แล้วเพิ่มเฉพาะ `dist/mylab` ก่อน deploy โดยตรวจ hash ว่าไฟล์ลูกค้าเดิมไม่เปลี่ยน ไม่มีการเพิ่มปุ่ม Lab ในหน้าเว็บลูกค้า
 
 แต่ละเทมเพลตเป็น React component แยกไฟล์ รับ `Story` เดียวกันผ่าน props ไม่อ่านข้อมูลลูกค้าหรือเรียก API. `fromCardData()` เป็น adapter ขนาดเล็กสำหรับทดลองนำข้อมูลจากระบบจริงมาใช้ในอนาคตโดยไม่ต้องเขียน renderer ใหม่ รองรับไม่มีรูปและกรอง scheme ของ URL ภาพ
 
@@ -282,7 +282,7 @@ Lab main JS ประมาณ **122.5 kB gzip** รวม React/Motion; CSS ท
 
 - `c555b7f6e9ecb7521526a5a1a596372e07b0c9f6` — implementation, test sources, assets, screenshots และ notices
 - รายงานและ final acceptance evidence บันทึกใน documentation commits ถัดจาก implementation; ไม่แก้ runtime หลังรอบ final
-- ไม่มี merge หรือ deploy customer production; private developer Site เผยแพร่แยกตามคำขอแล้ว
+- ก่อนคำขอ main-domain ล่าสุดยังไม่มี merge หรือ customer frontend deploy; การเผยแพร่ `/mylab/` เพิ่มใช้ PR #14 และ frontend workflow เดิม โดยไม่เปลี่ยน backend หรือเปิดธีมใหม่ใน editor ลูกค้า
 
 ## Private hosted acceptance — ประวัติก่อน Owner ขอเปิด public
 
@@ -303,3 +303,13 @@ Owner ขอให้ผู้พัฒนาคนอื่นดูได้�
 ตรวจแบบไม่มี token, cookie หรือ sign-in: **7/7 HTTP checks ได้ 200**, catalogue มี 12 รายการ และ player **12/12 เปิดได้**, iframe เปิดจดหมายและ Reset ผ่าน, browser runtime errors 0. รอบนี้ไม่ได้ทดสอบ interaction ทุกแบบซ้ำ; ผล interaction ครบ 12 แบบอยู่ใน private acceptance ก่อนหน้า ซึ่งใช้ runtime version เดียวกัน. `robots.txt` และ noindex ยังอยู่ แต่ไม่ได้จำกัดสิทธิ์เข้าชม.
 
 หลักฐานปัจจุบัน: [creative-lab-public-access.json](docs/evidence/creative-lab-public-access.json). เปลี่ยนเฉพาะเว็บ Lab แยก ไม่ได้แก้เว็บลูกค้า ฐานข้อมูล หรือ backend ของ LuvNote.
+
+## Main-domain publication — คำขอ Owner ล่าสุด
+
+Owner ระบุให้เผยแพร่ที่ `luvnote.fun/mylab` โดยตรง จึงเพิ่มขั้น build/package/test ของ Lab ใน frontend workflow เดิม ซึ่งยังใช้ environment policy ที่อนุญาตเฉพาะ `main`. ไม่แก้ DNS, billing, environment protections, database หรือ Worker. โค้ดหน้าเว็บและธีมลูกค้าเดิมไม่ถูกแก้จาก base `a8bc1f386c14f9e48f154573a010b17e07dc6901`.
+
+การแก้ไขเฉพาะทาง: ใช้ Vite base สำหรับ assets และลิงก์กลับ, URL ฟอนต์แบบ relative และตัว package ที่เพิ่มเฉพาะ `dist/mylab` พร้อมตรวจ hash ของไฟล์เดิมทุกไฟล์. Root/standalone Lab ยังคงเปิดด้วย `/template-lab/` และชุดทดสอบเดิม.
+
+ตรวจ customer build กับ artifact ที่เผยแพร่อยู่จาก run `41367555706`: 24 ไฟล์เนื้อหาเหมือนเดิม — 8 non-HTML ตรง hash ทุก byte, 16 HTML ต่างเฉพาะ CR ก่อน LF จาก Windows/Vite เมื่อเทียบกับ Linux. ตัว package ตรวจเพิ่มว่าไฟล์ customer build ปัจจุบันทั้ง 25 ไฟล์ไม่เปลี่ยนแม้แต่ byte เดียวหลังเพิ่ม `/mylab`.
+
+ใช้ `npm run test:lab` สำหรับ interaction/accessibility เดิม และ `npx playwright test --config playwright.mylab.config.ts` สำหรับ path deployment จริงใน static output (12 players, รูป/ฟอนต์, catalogue, comparison, iframe/reset/config และไม่มี request หลุดออกจาก `/mylab/`). ผลรอบนี้เก็บใน [creative-lab-mylab-local.json](docs/evidence/creative-lab-mylab-local.json); หลักฐาน live publication แยกจากผล local และ Sites snapshot เก่า.

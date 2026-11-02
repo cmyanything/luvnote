@@ -1,0 +1,249 @@
+{
+  "checkedAt": "2026-11-02T04:30:26.010Z",
+  "target": "https://luvnote.fun/mylab/",
+  "sourceParent": "129888d772ea68f49a53d16a34b510b4eba5f268",
+  "liveDeploymentVerified": false,
+  "commands": [
+    {
+      "command": "npm run build",
+      "result": "PASS",
+      "mode": "existing production repository variables; key is public, not stored here"
+    },
+    {
+      "command": "node scripts/check-template-lab-isolation.mjs",
+      "result": "PASS",
+      "files": 25
+    },
+    {
+      "command": "npm run test:lab",
+      "result": "PASS",
+      "stats": {
+        "startTime": "2026-11-02T04:24:20.342Z",
+        "duration": 216171.809,
+        "expected": 170,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "command": "LAB_BASE_PATH=/mylab/ npm run lab:build",
+      "result": "PASS"
+    },
+    {
+      "command": "node scripts/package-template-lab.mjs",
+      "result": "PASS",
+      "existingCustomerFilesByteIdentical": 25
+    },
+    {
+      "command": "npx playwright test --config playwright.mylab.config.ts",
+      "result": "PASS",
+      "stats": {
+        "startTime": "2026-11-02T04:28:56.376Z",
+        "duration": 45611.371999999996,
+        "expected": 56,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  ],
+  "customerBaseline": {
+    "baselineCommit": "a8bc1f386c14f9e48f154573a010b17e07dc6901",
+    "run": 41367555706,
+    "platform": "Windows local build versus Linux Pages artifact; HTML normalization only removes CR characters immediately before LF (including Vite double-CR sequences)",
+    "files": [
+      {
+        "path": "CNAME",
+        "byteIdentical": true,
+        "onlyWindowsLineEndingsDiffer": false,
+        "unchanged": true
+      },
+      {
+        "path": "admin/index.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "app/index.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "assets/Movie-ChBPoml_.js",
+        "byteIdentical": true,
+        "onlyWindowsLineEndingsDiffer": false,
+        "unchanged": true
+      },
+      {
+        "path": "assets/Movie-XTKNR66R.css",
+        "byteIdentical": true,
+        "onlyWindowsLineEndingsDiffer": false,
+        "unchanged": true
+      },
+      {
+        "path": "assets/anniversary-card-C1lEMhvj.js",
+        "byteIdentical": true,
+        "onlyWindowsLineEndingsDiffer": false,
+        "unchanged": true
+      },
+      {
+        "path": "assets/anniversary-card-C_FVWsGe.css",
+        "byteIdentical": true,
+        "onlyWindowsLineEndingsDiffer": false,
+        "unchanged": true
+      },
+      {
+        "path": "assets/main-DT-9bCOm.js",
+        "byteIdentical": true,
+        "onlyWindowsLineEndingsDiffer": false,
+        "unchanged": true
+      },
+      {
+        "path": "assets/main-R7HSOh5u.css",
+        "byteIdentical": true,
+        "onlyWindowsLineEndingsDiffer": false,
+        "unchanged": true
+      },
+      {
+        "path": "assets/useModal-CRwibxRu.js",
+        "byteIdentical": true,
+        "onlyWindowsLineEndingsDiffer": false,
+        "unchanged": true
+      },
+      {
+        "path": "index.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "intro-preview.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "themes/anniversary-journey/card.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "themes/anniversary-journey/index.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "themes/birthday-chat/card.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "themes/birthday-chat/index.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "themes/coquette-dream/card.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "themes/coquette-dream/index.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "themes/little-memories/card.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "themes/little-memories/index.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "themes/pink-coquette/card.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "themes/pink-coquette/index.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "themes/velvet-gift/card.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      },
+      {
+        "path": "themes/velvet-gift/index.html",
+        "byteIdentical": false,
+        "onlyWindowsLineEndingsDiffer": true,
+        "unchanged": true
+      }
+    ]
+  },
+  "sourceFiles": [
+    {
+      "file": "src/template-lab/paths.ts",
+      "sha256LfNormalized": "bd8c790364be6f0fc5ed3ee3fd35c6ab1cc22cb571358140f2006f5219d8e9ae"
+    },
+    {
+      "file": "src/template-lab/data.ts",
+      "sha256LfNormalized": "cc29814a728ea641b3fecb50bf8bf71d5cb3fca8f60e03773adfbbf9e10b0298"
+    },
+    {
+      "file": "src/template-lab/main.tsx",
+      "sha256LfNormalized": "b79aa57ea77712dbbef1d032fd1e05ca611e4a47b7a860ce021a600dcd17fe3e"
+    },
+    {
+      "file": "template-lab/index.html",
+      "sha256LfNormalized": "427f6dddcedb407cdb88e636f9874d6d3b66f80cb232baccfcdfab81812404db"
+    },
+    {
+      "file": "template-lab/public/fonts/fonts.css",
+      "sha256LfNormalized": "01a212a3077d31138c68cbefa97af3f01f0bb79d337b79ae0e9031b9cb878c08"
+    },
+    {
+      "file": "vite.lab.config.ts",
+      "sha256LfNormalized": "6d0e10f2e9bda1a21b7040f48ca4820c7c27738ea8230c1d9940d66a8c315973"
+    },
+    {
+      "file": "scripts/package-template-lab.mjs",
+      "sha256LfNormalized": "b80acd1444494dd2e6dc48147f17f3c78d01a26a3441d23a8c82b271a76d305a"
+    },
+    {
+      "file": "playwright.mylab.config.ts",
+      "sha256LfNormalized": "db124dfeca133e80110a22a7a16ce33d229dbb7d48050ae1675838c0db7b0a3d"
+    },
+    {
+      "file": "tests/lab/deployment.mylab.ts",
+      "sha256LfNormalized": "4f096562b3ebcfb339eca1d2220216412f4168215ab0d15794c2c37621144bdc"
+    },
+    {
+      "file": ".github/workflows/frontend.yml",
+      "sha256LfNormalized": "77587566dfd46bef542f0ecfb2db93cedd2c5e64179d63168c12135e9f9ae211"
+    }
+  ],
+  "limits": [
+    "Local static browser acceptance only; live deployment must be verified separately.",
+    "Browser emulation is not physical-device testing.",
+    "Existing customer renderer/editor/Worker code unchanged; new prototypes remain separate from customer card creation."
+  ]
+}

@@ -14,6 +14,7 @@ import { MotionConfig } from 'motion/react';
 import { alternate, demo, type Story } from './data';
 import { findTemplate, templates, type TemplateId } from './registry';
 import { Button, Icon } from './shared';
+import { labAsset, labHome } from './paths';
 import './lab.css';
 import './templates.css';
 
@@ -46,7 +47,7 @@ class ExperienceBoundary extends Component<
         <h1>เปิดตัวอย่างนี้ไม่ได้</h1>
         <p>ลองโหลดใหม่อีกครั้ง ไฟล์ตัวอย่างอาจยังโหลดไม่ครบ</p>
         <Button onClick={() => location.reload()}>โหลดใหม่</Button>
-        <a href="/template-lab/">กลับไปหน้า Lab</a>
+        <a href={labHome}>กลับไปหน้า Lab</a>
       </main>
     ) : (
       this.props.children
@@ -300,7 +301,7 @@ function Lab() {
     summary: string;
   } | null>(null);
   useEffect(() => {
-    void fetch('/previews/verification.json')
+    void fetch(labAsset('previews/verification.json'))
       .then((r) => (r.ok ? r.json() : null))
       .then(setEvidence)
       .catch(() => {});
@@ -314,7 +315,7 @@ function Lab() {
       </a>
       <header className="lab-header">
         <a
-          href="/template-lab/"
+          href={labHome}
           className="lab-brand"
           aria-label="LuvNote Template Lab"
         >
@@ -344,7 +345,7 @@ function Lab() {
             </div>
             <a className="lab-feature" href="?template=polaroid">
               <img
-                src="/previews/polaroid-mobile.jpg"
+                src={labAsset('previews/polaroid-mobile.jpg')}
                 alt="ภาพจริงของ Polaroid Memories กองรูปที่ปัดและพลิกได้"
                 width="390"
                 height="844"
@@ -397,7 +398,7 @@ function Lab() {
                       aria-label={`เปิด ${t.title}`}
                     >
                       <img
-                        src={`/previews/${t.id}-mobile.jpg`}
+                        src={labAsset(`previews/${t.id}-mobile.jpg`)}
                         alt={`ภาพจริงของ ${t.title}`}
                         width="390"
                         height="844"
@@ -449,7 +450,7 @@ function Lab() {
         </main>
       ) : (
         <main id="lab-main" className="lab-detail">
-          <a className="lab-back" href="/template-lab/#catalog">
+          <a className="lab-back" href={`${labHome}#catalog`}>
             <Icon name="back" size={18} /> กลับไปดูทั้งหมด
           </a>
           <div className="detail-heading">
@@ -537,7 +538,7 @@ function Lab() {
                           {evidence.summary}
                           <br />
                           <a
-                            href="/previews/verification.json"
+                            href={labAsset('previews/verification.json')}
                             target="_blank"
                             rel="noreferrer"
                           >

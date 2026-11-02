@@ -1,4 +1,5 @@
 import type { CardData } from '../types';
+import { labAsset } from './paths';
 
 export interface Moment {
   id: string;
@@ -36,7 +37,7 @@ export const demo: Story = {
       date: '2022-06-14',
       title: 'กาแฟแก้วแรก',
       note: 'วันนั้นกาแฟอาจจะธรรมดา แต่คนที่นั่งด้วยไม่ธรรมดาเลย',
-      image: '/images/coffee.jpg',
+      image: labAsset('images/coffee.jpg'),
       alt: 'กาแฟบนโต๊ะ ภาพประกอบวันแรกที่พบกัน',
       place: 'ร้านเดิม มุมหน้าต่าง',
     },
@@ -45,7 +46,7 @@ export const demo: Story = {
       date: '2023-02-18',
       title: 'หลงทางด้วยกัน',
       note: 'จำทางกลับแทบไม่ได้ แต่จำได้ว่าหัวเราะกันตลอดทาง',
-      image: '/images/lake.jpg',
+      image: labAsset('images/lake.jpg'),
       alt: 'ทะเลสาบท่ามกลางภูเขา ภาพประกอบการเดินทาง',
       place: 'ที่ไหนสักแห่ง นอกเมือง',
     },
@@ -54,7 +55,7 @@ export const demo: Story = {
       date: '2024-11-02',
       title: 'ไม่ต้องรีบไปไหน',
       note: 'โลกยังหมุนเร็วเหมือนเดิม แต่เราค่อย ๆ ใช้เวลาด้วยกันได้',
-      image: '/images/landscape.jpg',
+      image: labAsset('images/landscape.jpg'),
       alt: 'แสงเย็นเหนือทิวเขา ภาพประกอบวันที่ได้พักด้วยกัน',
       place: 'ระหว่างทางกลับบ้าน',
     },
@@ -63,7 +64,7 @@ export const demo: Story = {
       date: '2026-06-14',
       title: 'บ้านที่ชื่อว่าเธอ',
       note: 'ไม่จำเป็นต้องเป็นที่ไหน แค่มีเธออยู่ข้าง ๆ ก็พอแล้ว',
-      image: '/images/cabin.jpg',
+      image: labAsset('images/cabin.jpg'),
       alt: 'กระท่อมริมทะเลสาบ ภาพประกอบความรู้สึกเหมือนบ้าน',
       place: 'ตรงนี้ ข้าง ๆ กัน',
     },
@@ -95,7 +96,7 @@ export const alternate: Story = {
 };
 
 const safeImage = (src: string | null | undefined) => {
-  if (!src) return '/images/coffee.jpg';
+  if (!src) return labAsset('images/coffee.jpg');
   // Data from a future editor stays text/URLs; never interpolate HTML or active schemes.
   if (/^data:image\/(?:jpeg|png|webp);base64,/i.test(src)) return src;
   if (/^\/(?!\/)/.test(src)) return src;
@@ -104,7 +105,7 @@ const safeImage = (src: string | null | undefined) => {
   } catch {
     /* fallback */
   }
-  return '/images/coffee.jpg';
+  return labAsset('images/coffee.jpg');
 };
 
 /** A small adapter for future editor integration; no API or storage dependency. */

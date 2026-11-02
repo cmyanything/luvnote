@@ -4,9 +4,9 @@ Local team preview of twelve independent interactive card prototypes. No card AP
 
 ## Shared developer preview
 
-Open **https://luvnote-template-lab.brsblack79.chatgpt.site/template-lab/**. At the Owner's request, anyone with the URL can view every prototype without a password or ChatGPT sign-in. This preview is public; noindex and the absence of customer links do not restrict access.
+Primary URL: **https://luvnote.fun/mylab/**. At the Owner's request, anyone with the URL can view every prototype without a password or ChatGPT sign-in. This preview is public; noindex and the absence of customer links do not restrict access.
 
-This separate static Site hosts only `dist-lab`, with a root redirect to `/template-lab/`. It has no customer API or storage bindings. The LuvNote customer website and GitHub Pages deployment remain separate. See [hosting evidence](../docs/evidence/creative-lab-hosting.json) and [hosting operations](../docs/CREATIVE-LAB-HOSTING.md).
+GitHub Pages adds the separately built Lab under `/mylab/` only; it does not connect to the card API or storage. The earlier [Sites snapshot](https://luvnote-template-lab.brsblack79.chatgpt.site/template-lab/) remains a separate preview. See [hosting operations](../docs/CREATIVE-LAB-HOSTING.md).
 
 ```sh
 npm ci
@@ -46,7 +46,8 @@ For fresh screenshots, keep `lab:dev` running in one terminal and run `npm run l
 - The existing `vite.config.ts`, themes, editors and Worker are unchanged.
 - Normal `npm run build` emits `dist`; the Lab emits `dist-lab` with its own public assets.
 - Existing deployment workflows upload `dist` only. The new Lab workflow runs checks and uploads test evidence; it has no deployment job or credentials.
-- Both local servers bind to loopback. Hosted access is public by the Owner's explicit request; `noindex` is advisory, not authentication. Preserve the selected audience when updating the Site. Do not add the Lab to customer routing.
+- The frontend Pages workflow explicitly builds with `LAB_BASE_PATH=/mylab/`, then runs `node scripts/package-template-lab.mjs` and `npx playwright test --config playwright.mylab.config.ts` before uploading `dist`. Packaging adds only `dist/mylab` and verifies that every existing customer file remains byte-for-byte unchanged. A normal `npm run build` still excludes the Lab.
+- Both local servers bind to loopback. Hosted access is public by the Owner's explicit request; `noindex` is advisory, not authentication. The Owner approved `/mylab/` on the main domain; customer navigation and existing card routes are unchanged.
 - Nothing here creates a Marketplace, a database or a shared-template service. Hosting uses a single isolated static Site.
 
 See [the complete report](../LUVNOTE-CREATIVE-TEMPLATE-REPORT.md), [source coverage](../docs/evidence/creative-lab-sources.json) and [material notices](public/licenses/NOTICE.md).

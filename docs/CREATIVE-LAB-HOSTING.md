@@ -1,36 +1,34 @@
-# Shared developer Template Lab
+# Developer Template Lab on luvnote.fun
 
-URL: **https://luvnote-template-lab.brsblack79.chatgpt.site/template-lab/**
+Primary URL: **https://luvnote.fun/mylab/** (`/mylab` is the directory URL without its trailing slash).
 
-At the Owner's explicit request on 2 November 2026, access is now **public**: anyone with the URL can view every prototype without a password or ChatGPT sign-in. The Lab remains separate from the customer website, with synthetic content only. Noindex and robots.txt request exclusion from search engines; they do not restrict access.
+The Owner explicitly requested this path on the existing website and public access without a password or ChatGPT sign-in. Anyone can view all twelve prototypes. The page has noindex metadata and no link from customer navigation; these are discoverability choices, not access controls. All sample content is synthetic or licensed stock material.
 
-## Deployment identity
+## Deployment
 
-- Site: `appgprj_6ae80c04c160819193d20e0a1dad6852`
-- Audience: `public`, access revision `2`, changed at `2026-11-02T04:16:26.998043+00:00`
-- Saved version: `appgprj_6ae80c04c160819193d20e0a1dad6852~appgver_b9e05d74c1948191b124fff95d5db56c`
-- Current deployment: `appgdep_6ae80ee1c4b8819183828af3b51011a5`, `succeeded` at `2026-11-02T04:17:55.585161+00:00`; redeployed the same saved version under its public audience
-- Initial owner-only deployment: `appgdep_6ae80c84c7d88191acda3283e33bcd1b` (historical evidence retained)
-- LuvNote source: `11571be49a7ad8e2b619a5e8a7bc63e4a9911170`, branch `lab/creative-templates`
-- Separate Site source commit: `6dc6ba7c8474c5a0903bba78a521381fb8bf31c2`
-- Local Site checkout: `C:\Users\User\Documents\Codex\luvnote-template-lab-site`
+The existing GitHub Pages frontend workflow publishes the Lab. No DNS change, second hosting service, database, Worker deployment, upload permission or billing change is required.
 
-The Site checkout contains only the compiled Lab snapshot, `BUILD-PROVENANCE.json` with source identity and file hashes, README and `.openai/hosting.json`. The static output is 80 files / 3,284,786 bytes. No credentials, customer app, API, Worker bindings, database or customer data are included. The root redirects to `/template-lab/`. Its initial README/provenance describe the original private publication; the access policy and this document reflect the later Owner-authorized change.
+1. Build the normal customer frontend with the existing production variables and rollout guard.
+2. Run `node scripts/check-template-lab-isolation.mjs` to confirm the normal build excludes Lab code.
+3. Run `npm run lab:build` with `LAB_BASE_PATH=/mylab/`. Its code, sample photos, fonts, screenshots and configuration requests all use that base.
+4. Run `node scripts/package-template-lab.mjs`. It copies only into `dist/mylab`, promotes the Lab entry to `dist/mylab/index.html` and verifies every pre-existing customer output hash is unchanged. It refuses to overwrite an existing destination.
+5. Run `npx playwright test --config playwright.mylab.config.ts` against the combined static output, then publish through the existing Pages job and its `main` environment policy.
 
-## Updating or rolling back
+`npm run build` alone continues to exclude the Lab. `npm run lab:build` without the environment variable preserves the standalone/local `/template-lab/` entry. Local Lab tests remain available with `npm run test:lab`.
 
-1. Check the Lab branch and build the reviewed source with `npm run lab:build`. Do not use the customer `dist` build or the GitHub Pages workflow.
-2. Open the **existing** Site using the Sites source workflow and its short-lived credential. Reuse the Site ID above; preserve `.openai/hosting.json` and its static `dist` setting. Do not create another Site or store credentials in files, arguments or Git.
-3. Replace the isolated Site's `dist` with `dist-lab`, retaining the root redirect and robots file. Update `BUILD-PROVENANCE.json` with the exact LuvNote commit and asset hashes.
-4. Use the Sites source workflow to commit, push and package the exact Site source. Publish with `save_site_version` then `deploy_site_version`, preserving the current public policy. No customer workflow, DNS or billing changes are needed.
-5. Confirm the returned deployment state and repeat anonymous catalogue, player, iframe, assets and reset checks.
+The Lab still has no customer API, database, upload or publishing connection. Customer theme renderers, editor code, URLs, backend and production configuration are unchanged. Do not interpret a prototype preview as a release of new customer card themes.
 
-To roll back content, redeploy a previously saved Site version using the native deployment operation while preserving the current audience. There is no customer database migration or data rollback. Change the audience only at the Owner's request; access changes may require redeploying the existing saved version before they are reflected in anonymous requests.
+## Validation and rollback
 
-## Acceptance evidence and limits
+- The existing interactive Lab suite verifies all twelve experiences and accessibility in five browser/viewport projects.
+- The `/mylab/` suite verifies all twelve nested player routes, image/font loading without requests escaping `/mylab/`, catalogue previews, comparison, iframe interaction/reset and configuration at 360, 390, desktop and mobile WebKit sizes. These are emulated browsers, not physical devices.
+- The pre-publication customer baseline is the Pages artifact from source `a8bc1f386c14f9e48f154573a010b17e07dc6901`, run `41367555706`. Local Windows HTML comparisons account only for CR characters before LF; eight non-HTML files match exact hashes. The packaging guard additionally checks the current build's pre-existing files byte-for-byte before/after adding the directory.
+- After deployment, verify anonymous `/mylab`, `/mylab/`, all twelve players, iframe/reset, and existing root/editor/card HTML. Use synthetic content only.
 
-Current anonymous acceptance: [creative-lab-public-access.json](evidence/creative-lab-public-access.json). Initial owner-only checks and screenshots remain in [creative-lab-hosting.json](evidence/creative-lab-hosting.json) as historical evidence. Those older checks used platform service access and do not describe the current audience. No tokens, cookies, traces or HAR files are retained.
+To remove the Lab, remove the explicit packaging/build/test steps from the frontend workflow and let its checked deployment publish the normal customer build. A prior successful Pages artifact can also be redeployed while retained. Neither operation needs a database migration. Preserve unrelated subsequent changes when reverting.
 
-Sites canonicalizes `index.html` URLs with HTTP 307. Cloudflare also injects its JavaScript detection script before `</body>`. The asset check follows only the expected same-origin canonical redirect and verifies the application HTML is otherwise identical. All non-HTML assets are checked by SHA-256. Neither behavior required changing application code or disabling security protections.
+## Earlier Sites snapshot (history)
 
-The 170 local Lab tests and passing source CI remain separate from hosted acceptance. Physical phones, LINE WebViews and customer publishing integration are still unverified. This shared preview is suitable for developer review, not a launch of the twelve templates to customers.
+The earlier preview remains at https://luvnote-template-lab.brsblack79.chatgpt.site/template-lab/. It is a separate static snapshot, not the source for the main-domain route. Its Site ID is `appgprj_6ae80c04c160819193d20e0a1dad6852`, saved version 1, public policy revision 2. Its source commit is `6dc6ba7c8474c5a0903bba78a521381fb8bf31c2`, from LuvNote source `11571be49a7ad8e2b619a5e8a7bc63e4a9911170`.
+
+Historical evidence: [initial owner-only acceptance](evidence/creative-lab-hosting.json) and [subsequent anonymous public acceptance](evidence/creative-lab-public-access.json). Those documents describe the older Site URL and must not be presented as proof of the main-domain deployment. Physical phones, LINE WebViews and customer publishing integration remain unverified.

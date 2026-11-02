@@ -1,11 +1,14 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// A separate entry, public directory and output. The production build never includes the lab.
+const base = process.env.LAB_BASE_PATH || '/';
+if (!['/', '/mylab/'].includes(base)) throw new Error('Unsupported Lab base path');
+
+// Build separately; only the explicit Pages packaging step adds /mylab to the website.
 export default defineConfig({
   publicDir: 'template-lab/public',
   plugins: [react()],
-  base: './',
+  base,
   server: { host: '127.0.0.1', port: 4317, strictPort: true },
   preview: { host: '127.0.0.1', port: 4318, strictPort: true },
   build: {

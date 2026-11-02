@@ -32,8 +32,9 @@ try {
   })) {
     const page = await browser.newPage({ viewport, reducedMotion: 'reduce' });
     await page.goto(`${base}/template-lab/?template=love-letter`);
-    const story = JSON.parse(await page.getByLabel('Story configuration (JSON)').inputValue());
     for (const id of ids) {
+      await page.goto(`${base}/template-lab/?template=${id}`);
+      const story = JSON.parse(await page.getByLabel('Story configuration (JSON)').inputValue());
       const errors = [];
       const listener = (error) => errors.push(error.message);
       const responseListener = (response) => {

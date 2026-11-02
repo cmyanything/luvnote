@@ -249,7 +249,7 @@ html[data-still='true'] .pm-fold-corner { transition: none; }
 .pm-next-photo > p { margin: 25px 0; font-size: 14px; line-height: 1.9; }
 .pm-next-photo .t-button { background: #fffaf0; color: #304c3e; }
 @media (max-width: 700px) {
-  .pm-desk { flex-direction: column; }
+  .pm-desk { flex-direction: column-reverse; }
   .pm-desk-note { width: 100%; transform: none; }
   .pm-recollection { margin-top: 14px; }
   .pm-returned-heading h3 { font-size: 22px; }

@@ -1,5 +1,31 @@
 # Polaroid Memories — an evening with our photographs
 
+## Follow-up: nostalgia and personal surprise — 2026-11-02
+
+Runtime source: `462ad67246794225eebc7b1065809284cedc90bd`, branch `feat/polaroid-nostalgia`. The previous release below remains a historical acceptance record.
+
+Final mobile ordering: `206925d38b63778aed47a605f2a78984854c8ebf` places the photo/screening before the optional recollection postcard on small screens (one CSS declaration). Screenshots were refreshed. The first follow-up mobile/WebKit run passed 15 checks but timed out during the four-chapter WebKit Axe test at its unchanged 30-second budget; no assertion violation was reported. A serial rerun and final full CI results are recorded in PR #17. The 40-check JSON below is explicitly for the earlier source, not a claim that this follow-up run was clean.
+
+The owner found the previous interaction sequence insufficiently moving. This iteration makes remembering the primary activity: an optional postcard asks what the recipient remembers, a private photo screening reveals the sender's complete original paragraphs at the reader's own pace, and the final surprise brings back the specific photos and feelings the recipient chose. Choices have no correct answer, can be changed, and are kept only in component memory. The interface explicitly says they are not sent to the sender. No fictional memories are generated for imported stories.
+
+The primary path now goes from memories directly to the letter; arranging and downloading photographs is optional afterward. The large opening headline becomes quiet while reading. Screening has previous/next/close controls, native dialog focus management and Escape support; reading it to the end marks that photograph read. Immediate reveal, rub, flip, aside, zoom, favorites, export and full replay remain available. Skipping all prompts still reveals the original photographs and sender content. No timer, autoplay narration, account, remote storage, dependency or new asset is introduced.
+
+Design guidance applied: Anthropic `frontend-design` (read from the research checkout): subject-specific paper/photo materials, interaction-driven motion, restrained typography and screenshots as critique. No new independent reviewer or other skill audit is claimed. Colors remain sage `#c1cfc0`, forest `#304c3e`, paper `#fffaf0`, postcard `#e5dfb9`, kraft `#b9a57d`; existing Mali handwriting carries memories. The dark screening/final reveal is the main visual contrast.
+
+Validation and fixes:
+
+- `npm run build`, `npm run lab:build`, `node scripts/check-template-lab-isolation.mjs`: passed; 25 customer output files isolated from the Lab.
+- Targeted command: `npx playwright test --config playwright.lab.config.ts tests/lab/polaroid.lab.ts`. Final result is recorded in `docs/evidence/polaroid-nostalgia/tests.json`.
+- Added real interaction checks for changing/revisiting answers, matching each answer to its photo in the reveal, reset/fallback, every screening paragraph and aside, Escape, keyboard/native controls, final-caption containment and Axe audits. Existing PNG/retry/touch tests still run.
+- First run: 35 passed / 5 failed on the same semantic error: a generic span had an accessible name without a supported role. Added `role="img"` to the visual progress indicator; next run 40 passed.
+- Screenshot review found inherited image height pushed final captions outside their paper. Set the image height to auto and added caption containment plus final-state Axe checks; reran the targeted suite.
+- Actual desktop and mobile screenshots: [evidence folder](evidence/polaroid-nostalgia/). Capture reported no JS errors or page overflow at 390 and 1280 pixels. Reviewed desk, screening and final reveal; corrected final screenshot shows captions inside the paper.
+- Lazy Polaroid module: 8.00 kB gzip JS and 4.61 kB gzip CSS. No new package. These are build sizes, not a device performance benchmark.
+
+The 3–5 minute goal remains an intention, not a measured outcome. Emotional impact is not certified by automated tests. No physical-device session, human timing study or new customer publishing integration was performed. Current release/CI/live status is recorded in the follow-up PR; the historical release below does not certify this new source.
+
+---
+
 Source: `54403fe401a54a21bd963e18ef3530e404495062`, branch `feat/polaroid-memory-evening`. This follow-up develops one template, preserving the other eleven renderers and the existing customer website/API. No dependency or service was added.
 
 ## Recipient journey

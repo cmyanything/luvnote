@@ -1,0 +1,20 @@
+{
+  "source": "462ad67246794225eebc7b1065809284cedc90bd",
+  "command": "npx playwright test --config playwright.lab.config.ts tests/lab/polaroid.lab.ts",
+  "stats": {
+    "startTime": "2026-11-02T11:30:03.575Z",
+    "duration": 96316.295,
+    "expected": 40,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "projects": [
+    "360",
+    "390",
+    "768",
+    "desktop",
+    "webkit"
+  ],
+  "note": "8 tests per project. Browser emulation; no physical device or emotional-response study."
+}

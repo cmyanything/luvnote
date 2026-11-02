@@ -1,7 +1,7 @@
 {
   "date": "2026-11-02",
-  "summary": "Polaroid รอบความคิดถึง: 40/40 checks ผ่าน · ขอบเขตเฉพาะ Polaroid",
-  "implementationCommit": "462ad67246794225eebc7b1065809284cedc90bd",
+  "summary": "Polaroid รอบความคิดถึง · ผลตรวจล่าสุดใน PR #17",
+  "implementationCommit": "206925d38b63778aed47a605f2a78984854c8ebf",
   "projects": {
     "360": {
       "passed": 8,
@@ -31,7 +31,7 @@
   },
   "physicalDevicesVerified": false,
   "customerThemesEnabled": false,
-  "reviewScope": "Targeted Polaroid interaction, Axe and screenshots; full regression/release results in the follow-up PR",
+  "reviewScope": "40 targeted checks passed at 462ad67; mobile ordering follow-up 206925d and release results tracked in PR #17",
   "pacingTarget": {
     "template": "polaroid",
     "minutes": [
@@ -39,5 +39,6 @@
       5
     ],
     "measuredHumanSessions": false
-  }
+  },
+  "resultsUrl": "https://github.com/cmyanything/luvnote/pull/17"
 }

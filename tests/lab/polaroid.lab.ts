@@ -151,6 +151,59 @@ test('polaroid: failed export remains recoverable with another local photo',asyn
   expect(await download.failure()).toBeNull();
 });
 
+test('polaroid: remembered feelings return with their own photos, can change, and reset', async ({page}) => {
+  await open(page);
+  const first = 'ขออยู่ตรงนั้นนานอีกหน่อย';
+  await page.getByRole('button', {name:first, exact:true}).click();
+  await expect(page.locator('.pm-development')).toHaveCount(0);
+  await page.getByRole('button', {name:'อยากกอดคนข้าง ๆ', exact:true}).click();
+  await page.getByRole('button', {name:'รูปถัดไป', exact:true}).click();
+  await page.getByRole('button', {name:'เสียงหัวเราะของเรา', exact:true}).click();
+  await page.getByRole('button', {name:'ยังมีรูปใบสุดท้ายถึงเธอ', exact:true}).click();
+  await expect(page.locator('.pm-returned-memories')).toHaveCount(0);
+  await page.getByRole('button', {name:/ดึงขึ้น หรือแตะเปิดรูปใบสุดท้าย/}).click();
+  await expect(page.locator('.pm-echo-line figure')).toHaveCount(2);
+  await expect(page.locator('.pm-echo-line figure').first()).toContainText(polaroidDemo.moments[0].title);
+  await expect(page.locator('.pm-echo-line figure').first()).toContainText('อยากกอดคนข้าง ๆ');
+  await expect(page.locator('.pm-echo-line')).not.toContainText(first);
+  await expect(page.locator('.pm-echo-line figure').nth(1)).toContainText('เสียงหัวเราะของเรา');
+  for (const figure of await page.locator('.pm-echo-line figure').all()) {
+    const box = (await figure.boundingBox())!;
+    const caption = (await figure.locator('figcaption').boundingBox())!;
+    expect(caption.y + caption.height).toBeLessThanOrEqual(box.y + box.height + 1);
+  }
+  const audit = await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+  expect(audit.violations.map(v=>v.id)).toEqual([]);
+  await page.getByRole('button', {name:'เริ่มอ่านการ์ดใหม่', exact:true}).click();
+  await page.getByRole('navigation', {name:'ช่วงของอัลบั้ม'}).getByRole('button').nth(3).click();
+  await page.getByRole('button', {name:/ดึงขึ้น หรือแตะเปิดรูปใบสุดท้าย/}).click();
+  await expect(page.locator('.pm-echo-line figure')).toHaveCount(4);
+  await expect(page.locator('.pm-echo-line')).not.toContainText('อยากกอดคนข้าง ๆ');
+});
+
+test('polaroid: memory screening shows every original paragraph, aside and closes with Escape', async ({page}) => {
+  await open(page);
+  await page.getByRole('button', {name:/กลับไปอยู่ในวันนั้น/}).click();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole('button', {name:'ย้อนกลับ', exact:true})).toBeDisabled();
+  await expect(dialog.locator('.pm-replay-words p')).toHaveText(polaroidDemo.moments[0].place);
+  for (const paragraph of polaroidDemo.moments[0].note.split(/\n\s*\n/).filter(Boolean)) {
+    await dialog.getByRole('button', {name:'แล้ววันนั้น…', exact:true}).click();
+    await expect(dialog.locator('.pm-replay-words p')).toHaveText(paragraph);
+  }
+  await dialog.getByRole('button', {name:'แล้ววันนั้น…', exact:true}).click();
+  await expect(dialog.locator('.pm-replay-words p')).toHaveText(polaroidDemo.moments[0].aside!);
+  const audit = await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+  expect(audit.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)}))).toEqual([]);
+  await dialog.getByRole('button', {name:'เก็บวันนี้ไว้ในใจ', exact:true}).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.locator('.pm-next-chapter')).toContainText('1 / 4');
+  await page.getByRole('button', {name:/กลับไปอยู่ในวันนั้น/}).click();
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveCount(0);
+});
+
 test('polaroid: accepted eighth reply line changes the actual PNG and grows its paper', async ({page}, info) => {
   await page.goto('/template-lab/?play=polaroid&still=1');
   await page.getByRole('navigation',{name:'ช่วงของอัลบั้ม'}).getByRole('button').nth(2).click();

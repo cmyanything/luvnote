@@ -10,6 +10,11 @@ import './polaroid/polaroid.css';
 
 const chapters = ['แกะห่อรูป', 'เปิดความทรงจำ', 'จัดมุมโปรด', 'จดหมายถึงเธอ'];
 const stickers = ['เทปกระดาษ', 'ประทับหัวใจ', 'วันที่ของเรา'];
+const recollections = [
+  { question: 'ถ้าได้กลับไปอยู่ในรูปนี้อีกครั้ง…', options: ['ขออยู่ตรงนั้นนานอีกหน่อย', 'อยากกอดคนข้าง ๆ', 'อยากบอกอะไรบางอย่าง'] },
+  { question: 'พอนึกถึงวันนั้น อะไรกลับมาก่อน?', options: ['เสียงหัวเราะของเรา', 'ความรู้สึกตอนอยู่ด้วยกัน', 'รายละเอียดเล็ก ๆ ที่ยังจำได้'] },
+  { question: 'ถ้าเก็บความรู้สึกวันนั้นไว้ได้หนึ่งอย่าง…', options: ['ความสบายใจ', 'ความตื่นเต้น', 'การมีใครสักคนอยู่ข้าง ๆ'] },
+];
 
 export default function Polaroid({ story }: { story: Story }) {
   const [chapter, setChapter] = useState(0);
@@ -24,6 +29,9 @@ export default function Polaroid({ story }: { story: Story }) {
   const [sticker, setSticker] = useState(0);
   const [reply, setReply] = useState('');
   const [lastPrint, setLastPrint] = useState(false);
+  const [remembered, setRemembered] = useState<Record<string, string>>({});
+  const [remembering, setRemembering] = useState(false);
+  const [replayScene, setReplayScene] = useState<number | null>(null);
   const [notice, setNotice] = useState('');
   const [saving, setSaving] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -32,6 +40,13 @@ export default function Polaroid({ story }: { story: Story }) {
   const moment = story.moments[index];
   const clear = developed.includes(index);
   const selected = favorites.map((i) => story.moments[i]);
+  const prompt = recollections[index % recollections.length];
+  const echoes = story.moments.filter((m) => remembered[m.id]);
+  const scenePages = [
+    moment.place || moment.title,
+    ...moment.note.split(/\n\s*\n/).filter(Boolean),
+    ...(moment.aside ? [moment.aside] : []),
+  ];
 
   useEffect(() => {
     alive.current = true;
@@ -46,9 +61,15 @@ export default function Polaroid({ story }: { story: Story }) {
   function move(direction: number) {
     setIndex((i) => (i + direction + story.moments.length) % story.moments.length);
     setFlipped(false);
+    setRemembering(false);
   }
   function develop() {
     setDeveloped((list) => list.includes(index) ? list : [...list, index]);
+  }
+  function remember(value: string) {
+    setRemembered((items) => ({ ...items, [moment.id]: value }));
+    develop();
+    setRemembering(true);
   }
   function flip() {
     develop();
@@ -89,7 +110,7 @@ export default function Polaroid({ story }: { story: Story }) {
 
   return (
     <main className="experience polaroid polaroid-evening">
-      <header className="polaroid-heading">
+      <header className={`polaroid-heading ${chapter > 0 ? 'pm-heading-quiet' : ''}`}>
         <div>
           <p className="pm-address">สำหรับ {story.to} <span>จาก {story.from}</span></p>
           <h1>{story.headline || <>Some days,<br />kept forever.</>}</h1>
@@ -116,11 +137,15 @@ export default function Polaroid({ story }: { story: Story }) {
       </section>}
 
       {chapter === 1 && <section className="pm-darkroom" aria-labelledby="pm-memory-heading">
-        <div className="pm-scene-heading"><h2 ref={heading} tabIndex={-1} id="pm-memory-heading">วันนั้น… ยังจำได้ไหม</h2><p>ลูบรูปให้ความทรงจำค่อย ๆ ชัด พลิกอ่านลายมือ แล้วแง้มโน้ตที่พับไว้</p></div>
+        <div className="pm-scene-heading"><h2 ref={heading} tabIndex={-1} id="pm-memory-heading">วันนั้น… ยังจำได้ไหม</h2><p>ไม่ต้องจำเหมือนกันทุกอย่างก็ได้ ลองนึกถึงวันนั้นในแบบของเธอ</p></div>
         <div className="pm-desk">
-          <aside className="pm-desk-note"><span className="hand">ที่ถ่ายรูปนี้</span><p>{moment.place || 'ที่ไหนก็พิเศษ เมื่อมีเราอยู่ด้วยกัน'}</p><span>{shortDate(moment.date) || 'วันหนึ่งที่อยากจำ'}</span><p className="hand pm-desk-whisper">{read.includes(index) ? 'บางความรู้สึก… เขียนไว้หลังรูปหมดแล้ว' : 'มีข้อความถึงเธออยู่หลังรูปด้วยนะ'}</p></aside>
+          <aside className="pm-desk-note"><span className="hand">ลองหลับตานึกถึง…</span><p>{moment.place || 'ที่ไหนก็พิเศษ เมื่อมีเราอยู่ด้วยกัน'}</p><span>{shortDate(moment.date) || 'วันหนึ่งที่อยากจำ'}</span>
+            <fieldset className="pm-recollection"><legend>{prompt.question}</legend>{prompt.options.map((option) => <button key={option} aria-pressed={remembered[moment.id] === option} onClick={() => remember(option)}>{option}</button>)}</fieldset>
+            <p className="pm-memory-privacy">เลือกได้ตามความรู้สึก ไม่มีคำตอบผิด<br />คำตอบอยู่ในหน้านี้ ไม่ได้ส่งให้ผู้ส่ง</p>
+            {remembered[moment.id] && <p className="hand pm-echo" role="status">เก็บความรู้สึกนี้ไว้แล้ว<br />เดี๋ยวเราจะได้เจอมันอีกครั้ง</p>}
+          </aside>
           <div>
-            <div className="polaroid-table">
+            <div className={`polaroid-table ${remembering ? 'pm-remembering' : ''}`}>
               {[2, 1].map((offset) => <div className={`polaroid-under under-${offset}`} key={offset} aria-hidden="true"><img src={story.moments[(index + offset) % story.moments.length].image} alt="" /></div>)}
               <motion.div key={index} className="polaroid-drag" drag={clear ? 'x' : false}
                 dragConstraints={{ left: 0, right: 0 }} dragElastic={0.5}
@@ -145,13 +170,14 @@ export default function Polaroid({ story }: { story: Story }) {
               </motion.div>
             </div>
             <div className="pm-develop-action">{!clear ? <button onClick={develop}>เปิดภาพทันที</button> : <span className="hand">ชัดเท่าเดิม เพิ่มเติมคือคิดถึง</span>}</div>
+            <button className="pm-revisit" onClick={() => { develop(); setReplayScene(0); }}><span aria-hidden="true">↶</span> กลับไปอยู่ในวันนั้น <span className="hand">เปิดรูป แล้วค่อย ๆ อ่านเรื่องของเรา</span></button>
             <div className="polaroid-controls"><button aria-label="รูปก่อนหน้า" onClick={() => move(-1)}><Icon name="back" /></button><Button variant="quiet" onClick={flip} aria-pressed={flipped}>{flipped ? 'กลับมาดูรูป' : 'พลิกอ่านข้อความ'}</Button><button aria-label="รูปถัดไป" onClick={() => move(1)}><Icon name="arrow" /></button></div>
             <button className="pm-save-favorite" aria-pressed={favorites.includes(index)} onClick={() => favorite(index)}><Icon name="heart" size={18} />{favorites.includes(index) ? 'เก็บเป็นรูปโปรดแล้ว' : 'เก็บรูปนี้ไว้ในมุมโปรด'}</button>
           </div>
         </div>
         <p className="polaroid-hint" aria-live="polite">{index + 1} / {story.moments.length}<span>{clear ? 'ปัดรูป หรือแตะลูกศร' : 'ใช้นิ้วลูบบนภาพ หรือกดเปิดภาพทันที'}</span></p>
-        <div className="polaroid-contact" aria-label="รูปทั้งหมดในกอง">{story.moments.map((m, i) => <button key={m.id} onClick={() => { setIndex(i); setFlipped(false); }} aria-label={`เลือกรูป ${i + 1}: ${m.title}`} aria-pressed={index === i}><img src={m.image} alt="" loading="lazy" /><span>{i + 1}{read.includes(i) && <Icon name="check" size={12} />}</span></button>)}</div>
-        <div className="pm-next-chapter"><p>อ่านข้อความหลังรูปแล้ว {read.length} / {story.moments.length}</p><Button onClick={() => setChapter(2)}>ไปจัดมุมความทรงจำ <Icon name="arrow" size={18} /></Button><button className="pm-text-link" onClick={() => setChapter(3)}>ยังมีรูปใบสุดท้ายถึงเธอ</button></div>
+        <div className="polaroid-contact" aria-label="รูปทั้งหมดในกอง">{story.moments.map((m, i) => <button key={m.id} onClick={() => { setIndex(i); setFlipped(false); setRemembering(false); }} aria-label={`เลือกรูป ${i + 1}: ${m.title}`} aria-pressed={index === i}><img src={m.image} alt="" loading="lazy" /><span>{i + 1}{read.includes(i) && <Icon name="check" size={12} />}</span></button>)}</div>
+        <div className="pm-next-chapter"><p>อ่านข้อความหลังรูปแล้ว {read.length} / {story.moments.length}</p><Button onClick={() => setChapter(3)}>ยังมีรูปใบสุดท้ายถึงเธอ <Icon name="arrow" size={18} /></Button><button className="pm-text-link" onClick={() => setChapter(2)}>ไปจัดมุมความทรงจำ</button></div>
       </section>}
 
       {chapter === 2 && <section className="pm-curation" aria-labelledby="pm-wall-heading">
@@ -179,10 +205,28 @@ export default function Polaroid({ story }: { story: Story }) {
             {lastPrint && <motion.div className="pm-future-print" initial={still ? false : { y: 30, rotate: -4 }} animate={{ y: 0, rotate: 2 }} transition={{ duration: 0.48, ease: MOTION.ease }}><div><Icon name="heart" size={40} /><p className="hand">รูปต่อไป… อยากถ่ายกับเธอ</p></div><p className="hand" role="status">{story.secret}</p><p>{story.closing}</p></motion.div>}
           </div>
         </div>
+        {lastPrint && <section className="pm-returned-memories" aria-label="ความรู้สึกที่กลับมาหาเธอ">
+          <div className="pm-returned-heading"><span className="hand">ถึง {story.to}</span><h3>ที่เก็บไว้… ไม่ได้มีแค่รูป</h3><p>{echoes.length ? 'ความรู้สึกที่เธอเลือกเมื่อกี้ กลับมาอยู่ตรงนี้ด้วยกันแล้ว' : 'รูปที่เปิดดูเมื่อกี้ กลับมาอยู่ด้วยกันอีกครั้ง'}</p></div>
+          <div className="pm-echo-line">{(echoes.length ? echoes : story.moments).map((m, i) => <motion.figure key={m.id} initial={still ? false : { opacity: 0, y: 55, rotate: i % 2 ? 12 : -12 }} animate={{ opacity: 1, y: 0, rotate: i % 2 ? 3 : -3 }} transition={{ duration: 0.5, delay: still ? 0 : i * 0.13, ease: MOTION.ease }}><Photo moment={m} /><figcaption><span>{m.title}</span><p className="hand">{remembered[m.id] || m.aside || m.note}</p></figcaption></motion.figure>)}</div>
+          <div className="pm-next-photo"><div className="pm-empty-photo"><span>{story.from} + {story.to}</span><Icon name="heart" size={32} /><p className="hand">เว้นไว้ให้วันต่อไปของเรา</p></div><p>ยังไม่ต้องเลือกรูปตอนนี้ก็ได้<br />ขอแค่วันนั้น เรายังอยู่ข้างกัน</p><Button variant="quiet" onClick={() => setChapter(2)}>เขียนถึงวันต่อไปของเรา</Button></div>
+        </section>}
         {selected.length > 0 && <div className="pm-ending-prints" aria-label="รูปโปรดที่เลือกไว้">{selected.map((m) => <figure key={m.id}><Photo moment={m} /><figcaption className="hand">{m.title}</figcaption></figure>)}{reply && <p className="hand pm-ending-reply">คราวหน้าของเรา<br />{reply}</p>}</div>}
         <div className="pm-next-chapter"><Button variant="quiet" onClick={() => setChapter(2)}>กลับไปจัดมุมโปรด</Button><Button variant="quiet" onClick={() => { setChapter(1); setFlipped(false); }}>กลับไปดูรูปในกอง</Button></div>
       </section>}
       {notice && <p className="pm-notice" role="status">{notice}</p>}
+      {replayScene !== null && <Modal title={moment.title} onClose={() => setReplayScene(null)}>
+        <div className="pm-replay-scene">
+          <Photo moment={moment} eager />
+          <span className="pm-replay-date">{shortDate(moment.date) || 'วันหนึ่งของเรา'}</span>
+          <motion.div key={replayScene} className="pm-replay-words" initial={still ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }} aria-live="polite">
+            <span className="hand">{replayScene === 0 ? 'ลองนึกภาพตัวเองกลับไปตรงนั้น' : replayScene === scenePages.length - 1 && moment.aside ? 'มีอีกอย่างที่อยากให้รู้' : `จากความทรงจำของ ${story.from}`}</span><p>{scenePages[replayScene]}</p>
+          </motion.div>
+          <div className="pm-replay-controls"><button disabled={replayScene === 0} onClick={() => setReplayScene((p) => Math.max(0, p! - 1))}>ย้อนกลับ</button><span role="img" aria-label={`ช่วงที่ ${replayScene + 1} จาก ${scenePages.length}`}>{scenePages.map((_, i) => <i key={i} className={i <= replayScene ? 'seen' : ''} />)}</span><button onClick={() => {
+            if (replayScene < scenePages.length - 1) setReplayScene(replayScene + 1);
+            else { setRead((list) => list.includes(index) ? list : [...list, index]); setReplayScene(null); }
+          }}>{replayScene < scenePages.length - 1 ? 'แล้ววันนั้น…' : 'เก็บวันนี้ไว้ในใจ'}</button></div>
+        </div>
+      </Modal>}
       {zoom && <Modal title={moment.title} onClose={() => setZoom(false)}><Photo moment={moment} eager /><p>{moment.note}</p><p>{[shortDate(moment.date), moment.place].filter(Boolean).join(' · ')}</p></Modal>}
     </main>
   );

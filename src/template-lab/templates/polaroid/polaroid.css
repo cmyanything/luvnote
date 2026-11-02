@@ -201,3 +201,62 @@
 }
 html[data-still='true'] .polaroid-evening .polaroid-print,
 html[data-still='true'] .pm-fold-corner { transition: none; }
+
+/* A quiet desktop changes into a personal memory screening; no timed gates. */
+.polaroid-evening .pm-heading-quiet h1, .pm-heading-quiet .pm-intro,
+.pm-heading-quiet .pm-edition { display: none; }
+.pm-heading-quiet .pm-address span { display: inline; margin-left: 16px; }
+.pm-recollection { border: 0; padding: 0; margin-top: 24px; min-width: 0; }
+.pm-recollection legend { font: 16px/1.9 var(--hand); margin-bottom: 14px; }
+.pm-recollection button { display: block; width: 100%; min-height: 46px; text-align: left; padding: 10px 12px; margin: 8px 0; border: 1px solid #8b916c; border-radius: 2px; background: #f7f2d9; color: #394732; font: 13px/1.8 var(--body); }
+.pm-recollection button[aria-pressed='true'] { background: #3b5648; color: #fffaf0; border-color: #3b5648; }
+.polaroid-evening .pm-memory-privacy { font: 11px/1.8 var(--body); }
+.polaroid-evening .pm-echo { border-top: 1px dashed #8b916c; padding-top: 14px; font-size: 14px; }
+.pm-revisit { display: block; width: min(340px, 100%); margin: 15px auto; padding: 14px 18px; background: #304c3e; color: #fffaf0; border: 0; border-radius: 3px; font: 15px/1.8 var(--body); }
+.pm-revisit > span:first-child { font-size: 24px; margin-right: 6px; }
+.pm-revisit .hand { display: block; font-size: 12px; }
+.pm-remembering .print-front { animation: pm-memory-light 1.2s ease-out both; }
+@keyframes pm-memory-light { from { box-shadow: 0 0 0 10px #fff4ca99, 0 0 70px #fff4ca; } to { box-shadow: 0 8px 24px #304c3e22; } }
+.polaroid-evening .t-modal:has(.pm-replay-scene) { width: min(850px, calc(100vw - 24px)); max-width: 850px; padding: 0; background: #20392e; color: #fffaf0; border: 0; }
+.polaroid-evening .t-modal:has(.pm-replay-scene) > h2 { padding: 25px 65px 18px 24px; font: 20px/1.7 var(--hand); margin: 0; }
+.polaroid-evening .t-modal:has(.pm-replay-scene)::backdrop { background: #10231def; }
+.pm-replay-scene { position: relative; }
+.polaroid-evening .pm-replay-scene .photo { width: 100%; height: clamp(180px, 32vh, 330px); border-radius: 0; object-fit: cover; margin: 0; }
+.pm-replay-date { position: absolute; top: 18px; left: 18px; padding: 6px 12px; color: #304c3e; background: #fffaf0; font-size: 12px; transform: rotate(-3deg); }
+.pm-replay-words { padding: 25px clamp(20px, 5vw, 50px); min-height: 190px; }
+.pm-replay-words > span { font-size: 13px; color: #d2d9bf; }
+.polaroid-evening .pm-replay-words p { color: #fffaf0; font: 17px/2 var(--hand); margin-top: 15px; }
+.pm-replay-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 20px 22px; flex-wrap: wrap; }
+.pm-replay-controls button { min-height: 46px; padding: 10px 14px; border: 1px solid #b9c7af; background: #fffaf0; color: #304c3e; border-radius: 3px; font-size: 13px; }
+.pm-replay-controls button:disabled { opacity: .5; }
+.pm-replay-controls > span { display: flex; gap: 5px; }
+.pm-replay-controls i { width: 6px; height: 6px; border: 1px solid #d2d9bf; border-radius: 50%; }
+.pm-replay-controls i.seen { background: #d2d9bf; }
+.pm-returned-memories { margin: 60px auto 25px; max-width: 1000px; padding: 45px clamp(14px, 4vw, 44px); background: #304c3e; color: #fffaf0; box-shadow: 0 20px 45px #304c3e22; }
+.pm-returned-heading { max-width: 530px; margin: auto; text-align: center; }
+.pm-returned-heading h3 { font: 27px/1.9 var(--hand); margin: 16px 0; }
+.pm-returned-heading > p { font-size: 14px; line-height: 1.9; }
+.pm-echo-line { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; margin: 40px 0; }
+.pm-echo-line figure { flex: 0 1 230px; min-width: 0; padding: 9px 9px 18px; background: #fffaf0; color: #304c3e; box-shadow: 0 12px 25px #14251d55; }
+.pm-echo-line .photo { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+.pm-echo-line figcaption { padding: 14px 8px 0; }
+.pm-echo-line figcaption span { font-size: 12px; }
+.pm-echo-line figcaption p { font-size: 16px; margin-top: 12px; line-height: 1.9; overflow-wrap: anywhere; }
+.pm-next-photo { text-align: center; max-width: 400px; margin: auto; }
+.pm-empty-photo { padding: 25px; border: 1px dashed #c4cfb9; display: grid; justify-items: center; gap: 18px; }
+.pm-empty-photo > span { font-size: 13px; }
+.pm-empty-photo p { font-size: 20px; }
+.pm-next-photo > p { margin: 25px 0; font-size: 14px; line-height: 1.9; }
+.pm-next-photo .t-button { background: #fffaf0; color: #304c3e; }
+@media (max-width: 700px) {
+  .pm-desk { flex-direction: column; }
+  .pm-desk-note { width: 100%; transform: none; }
+  .pm-recollection { margin-top: 14px; }
+  .pm-returned-heading h3 { font-size: 22px; }
+  .pm-returned-memories { margin-inline: -8px; }
+  .pm-echo-line figure { flex-basis: 230px; }
+  .pm-replay-words { min-height: 180px; }
+  .polaroid-evening .pm-replay-words p { font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) { .pm-remembering .print-front { animation: none; } }
+html[data-still='true'] .pm-remembering .print-front { animation: none; }

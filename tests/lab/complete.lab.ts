@@ -138,6 +138,7 @@ test('studio: real fields, image upload/reorder/replace/remove, exact saved reci
   page,
   context,
 }) => {
+  test.setTimeout(60_000); // Full editing + two tabs + canvas uploads, including slower WebKit.
   await page.goto('/template-lab/?template=love-letter');
   await page.getByLabel('ชื่อผู้รับ', { exact: true }).fill(personal.to);
   await page.getByLabel('ชื่อผู้ส่ง', { exact: true }).fill(personal.from);

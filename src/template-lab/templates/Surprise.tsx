@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, type PointerEvent } from 'react';
 import type { Story } from '../data';
 import { Button, Icon, Photo, useStill } from '../shared';
 import { MemoryView, ReadLetter, coverMoment } from '../recipient';
@@ -10,8 +10,11 @@ export default function Surprise({ story }: { story: Story }) {
   const [memory, setMemory] = useState(0);
   const start = useRef<number | null>(null);
   const still = useStill();
-  function release() {
-    if (pull > 65) {
+  function release(event: PointerEvent<HTMLButtonElement>) {
+    // Pointer events can be batched before React paints the last drag frame.
+    // The release position is authoritative; pull only drives the visual.
+    const distance = start.current === null ? 0 : event.clientY - start.current;
+    if (distance > 65) {
       setStage(1);
       setPull(0);
     } else setPull(0);

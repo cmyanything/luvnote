@@ -68,13 +68,13 @@ for (const template of templates) {
         demo.moments[0].title,
       );
     } else if (template.id === 'cinema') {
-      await page.getByRole('link', { name: /ฉาก 3:/ }).click();
+      await page.getByRole('link', { name: /^ฉาก 3:/ }).click();
       await expect(
         page.locator(`#scene-${demo.moments[2].id}`),
       ).toBeInViewport();
       await page.getByRole('button', { name: 'เปิดฉากต่อไปของเรา' }).click();
       await expect(page.getByRole('status')).toHaveText(demo.secret);
-      await page.getByRole('link', { name: /ฉาก 1:/ }).click();
+      await page.getByRole('link', { name: /^ฉาก 1:/ }).click();
       await expect(
         page.locator(`#scene-${demo.moments[0].id}`),
       ).toBeInViewport();
@@ -139,7 +139,7 @@ for (const template of templates) {
         page.locator(`#place-${demo.moments[2].id}`),
       ).toBeInViewport();
       for (const m of demo.moments)
-        await page.locator(`#place-${m.id}`).getByRole('button').click();
+        await page.locator(`#place-${m.id}`).getByRole('button', { name: 'เก็บสถานที่นี้ไว้', exact: true }).click();
       await expect(page.getByRole('status')).toHaveText(demo.secret);
     } else if (template.id === 'choose') {
       await page.locator('.choice-option').nth(0).click();
@@ -319,11 +319,11 @@ test('lab: configuration applies, invalid data stays recoverable', async ({
   page,
 }) => {
   await page.goto('/template-lab/?template=love-letter');
-  await page.getByText('แก้ไขข้อมูลตัวอย่าง', { exact: true }).click();
+  await page.locator('.studio-json > summary').click();
   const editor = page.getByLabel('Story configuration (JSON)');
   await editor.fill('{bad json');
   await page.getByRole('button', { name: 'ใช้ข้อมูลนี้กับต้นแบบ' }).click();
-  await expect(page.locator('#config-error')).toContainText('ตรวจ JSON');
+  await expect(page.locator('.studio-error')).toContainText('JSON ไม่ถูกต้อง');
   await editor.fill(
     JSON.stringify({
       ...alternate,

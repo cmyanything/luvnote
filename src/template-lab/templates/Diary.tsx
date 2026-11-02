@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Story } from '../data';
 import { shortDate } from '../data';
 import { AnimatedGroup, Photo, Words } from '../shared';
+import { MemoryView, ReadLetter } from '../recipient';
 
 export default function Diary({ story }: { story: Story }) {
   const [entry, setEntry] = useState(0);
@@ -11,11 +12,25 @@ export default function Diary({ story }: { story: Story }) {
     <main className="experience diary">
       <header>
         <h1>
-          A diary
-          <br />
-          of us.
+          {story.headline || (
+            <>
+              A diary
+              <br />
+              of us.
+            </>
+          )}
         </h1>
-        <p>วันธรรมดา ในหน้ากระดาษของ {story.from}</p>
+        <p>{story.intro || `วันธรรมดา ในหน้ากระดาษของ ${story.from}`}</p>
+        <span className="diary-dedication">
+          {story.title} · เขียนถึง {story.to}
+        </span>
+        {story.cover && (
+          <img
+            className="diary-cover"
+            src={story.cover}
+            alt={`ปกไดอารีของ ${story.to}`}
+          />
+        )}
       </header>
       <div className="diary-body">
         <nav aria-label="เลือกวันที่ในไดอารี" className="diary-index">
@@ -48,15 +63,14 @@ export default function Diary({ story }: { story: Story }) {
             <Words text={moment.title} />
           </h2>
           <div className="diary-photo">
-            <Photo moment={moment} eager />
+            <MemoryView moment={moment} />
             <span className="hand">{moment.place || 'วันนี้ของเรา'}</span>
           </div>
           <AnimatedGroup>
             <p className="diary-note">{moment.note}</p>
-            <p>
-              ถ้าไม่ได้เขียนไว้ ก็คงกลัวว่าจะลืมรายละเอียดเล็ก ๆ<br />
-              แต่พอคิดดูอีกที วันที่มีเธออยู่ด้วย มันไม่เคยจางเลย
-            </p>
+            {moment.place && (
+              <p className="diary-place">เขียนไว้จาก {moment.place}</p>
+            )}
           </AnimatedGroup>
           <button
             className={`diary-fold ${unfold ? 'unfolded' : ''}`}
@@ -69,12 +83,42 @@ export default function Diary({ story }: { story: Story }) {
             <p className="diary-private hand" role="status">
               {entry === story.moments.length - 1
                 ? story.secret
-                : story.closing}
+                : moment.aside || story.closing}
             </p>
           )}
           <p className="diary-sign hand">{story.from}</p>
         </article>
       </div>
+      <nav className="diary-traversal" aria-label="อ่านไดอารีต่อ">
+        <button
+          disabled={entry === 0}
+          onClick={() => {
+            setEntry((i) => i - 1);
+            setUnfold(false);
+          }}
+        >
+          บันทึกก่อนหน้า
+        </button>
+        <span>
+          {entry + 1} / {story.moments.length}
+        </span>
+        <button
+          disabled={entry === story.moments.length - 1}
+          onClick={() => {
+            setEntry((i) => i + 1);
+            setUnfold(false);
+          }}
+        >
+          บันทึกถัดไป
+        </button>
+      </nav>
+      {entry === story.moments.length - 1 && (
+        <section className="diary-afterword">
+          <h2>เขียนไว้ให้เธออ่าน ในวันข้างหน้า</h2>
+          <ReadLetter story={story} label="อ่านหน้าสุดท้ายของสมุด" />
+          <p className="hand">{story.closing}</p>
+        </section>
+      )}
     </main>
   );
 }

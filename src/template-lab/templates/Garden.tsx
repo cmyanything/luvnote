@@ -1,6 +1,7 @@
 import { useState, type CSSProperties } from 'react';
 import type { Story } from '../data';
 import { Button, Flower, Photo } from '../shared';
+import { MemoryView, ReadLetter, coverMoment } from '../recipient';
 
 export default function Garden({ story }: { story: Story }) {
   const [bloomed, setBloomed] = useState<number[]>([]);
@@ -32,11 +33,23 @@ export default function Garden({ story }: { story: Story }) {
     <main className={`experience garden ${bouquet ? 'garden-finished' : ''}`}>
       <header>
         <h1>
-          Love grows
-          <br />
-          in little things.
+          {story.headline || (
+            <>
+              Love grows
+              <br />
+              in little things.
+            </>
+          )}
         </h1>
-        <p>สวนเล็ก ๆ ที่ปลูกไว้ให้ {story.to}</p>
+        <p>{story.intro || `สวนเล็ก ๆ ที่ปลูกไว้ให้ ${story.to}`}</p>
+        <span className="garden-dedication">
+          {story.title} · จาก {story.from}
+        </span>
+        {story.cover && (
+          <div className="garden-packet">
+            <MemoryView moment={coverMoment(story)} />
+          </div>
+        )}
       </header>
       {!bouquet ? (
         <>
@@ -67,10 +80,13 @@ export default function Garden({ story }: { story: Story }) {
               <p>ทุกดอกมีเหตุผลที่เรารักเธอซ่อนอยู่</p>
             ) : (
               <>
-                <Photo moment={story.moments[selected]} />
+                <MemoryView moment={story.moments[selected]} />
                 <div>
                   <h2>{story.moments[selected].title}</h2>
                   <p>{story.moments[selected].note}</p>
+                  {story.moments[selected].aside && (
+                    <p className="hand">{story.moments[selected].aside}</p>
+                  )}
                 </div>
               </>
             )}
@@ -104,7 +120,41 @@ export default function Garden({ story }: { story: Story }) {
           </div>
           <h2>ให้เธอ ทั้งสวนของฉัน</h2>
           <p role="status">{story.secret}</p>
+          <div
+            className="bouquet-tags"
+            aria-label="เรื่องราวที่อยู่ในช่อดอกไม้"
+          >
+            {story.moments.map((m, i) => (
+              <button
+                key={m.id}
+                aria-pressed={selected === i}
+                onClick={() => setSelected(i)}
+              >
+                <Flower bloom variant={i} />
+                <span>{m.title}</span>
+              </button>
+            ))}
+          </div>
+          {selected !== null && (
+            <div className="bouquet-tag">
+              <MemoryView moment={story.moments[selected]} />
+              <h3>{story.moments[selected].title}</h3>
+              <p>{story.moments[selected].note}</p>
+              {story.moments[selected].aside && (
+                <p className="hand">{story.moments[selected].aside}</p>
+              )}
+            </div>
+          )}
+          <ReadLetter
+            story={story}
+            label="แกะป้ายที่ผูกไว้กับช่อ"
+            className="bouquet-letter"
+          />
+          <p className="garden-promise">{story.closing}</p>
           <p className="hand">จาก {story.from}</p>
+          <Button variant="quiet" onClick={() => setBouquet(false)}>
+            กลับไปชมสวน
+          </Button>
         </section>
       )}
     </main>

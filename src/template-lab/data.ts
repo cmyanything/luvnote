@@ -9,6 +9,15 @@ export interface Moment {
   image: string;
   alt: string;
   place: string;
+  aside?: string;
+  keepsake?: string;
+  keepsakeType?: 'ticket' | 'key' | 'photo' | 'letter';
+}
+
+export interface StoryChoices {
+  questions: [string, string];
+  options: [[string, string], [string, string]];
+  endings: { title: string; text: string }[];
 }
 
 export interface Story {
@@ -20,7 +29,41 @@ export interface Story {
   secret: string;
   closing: string;
   moments: Moment[];
+  headline?: string;
+  intro?: string;
+  cover?: string;
+  music?: CardData['music'] | { type: 'none' };
+  choices?: StoryChoices;
 }
+
+export const defaultChoices: StoryChoices = {
+  questions: [
+    'ถ้าพรุ่งนี้มีเวลาให้กันทั้งวัน เธออยาก…',
+    'แล้วอยากให้วันของเราเริ่มด้วยอะไร?',
+  ],
+  options: [
+    ['ออกไปหลงทาง', 'อยู่บ้านด้วยกัน'],
+    ['แสงเช้า', 'ดวงดาว'],
+  ],
+  endings: [
+    {
+      title: 'เช้าวันใหม่ บนถนนเส้นใหม่',
+      text: 'เราออกเดินทางก่อนเมืองจะตื่น ไม่ต้องรู้ว่าปลายทางคือไหน แค่มีเธออยู่ข้าง ๆ',
+    },
+    {
+      title: 'หลงทางไปใต้ดวงดาว',
+      text: 'ปิดแผนที่ลงสักคืน แล้วให้ท้องฟ้าพาเราไปหาความทรงจำใหม่ด้วยกัน',
+    },
+    {
+      title: 'กาแฟช้า ๆ ที่บ้านของเรา',
+      text: 'ไม่ต้องมีตั๋วเดินทาง แค่เช้าที่ไม่ต้องรีบ กาแฟสองแก้ว และคนที่อยากนั่งด้วย',
+    },
+    {
+      title: 'คืนธรรมดา ที่พิเศษที่สุด',
+      text: 'ทำอาหารง่าย ๆ เปิดเพลงเบา ๆ แล้วเล่าเรื่องของวันนี้ให้กันฟัง นี่แหละวันในฝันของเรา',
+    },
+  ],
+};
 
 export const demo: Story = {
   to: 'เธอ',
@@ -40,6 +83,9 @@ export const demo: Story = {
       image: labAsset('images/coffee.jpg'),
       alt: 'กาแฟบนโต๊ะ ภาพประกอบวันแรกที่พบกัน',
       place: 'ร้านเดิม มุมหน้าต่าง',
+      aside: 'ยังจำได้ว่าเธอสั่งอะไร เหมือนเพิ่งเป็นเมื่อวาน',
+      keepsake: 'ใบเสร็จกาแฟสองแก้ว',
+      keepsakeType: 'ticket',
     },
     {
       id: 'escape',
@@ -49,6 +95,9 @@ export const demo: Story = {
       image: labAsset('images/lake.jpg'),
       alt: 'ทะเลสาบท่ามกลางภูเขา ภาพประกอบการเดินทาง',
       place: 'ที่ไหนสักแห่ง นอกเมือง',
+      aside: 'ครั้งหน้าเราค่อยหลงทางด้วยกันอีกนะ',
+      keepsake: 'ตั๋วเที่ยวที่หลงทาง',
+      keepsakeType: 'ticket',
     },
     {
       id: 'sunset',
@@ -58,6 +107,9 @@ export const demo: Story = {
       image: labAsset('images/landscape.jpg'),
       alt: 'แสงเย็นเหนือทิวเขา ภาพประกอบวันที่ได้พักด้วยกัน',
       place: 'ระหว่างทางกลับบ้าน',
+      aside: 'อยากหยุดแสงเย็นวันนั้นไว้ให้นานอีกนิด',
+      keepsake: 'รูปจากเย็นวันนั้น',
+      keepsakeType: 'photo',
     },
     {
       id: 'home',
@@ -67,8 +119,12 @@ export const demo: Story = {
       image: labAsset('images/cabin.jpg'),
       alt: 'กระท่อมริมทะเลสาบ ภาพประกอบความรู้สึกเหมือนบ้าน',
       place: 'ตรงนี้ ข้าง ๆ กัน',
+      aside: 'หน้าต่อไปของเรื่องนี้ ยังอยากมีเธออยู่ด้วย',
+      keepsake: 'กุญแจของคำว่าบ้าน',
+      keepsakeType: 'key',
     },
   ],
+  music: { type: 'demo' },
 };
 
 export const alternate: Story = {
@@ -81,18 +137,16 @@ export const alternate: Story = {
     'ถึงคนที่ทำให้ทุกวันสดใส\nไม่ว่าจะเดินทางไปที่ไหน อยากให้รู้ว่ามีคนตรงนี้คอยส่งกำลังใจให้เสมอ',
   secret: 'จองโต๊ะร้านโปรดไว้แล้ว เจอกันหกโมงนะ',
   closing: 'ขอให้เป็นปีที่ใจดีกับเธอ',
-  moments: [...demo.moments]
-    .reverse()
-    .map((m, i) => ({
-      ...m,
-      id: `alt-${i}`,
-      title: [
-        'วันที่ยิ้มกว้าง',
-        'เมืองที่อยากกลับไป',
-        'แสงเช้าวันอาทิตย์',
-        'มื้อเย็นแสนพิเศษ',
-      ][i],
-    })),
+  moments: [...demo.moments].reverse().map((m, i) => ({
+    ...m,
+    id: `alt-${i}`,
+    title: [
+      'วันที่ยิ้มกว้าง',
+      'เมืองที่อยากกลับไป',
+      'แสงเช้าวันอาทิตย์',
+      'มื้อเย็นแสนพิเศษ',
+    ][i],
+  })),
 };
 
 const safeImage = (src: string | null | undefined) => {
@@ -118,6 +172,8 @@ export function fromCardData(card: CardData): Story {
     letter: card.letter || demo.letter,
     secret: card.secret || demo.secret,
     closing: card.endMsg || demo.closing,
+    cover: card.cover ? safeImage(card.cover) : undefined,
+    music: card.music,
     moments: card.photos.length
       ? card.photos.map((photo, i) => ({
           id: `photo-${i}`,

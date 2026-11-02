@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { Story } from '../data';
 import { AnimatedGroup, Button, Icon, Photo } from '../shared';
+import { LetterCopy, MemoryView } from '../recipient';
+import { shortDate } from '../data';
 
 function Keepsake({ index }: { index: number }) {
   return (
@@ -64,11 +66,15 @@ export default function Capsule({ story }: { story: Story }) {
       <header>
         <span>ฝากไว้ตั้งแต่ {story.date}</span>
         <h1>
-          For the days
-          <br />
-          we’ll remember.
+          {story.headline || (
+            <>
+              For the days
+              <br />
+              we’ll remember.
+            </>
+          )}
         </h1>
-        <p>ไม่ได้เก็บของ เก็บความรู้สึกไว้ต่างหาก</p>
+        <p>{story.intro || 'ไม่ได้เก็บของ เก็บความรู้สึกไว้ต่างหาก'}</p>
       </header>
       <div className="capsule-box" data-many={story.moments.length > 4}>
         <div className="capsule-inside">
@@ -81,14 +87,12 @@ export default function Capsule({ story }: { story: Story }) {
                   aria-label={`หยิบของชิ้นที่ ${i + 1}: ${m.title}`}
                   aria-pressed={found.includes(i)}
                 >
-                  <Keepsake index={i} />
-                  <span>
-                    {
-                      ['ตั๋วของเรา', 'กุญแจดอกนั้น', 'รูปที่ชอบ', 'กระดาษพับ'][
-                        i % 4
-                      ]
-                    }
-                  </span>
+                  <Keepsake
+                    index={['ticket', 'key', 'photo', 'letter'].indexOf(
+                      m.keepsakeType || 'photo',
+                    )}
+                  />
+                  <span>{m.keepsake || m.title}</span>
                   {found.includes(i) && <Icon name="check" size={16} />}
                 </button>
               ))}
@@ -101,6 +105,9 @@ export default function Capsule({ story }: { story: Story }) {
           onClick={() => setOpen(true)}
           aria-label="เปิดกล่องความทรงจำ"
         >
+          {story.cover && (
+            <img className="capsule-cover" src={story.cover} alt="" />
+          )}
           <span className="box-stamp">
             Our time
             <br />
@@ -116,10 +123,21 @@ export default function Capsule({ story }: { story: Story }) {
             <p>หยิบอะไรขึ้นมาดูก่อนดี?</p>
           ) : (
             <>
-              <Photo moment={story.moments[selected]} />
+              <MemoryView moment={story.moments[selected]} />
               <div>
                 <h2>{story.moments[selected].title}</h2>
                 <p>{story.moments[selected].note}</p>
+                <small>
+                  {[
+                    shortDate(story.moments[selected].date),
+                    story.moments[selected].place,
+                  ]
+                    .filter(Boolean)
+                    .join(' · ')}
+                </small>
+                {story.moments[selected].aside && (
+                  <p className="hand">{story.moments[selected].aside}</p>
+                )}
               </div>
             </>
           )}
@@ -130,6 +148,16 @@ export default function Capsule({ story }: { story: Story }) {
           <span>
             ค้นพบ {found.length} / {story.moments.length}
           </span>
+          {found.length < story.moments.length && (
+            <Button
+              variant="quiet"
+              onClick={() =>
+                pick(story.moments.findIndex((_, i) => !found.includes(i)))
+              }
+            >
+              หยิบชิ้นที่ยังไม่ได้ดู
+            </Button>
+          )}
           <Button
             onClick={() => setFinal(true)}
             disabled={found.length < story.moments.length || final}
@@ -142,7 +170,23 @@ export default function Capsule({ story }: { story: Story }) {
         <div className="capsule-hidden" role="status">
           <Icon />
           <p>{story.secret}</p>
-          <span>บางสิ่งยังรอให้เราไปเก็บด้วยกัน</span>
+          <h2>{story.title}</h2>
+          <LetterCopy story={story} />
+          <p className="capsule-promise">{story.closing}</p>
+          <span>
+            ฝากไว้จาก {story.from} ถึง {story.to}
+          </span>
+          <Button
+            variant="quiet"
+            onClick={() => {
+              setFinal(false);
+              document
+                .querySelector('.capsule-box')
+                ?.scrollIntoView({ block: 'start' });
+            }}
+          >
+            กลับไปดูของในกล่อง
+          </Button>
         </div>
       )}
     </main>

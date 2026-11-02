@@ -7,12 +7,12 @@ async function configure(
   story: Story,
 ): Promise<FrameLocator> {
   await page.goto(`/template-lab/?template=${id}`);
-  await page.locator('summary').click();
+  await page.locator('.studio-json > summary').click();
   await page
     .getByLabel('Story configuration (JSON)')
     .fill(JSON.stringify(story));
   await page.getByRole('button', { name: 'ใช้ข้อมูลนี้กับต้นแบบ' }).click();
-  await expect(page.locator('select')).toHaveValue('custom');
+  await expect(page.locator('.dataset-picker select')).toHaveValue('custom');
   return page.frameLocator('iframe');
 }
 
@@ -176,7 +176,7 @@ test('optional Paper Shader mounts on request and has a static fallback', async 
   page,
 }) => {
   await page.goto('/template-lab/?play=stars');
-  const toggle = page.getByRole('button', { name: 'ทดลองแสงเหนือ · GPU' });
+  const toggle = page.getByRole('button', { name: 'เปิดแสงเหนือ' });
   await expect(toggle).toBeVisible();
   await expect(page.locator('.aurora')).toHaveCount(0);
   const supported = await page.evaluate(() => {

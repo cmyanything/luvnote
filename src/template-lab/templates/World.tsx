@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Story } from '../data';
 import { Icon, Photo, useScrollParallax, useStill } from '../shared';
+import { ReadLetter, MemoryView, coverMoment } from '../recipient';
 
 const stops = [
   [23, 43],
@@ -90,33 +91,41 @@ export default function World({ story }: { story: Story }) {
     return () => observer.disconnect();
   }, []);
   function explore(i: number) {
-    setVisited((v) => (v.includes(i) ? v : [...v, i]));
     setActive(i);
-    document
-      .getElementById(`place-${story.moments[i].id}`)
-      ?.scrollIntoView({
-        behavior: still ? 'instant' : 'smooth',
-        block: 'start',
-      });
+    document.getElementById(`place-${story.moments[i].id}`)?.scrollIntoView({
+      behavior: still ? 'instant' : 'smooth',
+      block: 'start',
+    });
   }
   return (
     <main ref={root} className="experience world">
       <header>
-        <h1>Our little world.</h1>
-        <p>ถ้าโลกกว้างเกินไป มาเดินเล่นในโลกของเราก่อน</p>
+        <h1>{story.headline || 'Our little world.'}</h1>
+        <p>
+          {story.intro || `แผนที่ความทรงจำของ ${story.from} และ ${story.to}`}
+        </p>
+        {story.cover && (
+          <div className="world-passport">
+            <MemoryView moment={coverMoment(story)} />
+            <span>
+              {story.title}
+              <small>เริ่มเดินทางด้วยกัน {story.date}</small>
+            </span>
+          </div>
+        )}
       </header>
       <div className="world-map" data-many={story.moments.length > 4}>
         <MapDrawing />
         {story.moments.map((m, i) => (
           <button
-            className={`world-pin ${active === i ? 'active' : ''}`}
+            className={`world-pin ${active === i ? 'active' : ''} ${visited.includes(i) ? 'stamped' : ''}`}
             key={m.id}
             style={{ left: `${stops[i][0]}%`, top: `${stops[i][1]}%` }}
             onClick={() => explore(i)}
             aria-label={`ไปที่ ${m.title}`}
           >
             <span>{i + 1}</span>
-            <small>{m.title}</small>
+            <small>{m.place || m.title}</small>
           </button>
         ))}
         <span className="world-compass" aria-hidden="true">
@@ -131,11 +140,13 @@ export default function World({ story }: { story: Story }) {
             className={`world-place place-${i % 4}`}
             key={m.id}
           >
-            <Photo moment={m} eager={i === 0} />
+            <MemoryView moment={m} />
             <div>
               <span className="hand">{m.place || 'สักที่ ที่มีเรา'}</span>
               <h2>{m.title}</h2>
               <p>{m.note}</p>
+              <time>{m.date}</time>
+              {m.aside && <p className="hand world-postscript">{m.aside}</p>}
               <button
                 className="world-stamp"
                 aria-pressed={visited.includes(i)}
@@ -154,14 +165,29 @@ export default function World({ story }: { story: Story }) {
       </div>
       <section className="world-home">
         <Icon size={38} />
-        <h2>แล้วเราค่อยกลับบ้านด้วยกัน</h2>
+        <h2>{story.title}</h2>
         <p>{story.closing}</p>
+        <ReadLetter
+          story={story}
+          label="เปิดจดหมายที่รออยู่ที่บ้าน"
+          className="world-mailbox"
+        />
         {visited.length === story.moments.length && (
           <p role="status">{story.secret}</p>
         )}
         <span>
           เก็บความทรงจำแล้ว {visited.length} / {story.moments.length} แห่ง
         </span>
+        <button
+          className="world-return"
+          onClick={() =>
+            document
+              .querySelector('.world-map')
+              ?.scrollIntoView({ block: 'start' })
+          }
+        >
+          กลับไปเดินเล่นบนแผนที่
+        </button>
       </section>
     </main>
   );

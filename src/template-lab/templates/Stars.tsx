@@ -1,6 +1,8 @@
 import { Component, lazy, Suspense, useState, type ReactNode } from 'react';
 import type { Story } from '../data';
 import { Button, Icon, Photo, useStill } from '../shared';
+import { LetterCopy, MemoryView, coverMoment } from '../recipient';
+import { shortDate } from '../data';
 
 const Aurora = lazy(() => import('../Aurora'));
 class ShaderFallback extends Component<
@@ -64,13 +66,22 @@ export default function Stars({ story }: { story: Story }) {
           {story.from} & {story.to}
         </span>
         <h1>
-          Written
-          <br />
-          in the stars.
+          {story.headline || (
+            <>
+              Written
+              <br />
+              in the stars.
+            </>
+          )}
         </h1>
-        <p>แตะดาวสักดวง มีความทรงจำรออยู่</p>
+        <p>{story.intro || 'แตะดาวสักดวง มีความทรงจำรออยู่'}</p>
       </header>
       <div className="star-map" aria-label="ท้องฟ้าความทรงจำ">
+        {story.cover && (
+          <div className="star-portrait">
+            <MemoryView moment={coverMoment(story)} />
+          </div>
+        )}
         <svg
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
@@ -100,10 +111,21 @@ export default function Stars({ story }: { story: Story }) {
       <div className="star-readout" aria-live="polite">
         {selected !== null ? (
           <>
-            <Photo moment={story.moments[selected]} eager />
+            <MemoryView moment={story.moments[selected]} />
             <div>
               <h2>{story.moments[selected].title}</h2>
               <p>{story.moments[selected].note}</p>
+              <small>
+                {[
+                  shortDate(story.moments[selected].date),
+                  story.moments[selected].place,
+                ]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </small>
+              {story.moments[selected].aside && (
+                <p className="hand">{story.moments[selected].aside}</p>
+              )}
             </div>
           </>
         ) : (
@@ -114,6 +136,16 @@ export default function Stars({ story }: { story: Story }) {
         <p>
           {visited.length} / {count} ดวงที่ค้นพบ
         </p>
+        {visited.length < count && (
+          <Button
+            variant="quiet"
+            onClick={() =>
+              select(story.moments.findIndex((_, i) => !visited.includes(i)))
+            }
+          >
+            พาไปดาวที่ยังไม่ได้อ่าน <Icon name="arrow" size={17} />
+          </Button>
+        )}
         <Button
           disabled={visited.length < count || secret}
           onClick={() => setSecret(true)}
@@ -122,9 +154,25 @@ export default function Stars({ story }: { story: Story }) {
         </Button>
       </div>
       {secret && (
-        <p className="star-secret" role="status">
-          {story.secret}
-        </p>
+        <section className="star-observatory">
+          <h2>{story.title}</h2>
+          <p className="star-secret" role="status">
+            {story.secret}
+          </p>
+          <LetterCopy story={story} />
+          <p className="star-promise">{story.closing}</p>
+          <Button
+            variant="quiet"
+            onClick={() => {
+              setSecret(false);
+              document
+                .querySelector('.star-map')
+                ?.scrollIntoView({ block: 'center' });
+            }}
+          >
+            กลับไปดูท้องฟ้าของเรา
+          </Button>
+        </section>
       )}
       {!still && (
         <button
@@ -132,7 +180,7 @@ export default function Stars({ story }: { story: Story }) {
           onClick={() => setShader((v) => !v)}
           aria-pressed={shader}
         >
-          {shader ? 'ปิดแสงเหนือ' : 'ทดลองแสงเหนือ · GPU'}
+          {shader ? 'ปิดแสงเหนือ' : 'เปิดแสงเหนือ'}
         </button>
       )}
     </main>

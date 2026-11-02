@@ -2,10 +2,12 @@ import { useRef, useState } from 'react';
 import type { Story } from '../data';
 import { shortDate } from '../data';
 import { Icon, Photo, Words } from '../shared';
+import { LetterCopy, MemoryView } from '../recipient';
 
 export default function Scrapbook({ story }: { story: Story }) {
   const [page, setPage] = useState(0);
   const [peeled, setPeeled] = useState<number[]>([]);
+  const [contents, setContents] = useState(false);
   const pointer = useRef<number | null>(null);
   const moment = story.moments[page];
   function turn(direction: number) {
@@ -16,9 +18,42 @@ export default function Scrapbook({ story }: { story: Story }) {
   return (
     <main className="experience scrapbook">
       <header>
-        <h1>Us, in pieces.</h1>
-        <p className="hand">ไม่ต้องเรียบร้อย แค่เป็นเรื่องของเรา</p>
+        <h1>{story.headline || 'Us, in pieces.'}</h1>
+        <p className="hand">
+          {story.intro || `สมุดของ ${story.from} กับ ${story.to}`}
+        </p>
+        {story.cover && (
+          <img
+            className="scrap-cover-photo"
+            src={story.cover}
+            alt={`ปกสมุดของ ${story.to}`}
+          />
+        )}
+        <button
+          className="scrap-contents-toggle"
+          onClick={() => setContents((v) => !v)}
+          aria-expanded={contents}
+        >
+          เปิดสารบัญความทรงจำ <Icon name="book" size={18} />
+        </button>
       </header>
+      {contents && (
+        <nav className="scrap-contents" aria-label="สารบัญความทรงจำ">
+          {story.moments.map((m, i) => (
+            <button
+              key={m.id}
+              onClick={() => {
+                setPage(i);
+                setContents(false);
+              }}
+            >
+              <span>{i + 1}</span>
+              {m.title}
+              <small>{m.date}</small>
+            </button>
+          ))}
+        </nav>
+      )}
       <div
         className="scrapbook-book"
         onPointerDown={(e) => {
@@ -45,7 +80,11 @@ export default function Scrapbook({ story }: { story: Story }) {
           <div className="scrap-left">
             <span className="scrap-date">{shortDate(moment.date)}</span>
             <div className="scrap-image">
-              <Photo moment={moment} eager />
+              {peeled.includes(page) ? (
+                <MemoryView moment={moment} />
+              ) : (
+                <Photo moment={moment} eager />
+              )}
               <div
                 className={`scrap-mask ${peeled.includes(page) ? 'peeled' : ''}`}
               >
@@ -73,9 +112,7 @@ export default function Scrapbook({ story }: { story: Story }) {
             </h2>
             <p>{moment.note}</p>
             <span className="hand scrap-sign">
-              อยู่กับเธอตรงนี้
-              <br />
-              ก็ดีที่สุดแล้ว
+              {moment.aside || story.closing}
             </span>
             <span className="scrap-page-number">{page + 1}</span>
           </div>
@@ -96,9 +133,20 @@ export default function Scrapbook({ story }: { story: Story }) {
         </button>
       </nav>
       {page === story.moments.length - 1 && (
-        <p className="scrap-end" role="status">
-          {story.secret}
-        </p>
+        <section className="scrap-last-spread">
+          <div>
+            <h2>{story.title}</h2>
+            <LetterCopy story={story} />
+          </div>
+          <div className="scrap-pocket">
+            <span className="hand">ซองเล็ก ๆ ที่ติดไว้ท้ายเล่ม</span>
+            <p className="scrap-end" role="status">
+              {story.secret}
+            </p>
+            <p>{story.closing}</p>
+            <span className="hand">ทำให้ {story.to} ด้วยมือและด้วยใจ</span>
+          </div>
+        </section>
       )}
     </main>
   );

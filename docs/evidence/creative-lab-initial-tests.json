@@ -1,0 +1,53 @@
+{
+  "phase": "initial desktop QA before fixes",
+  "stats": {
+    "startTime": "2026-11-02T03:23:49.015Z",
+    "duration": 63022.28,
+    "expected": 18,
+    "skipped": 0,
+    "unexpected": 10,
+    "flaky": 0
+  },
+  "failures": [
+    {
+      "title": "polaroid: alternate data, reduced motion, accessibility",
+      "status": "unexpected"
+    },
+    {
+      "title": "cinema: alternate data, reduced motion, accessibility",
+      "status": "unexpected"
+    },
+    {
+      "title": "garden: alternate data, reduced motion, accessibility",
+      "status": "unexpected"
+    },
+    {
+      "title": "capsule: alternate data, reduced motion, accessibility",
+      "status": "unexpected"
+    },
+    {
+      "title": "scrapbook: alternate data, reduced motion, accessibility",
+      "status": "unexpected"
+    },
+    {
+      "title": "world: real interaction and final content",
+      "status": "unexpected"
+    },
+    {
+      "title": "world: alternate data, reduced motion, accessibility",
+      "status": "unexpected"
+    },
+    {
+      "title": "choose: alternate data, reduced motion, accessibility",
+      "status": "unexpected"
+    },
+    {
+      "title": "diary: alternate data, reduced motion, accessibility",
+      "status": "unexpected"
+    },
+    {
+      "title": "lab: configuration applies, invalid data stays recoverable",
+      "status": "unexpected"
+    }
+  ]
+}

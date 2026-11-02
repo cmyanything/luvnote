@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-02",
+  "summary": "170/170 browser checks ผ่าน · 360 / 390 / 768 / Desktop / WebKit emulation",
+  "sourceSnapshotSha256": "044e2ca99cf41e4e13642d225f72a41bb7c210ada80ec820a94d548877e033c4",
+  "projects": {
+    "360": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    "390": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    "768": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    "desktop": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    "webkit": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "physicalDevicesVerified": false,
+  "productionDeployed": false
+}

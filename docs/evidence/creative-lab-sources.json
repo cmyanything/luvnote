@@ -1,0 +1,384 @@
+{
+  "checkedAt": "2026-11-02",
+  "sources": [
+    {
+      "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+      "commit": "3a13158ff1f32156cbe144108de48eda2ecaed9a",
+      "archived": false,
+      "pushedAt": "2026-11-01T07:04:29Z",
+      "licenseReportedByGitHub": "MIT",
+      "readme": "README.md",
+      "licenseFiles": [
+        "LICENSE"
+      ],
+      "instructionsOrSourceInspected": [
+        {
+          "path": ".claude/skills/ui-ux-pro-max/SKILL.md",
+          "sha256": "ea087c341bfb5b23195c7302027268ede86da802554c18a5c4896a6017b439f9"
+        }
+      ],
+      "application": "manual defaults",
+      "templates": [
+        2,
+        7,
+        11
+      ],
+      "limitation": "Search CLI not executed; no generated design-system/database result claimed."
+    },
+    {
+      "repo": "pbakaus/impeccable",
+      "url": "https://github.com/pbakaus/impeccable",
+      "commit": "e89e3ada3e875a89ac2c5d33d11e65ebef6fe285",
+      "archived": false,
+      "pushedAt": "2026-11-01T18:04:59Z",
+      "licenseReportedByGitHub": "Apache-2.0",
+      "readme": "README.md",
+      "licenseFiles": [
+        "LICENSE",
+        "NOTICE.md"
+      ],
+      "instructionsOrSourceInspected": [
+        {
+          "path": ".agents/skills/impeccable/SKILL.md",
+          "sha256": "fab04b31f946573b00a8559db1fc070f8ea5825254d491c2b13156e5661a86d7"
+        },
+        {
+          "path": ".agents/skills/impeccable/reference/craft-floor.md",
+          "sha256": "808a50e0e6c74617a07b0eaf7fd80f58d8e48a13f48e47c658c7534b1724e5c2"
+        },
+        {
+          "path": ".agents/skills/impeccable/reference/audit.md",
+          "sha256": "5ba9e3a090fc4c4d212c8cbfa5a48f7454ceb10fa81a284b4a7b4e8351ece2f1"
+        }
+      ],
+      "application": "manual craft and audit",
+      "templates": [
+        1,
+        2,
+        6,
+        10
+      ],
+      "limitation": "Context launcher not run. No binary or install hooks executed. Project context read directly."
+    },
+    {
+      "repo": "anthropics/skills",
+      "url": "https://github.com/anthropics/skills",
+      "commit": "ca45fc496a3436251f191354091d557da31c15b5",
+      "archived": false,
+      "pushedAt": "2026-10-28T19:20:39Z",
+      "licenseReportedByGitHub": null,
+      "readme": "README.md",
+      "licenseFiles": [],
+      "instructionsOrSourceInspected": [
+        {
+          "path": "skills/frontend-design/SKILL.md",
+          "sha256": "d91970639e9f5c37682ac7ab60094d35f1c7c1f38d731bd56396563aee10c1d3"
+        }
+      ],
+      "application": "applied guidance",
+      "templates": [
+        1,
+        5,
+        7,
+        12
+      ],
+      "limitation": "Read directly in Codex; no Claude plugin installed."
+    },
+    {
+      "repo": "vercel-labs/agent-skills",
+      "url": "https://github.com/vercel-labs/agent-skills",
+      "commit": "1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62",
+      "archived": false,
+      "pushedAt": "2026-10-28T19:17:28Z",
+      "licenseReportedByGitHub": null,
+      "readme": "README.md",
+      "licenseFiles": [],
+      "instructionsOrSourceInspected": [
+        {
+          "path": "skills/web-design-guidelines/SKILL.md",
+          "sha256": "f4647ca866a3accf763777f83e7682954f0187cd6bea7eea0399796652414e8f"
+        },
+        {
+          "path": "skills/react-best-practices/SKILL.md",
+          "sha256": "71ed7794962fa6e803ee83030517b5b93a9f70fbfeb431ec4535c5480a8d8355"
+        }
+      ],
+      "application": "applied guidance and review",
+      "templates": [
+        3,
+        9
+      ],
+      "limitation": "No Vercel deployment, Next.js migration or copied server code."
+    },
+    {
+      "repo": "emilkowalski/skills",
+      "url": "https://github.com/emilkowalski/skills",
+      "commit": "a81dbca07f2217b7103e510c0f13f8d5b017afc9",
+      "archived": false,
+      "pushedAt": "2026-10-28T18:25:52Z",
+      "licenseReportedByGitHub": "MIT",
+      "readme": "README.md",
+      "licenseFiles": [
+        "LICENSE"
+      ],
+      "instructionsOrSourceInspected": [
+        {
+          "path": "skills/animate/SKILL.md",
+          "sha256": "b8ede161270458e6ae2e45e8a1985373515d4c63de5568ddb0f9012d7634356c"
+        },
+        {
+          "path": "skills/prototype/SKILL.md",
+          "sha256": "bba39c955eb1871c5a02733976ceec5d0324198e0812e667604756489c89f7b9"
+        },
+        {
+          "path": "skills/emil-design-eng/SKILL.md",
+          "sha256": "ffbe68e6007fb42cb8149f089b400a1ca007d59ba23e8948e2be4476f3175939"
+        }
+      ],
+      "application": "applied guidance",
+      "templates": [
+        1,
+        2,
+        6,
+        10,
+        12
+      ],
+      "limitation": "The explicit 12-template Lab brief overrides prototype default scope/picker; no production promotion performed."
+    },
+    {
+      "repo": "MengTo/Skills",
+      "url": "https://github.com/MengTo/Skills",
+      "commit": "ef5f85130d083d33e08cb19f6ee23cdde2d406ab",
+      "archived": false,
+      "pushedAt": "2026-11-01T14:04:08Z",
+      "licenseReportedByGitHub": "MIT",
+      "readme": "README.md",
+      "licenseFiles": [
+        "LICENSE"
+      ],
+      "instructionsOrSourceInspected": [
+        {
+          "path": "agent-skills/web-design/cinematic-scroll-storytelling/SKILL.md",
+          "sha256": "3e203d1a38917004396f07b5887418e9e13dc832506754f5a4ad6303525b1572"
+        },
+        {
+          "path": "agent-skills/web-design/masked-reveal/SKILL.md",
+          "sha256": "a3e4fb96f6092ac382530db24fdd15da559e959c5b7e02d0503918c1358dcf03"
+        },
+        {
+          "path": "agent-skills/web-design/scroll-world-storytelling/SKILL.md",
+          "sha256": "505caf90b92ac6d9e6aecda1d79df36adc96fe5cbeb8eaac5c45b6cdefee7eab"
+        },
+        {
+          "path": "agent-skills/web-design/staggered-word-reveal/SKILL.md",
+          "sha256": "79061529376810788b1d824e0f16a18c048d1c426d6909442888c9507ead08c9"
+        }
+      ],
+      "application": "applied guidance",
+      "templates": [
+        3,
+        7,
+        8,
+        10
+      ],
+      "limitation": "Native scrolling; no Lenis, Three.js, video generation or deployment. Independent verifier used."
+    },
+    {
+      "repo": "freshtechbro/claudedesignskills",
+      "url": "https://github.com/freshtechbro/claudedesignskills",
+      "commit": "1da73febff0c3e1dfefc07f8a5ef8f7d1dfdb6cd",
+      "archived": false,
+      "pushedAt": "2025-11-20T01:58:04Z",
+      "licenseReportedByGitHub": "MIT",
+      "readme": "README.md",
+      "licenseFiles": [
+        "LICENSE"
+      ],
+      "instructionsOrSourceInspected": [
+        {
+          "path": ".claude/skills/gsap-scrolltrigger/SKILL.md",
+          "sha256": "8d827576329ffb47e7f434dce71e681627f29c513eefe3698584830f5c90099f"
+        }
+      ],
+      "application": "applied GSAP guidance",
+      "templates": [
+        3,
+        8
+      ],
+      "limitation": "Direct SKILL.md reading, existing GSAP dependency and scoped context cleanup; no Claude marketplace installed."
+    },
+    {
+      "repo": "diffusionstudio/lottie",
+      "url": "https://github.com/diffusionstudio/lottie",
+      "commit": "3c72912fad543897f90045ed4d355813837927fc",
+      "archived": false,
+      "pushedAt": "2026-07-25T07:22:58Z",
+      "licenseReportedByGitHub": "MIT",
+      "readme": "README.md",
+      "licenseFiles": [
+        "LICENSE"
+      ],
+      "instructionsOrSourceInspected": [
+        {
+          "path": "skills/text-to-lottie/SKILL.md",
+          "sha256": "d2e5e6151f07e8660d8458c8bbcf7ba8b0f02caa04c1d535f523352a0d8442fd"
+        },
+        {
+          "path": "skills/text-to-lottie/references/player-contract.md",
+          "sha256": "dfc5c2eabe86817950265e29062254a86e0d72f043daf0759f4e0e56d3deb2d0"
+        }
+      ],
+      "application": "studied; not trialled",
+      "templates": [],
+      "limitation": "Official skill requires its Skottie player for verification. No player or Lottie asset authored/verified. Simple SVG/CSS chosen for this lab; no runtime Lottie claim."
+    },
+    {
+      "repo": "SvaraNova/skills",
+      "url": "https://github.com/SvaraNova/skills",
+      "commit": "11500cb05b44fc01eac8537ad656006727146abb",
+      "archived": false,
+      "pushedAt": "2026-09-30T09:16:39Z",
+      "licenseReportedByGitHub": "MIT",
+      "readme": "README.md",
+      "licenseFiles": [
+        "LICENSE"
+      ],
+      "instructionsOrSourceInspected": [
+        {
+          "path": "frontend/web-motion/SKILL.md",
+          "sha256": "e7d533870f4105668f8e53a886dce4e7c064c1827b949dad555c672b98a2e53d"
+        }
+      ],
+      "application": "applied guidance",
+      "templates": [
+        3,
+        4,
+        11
+      ],
+      "limitation": "CSS first, bounded motion, live preference handling. Profiling diagnostic, not a 60 fps certificate."
+    },
+    {
+      "repo": "soilmass/motion-design-agent",
+      "url": "https://github.com/soilmass/motion-design-agent",
+      "commit": "132c9d59231cf0fd91964ee433ba9e7e0b3bbf6d",
+      "archived": false,
+      "pushedAt": "2026-01-24T14:51:06Z",
+      "licenseReportedByGitHub": "MIT",
+      "readme": "README.md",
+      "licenseFiles": [
+        "LICENSE"
+      ],
+      "instructionsOrSourceInspected": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d112dd46c0109d77e8a696ea3dfcbc8530682faf52d18a45524b4ffd65aab27c"
+        },
+        {
+          "path": "skills/choice-resolution/SKILL.md",
+          "sha256": "77161eaa270990a4b06bf9792cd5269fa5a0b0c862122b899afca04fb2f8cc10"
+        }
+      ],
+      "application": "adapted motion guidance",
+      "templates": [
+        4,
+        5,
+        6,
+        8,
+        9,
+        11,
+        12
+      ],
+      "limitation": "Narrative, anticipation/reveal and reduced-motion guidance adapted. Full token-resolution engine and video/export pipeline not installed or claimed."
+    },
+    {
+      "repo": "DavidHDev/react-bits",
+      "url": "https://github.com/DavidHDev/react-bits",
+      "commit": "4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4",
+      "archived": false,
+      "pushedAt": "2026-10-31T00:02:43Z",
+      "licenseReportedByGitHub": "NOASSERTION",
+      "readme": "README.md",
+      "licenseFiles": [
+        "LICENSE.md"
+      ],
+      "instructionsOrSourceInspected": [],
+      "application": "studied; excluded",
+      "templates": [],
+      "limitation": "MIT + Commons Clause. End-product use allowed by source, but component/template-pack redistribution restricted. No copied code, exports or runtime component trial in this reusable catalog."
+    },
+    {
+      "repo": "ibelick/motion-primitives",
+      "url": "https://github.com/ibelick/motion-primitives",
+      "commit": "120f64f6ca60348e251f929e9c81f11ccbe45eda",
+      "archived": false,
+      "pushedAt": "2026-09-28T13:32:11Z",
+      "licenseReportedByGitHub": "MIT",
+      "readme": "README.md",
+      "licenseFiles": [
+        "LICENCE.md"
+      ],
+      "instructionsOrSourceInspected": [
+        {
+          "path": "components/core/animated-group.tsx",
+          "sha256": "0c162bbdd3c332e7aa113cd7ddfa7ac36de3184866cb82ad9140525561e08c35"
+        },
+        {
+          "path": "components/core/text-effect.tsx",
+          "sha256": "4b93c0ea6b9d747d69b7a244d5279f790a11a784e73713f3fe17a636abf53484"
+        }
+      ],
+      "application": "adapted source trial",
+      "templates": [
+        1,
+        6,
+        9,
+        10
+      ],
+      "limitation": "AnimatedGroup adapted in shared.tsx. TextEffect studied but not copied. No Tailwind or whole kit installed."
+    },
+    {
+      "repo": "paper-design/shaders",
+      "url": "https://github.com/paper-design/shaders",
+      "commit": "1923e9f536ea079e2a95d23291cbfacfd69d37f6",
+      "archived": false,
+      "pushedAt": "2026-11-01T11:17:59Z",
+      "licenseReportedByGitHub": "Apache-2.0",
+      "readme": "README.md",
+      "licenseFiles": [
+        "LICENSE",
+        "NOTICE"
+      ],
+      "instructionsOrSourceInspected": [],
+      "application": "runtime trial",
+      "templates": [
+        4
+      ],
+      "limitation": "Pinned @paper-design/shaders-react 0.0.82; opt-in static MeshGradient. SVG/CSS remains default. Browser GPU test is emulated/software-backed, not a physical phone GPU certification."
+    },
+    {
+      "repo": "shadcn-ui/ui",
+      "url": "https://github.com/shadcn-ui/ui",
+      "commit": "c0d63c339d6cd2fc26135590a54cf1f362269451",
+      "archived": false,
+      "pushedAt": "2026-10-31T20:46:47Z",
+      "licenseReportedByGitHub": "MIT",
+      "readme": "README.md",
+      "licenseFiles": [
+        "LICENSE.md"
+      ],
+      "instructionsOrSourceInspected": [
+        {
+          "path": "apps/v4/registry/new-york-v4/ui/button.tsx",
+          "sha256": "79dd6f75f8136394442202d6b8b922fb269eaad0a5dba579397c9d5b41f893bb"
+        }
+      ],
+      "application": "native API adaptation trial",
+      "templates": [
+        9
+      ],
+      "limitation": "Button composition/data-slot API adapted to native CSS button. No Radix, CVA, Tailwind or shadcn CLI installed; do not report full shadcn component installation."
+    }
+  ],
+  "guidelinesSha256": "d246b026f4f29b5823a9cc857f9edf3d2507002e055e32040cadeaf3b38e0234"
+}

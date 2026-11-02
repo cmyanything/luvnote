@@ -1,0 +1,42 @@
+name: Creative Template Lab
+
+on:
+  pull_request:
+    paths:
+      - 'src/template-lab/**'
+      - 'template-lab/**'
+      - 'tests/lab/**'
+      - '*lab.config.ts'
+      - 'scripts/*template-lab*'
+      - 'package*.json'
+      - '.github/workflows/template-lab.yml'
+  push:
+    branches: ['lab/**']
+
+permissions:
+  contents: read
+
+jobs:
+  preview-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: node scripts/check-template-lab-isolation.mjs
+      - run: npm run lab:build
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run test:lab
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: creative-lab-test-evidence
+          path: |
+            lab-results/
+            lab-playwright-report/
+          retention-days: 7

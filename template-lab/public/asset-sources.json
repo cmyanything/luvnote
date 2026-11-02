@@ -1,0 +1,70 @@
+[
+  {
+    "file": "images/coffee.jpg",
+    "url": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=82&fm=jpg",
+    "bytes": 363990,
+    "sha256": "c893ed7fd40a5f0a5ebe85dbb94a0534577c16d1f9f7bfacbce88f3f7e2af2ad",
+    "license": "Unsplash License https://unsplash.com/license",
+    "use": "Illustrative sample; not customer data"
+  },
+  {
+    "file": "images/lake.jpg",
+    "url": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=82&fm=jpg",
+    "bytes": 243039,
+    "sha256": "14fec3ec393a35bb9226a84ae647968be628ba35a11eefab78b8d71eb2d67a89",
+    "license": "Unsplash License https://unsplash.com/license",
+    "use": "Illustrative sample; not customer data"
+  },
+  {
+    "file": "images/landscape.jpg",
+    "url": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=82&fm=jpg",
+    "bytes": 429875,
+    "sha256": "4bdff90ad6c6b02b6352bc393c7116c3c47c496ed1a8d47b5626d94cf2f4df77",
+    "license": "Unsplash License https://unsplash.com/license",
+    "use": "Illustrative sample; not customer data"
+  },
+  {
+    "file": "images/cabin.jpg",
+    "url": "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=82&fm=jpg",
+    "bytes": 226435,
+    "sha256": "969e275c8cde865cce431a59a409d0d6c3fe56a27c67c70505175fcff060f24b",
+    "license": "Unsplash License https://unsplash.com/license",
+    "use": "Illustrative sample; not customer data"
+  },
+  {
+    "file": "fonts/display-0.woff2",
+    "url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2",
+    "bytes": 37640,
+    "license": "SIL OFL 1.1"
+  },
+  {
+    "file": "fonts/body-1.woff2",
+    "url": "https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K4.woff2",
+    "bytes": 36932,
+    "license": "SIL OFL 1.1"
+  },
+  {
+    "file": "fonts/hand-2.woff2",
+    "url": "https://fonts.gstatic.com/s/mali/v13/N0ba2SRONuN4SDnED2xx.woff2",
+    "bytes": 14800,
+    "license": "SIL OFL 1.1"
+  },
+  {
+    "file": "fonts/hand-3.woff2",
+    "url": "https://fonts.gstatic.com/s/mali/v13/N0ba2SRONuN4SC3EDw.woff2",
+    "bytes": 18220,
+    "license": "SIL OFL 1.1"
+  },
+  {
+    "file": "fonts/hand-4.woff2",
+    "url": "https://fonts.gstatic.com/s/mali/v13/N0bV2SRONuN4QN7nGkdQJObW.woff2",
+    "bytes": 14920,
+    "license": "SIL OFL 1.1"
+  },
+  {
+    "file": "fonts/hand-5.woff2",
+    "url": "https://fonts.gstatic.com/s/mali/v13/N0bV2SRONuN4QN7nGlNQJA.woff2",
+    "bytes": 18304,
+    "license": "SIL OFL 1.1"
+  }
+]

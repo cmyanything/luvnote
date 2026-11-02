@@ -1,0 +1,304 @@
+[
+  {
+    "id": "love-letter",
+    "violations": []
+  },
+  {
+    "id": "polaroid",
+    "violations": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": [
+          {
+            "target": [
+              ".polaroid-hint > span"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.7 (foreground color: #52694f, background color: #c1cfc0, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cinema",
+    "violations": [
+      {
+        "id": "aria-prohibited-attr",
+        "impact": "serious",
+        "nodes": [
+          {
+            "target": [
+              "span[aria-label=\"เมืองที่อยากกลับไป\"]"
+            ],
+            "summary": "Fix all of the following:\n  aria-label attribute cannot be used on \"span\" elements with no valid role attribute."
+          },
+          {
+            "target": [
+              "span[aria-label=\"แสงเช้าวันอาทิตย์\"]"
+            ],
+            "summary": "Fix all of the following:\n  aria-label attribute cannot be used on \"span\" elements with no valid role attribute."
+          },
+          {
+            "target": [
+              "span[aria-label=\"มื้อเย็นแสนพิเศษ\"]"
+            ],
+            "summary": "Fix all of the following:\n  aria-label attribute cannot be used on \"span\" elements with no valid role attribute."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "stars",
+    "violations": []
+  },
+  {
+    "id": "garden",
+    "violations": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": [
+          {
+            "target": [
+              "button[aria-label=\"ให้ดอกไม้บาน: วันที่ยิ้มกว้าง\"] > span"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.91 (foreground color: #657c4c, background color: #ebeeda, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              ".garden-flower:nth-child(3) > span"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.91 (foreground color: #657c4c, background color: #ebeeda, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              ".garden-flower:nth-child(4) > span"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.91 (foreground color: #657c4c, background color: #ebeeda, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              "button[aria-label=\"ให้ดอกไม้บาน: มื้อเย็นแสนพิเศษ\"] > span"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.91 (foreground color: #657c4c, background color: #ebeeda, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              ".garden-whisper"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.87 (foreground color: #6d7c58, background color: #edf0df, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "capsule",
+    "violations": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": [
+          {
+            "target": [
+              "header > span"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.25 (foreground color: #50331d, background color: #b77b50, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              "header > p"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.05 (foreground color: #382718, background color: #b77b50, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              ".capsule-readout > p"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.05 (foreground color: #382718, background color: #b77b50, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              ".capsule-bottom > span"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.05 (foreground color: #382718, background color: #b77b50, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "scrapbook",
+    "violations": [
+      {
+        "id": "aria-prohibited-attr",
+        "impact": "serious",
+        "nodes": [
+          {
+            "target": [
+              ".words"
+            ],
+            "summary": "Fix all of the following:\n  aria-label attribute cannot be used on \"span\" elements with no valid role attribute."
+          }
+        ]
+      },
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": [
+          {
+            "target": [
+              ".scrap-tape"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.02 (foreground color: #5a4e34, background color: #d6b07a, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "world",
+    "violations": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": [
+          {
+            "target": [
+              ".world-home > h2"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.13 (foreground color: #3d6264, background color: #b5d0d5, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              ".world-home > p"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.13 (foreground color: #3d6264, background color: #b5d0d5, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              ".world-home > span"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.13 (foreground color: #3d6264, background color: #b5d0d5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "choose",
+    "violations": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": [
+          {
+            "target": [
+              "nav > span"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.45 (foreground color: #794a36, background color: #e6a27b, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "diary",
+    "violations": [
+      {
+        "id": "aria-prohibited-attr",
+        "impact": "serious",
+        "nodes": [
+          {
+            "target": [
+              ".words"
+            ],
+            "summary": "Fix all of the following:\n  aria-label attribute cannot be used on \"span\" elements with no valid role attribute."
+          }
+        ]
+      },
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": [
+          {
+            "target": [
+              "button:nth-child(2) > span:nth-child(1)"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.28 (foreground color: #7c6e5e, background color: #f4eee4, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              "button:nth-child(2) > strong"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.28 (foreground color: #7c6e5e, background color: #f4eee4, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              "button:nth-child(2) > .diary-tab-title"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.28 (foreground color: #7c6e5e, background color: #f4eee4, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              "button:nth-child(3) > span:nth-child(1)"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.28 (foreground color: #7c6e5e, background color: #f4eee4, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              "button:nth-child(3) > strong"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.28 (foreground color: #7c6e5e, background color: #f4eee4, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              "button:nth-child(3) > .diary-tab-title"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.28 (foreground color: #7c6e5e, background color: #f4eee4, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              "button:nth-child(4) > span:nth-child(1)"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.28 (foreground color: #7c6e5e, background color: #f4eee4, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              "button:nth-child(4) > strong"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.28 (foreground color: #7c6e5e, background color: #f4eee4, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              "button:nth-child(4) > .diary-tab-title"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.28 (foreground color: #7c6e5e, background color: #f4eee4, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              ".diary-entry-date > span:nth-child(1)"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.75 (foreground color: #877762, background color: #f4eee4, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "target": [
+              ".diary-entry-date > span:nth-child(2)"
+            ],
+            "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.75 (foreground color: #877762, background color: #f4eee4, font size: 12.8pt (17px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "constellation",
+    "violations": []
+  },
+  {
+    "id": "surprise",
+    "violations": []
+  }
+]

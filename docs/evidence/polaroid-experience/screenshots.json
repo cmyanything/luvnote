@@ -1,0 +1,163 @@
+{
+  "date": "2026-11-02T07:49:08.202Z",
+  "note": "Actual renders of the recorded source: full-page PNG plus active-scroll viewport JPEG, with no generated mockups. Downloaded PNGs are recorded separately in the verification file.",
+  "evidence": [
+    {
+      "state": "parcel",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "file": "parcel-mobile.png",
+      "viewportFile": "parcel-mobile-viewport.jpg",
+      "sha256": "ec560bab10ce4998e6736adeb684bb2c430cacb81b2e56eedd11b5a544f782f8",
+      "documentWidth": 390,
+      "viewportSha256": "49d5b5d9b8623c9f188085fab578a798e8ea6cd7cadcd250207605c1a6678f78"
+    },
+    {
+      "state": "develop",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "file": "develop-mobile.png",
+      "viewportFile": "develop-mobile-viewport.jpg",
+      "sha256": "0dbb7b755cc4d4c48e156aa7fa222a364b02f6c4db2e8e59a4f850768cd8da62",
+      "documentWidth": 390,
+      "viewportSha256": "4964bd929c78177fb9017d16fab015a84c3ecbfff788ffd96368d6290d0d79a0"
+    },
+    {
+      "state": "photo",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "file": "photo-mobile.png",
+      "viewportFile": "photo-mobile-viewport.jpg",
+      "sha256": "4f391d38cf3385bff2548921a08a521dd9f782027f60d1d93c8aa824eb439267",
+      "documentWidth": 390,
+      "viewportSha256": "5e2bedfc8429cf1ea43e7d29bb2e72dec9280cba76a7afd081afc63916d3dbb6"
+    },
+    {
+      "state": "back-note",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "file": "back-note-mobile.png",
+      "viewportFile": "back-note-mobile-viewport.jpg",
+      "sha256": "0e2a81de1efb08b226e7825c00064d25b295824a49aa6427a2ecddd20b0e897a",
+      "documentWidth": 390,
+      "viewportSha256": "68ea4cc05245a9431c3a60d73030d5d2f90251c7e4d05d2a615a5017296cf567"
+    },
+    {
+      "state": "curation",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "file": "curation-mobile.png",
+      "viewportFile": "curation-mobile-viewport.jpg",
+      "sha256": "e7d1779bc7d925021d33804a11729a1a8afb91d50e52d5c5ec653f65091987c7",
+      "documentWidth": 390,
+      "viewportSha256": "b0a3df0aaefc3ba249fd54954138a3c0b871f414f0cbc966df0f491c3efa257e"
+    },
+    {
+      "state": "finale",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "file": "finale-mobile.png",
+      "viewportFile": "finale-mobile-viewport.jpg",
+      "sha256": "b1d59dcff296a8dcb4642f221dc0a9629cf43e2551741ad2275603d796db4918",
+      "documentWidth": 390,
+      "viewportSha256": "45da361f52a3821614c3a865438eb0a8ef49a9e3957bcb9550311da79beff915"
+    },
+    {
+      "state": "parcel",
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "parcel-desktop.png",
+      "viewportFile": "parcel-desktop-viewport.jpg",
+      "sha256": "8d95a32eb23265eb43064bdeaae222aa4e83c94d152cc53714f9b00d65fac793",
+      "documentWidth": 1280,
+      "viewportSha256": "d75606117428e0a1ef49128aff3c63683e7390c8f5a457580591ef529d367e45"
+    },
+    {
+      "state": "develop",
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "develop-desktop.png",
+      "viewportFile": "develop-desktop-viewport.jpg",
+      "sha256": "4169bbcc8dff75ab9f2916333d66aaf12fa080e55660ee95e3b25fb873ed49c3",
+      "documentWidth": 1280,
+      "viewportSha256": "746a16026d29380afe27a7dd823b4abd6bcef3c70a4ee207d7a73be83986f0c2"
+    },
+    {
+      "state": "photo",
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "photo-desktop.png",
+      "viewportFile": "photo-desktop-viewport.jpg",
+      "sha256": "0ca22407297fddf45b9f19da47adaef58bc73f9f169d36c939aa2b73a478e736",
+      "documentWidth": 1280,
+      "viewportSha256": "ed2fe28dac3e92d6572e0add8985abe6e140c1ef0388290e00530b94e47c22fc"
+    },
+    {
+      "state": "back-note",
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "back-note-desktop.png",
+      "viewportFile": "back-note-desktop-viewport.jpg",
+      "sha256": "d37b032eeee1e611e8075bd50b01a66ad2b8f65823921d97cd97641ddde02afc",
+      "documentWidth": 1280,
+      "viewportSha256": "e77c39648cf6fe75488690ec4f388e2d5d26bbed1320240579a906d3afaba388"
+    },
+    {
+      "state": "curation",
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "curation-desktop.png",
+      "viewportFile": "curation-desktop-viewport.jpg",
+      "sha256": "457e925f273e7c15096d288897d3b4c5a9c65ec9c722f3861456640b2d3516ff",
+      "documentWidth": 1280,
+      "viewportSha256": "586831dede6c5b482e674e4fb9e2b762882018d0637b1d15d983887c3bfc89c0"
+    },
+    {
+      "state": "finale",
+      "device": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "finale-desktop.png",
+      "viewportFile": "finale-desktop-viewport.jpg",
+      "sha256": "057ebfac78a086abac16f74470c315aad61c0ffd6cb871cbc057ad7979696876",
+      "documentWidth": 1280,
+      "viewportSha256": "fb8cb6e2ee5a5ac4aa0c2195e9e92c74336b85f03beee898a1ad80a521314286"
+    }
+  ],
+  "sourceCommit": "54403fe401a54a21bd963e18ef3530e404495062"
+}

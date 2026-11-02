@@ -1,40 +1,50 @@
 {
   "date": "2026-11-02",
-  "summary": "320/320 browser checks ผ่าน · ทุก12แบบมีเรื่องราวเต็ม · 360 /390 /768 /Desktop /WebKit emulation",
-  "implementationCommit": "62d68e52346c4ac6c732611d1990e4acabc03c83",
-  "sourceSnapshotSha256": "2b4e644fc1dcc1035b029d4167cb6684f25ec771219fc4e4bdff6b2332c866f5",
+  "summary": "350/350 checks ผ่าน · Polaroid ใหม่4ช่วง · อีก11แบบผ่าน regression",
+  "implementationCommit": "54403fe401a54a21bd963e18ef3530e404495062",
+  "sourceSnapshotSha256": "fbe274b4a54b01923cc2745b780fe77329bd1eec8d689f4eef0ab0d8c35de9ce",
   "projects": {
     "360": {
-      "passed": 64,
+      "passed": 70,
       "failed": 0,
       "skipped": 0
     },
     "390": {
-      "passed": 64,
+      "passed": 70,
       "failed": 0,
       "skipped": 0
     },
     "768": {
-      "passed": 64,
+      "passed": 70,
       "failed": 0,
       "skipped": 0
     },
     "desktop": {
-      "passed": 64,
+      "passed": 70,
       "failed": 0,
       "skipped": 0
     },
     "webkit": {
-      "passed": 64,
+      "passed": 70,
       "failed": 0,
       "skipped": 0
     }
   },
   "physicalDevicesVerified": false,
   "customerThemesEnabled": false,
-  "reviewScope": "Isolated Lab reviewed finish and closure of material findings",
+  "reviewScope": "Polaroid full visual/experience review plus F1 fix closure",
+  "pacingTarget": {
+    "template": "polaroid",
+    "minutes": [
+      3,
+      5
+    ],
+    "measuredHumanSessions": false
+  },
   "nestedRouteChecks": {
     "passed": 56,
-    "failed": 0
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0
   }
 }

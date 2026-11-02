@@ -1,0 +1,2736 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Users\\User\\AppData\\Local\\hermes\\node\\node.exe",
+      "C:\\Users\\User\\Documents\\Codex\\luvnote\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "playwright.mylab.config.ts"
+    ],
+    "configFile": "C:\\Users\\User\\Documents\\Codex\\luvnote\\playwright.mylab.config.ts",
+    "rootDir": "C:/Users/User/Documents/Codex/luvnote/tests/lab",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/User/Documents/Codex/luvnote/test-results/mylab",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "360",
+        "name": "360",
+        "testDir": "C:/Users/User/Documents/Codex/luvnote/tests/lab",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.mylab.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/User/Documents/Codex/luvnote/test-results/mylab",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "390",
+        "name": "390",
+        "testDir": "C:/Users/User/Documents/Codex/luvnote/tests/lab",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.mylab.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/User/Documents/Codex/luvnote/test-results/mylab",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "C:/Users/User/Documents/Codex/luvnote/tests/lab",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.mylab.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/User/Documents/Codex/luvnote/test-results/mylab",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "C:/Users/User/Documents/Codex/luvnote/tests/lab",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.mylab.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\User\\Documents\\Codex\\luvnote\\test-results\\mylab",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "360",
+        "testDir": "C:\\Users\\User\\Documents\\Codex\\luvnote\\tests\\lab",
+        "snapshotDir": "C:\\Users\\User\\Documents\\Codex\\luvnote\\tests\\lab",
+        "testIgnore": [],
+        "testMatch": "**/*.mylab.ts",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4319",
+          "reducedMotion": "reduce",
+          "screenshot": "only-on-failure",
+          "viewport": {
+            "width": 360,
+            "height": 800
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "360"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\User\\Documents\\Codex\\luvnote\\test-results\\mylab",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "390",
+        "testDir": "C:\\Users\\User\\Documents\\Codex\\luvnote\\tests\\lab",
+        "snapshotDir": "C:\\Users\\User\\Documents\\Codex\\luvnote\\tests\\lab",
+        "testIgnore": [],
+        "testMatch": "**/*.mylab.ts",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4319",
+          "reducedMotion": "reduce",
+          "screenshot": "only-on-failure",
+          "userAgent": "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Mobile Safari/537.36",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screen": {
+            "width": 412,
+            "height": 915
+          },
+          "deviceScaleFactor": 2.625,
+          "isMobile": true,
+          "hasTouch": true,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "390"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\User\\Documents\\Codex\\luvnote\\test-results\\mylab",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "desktop",
+        "testDir": "C:\\Users\\User\\Documents\\Codex\\luvnote\\tests\\lab",
+        "snapshotDir": "C:\\Users\\User\\Documents\\Codex\\luvnote\\tests\\lab",
+        "testIgnore": [],
+        "testMatch": "**/*.mylab.ts",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4319",
+          "reducedMotion": "reduce",
+          "screenshot": "only-on-failure",
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "desktop"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\User\\Documents\\Codex\\luvnote\\test-results\\mylab",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "name": "webkit",
+        "testDir": "C:\\Users\\User\\Documents\\Codex\\luvnote\\tests\\lab",
+        "snapshotDir": "C:\\Users\\User\\Documents\\Codex\\luvnote\\tests\\lab",
+        "testIgnore": [],
+        "testMatch": "**/*.mylab.ts",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4319",
+          "reducedMotion": "reduce",
+          "screenshot": "only-on-failure",
+          "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.2 Mobile/15E148 Safari/604.1",
+          "viewport": {
+            "width": 390,
+            "height": 664
+          },
+          "screen": {
+            "width": 390,
+            "height": 844
+          },
+          "deviceScaleFactor": 3,
+          "isMobile": true,
+          "hasTouch": true,
+          "defaultBrowserType": "webkit",
+          "browserName": "webkit"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "webkit"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/mylab/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 2,
+    "webServer": {
+      "command": "npm run preview -- --port 4319 --strictPort",
+      "url": "http://127.0.0.1:4319/mylab/",
+      "reuseExistingServer": false
+    }
+  },
+  "suites": [
+    {
+      "title": "deployment.mylab.ts",
+      "file": "deployment.mylab.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "love-letter: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 913,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:38.436Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-237811c8c99619b19b9d",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "polaroid: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 963,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:38.452Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-63c226b6d9fa9fbcd83f",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "cinema: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1047,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:39.540Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-fb5b0d1e2624a2beae65",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "stars: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 646,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:39.665Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-429df414896bf0ea7917",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "garden: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 574,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:40.336Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-e48b825dcc027db5149f",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "capsule: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 556,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:40.611Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-9817a3c51bc18da576f1",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "scrapbook: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 652,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:40.930Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-77b40edfb90984ea716b",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "world: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 817,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:41.186Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-2166625e6f9a9eca72b5",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "choose: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 659,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:41.602Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-cab0dc9e85ada22c1c50",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "diary: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 670,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:42.019Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-4383968a49808b3101db",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "constellation: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 627,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:42.280Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-a20744ae24fb4526504a",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "surprise: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 655,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:42.704Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-ef097d6df9aa4dffd1d7",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "catalogue links, screenshots and comparison remain under /mylab",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1844,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:42.930Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-beedb000908e2803af83",
+          "file": "deployment.mylab.ts",
+          "line": 40,
+          "column": 1
+        },
+        {
+          "title": "embedded interaction, reset, configuration and back link",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "360",
+              "projectName": "360",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1676,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:43.380Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-b371ee992d977f26098c",
+          "file": "deployment.mylab.ts",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "love-letter: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 913,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:45.653Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-afa7eb1fae05a2740cc5",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "polaroid: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1014,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:45.937Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-1d39070a572aa14c8301",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "cinema: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1356,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:46.753Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-0ee70681a2a30a62ec07",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "stars: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1008,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:47.188Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-86922680fc3f9e93f913",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "garden: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 700,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:48.131Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-1a98ebbf7f3092265b4d",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "capsule: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 729,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:48.215Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-9a42ab3dcafbdb54afd8",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "scrapbook: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 803,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:48.847Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-21395a43137d9553a1c8",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "world: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1004,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:48.966Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-0d6b28b2f508195de419",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "choose: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 751,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:49.668Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-1aee78d29ec5e82f4ac2",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "diary: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 835,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:49.987Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-c6fe4bb594975624c8f7",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "constellation: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 846,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:50.439Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-f3642db9fff1996816bc",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "surprise: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 775,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:50.837Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-8efa6f79ea834891cf00",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "catalogue links, screenshots and comparison remain under /mylab",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2086,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:51.302Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-ef0fe6328ce697c7a396",
+          "file": "deployment.mylab.ts",
+          "line": 40,
+          "column": 1
+        },
+        {
+          "title": "embedded interaction, reset, configuration and back link",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "390",
+              "projectName": "390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2103,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:51.630Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-3937a4383bacadba9769",
+          "file": "deployment.mylab.ts",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "love-letter: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 795,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:54.239Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-5ddd0f63db1b4811648b",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "polaroid: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 873,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:54.636Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-3bcfcc305ab0ff77f792",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "cinema: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1138,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:55.216Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-1d6b04ab45a1765394e6",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "stars: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 781,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:55.698Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-9034f78f6c5844453349",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "garden: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 606,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:56.374Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-ccca231523649335c208",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "capsule: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 619,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:56.500Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-959c9a7756f7901b3e3a",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "scrapbook: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 704,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:56.999Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-711d2fdcf4ab955745f8",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "world: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 860,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:57.142Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-e7884a5a356366f81f13",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "choose: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 672,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:57.727Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-e97995ef5a42d06745e2",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "diary: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 675,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:58.022Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-c0eee79c570aee2674b1",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "constellation: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 707,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:58.418Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-b05116dd2746533d0a97",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "surprise: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 659,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:58.714Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-0415d8de08cd830d45e4",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "catalogue links, screenshots and comparison remain under /mylab",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1919,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:59.141Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-8f9fad641292d0d5c427",
+          "file": "deployment.mylab.ts",
+          "line": 40,
+          "column": 1
+        },
+        {
+          "title": "embedded interaction, reset, configuration and back link",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2084,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:04:59.391Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-357498e984dcd8880353",
+          "file": "deployment.mylab.ts",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "love-letter: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1329,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:01.934Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-bf5be89250000c199842",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "polaroid: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1956,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:02.461Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-ff67257d973bbeefe7fe",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "cinema: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2609,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:03.429Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-6a7ada4784966cf3eb49",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "stars: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 969,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:04.629Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-f03ee5b476e2d0a742b8",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "garden: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 912,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:05.622Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-f5e6b797be34c3806e4a",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "capsule: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1079,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:06.062Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-3dbed48805bcfebfe6d0",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "scrapbook: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1240,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:06.557Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-a04a6b6cac8478c98b59",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "world: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1846,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:07.165Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-fedc9a90d30ffb692f9a",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "choose: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1131,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:07.817Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-ae44424dd37c693144a0",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "diary: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1412,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:08.972Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-98a932e7e2581c44019b",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "constellation: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1251,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:09.040Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-677cef29bdfcb9197487",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "surprise: nested route, images and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1245,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:10.321Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-33acc08cc7aac2cc09ec",
+          "file": "deployment.mylab.ts",
+          "line": 27,
+          "column": 3
+        },
+        {
+          "title": "catalogue links, screenshots and comparison remain under /mylab",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4290,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:10.410Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-ad1bdd0046c7b1bd8417",
+          "file": "deployment.mylab.ts",
+          "line": 40,
+          "column": 1
+        },
+        {
+          "title": "embedded interaction, reset, configuration and back link",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "browser-emulation",
+                  "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3267,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T08:05:11.594Z",
+                  "annotations": [
+                    {
+                      "type": "browser-emulation",
+                      "description": "Static Pages packaging acceptance; no physical device or customer API calls."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ce9f9b70d2b56ee0dcbc-5110b0a04fdba0f389e6",
+          "file": "deployment.mylab.ts",
+          "line": 57,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T08:04:35.740Z",
+    "duration": 39524.38,
+    "expected": 56,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

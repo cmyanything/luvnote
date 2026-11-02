@@ -150,3 +150,23 @@ test('polaroid: failed export remains recoverable with another local photo',asyn
   const [download]=await Promise.all([page.waitForEvent('download'),page.getByRole('button',{name:'บันทึกมุมโปรดเป็นภาพ',exact:true}).click()]);
   expect(await download.failure()).toBeNull();
 });
+
+test('polaroid: accepted eighth reply line changes the actual PNG and grows its paper', async ({page}, info) => {
+  await page.goto('/template-lab/?play=polaroid&still=1');
+  await page.getByRole('navigation',{name:'ช่วงของอัลบั้ม'}).getByRole('button').nth(2).click();
+  await page.locator('.pm-picker button').first().click();
+  const outputs: Buffer[] = [];
+  for (const end of ['ปลายทาง A', 'ปลายทาง B']) {
+    const reply=Array.from({length:7},(_,i)=>'ความทรงจำบรรทัด '+(i+1)).join('\n')+'\n'+end;
+    await page.getByLabel('คราวหน้า อยากทำอะไรด้วยกัน?',{exact:true}).fill(reply);
+    const [download]=await Promise.all([page.waitForEvent('download'),page.getByRole('button',{name:'บันทึกมุมโปรดเป็นภาพ',exact:true}).click()]);
+    const path=info.outputPath(`multiline-${outputs.length}.png`);
+    await download.saveAs(path);
+    const bytes=await readFile(path);
+    expect(bytes.readUInt32BE(16)).toBe(1200);
+    expect(bytes.readUInt32BE(20)).toBeGreaterThan(1500);
+    outputs.push(bytes);
+  }
+  // The same first seven lines and photos must not hide changes in line eight.
+  expect(outputs[0].equals(outputs[1])).toBe(false);
+});

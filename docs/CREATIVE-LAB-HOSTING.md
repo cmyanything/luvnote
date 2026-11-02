@@ -2,6 +2,8 @@
 
 Primary URL: **https://luvnote.fun/mylab/** (`/mylab` is the directory URL without its trailing slash).
 
+Verified live: source `189ed52fa4269aaaea70e1f674637676a4829185`, [successful Pages workflow](https://github.com/cmyanything/luvnote/actions/runs/41389732278), deployment `7484493494`. Anonymous directory access, all twelve interactions and desktop iframe/reset passed. All 24 existing customer files match the previous release SHA-256 byte-for-byte, both in the Linux release artifact and over HTTP. See [live evidence](evidence/creative-lab-mylab-live.json).
+
 The Owner explicitly requested this path on the existing website and public access without a password or ChatGPT sign-in. Anyone can view all twelve prototypes. The page has noindex metadata and no link from customer navigation; these are discoverability choices, not access controls. All sample content is synthetic or licensed stock material.
 
 ## Deployment

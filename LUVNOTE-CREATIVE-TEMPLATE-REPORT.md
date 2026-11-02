@@ -313,3 +313,15 @@ Owner ระบุให้เผยแพร่ที่ `luvnote.fun/mylab` �
 ตรวจ customer build กับ artifact ที่เผยแพร่อยู่จาก run `41367555706`: 24 ไฟล์เนื้อหาเหมือนเดิม — 8 non-HTML ตรง hash ทุก byte, 16 HTML ต่างเฉพาะ CR ก่อน LF จาก Windows/Vite เมื่อเทียบกับ Linux. ตัว package ตรวจเพิ่มว่าไฟล์ customer build ปัจจุบันทั้ง 25 ไฟล์ไม่เปลี่ยนแม้แต่ byte เดียวหลังเพิ่ม `/mylab`.
 
 ใช้ `npm run test:lab` สำหรับ interaction/accessibility เดิม และ `npx playwright test --config playwright.mylab.config.ts` สำหรับ path deployment จริงใน static output (12 players, รูป/ฟอนต์, catalogue, comparison, iframe/reset/config และไม่มี request หลุดออกจาก `/mylab/`). ผลรอบนี้เก็บใน [creative-lab-mylab-local.json](docs/evidence/creative-lab-mylab-local.json); หลักฐาน live publication แยกจากผล local และ Sites snapshot เก่า.
+
+### ผลเผยแพร่และตรวจเว็บจริง
+
+**LIVE_MAIN_DOMAIN_PREVIEW = PASS** — [https://luvnote.fun/mylab/](https://luvnote.fun/mylab/) เปิดได้โดยไม่ต้องลงชื่อเข้าใช้. `/mylab` ตอบ 301 ไป `/mylab/` และปลายทางตอบ 200. PR #14 merge เป็น `189ed52fa4269aaaea70e1f674637676a4829185`; tree ตรงกับ source `c3567746b9657b055a702ac392fe7bcd71b8745f` ที่ตรวจผ่านทุกไฟล์.
+
+[Frontend CI ของ PR](https://github.com/cmyanything/luvnote/actions/runs/41388885823) และ Lab CI สองรอบผ่าน. [Main frontend deployment](https://github.com/cmyanything/luvnote/actions/runs/41389732278) completed/success; GitHub Pages deployment ID `7484493494`. ใช้ policy `main` เดิม ไม่มีการข้าม protection หรือ deploy API.
+
+ผล local หลังแก้ path: **170/170 Lab tests** และ **56/56 subdirectory tests** ผ่าน. ตรวจ release artifact ที่ build บน Linux และตรวจ HTTP จากเว็บจริง: ไฟล์เว็บลูกค้าเดิม **24/24 ตรง SHA-256 ทุก byte** กับ release ก่อนหน้า โดยไม่ต้อง normalize HTML.
+
+Live browser acceptance: interaction หลัก **12/12** ที่ 390px และ iframe/reset ที่ 1280px ผ่าน รวม **13 checks**, browser runtime errors **0**, ภาพ catalogue และฟอนต์โหลดใต้ `/mylab/`. มี screenshot ของเว็บจริง mobile/desktop. ใช้เฉพาะข้อมูลสังเคราะห์และ static HTML/assets ไม่อ่านการ์ดหรือรูปของลูกค้า ไม่อ้างว่าเป็น physical-device หรือ LINE testing.
+
+หลักฐานทั้งหมด: [creative-lab-mylab-live.json](docs/evidence/creative-lab-mylab-live.json).

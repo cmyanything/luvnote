@@ -1,8 +1,19 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import type { CardData, Photo } from '../types';
 import { dateLabel, daysTogether, today } from '../lib/dates';
 import { useModal } from '../hooks/useModal';
 import { COFFEE_ART, FLOWER_ART } from './demo';
+import { createMusicBox, type MusicBox } from './musicBox';
+
+// The film and its animation library load only when someone asks to watch it.
+const Movie = lazy(() => import('./Movie'));
 
 function Sprig({ className = '' }: { className?: string }) {
   return (
@@ -187,6 +198,7 @@ export function Journal({
   const [musicOn, setMusicOn] = useState(false);
   const [musicError, setMusicError] = useState('');
   const stopMusic = useRef<(() => void) | null>(null);
+  const [film, setFilm] = useState<MusicBox | null>(null);
   const count = daysTogether(card.startDate || '');
   const cover = card.cover || card.photos[0]?.src;
   const codeLock = card.lock.type === 'code' && /^\d{4}$/.test(card.lock.code);
@@ -216,6 +228,17 @@ export function Journal({
     setPin('');
     setPinError('');
     window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+  function watchFilm() {
+    stopMusic.current?.();
+    stopMusic.current = null;
+    setMusicOn(false);
+    // Created inside the tap so phones allow the film's music.
+    setFilm(createMusicBox());
+  }
+  function closeFilm() {
+    film?.close();
+    setFilm(null);
   }
   function toggleMusic() {
     if (musicOn) {
@@ -368,6 +391,9 @@ export function Journal({
           </button>
           <button type="button" className="open-book" onClick={openBook}>
             เปิดสมุดของเรา <span>↗</span>
+          </button>
+          <button type="button" className="watch-film" onClick={watchFilm}>
+            <span aria-hidden="true">▶</span> หรือดูเป็นหนังสั้นของเรา
           </button>
           <p className="cover-footnote">
             บางความทรงจำ… ก็อยากเก็บไว้อ่านด้วยกันอีกครั้ง
@@ -577,6 +603,9 @@ export function Journal({
             <span className="ending-names">
               {card.from} <Heart /> {card.to}
             </span>
+            <button type="button" className="watch-film" onClick={watchFilm}>
+              <span aria-hidden="true">▶</span> ดูเรื่องของเราเป็นหนังสั้น
+            </button>
             <button type="button" className="quiet-link" onClick={replay}>
               ↶ กลับไปอ่านตั้งแต่หน้าแรก
             </button>
@@ -590,6 +619,25 @@ export function Journal({
         </main>
       )}
       {photo && <Lightbox photo={photo} onClose={() => setPhoto(null)} />}
+      {film && (
+        <Suspense
+          fallback={
+            <p className="film-loading" role="status">
+              กำลังเตรียมหนังสั้นของเรา…
+            </p>
+          }
+        >
+          <Movie
+            card={card}
+            music={film}
+            onClose={closeFilm}
+            onRead={() => {
+              closeFilm();
+              if (!open) openBook();
+            }}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }
@@ -612,7 +660,7 @@ export function LoadState({
       <h1>{error ? message : 'กำลังเปิดสมุดความทรงจำ…'}</h1>
       <p>
         {error === 'expired'
-          ? 'ลิงก์การ์ดเปิดได้ 15 วันนับจากวันที่สร้างนะ'
+          ? 'ลิงก์การ์ดเปิดได้ 90 วันนับจากวันที่สร้าง หรือนานกว่านั้นถ้าต่ออายุไว้นะ'
           : error
             ? 'ลองตรวจลิงก์อีกครั้ง หรือกลับมาลองใหม่สักครู่นะ'
             : 'เรื่องราวเล็ก ๆ ของเรา กำลังรออยู่ข้างใน'}

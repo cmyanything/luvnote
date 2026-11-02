@@ -147,6 +147,7 @@ test('owner admin page reissues a working edit link; old link stops', async ({ p
 });
 
 test('recipients: expired, missing and legacy Base64 cards in every theme', async ({ page }) => {
+  test.setTimeout(120_000); // 6 themes × 3 cases, each given 2.5 s to settle
   await prep(page);
   const b64 = 'data:image/jpeg;base64,' + fileA.buffer.toString('base64');
   for (const theme of themes) {

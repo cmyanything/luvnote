@@ -371,6 +371,46 @@ button:disabled {
 .open-book span {
   font: 25px var(--serif);
 }
+.watch-film {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 14px;
+  border: 1px solid #c9c2a8;
+  border-radius: 999px;
+  background: rgba(255, 253, 246, 0.7);
+  padding: 8px 16px 8px 12px;
+  font: 400 14px var(--hand);
+  color: var(--sage-dark);
+  animation: book-arrive 1s 0.4s both;
+}
+.watch-film span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--sage-dark);
+  color: #fffdf6;
+  font-size: 9px;
+  padding-left: 2px;
+}
+.ending-chapter .watch-film {
+  display: flex;
+  width: fit-content;
+  margin: 26px auto 0;
+}
+.film-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  background: #d9d2bf;
+  font: 400 15px var(--hand);
+  color: var(--sage-dark);
+}
 .cover-footnote {
   text-align: center;
   font: 300 11px/1.9 var(--hand);

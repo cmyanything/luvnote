@@ -2,6 +2,12 @@
 
 Local team preview of twelve independent interactive card prototypes. No card API, database, upload or customer-account connection.
 
+## Private hosted preview
+
+Open **https://luvnote-template-lab.brsblack79.chatgpt.site/template-lab/** and sign in with the owner's ChatGPT account. Sites enforces an owner-only access policy for HTML and assets. No other developers or groups have been granted access yet; possessing the URL does not grant access.
+
+This separate static Site hosts only `dist-lab`, with a root redirect to `/template-lab/`. It has no customer API or storage bindings. The LuvNote customer website and GitHub Pages deployment remain separate. See [hosting evidence](../docs/evidence/creative-lab-hosting.json) and [hosting operations](../docs/CREATIVE-LAB-HOSTING.md).
+
 ```sh
 npm ci
 npm run lab:dev
@@ -40,7 +46,7 @@ For fresh screenshots, keep `lab:dev` running in one terminal and run `npm run l
 - The existing `vite.config.ts`, themes, editors and Worker are unchanged.
 - Normal `npm run build` emits `dist`; the Lab emits `dist-lab` with its own public assets.
 - Existing deployment workflows upload `dist` only. The new Lab workflow runs checks and uploads test evidence; it has no deployment job or credentials.
-- Both servers bind to loopback. Do not publish `dist-lab` or add it to customer routing without a separately reviewed access policy. `noindex` is advisory, not authentication.
-- Nothing here creates a Marketplace, a database, a shared-template service or new infrastructure.
+- Both local servers bind to loopback. Hosted access is enforced by the separate Sites policy; `noindex` is advisory, not authentication. Preserve owner-only access when updating the Site. Do not add the Lab to customer routing.
+- Nothing here creates a Marketplace, a database or a shared-template service. Hosting uses a single isolated static Site with platform authentication.
 
 See [the complete report](../LUVNOTE-CREATIVE-TEMPLATE-REPORT.md), [source coverage](../docs/evidence/creative-lab-sources.json) and [material notices](public/licenses/NOTICE.md).

@@ -1,0 +1,805 @@
+{
+  "checkedAt": "2026-11-02T04:12:30.183Z",
+  "origin": "https://luvnote-template-lab.brsblack79.chatgpt.site",
+  "accessModel": "Sites owner-only custom access; authenticated platform service access used for QA, not a visitor login",
+  "sourceCommit": "11571be49a7ad8e2b619a5e8a7bc63e4a9911170",
+  "anonymous": [
+    {
+      "path": "/",
+      "status": 401
+    },
+    {
+      "path": "/template-lab/",
+      "status": 401
+    },
+    {
+      "path": "/template-lab/?play=love-letter",
+      "status": 401
+    },
+    {
+      "path": "/assets/index-B9EiulQu.js",
+      "status": 401
+    },
+    {
+      "path": "/images/lake.jpg",
+      "status": 401
+    },
+    {
+      "path": "/previews/love-letter-mobile.jpg",
+      "status": 401
+    },
+    {
+      "path": "/fonts/fonts.css",
+      "status": 401
+    }
+  ],
+  "assets": [
+    {
+      "path": "asset-sources.json",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/Aurora-Dcdz021d.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/Capsule-BTV_xZV5.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/Choose-56K1cF_c.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/Cinema-DcX7QIqd.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/Constellation-CPNUm58_.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/Diary-DnsrsTwF.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/Garden-Bqt0__xR.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/Letter-C8AXO3rE.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/Polaroid-Bz8U7X6g.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/Scrapbook-ssdorgs7.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/ScrollTrigger-kZaVfF_-.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/Stars-DP35iEo5.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/Surprise-BfPB175P.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/World-B0bR-DP4.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/gsap-CtDIrg4F.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/index-B9EiulQu.js",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "assets/index-Dwn9bR6b.css",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "fonts/body-1.woff2",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "fonts/display-0.woff2",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "fonts/fonts.css",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "fonts/hand-2.woff2",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "fonts/hand-3.woff2",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "fonts/hand-4.woff2",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "fonts/hand-5.woff2",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "images/cabin.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "images/coffee.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "images/lake.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "images/landscape.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "canonicalRedirect": {
+        "status": 307,
+        "path": "/"
+      },
+      "sha256Matches": false,
+      "applicationHtmlMatches": true,
+      "platformInjection": "Cloudflare JavaScript detection before closing body; application HTML otherwise byte-identical"
+    },
+    {
+      "path": "licenses/NOTICE.md",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "licenses/cormorantgaramond-OFL.txt",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "licenses/dmsans-OFL.txt",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "licenses/framer-motion-LICENSE.md",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "licenses/ibelick--motion-primitives-LICENCE.md",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "licenses/mali-OFL.txt",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "licenses/motion-LICENSE.md",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "licenses/motion-dom-LICENSE.md",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "licenses/motion-utils-LICENSE.md",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "licenses/paper-design--shaders-LICENSE",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "licenses/paper-design--shaders-NOTICE",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "licenses/shadcn-ui--ui-LICENSE.md",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/capsule-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/capsule-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/capsule-opened-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/capsule-opened-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/choose-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/choose-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/cinema-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/cinema-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/constellation-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/constellation-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/diary-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/diary-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/garden-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/garden-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/garden-opened-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/garden-opened-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/love-letter-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/love-letter-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/love-letter-opened-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/love-letter-opened-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/polaroid-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/polaroid-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/polaroid-opened-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/polaroid-opened-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/scrapbook-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/scrapbook-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/screenshots.json",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/stars-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/stars-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/surprise-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/surprise-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/surprise-opened-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/surprise-opened-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/verification.json",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/world-desktop.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "previews/world-mobile.jpg",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "robots.txt",
+      "status": 200,
+      "canonicalRedirect": null,
+      "sha256Matches": true,
+      "applicationHtmlMatches": false,
+      "platformInjection": null
+    },
+    {
+      "path": "template-lab/index.html",
+      "status": 200,
+      "canonicalRedirect": {
+        "status": 307,
+        "path": "/template-lab/"
+      },
+      "sha256Matches": false,
+      "applicationHtmlMatches": true,
+      "platformInjection": "Cloudflare JavaScript detection before closing body; application HTML otherwise byte-identical"
+    }
+  ],
+  "interactions": [
+    {
+      "template": "love-letter",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "template": "polaroid",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "template": "cinema",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "template": "stars",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "template": "garden",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "template": "capsule",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "template": "scrapbook",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "template": "world",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "template": "choose",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "template": "diary",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "template": "constellation",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "template": "surprise",
+      "viewport": 390,
+      "status": "PASS"
+    },
+    {
+      "template": "catalogue + embedded player + reset",
+      "viewport": 1280,
+      "status": "PASS"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "creative-lab-hosted-mobile.jpg",
+      "sha256": "9a428c80d175d7daf505f194b3493b0ab7097e40943db5312ceb19fec58b0657"
+    },
+    {
+      "file": "creative-lab-hosted-desktop.jpg",
+      "sha256": "410e2cbec03f3ca105a68aca17fa8d4d3b387d407f8b507263dddd7fcfb2c5d9"
+    }
+  ],
+  "errors": [],
+  "physicalDevicesTested": false,
+  "ownerInteractiveLoginTested": false,
+  "status": "PASS",
+  "deployment": {
+    "projectId": "appgprj_6ae80c04c160819193d20e0a1dad6852",
+    "id": "appgdep_6ae80c84c7d88191acda3283e33bcd1b",
+    "versionId": "appgprj_6ae80c04c160819193d20e0a1dad6852~appgver_b9e05d74c1948191b124fff95d5db56c",
+    "siteSourceCommit": "6dc6ba7c8474c5a0903bba78a521381fb8bf31c2",
+    "status": "succeeded",
+    "completedAt": "2026-11-02T04:07:52.732970+00:00"
+  },
+  "accessPolicy": {
+    "mode": "custom",
+    "revision": 1,
+    "allowedUsers": [
+      {
+        "role": "owner"
+      }
+    ],
+    "allowedGroups": 0,
+    "externalVisitors": 0,
+    "verifiedAfterQa": true
+  },
+  "summary": {
+    "anonymousDenied": 7,
+    "filesChecked": 80,
+    "byteIdenticalAssets": 78,
+    "applicationHtmlIdenticalExceptCloudflareDetection": 2,
+    "interactionChecksPassed": 13,
+    "browserRuntimeErrors": 0
+  },
+  "testHarness": {
+    "command": "node C:/Users/User/AppData/Local/Temp/verify-luvnote-private-lab.mjs",
+    "input": "Exact Site origin and platform service credential delivered via hidden stdin; not retained",
+    "sha256": "3d375f74d28fe69ce5f25810a239d544e911fae605a9350e46eae019fbb254d3",
+    "browser": "Playwright Chromium, 390x844 and 1280x900; reduced motion",
+    "tracesRecorded": false
+  },
+  "exploratoryAttempts": [
+    "Initial QA expected HTTP 200 at /index.html; observed platform canonical HTTP 307 to /.",
+    "Second QA followed the correct canonical URL but required an exact HTML response hash; inspection identified only Cloudflare JavaScript detection injected before closing body.",
+    "Final QA follows only the exact same-origin canonical index path, verifies application HTML around the recognized Cloudflare injection, and hashes every non-HTML asset. No application or security setting changed."
+  ]
+}

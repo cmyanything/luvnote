@@ -17,9 +17,15 @@ npm run lab:dev
 
 **สถานะ:** Working prototypes สำหรับเลือก Creative Direction และพัฒนาต่อ ยังไม่ได้เชื่อมเผยแพร่การ์ดหรือเปิดให้ลูกค้า ยังไม่มีการ Deploy Production
 
-<!-- FINAL_VERIFICATION -->
-ผลรอบสุดท้ายกำลังบันทึกใน `docs/evidence/creative-lab-verification.json` ก่อนปิดงาน
-<!-- /FINAL_VERIFICATION -->
+**LAB_PROTOTYPE_ACCEPTANCE = PASS** — `npm run test:lab`: **170 passed, 0 failed, 0 skipped, 0 flaky** (34 checks x 5 projects, 216.6 วินาที). TypeScript, production build และ Lab build ผ่าน; production isolation ตรวจ 25 output files ผ่าน.
+
+Implementation commit: **`c555b7f6e9ecb7521526a5a1a596372e07b0c9f6`**
+
+Source/test snapshot SHA-256: `044e2ca99cf41e4e13642d225f72a41bb7c210ada80ec820a94d548877e033c4`
+
+หลักฐาน: [ผล final แยกตาม project และ file hash](docs/evidence/creative-lab-verification.json) · [34 screenshots พร้อม hash](template-lab/public/previews/screenshots.json) · [independent review/defect ledger](docs/evidence/creative-lab-review.md). ตรวจเทียบ source/test hashes กับ implementation commit แล้ว
+
+**GO สำหรับทดลองและเลือกต้นแบบภายใน / NO-GO สำหรับเปิด Production ตอนนี้**: ต้องทำ integration และ physical-device acceptance ของแบบที่เลือกก่อน; exploratory system audit เดิมยังมี WebKit failure ที่ไม่ได้อ้างว่าปิดแล้ว
 
 ## 1. Repository audit
 
@@ -231,9 +237,9 @@ Test source: `tests/lab/interactions.lab.ts`, `tests/lab/edge-cases.lab.ts` · C
 | V3 test-only build แล้ว `npx playwright test tests/media-v3.spec.ts tests/r2-acceptance.spec.ts` | **39 passed** ในรอบเต็มล่าสุด; ก่อนหน้านั้นมี WebKit Little Memories publish timeout หนึ่งครั้งและ isolated rerun ผ่าน |
 | `AUDIT=1 VITE_R2_MEDIA_ENABLED=true npx playwright test tests/system-audit.spec.ts` | **18 passed, 1 failed, 8 did not run**; WebKit Pink Coquette ไม่ได้ share sheet หลัง publish, มี `media_v3_error`. เป็น exploratory suite ของ source เดิมที่ไม่ถูกแก้ ยังไม่ถือว่าปิดปัญหา |
 | `npm run lab:build` | PASS, แยก output และ chunks |
-| `npm run test:lab` | ดู final acceptance block / evidence JSON ด้านบน |
+| `npm run test:lab` | **170 passed, 0 failed, 0 skipped, 0 flaky** |
 | `npm run lab:capture` | ภาพจริง mobile/desktop และ opened states; รายการ/แฮชใน `previews/screenshots.json` |
-| `node scripts/check-template-lab-isolation.mjs` | ดู final evidence; ตรวจ production output ไม่มี Lab |
+| `node scripts/check-template-lab-isolation.mjs` | **PASS: 25 files**, production output ไม่มี Lab |
 
 การทดสอบ V3 ใช้ genuine local workerd bindings และ mocked browser routes ตาม suite เดิม ไม่ใช่การเปิด Cloudflare staging/production. ไม่มีการแก้ code/backend เพื่อกลบผล exploratory audit และไม่เรียกรวม regression ทั้งหมดว่า PASS. หลังทดสอบ restore build ปกติ ไม่ใช้ test Turnstile key ใน artifact ที่ตั้งใจส่งต่อ
 
@@ -241,9 +247,7 @@ Test source: `tests/lab/interactions.lab.ts`, `tests/lab/edge-cases.lab.ts` · C
 
 `scripts/measure-template-lab.mjs` บันทึก [creative-lab-performance.json](docs/evidence/creative-lab-performance.json): local built preview, Chromium Pixel 7 emulation 390×844, 4× CPU throttle, หน้าต่อเนื่อง/cache อุ่นหลังหน้าแรก, frame window ประมาณ 900ms ต่อแบบ. เป็น diagnostic sample ไม่ใช่การรับรอง 60fps, mobile hardware, battery หรือ network capacity
 
-<!-- FINAL_PERFORMANCE -->
-บันทึกค่ารอบสุดท้ายหลัง acceptance; รายงาน long tasks ตามจริง ไม่ใช้ตัวเลข wall time แทน CPU
-<!-- /FINAL_PERFORMANCE -->
+ผล diagnostic รอบสุดท้าย: **CLS = 0.0000 ทั้ง 12 แบบ**, frame-interval p95 **16.7–16.8 ms** ในช่วงตัวอย่าง 50–55 frames/แบบ. ไม่มี infinite running animation ในค่าเริ่มต้น แต่พบ interaction long task **92 ms (Letter), 52 ms (Polaroid), 51 ms (Capsule)** ภายใต้ CPU throttle 4x; อีก 9 แบบไม่พบ interaction long task >50 ms ใน window นี้. ตัวอย่างสั้นเหล่านี้ไม่ใช่หลักฐานว่าไม่มี jank ในอนาคต ต้อง profile บนอุปกรณ์จริงก่อนเปิดขาย ไม่ได้ลด assertion เพื่อประกาศว่า performance สมบูรณ์
 
 Lab main JS ประมาณ **122.5 kB gzip** รวม React/Motion; CSS ทุกเทมเพลตประมาณ **12 kB gzip**. Template chunks ราว 0.9–2 kB gzip ต่อแบบ; GSAP + ScrollTrigger ราว 45 kB gzip โหลดเฉพาะ cinematic/world เมื่อมี motion; Paper chunk ราว 8.3 kB gzip โหลดหลัง opt-in เท่านั้น. ตัวเลขจาก Vite build รอบนี้ ไม่ใช่ขนาดเพิ่มของเว็บ production ซึ่งไม่ได้ import Lab
 
@@ -271,3 +275,9 @@ Lab main JS ประมาณ **122.5 kB gzip** รวม React/Motion; CSS ท
 **The Love Letter → Polaroid Memories → The Grand Surprise**: interaction เข้าใจง่ายเหมาะกับ touch, ข้อมูลใกล้ CardData เดิม และไม่ต้องพึ่ง GPU/scroll orchestration. Garden เหมาะเป็นตัวเลือกเพิ่มสำหรับวันครบรอบ ส่วน Cinema/World/Stars ควรผ่านการทดสอบอุปกรณ์จริงเพิ่มก่อน
 
 ขั้นต่อไปคือให้ทีมลองเล่นและเลือกแบบที่จะนำเข้า editor จากนั้นทำ integration เฉพาะแบบที่เลือก รวมเพลง/preview/share/retention tests และ review ก่อนเผยแพร่. ไม่จำเป็นต้องสร้าง Marketplace หรือรื้อระบบเทมเพลตตอนนี้
+
+## Commits / review
+
+- `c555b7f6e9ecb7521526a5a1a596372e07b0c9f6` — implementation, test sources, assets, screenshots และ notices
+- รายงานและ final acceptance evidence บันทึกใน documentation commits ถัดจาก implementation; ไม่แก้ runtime หลังรอบ final
+- ยังไม่มี merge หรือ production deploy

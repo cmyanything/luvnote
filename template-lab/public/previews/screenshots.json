@@ -1,7 +1,7 @@
 {
   "date": "2026-11-02T03:46:31.787Z",
-  "sourceCommit": "a8bc1f386c14f9e48f154573a010b17e07dc6901",
-  "note": "Working tree captures; compare report for final source commit. Real rendered viewports, no generated mockups.",
+  "sourceCommit": "c555b7f6e9ecb7521526a5a1a596372e07b0c9f6",
+  "note": "Captured from the working tree before the implementation commit; the unchanged runtime source was subsequently verified against that commit. Real rendered viewports, no generated mockups.",
   "evidence": [
     {
       "template": "love-letter",
@@ -387,5 +387,7 @@
       "sha256": "5a4909176a012d4112e6648118d25ce83945f5ce65444994c60736d51b4793e0",
       "errors": []
     }
-  ]
+  ],
+  "captureParentCommit": "a8bc1f386c14f9e48f154573a010b17e07dc6901",
+  "sourceSnapshotSha256": "044e2ca99cf41e4e13642d225f72a41bb7c210ada80ec820a94d548877e033c4"
 }

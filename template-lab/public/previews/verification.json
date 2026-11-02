@@ -30,5 +30,6 @@
     }
   },
   "physicalDevicesVerified": false,
-  "productionDeployed": false
+  "productionDeployed": false,
+  "implementationCommit": "c555b7f6e9ecb7521526a5a1a596372e07b0c9f6"
 }

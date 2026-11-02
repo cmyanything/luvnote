@@ -16,8 +16,8 @@ export const templates = [
     id: 'polaroid',
     title: 'Polaroid Memories',
     thai: 'รูปที่เก็บไว้ ไม่เคยเก่าเลย',
-    kind: 'ปัดรูป · พลิกด้านหลัง',
-    signature: 'กองภาพที่ลากหรือปัดได้ พลิกอ่านข้อความ และขยายภาพจริง',
+    kind: 'แกะห่อ · ลูบภาพ · จัดมุมโปรด',
+    signature: 'แกะห่อ ลูบภาพให้ชัด พลิกอ่านและแง้มโน้ต เลือกรูปจัดมุมโปรด เขียนคราวหน้าของเรา บันทึกภาพที่ระลึก และดึงรูปสุดท้าย',
     skills: [
       'UI UX Pro Max · defaults',
       'Emil · Prototype / Animate',

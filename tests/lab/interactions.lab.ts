@@ -50,6 +50,7 @@ for (const template of templates) {
       await page.getByRole('button', { name: /ยังมีอีกบรรทัด/ }).click();
       await expect(page.getByRole('status')).toContainText(demo.secret);
     } else if (template.id === 'polaroid') {
+      await page.getByRole('button', { name: 'แกะห่อรูปความทรงจำ' }).click();
       await page.getByRole('button', { name: 'พลิกอ่านข้อความ' }).click();
       await expect(page.locator('.print-back')).toContainText(
         demo.moments[0].note,
@@ -232,10 +233,12 @@ for (const template of templates) {
         .click();
     if (template.id === 'capsule')
       await page.getByRole('button', { name: 'เปิดกล่องความทรงจำ' }).click();
-    if (template.id === 'polaroid')
+    if (template.id === 'polaroid') {
+      await page.getByRole('button', { name: 'แกะห่อรูปความทรงจำ' }).click();
       await expect(page.locator('.print-front')).toContainText(
         alternate.moments[0].title,
       );
+    }
     const result = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
       .analyze();

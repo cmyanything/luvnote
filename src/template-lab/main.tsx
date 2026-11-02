@@ -12,6 +12,7 @@ import {
 import { createRoot } from 'react-dom/client';
 import { MotionConfig } from 'motion/react';
 import { alternate, demo, type Story } from './data';
+import { polaroidDemo } from './polaroid-sample';
 import { findTemplate, templates, type TemplateId } from './registry';
 import { Button, Icon } from './shared';
 import { labAsset, labHome } from './paths';
@@ -75,7 +76,7 @@ function Player({ id }: { id: TemplateId }) {
         return null;
       }
     }
-    return params.get('dataset') === 'alternate' ? alternate : demo;
+    return params.get('dataset') === 'alternate' ? alternate : id === 'polaroid' ? polaroidDemo : demo;
   });
   useEffect(() => {
     const listener = (event: MessageEvent) => {
@@ -489,7 +490,7 @@ function Lab() {
                 ? custom
                 : dataset === 'alternate'
                   ? alternate
-                  : demo
+                  : (selected?.id || ids[0]) === 'polaroid' ? polaroidDemo : demo
             }
             onApply={(story) => {
               setCustom(story);

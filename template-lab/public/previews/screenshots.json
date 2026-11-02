@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-02T06:41:26.227Z",
-  "sourceCommit": "62d68e52346c4ac6c732611d1990e4acabc03c83",
+  "date": "2026-11-02T08:03:56.396Z",
+  "sourceCommit": "54403fe401a54a21bd963e18ef3530e404495062",
   "note": "Working tree captures; compare report for final source commit. Real rendered viewports, no generated mockups.",
   "evidence": [
     {
@@ -34,7 +34,7 @@
         "height": 844
       },
       "file": "polaroid-mobile.jpg",
-      "sha256": "4d42e1ecf4fb532c20308b302cbb1f27a44fc3877479c4300d222bcc3af599f0",
+      "sha256": "2fd1f11fb93971b29956563b80f36471c126eb9d5a3c7bc3de09f3b1180031f4",
       "errors": []
     },
     {
@@ -46,7 +46,7 @@
         "height": 844
       },
       "file": "polaroid-complete-mobile.jpg",
-      "sha256": "639e899f3d819d2b8e3c8a8b9accaec9d70a11bd672d2225b3e8ca8464a11c12",
+      "sha256": "985a5ee75f1a5adf46cff03e251c9890af308c2f133537acbfe2fc9afcd7e4a1",
       "errors": []
     },
     {
@@ -253,7 +253,7 @@
         "height": 844
       },
       "file": "constellation-complete-mobile.jpg",
-      "sha256": "80a31c2e81ba93ed7df6a6d1eb1cc8c7ab139517400ce4e79b5b024fa576c320",
+      "sha256": "fca2dc7cc01ef95becdfaa1d3b5d5ee37d8f27e5c4097c9010c54fe7a24b1a97",
       "errors": []
     },
     {
@@ -310,7 +310,7 @@
         "height": 900
       },
       "file": "polaroid-desktop.jpg",
-      "sha256": "a300c450fb893632fa403e1e5ee77d5439bb2a93e814fcadb6dbd1bb22f910e3",
+      "sha256": "8b941f6a7366e7570a6412634da1c7f17957a4a849bf83f9a8f1092be271c0c7",
       "errors": []
     },
     {
@@ -322,7 +322,7 @@
         "height": 900
       },
       "file": "polaroid-complete-desktop.jpg",
-      "sha256": "d6da058b6dab8d47800a9b3e193e4f6e34e356a6cbb0fc5799f91a9a88099df6",
+      "sha256": "828aef3ab43f69f0cb9b9a1f92634f2ecb97192db12c77581165e04ece877829",
       "errors": []
     },
     {
@@ -529,7 +529,7 @@
         "height": 900
       },
       "file": "constellation-complete-desktop.jpg",
-      "sha256": "47a8ef70f97a18e8ee73c70abfcddf0921c5f965f848f270ff48797b149cf947",
+      "sha256": "d8141b8d53d5b94895fd28658f41eb809b389895f250e2145636bbde21b4c7de",
       "errors": []
     },
     {

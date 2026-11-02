@@ -66,6 +66,7 @@ test('long Polaroid notes remain scrollable and keyboard accessible', async ({
       },
     ],
   });
+  await frame.getByRole('button', { name: 'แกะห่อรูปความทรงจำ' }).click();
   await frame.getByRole('button', { name: 'พลิกอ่านข้อความ' }).click();
   const region = frame.getByRole('region', { name: 'ข้อความหลังรูป' });
   await expect(region).toContainText('บรรทัดสุดท้าย');
@@ -160,6 +161,8 @@ test('dragging photos, swiping pages and pulling the ribbon', async ({
     }
   }
   await page.goto('/template-lab/?play=polaroid');
+  await page.getByRole('button', { name: 'แกะห่อรูปความทรงจำ' }).click();
+  await page.getByRole('button', { name: 'เปิดภาพทันที' }).click();
   const card = page.locator('.polaroid-drag');
   await card.scrollIntoViewIfNeeded();
   const box = (await card.boundingBox())!;

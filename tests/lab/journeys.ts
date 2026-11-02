@@ -28,6 +28,7 @@ export async function finishStory(
     }
     await page.getByRole('button', { name: /ยังมีอีกบรรทัด/ }).click();
   } else if (id === 'polaroid') {
+    await page.getByRole('button', { name: 'แกะห่อรูปความทรงจำ', exact: true }).click();
     for (let i = 0; i < story.moments.length; i++) {
       await page
         .getByRole('button', {
@@ -43,6 +44,7 @@ export async function finishStory(
     await page
       .getByRole('button', { name: 'ยังมีรูปใบสุดท้ายถึงเธอ', exact: true })
       .click();
+    await page.getByRole('button', { name: /ดึงขึ้น หรือแตะเปิดรูปใบสุดท้าย/ }).click();
   } else if (id === 'cinema') {
     for (let i = 0; i < story.moments.length; i++) {
       await page

@@ -1,5 +1,13 @@
 # LuvNote Creative Template Lab
 
+## Polaroid Memories — พัฒนาเจาะทีละแบบ
+
+Owner ขอให้โฟกัส Polaroid และเพิ่มประสบการณ์เล่นประมาณ3–5นาที รอบนี้ทำเป็น4ช่วง: แกะห่อ → ลูบ/พลิก/ค้นโน้ตหลังรูป → เลือกและจัดรูปโปรดพร้อมเขียนคราวหน้าของเรา/ดาวน์โหลดPNG → อ่านจดหมายและดึงรูปเซอร์ไพรส์ แต่ละ gesture มีปุ่มใช้งานแทนได้ และใช้ข้อมูลจาก Studio เดิม
+
+รายละเอียด เวลาเป้าหมาย ขอบเขต ผลทดสอบและข้อจำกัดอยู่ใน[รายงาน Polaroid](docs/POLAROID-MEMORIES-EXPERIENCE.md). เวลา3–5นาทีเป็นเป้าหมายสำหรับเดโม4รูป ยังไม่มีผู้ใช้จริงจับเวลา ไม่มีตัวจับเวลาบังคับรอหรือ dependency/service ใหม่ อีก11rendererและระบบลูกค้าเดิมคงเดิม
+
+หลักฐานของรอบ12แบบด้านล่างเป็น snapshotก่อนการต่อยอด Polaroid นี้; latest preview/evidence ระบุ source ของตัวเอง
+
 ## รอบพัฒนาการ์ดเต็มเรื่อง — 2 พฤศจิกายน 2026
 
 Branch: `feat/complete-template-experiences` · Final recipient source: **`62d68e52346c4ac6c732611d1990e4acabc03c83`**.
@@ -55,7 +63,7 @@ Owner ยืนยันให้คงบุคลิกทั้ง 12 แบ�
 
 Source/test snapshot SHA-256: **`2b4e644fc1dcc1035b029d4167cb6684f25ec771219fc4e4bdff6b2332c866f5`**. ชุด320รวมการเปิดอ่านทุกความทรงจำและจดหมายส่วนตัวทั้ง12แบบ,1/8รูป,ข้อความไทยยาว,ตอนจบ/ย้อนอ่าน/Reset,upload/replace/remove/reorder/cover,local save/load/import/export/new-tab/reload,4editable endings,invalid data,undated Diary upload,keyboard/touch/modal,hover contrast/axe และ reduced motion. การทดสอบ provider ตรวจ opt-in และการถอด iframe ไม่ได้ทดสอบเพลงจาก YouTube ว่าเล่นจบจริง
 
-ผล final, source hashes และ browser matrix อยู่ใน [verification](docs/evidence/creative-experiences-verification.json); [48 screenshots พร้อม hash](template-lab/public/previews/screenshots.json) มาจาก source commit ด้านบนจริง มีทั้งภาพเปิดและภาพตอนจบเต็มของทุกแบบที่390/1280px ไม่มี page/HTTP error ในการ capture. [Independent review และ defect ledger](docs/evidence/creative-experiences-review.md) บันทึกการตรวจแยก การแก้ไข และ verdict **ship เฉพาะ finish ของ Lab ที่ตรวจ** โดยไม่มี finding ค้างใน fix list
+ผล final, source hashes และ browser matrix อยู่ใน [verification](docs/evidence/creative-experiences-verification.json); [48 screenshots พร้อม hash ของรอบนี้](https://github.com/cmyanything/luvnote/blob/b9e6e8ea79364cdc2c03f9255d0369f0ec7cc68c/template-lab/public/previews/screenshots.json) มาจาก source commit ด้านบนจริง มีทั้งภาพเปิดและภาพตอนจบเต็มของทุกแบบที่390/1280px ไม่มี page/HTTP error ในการ capture. [Independent review และ defect ledger](docs/evidence/creative-experiences-review.md) บันทึกการตรวจแยก การแก้ไข และ verdict **ship เฉพาะ finish ของ Lab ที่ตรวจ** โดยไม่มี finding ค้างใน fix list
 
 CI บน Linux รอบแรกที่`4001917` พบ311ผ่าน/4ไม่ผ่าน แม้ local315ผ่านก่อนหน้านั้น: แอนิเมชัน Scrapbook ลด opacity ทั้งหน้า และบันทึกสีเขียวบางหน้ามี contrast ไม่พอแม้หยุดเคลื่อนไหว แก้ที่`62d68e5`โดยคงการหมุนหน้า ตัดการจางทั้งแผ่น และเพิ่มความเข้มสีเขียว พร้อม regression ตรวจ0/190/380msทั้งสองรูปแบบหน้าในทุก browser project ไม่เพิ่ม retry/เวลารอหรือยกเว้น Axe ผู้ตรวจแยกให้**ship เฉพาะการแก้สองจุดนี้**;รูปหลักฐานเพิ่ม4ภาพพร้อม[manifest](docs/evidence/creative-experiences-review/scrapbook-contrast-manifest.json). ผลชุดเต็มด้านบนเป็นรอบหลังแก้;ผล CI ของ head ที่เผยแพร่ตรวจได้ที่[PR15](https://github.com/cmyanything/luvnote/pull/15).
 

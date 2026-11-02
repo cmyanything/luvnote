@@ -72,8 +72,10 @@ try {
       await page
         .getByRole('button', { name: 'เปิดซองจดหมาย', exact: true })
         .click();
-    if (id === 'polaroid')
+    if (id === 'polaroid') {
+      await page.getByRole('button', { name: 'แกะห่อรูปความทรงจำ' }).click();
       await page.getByRole('button', { name: 'พลิกอ่านข้อความ' }).click();
+    }
     if (id === 'cinema')
       await page.locator('.cinema-scene').nth(1).scrollIntoViewIfNeeded();
     if (id === 'stars') await page.locator('.memory-star').first().click();

@@ -2,9 +2,9 @@
 
 ## รอบพัฒนาการ์ดเต็มเรื่อง — 2 พฤศจิกายน 2026
 
-Branch: `feat/complete-template-experiences` · Final recipient source: **`2f2c341d40acbe91ec6929b2f55c17c0750c0dd6`**.
+Branch: `feat/complete-template-experiences` · Final recipient source: **`62d68e52346c4ac6c732611d1990e4acabc03c83`**.
 
-Implementation commits: `fd0b748` (12 full stories/Studio), `fbc4b85` (star-cover targets), `ee07390` (fast pointer release), `9991e80` (reading frames/mobile width/hover contrast), `2f2c341` (undated Diary navigation). `eaae611` preserves the prior main-domain Lab deployment record.
+Implementation commits: `fd0b748` (12 full stories/Studio), `fbc4b85` (star-cover targets), `ee07390` (fast pointer release), `9991e80` (reading frames/mobile width/hover contrast), `2f2c341` (undated Diary navigation), `62d68e5` (Scrapbook contrast during page turns). `eaae611` preserves the prior main-domain Lab deployment record.
 
 Owner ยืนยันให้คงบุคลิกทั้ง 12 แบบตามแนวเดิม และเพิ่มเนื้อหา/ประสบการณ์ให้ครบ งานรอบนี้จึงขยาย renderer เดิม ไม่สร้าง template engine, database, queue, marketplace หรือ dependency ใหม่ และไม่เปลี่ยนธีมลูกค้าเดิม
 
@@ -47,19 +47,21 @@ Owner ยืนยันให้คงบุคลิกทั้ง 12 แบ�
 | `npm run build` | PASS; normal customer build ไม่มี Lab |
 | `node scripts/check-template-lab-isolation.mjs` | PASS,25ไฟล์ |
 | `npm run lab:build` | PASS |
-| `npm run test:lab` | **315 passed,0failed,0skipped,0flaky**;63 checks ×5projects,483.9วินาที |
+| `npm run test:lab` | **320 passed,0failed,0skipped,0flaky**;64 checks ×5projects,503.7วินาที |
 | `LAB_URL=http://127.0.0.1:4318 npm run lab:capture` |48ภาพจริง,0page/HTTPerrors |
 | `LAB_BASE_PATH=/mylab/ npm run lab:build` + `node scripts/package-template-lab.mjs` | PASS;เพิ่มเฉพาะ`/mylab` และ25ไฟล์ลูกค้าเดิมไม่เปลี่ยน |
-| `npx playwright test --config playwright.mylab.config.ts` | **56 passed,0failed,0skipped,0flaky**,45.7วินาที |
+| `npx playwright test --config playwright.mylab.config.ts` | **56 passed,0failed,0skipped,0flaky**,45.3วินาที |
 | Independent finish review | ship เฉพาะขอบเขตที่ตรวจ; finding สุดท้าย resolved |
 
-Source/test snapshot SHA-256: **`69b2a25525b419369915bdd826c5d88463018bc1121ce5b58a3b932bf6196dbe`**. ชุด315รวมการเปิดอ่านทุกความทรงจำและจดหมายส่วนตัวทั้ง12แบบ,1/8รูป,ข้อความไทยยาว,ตอนจบ/ย้อนอ่าน/Reset,upload/replace/remove/reorder/cover,local save/load/import/export/new-tab/reload,4editable endings,invalid data,undated Diary upload,keyboard/touch/modal,hover contrast/axe และ reduced motion. การทดสอบ provider ตรวจ opt-in และการถอด iframe ไม่ได้ทดสอบเพลงจาก YouTube ว่าเล่นจบจริง
+Source/test snapshot SHA-256: **`2b4e644fc1dcc1035b029d4167cb6684f25ec771219fc4e4bdff6b2332c866f5`**. ชุด320รวมการเปิดอ่านทุกความทรงจำและจดหมายส่วนตัวทั้ง12แบบ,1/8รูป,ข้อความไทยยาว,ตอนจบ/ย้อนอ่าน/Reset,upload/replace/remove/reorder/cover,local save/load/import/export/new-tab/reload,4editable endings,invalid data,undated Diary upload,keyboard/touch/modal,hover contrast/axe และ reduced motion. การทดสอบ provider ตรวจ opt-in และการถอด iframe ไม่ได้ทดสอบเพลงจาก YouTube ว่าเล่นจบจริง
 
 ผล final, source hashes และ browser matrix อยู่ใน [verification](docs/evidence/creative-experiences-verification.json); [48 screenshots พร้อม hash](template-lab/public/previews/screenshots.json) มาจาก source commit ด้านบนจริง มีทั้งภาพเปิดและภาพตอนจบเต็มของทุกแบบที่390/1280px ไม่มี page/HTTP error ในการ capture. [Independent review และ defect ledger](docs/evidence/creative-experiences-review.md) บันทึกการตรวจแยก การแก้ไข และ verdict **ship เฉพาะ finish ของ Lab ที่ตรวจ** โดยไม่มี finding ค้างใน fix list
 
+CI บน Linux รอบแรกที่`4001917` พบ311ผ่าน/4ไม่ผ่าน แม้ local315ผ่านก่อนหน้านั้น: แอนิเมชัน Scrapbook ลด opacity ทั้งหน้า และบันทึกสีเขียวบางหน้ามี contrast ไม่พอแม้หยุดเคลื่อนไหว แก้ที่`62d68e5`โดยคงการหมุนหน้า ตัดการจางทั้งแผ่น และเพิ่มความเข้มสีเขียว พร้อม regression ตรวจ0/190/380msทั้งสองรูปแบบหน้าในทุก browser project ไม่เพิ่ม retry/เวลารอหรือยกเว้น Axe ผู้ตรวจแยกให้**ship เฉพาะการแก้สองจุดนี้**;รูปหลักฐานเพิ่ม4ภาพพร้อม[manifest](docs/evidence/creative-experiences-review/scrapbook-contrast-manifest.json). ผลชุดเต็มด้านบนเป็นรอบหลังแก้;ผล CI ของ head ที่เผยแพร่ตรวจได้ที่[PR15](https://github.com/cmyanything/luvnote/pull/15).
+
 ทดสอบ browser emulation ที่360,390,768,1280 และ WebKit/iPhone emulation; ไม่ใช่หลักฐานเครื่อง iPhone/Android จริง การตรวจปุ่มเพลง/iframe ไม่รับรองว่าเพลง YouTube ทุกเพลงเปิดให้ฝังได้ ภาพตัวอย่างเดิมมี license/origin ตาม baseline และไม่ได้เพิ่ม asset/library ที่มีข้อจำกัดการขายใหม่
 
-[Performance diagnostic รอบปัจจุบัน](docs/evidence/creative-experiences-performance.json): Chromium390px,4×CPU throttle,ตัวอย่างสั้นประมาณ900msต่อแบบหลัง full suite จบ; CLS0ทั้ง12แบบ และ frame interval p95สูงสุด16.8msในตัวอย่างนี้ มี interaction long tasks บางครั้งตามไฟล์หลักฐาน จึงไม่อ้างว่าเครื่องจริงทุกเครื่องหรือทุกความยาวเนื้อหาจะคง60fpsตลอด ไม่มี dependency เพิ่ม; entry129.45kB gzip, CSS16.07kB gzip, renderer แต่ละแบบ lazy-load และ shader ยังคง opt-in
+[Performance diagnostic รอบปัจจุบัน](docs/evidence/creative-experiences-performance.json): Chromium390px,4×CPU throttle,ตัวอย่างสั้นประมาณ900msต่อแบบหลัง full suite จบ; CLSอยู่ที่0–0.0002 และ frame interval p95สูงสุด16.8msในตัวอย่างนี้ มี interaction long tasks บางครั้งตามไฟล์หลักฐาน จึงไม่อ้างว่าเครื่องจริงทุกเครื่องหรือทุกความยาวเนื้อหาจะคง60fpsตลอด ไม่มี dependency เพิ่ม; entry129.45kB gzip, CSS16.06kB gzip, renderer แต่ละแบบ lazy-load และ shader ยังคง opt-in
 
 **GO: เผยแพร่ฉบับเต็มใน developer Lab `/mylab/` ตามที่ขอ**. **ยังไม่เปิด12ธีมใหม่นี้ใน customer publish flow**; ขอบเขต integration ที่เหลือระบุด้านล่าง Rollback ของ Lab ใช้ revert PR/frontend artifact เดิม ไม่ต้องแตะข้อมูลการ์ดหรือ Worker
 

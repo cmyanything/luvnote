@@ -1,8 +1,8 @@
 {
-  "date": "2026-11-02T06:15:56.433Z",
+  "date": "2026-11-02T06:40:51.308Z",
   "sourceBranch": "feat/complete-template-experiences",
-  "implementationCommit": "2f2c341d40acbe91ec6929b2f55c17c0750c0dd6",
-  "sourceSnapshotSha256": "69b2a25525b419369915bdd826c5d88463018bc1121ce5b58a3b932bf6196dbe",
+  "implementationCommit": "62d68e52346c4ac6c732611d1990e4acabc03c83",
+  "sourceSnapshotSha256": "2b4e644fc1dcc1035b029d4167cb6684f25ec771219fc4e4bdff6b2332c866f5",
   "sourceFiles": [
     {
       "path": "package-lock.json",
@@ -74,7 +74,7 @@
     },
     {
       "path": "src/template-lab/templates.css",
-      "sha256NormalizedLF": "5d1efd74c14bd0af48d3726cde70547ad1af4f7dd4b4e54ae40a7ae686bbd232"
+      "sha256NormalizedLF": "0bd5b353f0c612a6076dd595ef0dd698d59fe49e88c6408e45b0c87cae60ad2c"
     },
     {
       "path": "src/template-lab/templates/Capsule.tsx",
@@ -138,7 +138,7 @@
     },
     {
       "path": "tests/lab/edge-cases.lab.ts",
-      "sha256NormalizedLF": "564d30a35199f6ba4eaa9085989054d93531488ad7c7d643c691b24e91382651"
+      "sha256NormalizedLF": "3df043eb1cb17f2a38300e39b6fcd31f518f4f46061d1ae38cea732a0bd3a516"
     },
     {
       "path": "tests/lab/interactions.lab.ts",
@@ -168,9 +168,9 @@
     },
     {
       "command": "npm run test:lab",
-      "startTime": "2026-11-02T06:07:21.688Z",
-      "duration": 483897.593,
-      "expected": 315,
+      "startTime": "2026-11-02T06:32:23.617Z",
+      "duration": 503746.486,
+      "expected": 320,
       "skipped": 0,
       "unexpected": 0,
       "flaky": 0
@@ -178,27 +178,27 @@
   ],
   "projects": {
     "360": {
-      "passed": 63,
+      "passed": 64,
       "failed": 0,
       "skipped": 0
     },
     "390": {
-      "passed": 63,
+      "passed": 64,
       "failed": 0,
       "skipped": 0
     },
     "768": {
-      "passed": 63,
+      "passed": 64,
       "failed": 0,
       "skipped": 0
     },
     "desktop": {
-      "passed": 63,
+      "passed": 64,
       "failed": 0,
       "skipped": 0
     },
     "webkit": {
-      "passed": 63,
+      "passed": 64,
       "failed": 0,
       "skipped": 0
     }
@@ -208,1902 +208,1938 @@
       "title": "love-letter: personalized complete story, every memory, full letter and replay",
       "project": "360",
       "status": "expected",
-      "durationMs": 2430
+      "durationMs": 2309
     },
     {
       "title": "love-letter: one and eight memories with long Thai content stay readable",
       "project": "360",
       "status": "expected",
-      "durationMs": 2911
+      "durationMs": 2539
     },
     {
       "title": "polaroid: personalized complete story, every memory, full letter and replay",
       "project": "360",
       "status": "expected",
-      "durationMs": 2251
+      "durationMs": 2266
     },
     {
       "title": "polaroid: one and eight memories with long Thai content stay readable",
       "project": "360",
       "status": "expected",
-      "durationMs": 2945
+      "durationMs": 2641
     },
     {
       "title": "cinema: personalized complete story, every memory, full letter and replay",
       "project": "360",
       "status": "expected",
-      "durationMs": 2652
+      "durationMs": 2263
     },
     {
       "title": "cinema: one and eight memories with long Thai content stay readable",
       "project": "360",
       "status": "expected",
-      "durationMs": 2933
+      "durationMs": 2530
     },
     {
       "title": "stars: personalized complete story, every memory, full letter and replay",
       "project": "360",
       "status": "expected",
-      "durationMs": 2547
+      "durationMs": 2318
     },
     {
       "title": "stars: one and eight memories with long Thai content stay readable",
       "project": "360",
       "status": "expected",
-      "durationMs": 2833
+      "durationMs": 2620
     },
     {
       "title": "garden: personalized complete story, every memory, full letter and replay",
       "project": "360",
       "status": "expected",
-      "durationMs": 2438
+      "durationMs": 2475
     },
     {
       "title": "garden: one and eight memories with long Thai content stay readable",
       "project": "360",
       "status": "expected",
-      "durationMs": 2518
+      "durationMs": 2591
     },
     {
       "title": "capsule: personalized complete story, every memory, full letter and replay",
       "project": "360",
       "status": "expected",
-      "durationMs": 2191
+      "durationMs": 2364
     },
     {
       "title": "capsule: one and eight memories with long Thai content stay readable",
       "project": "360",
       "status": "expected",
-      "durationMs": 2505
+      "durationMs": 2628
     },
     {
       "title": "scrapbook: personalized complete story, every memory, full letter and replay",
       "project": "360",
       "status": "expected",
-      "durationMs": 2256
+      "durationMs": 2181
     },
     {
       "title": "scrapbook: one and eight memories with long Thai content stay readable",
       "project": "360",
       "status": "expected",
-      "durationMs": 2722
+      "durationMs": 2451
     },
     {
       "title": "world: personalized complete story, every memory, full letter and replay",
       "project": "360",
       "status": "expected",
-      "durationMs": 2338
+      "durationMs": 2176
     },
     {
       "title": "world: one and eight memories with long Thai content stay readable",
       "project": "360",
-      "status": "expected",
-      "durationMs": 2817
-    },
-    {
-      "title": "choose: personalized complete story, every memory, full letter and replay",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2354
-    },
-    {
-      "title": "choose: one and eight memories with long Thai content stay readable",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2696
-    },
-    {
-      "title": "diary: personalized complete story, every memory, full letter and replay",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2331
-    },
-    {
-      "title": "diary: one and eight memories with long Thai content stay readable",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2836
-    },
-    {
-      "title": "constellation: personalized complete story, every memory, full letter and replay",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2145
-    },
-    {
-      "title": "constellation: one and eight memories with long Thai content stay readable",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2420
-    },
-    {
-      "title": "surprise: personalized complete story, every memory, full letter and replay",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2236
-    },
-    {
-      "title": "surprise: one and eight memories with long Thai content stay readable",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2960
-    },
-    {
-      "title": "studio: real fields, image upload/reorder/replace/remove, exact saved recipient draft and reload",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 5112
-    },
-    {
-      "title": "studio: imported choices drive four endings; invalid and mismatched drafts remain recoverable",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 4768
-    },
-    {
-      "title": "validator rejects malformed dates, unsafe images, broken choices and oversized drafts",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 205
-    },
-    {
-      "title": "recipient music is opt-in and replay stops playback; provider loads only after a tap",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1754
-    },
-    {
-      "title": "love-letter: personalized complete story, every memory, full letter and replay",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2324
-    },
-    {
-      "title": "love-letter: one and eight memories with long Thai content stay readable",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2713
-    },
-    {
-      "title": "polaroid: personalized complete story, every memory, full letter and replay",
-      "project": "390",
       "status": "expected",
       "durationMs": 2545
     },
     {
-      "title": "polaroid: one and eight memories with long Thai content stay readable",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2903
-    },
-    {
-      "title": "cinema: personalized complete story, every memory, full letter and replay",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2879
-    },
-    {
-      "title": "cinema: one and eight memories with long Thai content stay readable",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2658
-    },
-    {
-      "title": "stars: personalized complete story, every memory, full letter and replay",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2642
-    },
-    {
-      "title": "stars: one and eight memories with long Thai content stay readable",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2744
-    },
-    {
-      "title": "garden: personalized complete story, every memory, full letter and replay",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2287
-    },
-    {
-      "title": "garden: one and eight memories with long Thai content stay readable",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2694
-    },
-    {
-      "title": "capsule: personalized complete story, every memory, full letter and replay",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2533
-    },
-    {
-      "title": "capsule: one and eight memories with long Thai content stay readable",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2677
-    },
-    {
-      "title": "scrapbook: personalized complete story, every memory, full letter and replay",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2117
-    },
-    {
-      "title": "scrapbook: one and eight memories with long Thai content stay readable",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2629
-    },
-    {
-      "title": "world: personalized complete story, every memory, full letter and replay",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2299
-    },
-    {
-      "title": "world: one and eight memories with long Thai content stay readable",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2600
-    },
-    {
       "title": "choose: personalized complete story, every memory, full letter and replay",
-      "project": "390",
+      "project": "360",
       "status": "expected",
-      "durationMs": 2202
+      "durationMs": 2114
     },
     {
       "title": "choose: one and eight memories with long Thai content stay readable",
-      "project": "390",
+      "project": "360",
       "status": "expected",
-      "durationMs": 2720
+      "durationMs": 2488
     },
     {
       "title": "diary: personalized complete story, every memory, full letter and replay",
-      "project": "390",
+      "project": "360",
       "status": "expected",
-      "durationMs": 2484
+      "durationMs": 2160
     },
     {
       "title": "diary: one and eight memories with long Thai content stay readable",
-      "project": "390",
+      "project": "360",
       "status": "expected",
-      "durationMs": 2893
+      "durationMs": 2786
     },
     {
       "title": "constellation: personalized complete story, every memory, full letter and replay",
-      "project": "390",
+      "project": "360",
       "status": "expected",
-      "durationMs": 2168
+      "durationMs": 2103
     },
     {
       "title": "constellation: one and eight memories with long Thai content stay readable",
-      "project": "390",
+      "project": "360",
       "status": "expected",
-      "durationMs": 2399
+      "durationMs": 2258
     },
     {
       "title": "surprise: personalized complete story, every memory, full letter and replay",
-      "project": "390",
+      "project": "360",
       "status": "expected",
-      "durationMs": 2270
+      "durationMs": 2135
     },
     {
       "title": "surprise: one and eight memories with long Thai content stay readable",
-      "project": "390",
+      "project": "360",
       "status": "expected",
-      "durationMs": 2672
+      "durationMs": 2739
     },
     {
       "title": "studio: real fields, image upload/reorder/replace/remove, exact saved recipient draft and reload",
-      "project": "390",
+      "project": "360",
       "status": "expected",
-      "durationMs": 5016
+      "durationMs": 4879
     },
     {
       "title": "studio: imported choices drive four endings; invalid and mismatched drafts remain recoverable",
-      "project": "390",
+      "project": "360",
       "status": "expected",
-      "durationMs": 4690
+      "durationMs": 4585
     },
     {
       "title": "validator rejects malformed dates, unsafe images, broken choices and oversized drafts",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 202
-    },
-    {
-      "title": "recipient music is opt-in and replay stops playback; provider loads only after a tap",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1680
-    },
-    {
-      "title": "love-letter: personalized complete story, every memory, full letter and replay",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2194
-    },
-    {
-      "title": "love-letter: one and eight memories with long Thai content stay readable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2705
-    },
-    {
-      "title": "polaroid: personalized complete story, every memory, full letter and replay",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2243
-    },
-    {
-      "title": "polaroid: one and eight memories with long Thai content stay readable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2910
-    },
-    {
-      "title": "cinema: personalized complete story, every memory, full letter and replay",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2316
-    },
-    {
-      "title": "cinema: one and eight memories with long Thai content stay readable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2596
-    },
-    {
-      "title": "stars: personalized complete story, every memory, full letter and replay",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2179
-    },
-    {
-      "title": "stars: one and eight memories with long Thai content stay readable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2598
-    },
-    {
-      "title": "garden: personalized complete story, every memory, full letter and replay",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2171
-    },
-    {
-      "title": "garden: one and eight memories with long Thai content stay readable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2478
-    },
-    {
-      "title": "capsule: personalized complete story, every memory, full letter and replay",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2182
-    },
-    {
-      "title": "capsule: one and eight memories with long Thai content stay readable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2723
-    },
-    {
-      "title": "scrapbook: personalized complete story, every memory, full letter and replay",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1984
-    },
-    {
-      "title": "scrapbook: one and eight memories with long Thai content stay readable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2663
-    },
-    {
-      "title": "world: personalized complete story, every memory, full letter and replay",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2166
-    },
-    {
-      "title": "world: one and eight memories with long Thai content stay readable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2572
-    },
-    {
-      "title": "choose: personalized complete story, every memory, full letter and replay",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2130
-    },
-    {
-      "title": "choose: one and eight memories with long Thai content stay readable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2682
-    },
-    {
-      "title": "diary: personalized complete story, every memory, full letter and replay",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2298
-    },
-    {
-      "title": "diary: one and eight memories with long Thai content stay readable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2910
-    },
-    {
-      "title": "constellation: personalized complete story, every memory, full letter and replay",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2132
-    },
-    {
-      "title": "constellation: one and eight memories with long Thai content stay readable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2375
-    },
-    {
-      "title": "surprise: personalized complete story, every memory, full letter and replay",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2116
-    },
-    {
-      "title": "surprise: one and eight memories with long Thai content stay readable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2655
-    },
-    {
-      "title": "studio: real fields, image upload/reorder/replace/remove, exact saved recipient draft and reload",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 5064
-    },
-    {
-      "title": "studio: imported choices drive four endings; invalid and mismatched drafts remain recoverable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 4498
-    },
-    {
-      "title": "validator rejects malformed dates, unsafe images, broken choices and oversized drafts",
-      "project": "768",
+      "project": "360",
       "status": "expected",
       "durationMs": 157
     },
     {
       "title": "recipient music is opt-in and replay stops playback; provider loads only after a tap",
-      "project": "768",
+      "project": "360",
       "status": "expected",
-      "durationMs": 1587
+      "durationMs": 1600
     },
     {
       "title": "love-letter: personalized complete story, every memory, full letter and replay",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2182
+      "durationMs": 2392
     },
     {
       "title": "love-letter: one and eight memories with long Thai content stay readable",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2654
+      "durationMs": 2671
     },
     {
       "title": "polaroid: personalized complete story, every memory, full letter and replay",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2390
+      "durationMs": 2507
     },
     {
       "title": "polaroid: one and eight memories with long Thai content stay readable",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2973
+      "durationMs": 2868
     },
     {
       "title": "cinema: personalized complete story, every memory, full letter and replay",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2615
+      "durationMs": 2699
     },
     {
       "title": "cinema: one and eight memories with long Thai content stay readable",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2653
+      "durationMs": 2551
     },
     {
       "title": "stars: personalized complete story, every memory, full letter and replay",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2312
+      "durationMs": 2534
     },
     {
       "title": "stars: one and eight memories with long Thai content stay readable",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2645
+      "durationMs": 2554
     },
     {
       "title": "garden: personalized complete story, every memory, full letter and replay",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2168
+      "durationMs": 2117
     },
     {
       "title": "garden: one and eight memories with long Thai content stay readable",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2521
+      "durationMs": 2599
     },
     {
       "title": "capsule: personalized complete story, every memory, full letter and replay",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2228
+      "durationMs": 2362
     },
     {
       "title": "capsule: one and eight memories with long Thai content stay readable",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2635
+      "durationMs": 2626
     },
     {
       "title": "scrapbook: personalized complete story, every memory, full letter and replay",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2133
+      "durationMs": 2267
     },
     {
       "title": "scrapbook: one and eight memories with long Thai content stay readable",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2796
+      "durationMs": 2783
     },
     {
       "title": "world: personalized complete story, every memory, full letter and replay",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2318
+      "durationMs": 2329
     },
     {
       "title": "world: one and eight memories with long Thai content stay readable",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2603
+      "durationMs": 2583
     },
     {
       "title": "choose: personalized complete story, every memory, full letter and replay",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2270
+      "durationMs": 2243
     },
     {
       "title": "choose: one and eight memories with long Thai content stay readable",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2659
+      "durationMs": 2663
     },
     {
       "title": "diary: personalized complete story, every memory, full letter and replay",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2323
+      "durationMs": 2409
     },
     {
       "title": "diary: one and eight memories with long Thai content stay readable",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 3022
+      "durationMs": 2793
     },
     {
       "title": "constellation: personalized complete story, every memory, full letter and replay",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2141
+      "durationMs": 2171
     },
     {
       "title": "constellation: one and eight memories with long Thai content stay readable",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2488
+      "durationMs": 2297
     },
     {
       "title": "surprise: personalized complete story, every memory, full letter and replay",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2129
+      "durationMs": 2234
     },
     {
       "title": "surprise: one and eight memories with long Thai content stay readable",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 2735
+      "durationMs": 2684
     },
     {
       "title": "studio: real fields, image upload/reorder/replace/remove, exact saved recipient draft and reload",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 5207
+      "durationMs": 5086
     },
     {
       "title": "studio: imported choices drive four endings; invalid and mismatched drafts remain recoverable",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 4826
+      "durationMs": 4293
     },
     {
       "title": "validator rejects malformed dates, unsafe images, broken choices and oversized drafts",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 188
+      "durationMs": 212
     },
     {
       "title": "recipient music is opt-in and replay stops playback; provider loads only after a tap",
-      "project": "desktop",
+      "project": "390",
       "status": "expected",
-      "durationMs": 1691
+      "durationMs": 1690
     },
     {
       "title": "love-letter: personalized complete story, every memory, full letter and replay",
-      "project": "webkit",
+      "project": "768",
       "status": "expected",
-      "durationMs": 4646
+      "durationMs": 2170
     },
     {
       "title": "love-letter: one and eight memories with long Thai content stay readable",
-      "project": "webkit",
+      "project": "768",
       "status": "expected",
-      "durationMs": 6345
+      "durationMs": 2658
     },
     {
       "title": "polaroid: personalized complete story, every memory, full letter and replay",
-      "project": "webkit",
+      "project": "768",
       "status": "expected",
-      "durationMs": 5858
+      "durationMs": 2490
     },
     {
       "title": "polaroid: one and eight memories with long Thai content stay readable",
-      "project": "webkit",
+      "project": "768",
       "status": "expected",
-      "durationMs": 10205
+      "durationMs": 2912
     },
     {
       "title": "cinema: personalized complete story, every memory, full letter and replay",
-      "project": "webkit",
+      "project": "768",
       "status": "expected",
-      "durationMs": 4674
+      "durationMs": 2520
     },
     {
       "title": "cinema: one and eight memories with long Thai content stay readable",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 6333
-    },
-    {
-      "title": "stars: personalized complete story, every memory, full letter and replay",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 4565
-    },
-    {
-      "title": "stars: one and eight memories with long Thai content stay readable",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 5879
-    },
-    {
-      "title": "garden: personalized complete story, every memory, full letter and replay",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 4191
-    },
-    {
-      "title": "garden: one and eight memories with long Thai content stay readable",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 6214
-    },
-    {
-      "title": "capsule: personalized complete story, every memory, full letter and replay",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 4909
-    },
-    {
-      "title": "capsule: one and eight memories with long Thai content stay readable",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 7110
-    },
-    {
-      "title": "scrapbook: personalized complete story, every memory, full letter and replay",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 4468
-    },
-    {
-      "title": "scrapbook: one and eight memories with long Thai content stay readable",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 7355
-    },
-    {
-      "title": "world: personalized complete story, every memory, full letter and replay",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 4220
-    },
-    {
-      "title": "world: one and eight memories with long Thai content stay readable",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 5894
-    },
-    {
-      "title": "choose: personalized complete story, every memory, full letter and replay",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 4280
-    },
-    {
-      "title": "choose: one and eight memories with long Thai content stay readable",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 6828
-    },
-    {
-      "title": "diary: personalized complete story, every memory, full letter and replay",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 4880
-    },
-    {
-      "title": "diary: one and eight memories with long Thai content stay readable",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 7049
-    },
-    {
-      "title": "constellation: personalized complete story, every memory, full letter and replay",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 3926
-    },
-    {
-      "title": "constellation: one and eight memories with long Thai content stay readable",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 4847
-    },
-    {
-      "title": "surprise: personalized complete story, every memory, full letter and replay",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 5606
-    },
-    {
-      "title": "surprise: one and eight memories with long Thai content stay readable",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 6751
-    },
-    {
-      "title": "studio: real fields, image upload/reorder/replace/remove, exact saved recipient draft and reload",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 30682
-    },
-    {
-      "title": "studio: imported choices drive four endings; invalid and mismatched drafts remain recoverable",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 8720
-    },
-    {
-      "title": "validator rejects malformed dates, unsafe images, broken choices and oversized drafts",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 396
-    },
-    {
-      "title": "recipient music is opt-in and replay stops playback; provider loads only after a tap",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 2890
-    },
-    {
-      "title": "changing memories recovers from an image error",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1459
-    },
-    {
-      "title": "long Polaroid notes remain scrollable and keyboard accessible",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1667
-    },
-    {
-      "title": "studio uploads an undated Diary memory with a visible, named index entry",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1994
-    },
-    {
-      "title": "eight configurable memories remain reachable in the garden and capsule",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 4389
-    },
-    {
-      "title": "dragging photos, swiping pages and pulling the ribbon",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 3172
-    },
-    {
-      "title": "optional Paper Shader mounts on request and has a static fallback",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1647
-    },
-    {
-      "title": "touch taps and reduced-motion mode preserve the surprise journey",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1197
-    },
-    {
-      "title": "changing memories recovers from an image error",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1942
-    },
-    {
-      "title": "long Polaroid notes remain scrollable and keyboard accessible",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1852
-    },
-    {
-      "title": "studio uploads an undated Diary memory with a visible, named index entry",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2450
-    },
-    {
-      "title": "eight configurable memories remain reachable in the garden and capsule",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 4383
-    },
-    {
-      "title": "dragging photos, swiping pages and pulling the ribbon",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 3225
-    },
-    {
-      "title": "optional Paper Shader mounts on request and has a static fallback",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1752
-    },
-    {
-      "title": "touch taps and reduced-motion mode preserve the surprise journey",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1097
-    },
-    {
-      "title": "changing memories recovers from an image error",
       "project": "768",
-      "status": "expected",
-      "durationMs": 1474
-    },
-    {
-      "title": "long Polaroid notes remain scrollable and keyboard accessible",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1645
-    },
-    {
-      "title": "studio uploads an undated Diary memory with a visible, named index entry",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1608
-    },
-    {
-      "title": "eight configurable memories remain reachable in the garden and capsule",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 4307
-    },
-    {
-      "title": "dragging photos, swiping pages and pulling the ribbon",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 3078
-    },
-    {
-      "title": "optional Paper Shader mounts on request and has a static fallback",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1894
-    },
-    {
-      "title": "touch taps and reduced-motion mode preserve the surprise journey",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 862
-    },
-    {
-      "title": "changing memories recovers from an image error",
-      "project": "desktop",
-      "status": "expected",
-      "durationMs": 1662
-    },
-    {
-      "title": "long Polaroid notes remain scrollable and keyboard accessible",
-      "project": "desktop",
-      "status": "expected",
-      "durationMs": 1297
-    },
-    {
-      "title": "studio uploads an undated Diary memory with a visible, named index entry",
-      "project": "desktop",
-      "status": "expected",
-      "durationMs": 1904
-    },
-    {
-      "title": "eight configurable memories remain reachable in the garden and capsule",
-      "project": "desktop",
-      "status": "expected",
-      "durationMs": 4317
-    },
-    {
-      "title": "dragging photos, swiping pages and pulling the ribbon",
-      "project": "desktop",
-      "status": "expected",
-      "durationMs": 3221
-    },
-    {
-      "title": "optional Paper Shader mounts on request and has a static fallback",
-      "project": "desktop",
-      "status": "expected",
-      "durationMs": 2215
-    },
-    {
-      "title": "touch taps and reduced-motion mode preserve the surprise journey",
-      "project": "desktop",
-      "status": "expected",
-      "durationMs": 1412
-    },
-    {
-      "title": "changing memories recovers from an image error",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 3019
-    },
-    {
-      "title": "long Polaroid notes remain scrollable and keyboard accessible",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 3261
-    },
-    {
-      "title": "studio uploads an undated Diary memory with a visible, named index entry",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 13231
-    },
-    {
-      "title": "eight configurable memories remain reachable in the garden and capsule",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 11606
-    },
-    {
-      "title": "dragging photos, swiping pages and pulling the ribbon",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 4831
-    },
-    {
-      "title": "optional Paper Shader mounts on request and has a static fallback",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 2904
-    },
-    {
-      "title": "touch taps and reduced-motion mode preserve the surprise journey",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 2056
-    },
-    {
-      "title": "love-letter: real interaction and final content",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 3047
-    },
-    {
-      "title": "love-letter: alternate data, reduced motion, accessibility",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1897
-    },
-    {
-      "title": "polaroid: real interaction and final content",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2279
-    },
-    {
-      "title": "polaroid: alternate data, reduced motion, accessibility",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1895
-    },
-    {
-      "title": "cinema: real interaction and final content",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2149
-    },
-    {
-      "title": "cinema: alternate data, reduced motion, accessibility",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1966
-    },
-    {
-      "title": "stars: real interaction and final content",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2432
-    },
-    {
-      "title": "stars: alternate data, reduced motion, accessibility",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1872
-    },
-    {
-      "title": "garden: real interaction and final content",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2150
-    },
-    {
-      "title": "garden: alternate data, reduced motion, accessibility",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1660
-    },
-    {
-      "title": "capsule: real interaction and final content",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2496
-    },
-    {
-      "title": "capsule: alternate data, reduced motion, accessibility",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1807
-    },
-    {
-      "title": "scrapbook: real interaction and final content",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2390
-    },
-    {
-      "title": "scrapbook: alternate data, reduced motion, accessibility",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1711
-    },
-    {
-      "title": "world: real interaction and final content",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2067
-    },
-    {
-      "title": "world: alternate data, reduced motion, accessibility",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1648
-    },
-    {
-      "title": "choose: real interaction and final content",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 3834
-    },
-    {
-      "title": "choose: alternate data, reduced motion, accessibility",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1748
-    },
-    {
-      "title": "diary: real interaction and final content",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2096
-    },
-    {
-      "title": "diary: alternate data, reduced motion, accessibility",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1840
-    },
-    {
-      "title": "constellation: real interaction and final content",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2107
-    },
-    {
-      "title": "constellation: alternate data, reduced motion, accessibility",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1632
-    },
-    {
-      "title": "surprise: real interaction and final content",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1716
-    },
-    {
-      "title": "surprise: alternate data, reduced motion, accessibility",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 1704
-    },
-    {
-      "title": "lab: actual previews, filter, comparison, device sizes and reset",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 3581
-    },
-    {
-      "title": "lab: configuration applies, invalid data stays recoverable",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2746
-    },
-    {
-      "title": "legacy data adapter supports no photos and rejects active URL schemes",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 163
-    },
-    {
-      "title": "lab: keyboard navigation and semantic accessibility",
-      "project": "360",
-      "status": "expected",
-      "durationMs": 2231
-    },
-    {
-      "title": "love-letter: real interaction and final content",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 3117
-    },
-    {
-      "title": "love-letter: alternate data, reduced motion, accessibility",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1945
-    },
-    {
-      "title": "polaroid: real interaction and final content",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2440
-    },
-    {
-      "title": "polaroid: alternate data, reduced motion, accessibility",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2061
-    },
-    {
-      "title": "cinema: real interaction and final content",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2896
-    },
-    {
-      "title": "cinema: alternate data, reduced motion, accessibility",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2526
-    },
-    {
-      "title": "stars: real interaction and final content",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2271
-    },
-    {
-      "title": "stars: alternate data, reduced motion, accessibility",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2021
-    },
-    {
-      "title": "garden: real interaction and final content",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2228
-    },
-    {
-      "title": "garden: alternate data, reduced motion, accessibility",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1746
-    },
-    {
-      "title": "capsule: real interaction and final content",
-      "project": "390",
       "status": "expected",
       "durationMs": 2634
     },
     {
-      "title": "capsule: alternate data, reduced motion, accessibility",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1950
-    },
-    {
-      "title": "scrapbook: real interaction and final content",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2450
-    },
-    {
-      "title": "scrapbook: alternate data, reduced motion, accessibility",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1802
-    },
-    {
-      "title": "world: real interaction and final content",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2217
-    },
-    {
-      "title": "world: alternate data, reduced motion, accessibility",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1896
-    },
-    {
-      "title": "choose: real interaction and final content",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 3940
-    },
-    {
-      "title": "choose: alternate data, reduced motion, accessibility",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1729
-    },
-    {
-      "title": "diary: real interaction and final content",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2175
-    },
-    {
-      "title": "diary: alternate data, reduced motion, accessibility",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1907
-    },
-    {
-      "title": "constellation: real interaction and final content",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2115
-    },
-    {
-      "title": "constellation: alternate data, reduced motion, accessibility",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1730
-    },
-    {
-      "title": "surprise: real interaction and final content",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1828
-    },
-    {
-      "title": "surprise: alternate data, reduced motion, accessibility",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 1789
-    },
-    {
-      "title": "lab: actual previews, filter, comparison, device sizes and reset",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 3750
-    },
-    {
-      "title": "lab: configuration applies, invalid data stays recoverable",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2854
-    },
-    {
-      "title": "legacy data adapter supports no photos and rejects active URL schemes",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 237
-    },
-    {
-      "title": "lab: keyboard navigation and semantic accessibility",
-      "project": "390",
-      "status": "expected",
-      "durationMs": 2449
-    },
-    {
-      "title": "love-letter: real interaction and final content",
+      "title": "stars: personalized complete story, every memory, full letter and replay",
       "project": "768",
       "status": "expected",
-      "durationMs": 3213
+      "durationMs": 2214
     },
     {
-      "title": "love-letter: alternate data, reduced motion, accessibility",
+      "title": "stars: one and eight memories with long Thai content stay readable",
       "project": "768",
       "status": "expected",
-      "durationMs": 1684
+      "durationMs": 2614
     },
     {
-      "title": "polaroid: real interaction and final content",
+      "title": "garden: personalized complete story, every memory, full letter and replay",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2134
+    },
+    {
+      "title": "garden: one and eight memories with long Thai content stay readable",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2582
+    },
+    {
+      "title": "capsule: personalized complete story, every memory, full letter and replay",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2170
+    },
+    {
+      "title": "capsule: one and eight memories with long Thai content stay readable",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2682
+    },
+    {
+      "title": "scrapbook: personalized complete story, every memory, full letter and replay",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2164
+    },
+    {
+      "title": "scrapbook: one and eight memories with long Thai content stay readable",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2697
+    },
+    {
+      "title": "world: personalized complete story, every memory, full letter and replay",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2238
+    },
+    {
+      "title": "world: one and eight memories with long Thai content stay readable",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2660
+    },
+    {
+      "title": "choose: personalized complete story, every memory, full letter and replay",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2264
+    },
+    {
+      "title": "choose: one and eight memories with long Thai content stay readable",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2660
+    },
+    {
+      "title": "diary: personalized complete story, every memory, full letter and replay",
       "project": "768",
       "status": "expected",
       "durationMs": 2188
     },
     {
-      "title": "polaroid: alternate data, reduced motion, accessibility",
+      "title": "diary: one and eight memories with long Thai content stay readable",
       "project": "768",
       "status": "expected",
-      "durationMs": 1842
+      "durationMs": 2818
     },
     {
-      "title": "cinema: real interaction and final content",
+      "title": "constellation: personalized complete story, every memory, full letter and replay",
       "project": "768",
-      "status": "expected",
-      "durationMs": 2305
-    },
-    {
-      "title": "cinema: alternate data, reduced motion, accessibility",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2045
-    },
-    {
-      "title": "stars: real interaction and final content",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2258
-    },
-    {
-      "title": "stars: alternate data, reduced motion, accessibility",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1835
-    },
-    {
-      "title": "garden: real interaction and final content",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2026
-    },
-    {
-      "title": "garden: alternate data, reduced motion, accessibility",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1554
-    },
-    {
-      "title": "capsule: real interaction and final content",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2528
-    },
-    {
-      "title": "capsule: alternate data, reduced motion, accessibility",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1950
-    },
-    {
-      "title": "scrapbook: real interaction and final content",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2417
-    },
-    {
-      "title": "scrapbook: alternate data, reduced motion, accessibility",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1803
-    },
-    {
-      "title": "world: real interaction and final content",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2229
-    },
-    {
-      "title": "world: alternate data, reduced motion, accessibility",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1910
-    },
-    {
-      "title": "choose: real interaction and final content",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 4252
-    },
-    {
-      "title": "choose: alternate data, reduced motion, accessibility",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1636
-    },
-    {
-      "title": "diary: real interaction and final content",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2201
-    },
-    {
-      "title": "diary: alternate data, reduced motion, accessibility",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1830
-    },
-    {
-      "title": "constellation: real interaction and final content",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2086
-    },
-    {
-      "title": "constellation: alternate data, reduced motion, accessibility",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1639
-    },
-    {
-      "title": "surprise: real interaction and final content",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1854
-    },
-    {
-      "title": "surprise: alternate data, reduced motion, accessibility",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 1741
-    },
-    {
-      "title": "lab: actual previews, filter, comparison, device sizes and reset",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 3910
-    },
-    {
-      "title": "lab: configuration applies, invalid data stays recoverable",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 3020
-    },
-    {
-      "title": "legacy data adapter supports no photos and rejects active URL schemes",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 198
-    },
-    {
-      "title": "lab: keyboard navigation and semantic accessibility",
-      "project": "768",
-      "status": "expected",
-      "durationMs": 2335
-    },
-    {
-      "title": "love-letter: real interaction and final content",
-      "project": "desktop",
-      "status": "expected",
-      "durationMs": 2868
-    },
-    {
-      "title": "love-letter: alternate data, reduced motion, accessibility",
-      "project": "desktop",
-      "status": "expected",
-      "durationMs": 1646
-    },
-    {
-      "title": "polaroid: real interaction and final content",
-      "project": "desktop",
-      "status": "expected",
-      "durationMs": 2226
-    },
-    {
-      "title": "polaroid: alternate data, reduced motion, accessibility",
-      "project": "desktop",
-      "status": "expected",
-      "durationMs": 1931
-    },
-    {
-      "title": "cinema: real interaction and final content",
-      "project": "desktop",
-      "status": "expected",
-      "durationMs": 2580
-    },
-    {
-      "title": "cinema: alternate data, reduced motion, accessibility",
-      "project": "desktop",
-      "status": "expected",
-      "durationMs": 2328
-    },
-    {
-      "title": "stars: real interaction and final content",
-      "project": "desktop",
       "status": "expected",
       "durationMs": 2184
     },
     {
-      "title": "stars: alternate data, reduced motion, accessibility",
-      "project": "desktop",
+      "title": "constellation: one and eight memories with long Thai content stay readable",
+      "project": "768",
       "status": "expected",
-      "durationMs": 1757
+      "durationMs": 2409
     },
     {
-      "title": "garden: real interaction and final content",
-      "project": "desktop",
+      "title": "surprise: personalized complete story, every memory, full letter and replay",
+      "project": "768",
       "status": "expected",
-      "durationMs": 2163
+      "durationMs": 2215
     },
     {
-      "title": "garden: alternate data, reduced motion, accessibility",
-      "project": "desktop",
+      "title": "surprise: one and eight memories with long Thai content stay readable",
+      "project": "768",
       "status": "expected",
-      "durationMs": 1717
+      "durationMs": 2680
     },
     {
-      "title": "capsule: real interaction and final content",
-      "project": "desktop",
+      "title": "studio: real fields, image upload/reorder/replace/remove, exact saved recipient draft and reload",
+      "project": "768",
       "status": "expected",
-      "durationMs": 2666
+      "durationMs": 5052
     },
     {
-      "title": "capsule: alternate data, reduced motion, accessibility",
-      "project": "desktop",
+      "title": "studio: imported choices drive four endings; invalid and mismatched drafts remain recoverable",
+      "project": "768",
       "status": "expected",
-      "durationMs": 1868
+      "durationMs": 4414
     },
     {
-      "title": "scrapbook: real interaction and final content",
-      "project": "desktop",
+      "title": "validator rejects malformed dates, unsafe images, broken choices and oversized drafts",
+      "project": "768",
       "status": "expected",
-      "durationMs": 2643
+      "durationMs": 203
     },
     {
-      "title": "scrapbook: alternate data, reduced motion, accessibility",
-      "project": "desktop",
+      "title": "recipient music is opt-in and replay stops playback; provider loads only after a tap",
+      "project": "768",
       "status": "expected",
-      "durationMs": 1861
+      "durationMs": 1683
     },
     {
-      "title": "world: real interaction and final content",
+      "title": "love-letter: personalized complete story, every memory, full letter and replay",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 2123
+      "durationMs": 2174
     },
     {
-      "title": "world: alternate data, reduced motion, accessibility",
+      "title": "love-letter: one and eight memories with long Thai content stay readable",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 1757
+      "durationMs": 2775
     },
     {
-      "title": "choose: real interaction and final content",
+      "title": "polaroid: personalized complete story, every memory, full letter and replay",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 3965
+      "durationMs": 2234
     },
     {
-      "title": "choose: alternate data, reduced motion, accessibility",
+      "title": "polaroid: one and eight memories with long Thai content stay readable",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 1674
+      "durationMs": 2954
     },
     {
-      "title": "diary: real interaction and final content",
+      "title": "cinema: personalized complete story, every memory, full letter and replay",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 2200
+      "durationMs": 2541
     },
     {
-      "title": "diary: alternate data, reduced motion, accessibility",
+      "title": "cinema: one and eight memories with long Thai content stay readable",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 1887
+      "durationMs": 2719
     },
     {
-      "title": "constellation: real interaction and final content",
+      "title": "stars: personalized complete story, every memory, full letter and replay",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 2075
+      "durationMs": 2436
     },
     {
-      "title": "constellation: alternate data, reduced motion, accessibility",
+      "title": "stars: one and eight memories with long Thai content stay readable",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 1694
+      "durationMs": 2942
     },
     {
-      "title": "surprise: real interaction and final content",
+      "title": "garden: personalized complete story, every memory, full letter and replay",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 1763
+      "durationMs": 2598
     },
     {
-      "title": "surprise: alternate data, reduced motion, accessibility",
+      "title": "garden: one and eight memories with long Thai content stay readable",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 1754
+      "durationMs": 2758
     },
     {
-      "title": "lab: actual previews, filter, comparison, device sizes and reset",
+      "title": "capsule: personalized complete story, every memory, full letter and replay",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 4047
+      "durationMs": 2267
     },
     {
-      "title": "lab: configuration applies, invalid data stays recoverable",
+      "title": "capsule: one and eight memories with long Thai content stay readable",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 3032
+      "durationMs": 2642
     },
     {
-      "title": "legacy data adapter supports no photos and rejects active URL schemes",
+      "title": "scrapbook: personalized complete story, every memory, full letter and replay",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 193
+      "durationMs": 2233
     },
     {
-      "title": "lab: keyboard navigation and semantic accessibility",
+      "title": "scrapbook: one and eight memories with long Thai content stay readable",
       "project": "desktop",
       "status": "expected",
-      "durationMs": 2377
+      "durationMs": 2599
     },
     {
-      "title": "love-letter: real interaction and final content",
+      "title": "world: personalized complete story, every memory, full letter and replay",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2165
+    },
+    {
+      "title": "world: one and eight memories with long Thai content stay readable",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2634
+    },
+    {
+      "title": "choose: personalized complete story, every memory, full letter and replay",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2311
+    },
+    {
+      "title": "choose: one and eight memories with long Thai content stay readable",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2690
+    },
+    {
+      "title": "diary: personalized complete story, every memory, full letter and replay",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2375
+    },
+    {
+      "title": "diary: one and eight memories with long Thai content stay readable",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2981
+    },
+    {
+      "title": "constellation: personalized complete story, every memory, full letter and replay",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2199
+    },
+    {
+      "title": "constellation: one and eight memories with long Thai content stay readable",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2530
+    },
+    {
+      "title": "surprise: personalized complete story, every memory, full letter and replay",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2236
+    },
+    {
+      "title": "surprise: one and eight memories with long Thai content stay readable",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2682
+    },
+    {
+      "title": "studio: real fields, image upload/reorder/replace/remove, exact saved recipient draft and reload",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 4972
+    },
+    {
+      "title": "studio: imported choices drive four endings; invalid and mismatched drafts remain recoverable",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 5050
+    },
+    {
+      "title": "validator rejects malformed dates, unsafe images, broken choices and oversized drafts",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 196
+    },
+    {
+      "title": "recipient music is opt-in and replay stops playback; provider loads only after a tap",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1783
+    },
+    {
+      "title": "love-letter: personalized complete story, every memory, full letter and replay",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 4862
+      "durationMs": 4658
     },
     {
-      "title": "love-letter: alternate data, reduced motion, accessibility",
+      "title": "love-letter: one and eight memories with long Thai content stay readable",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 3433
+      "durationMs": 6397
     },
     {
-      "title": "polaroid: real interaction and final content",
+      "title": "polaroid: personalized complete story, every memory, full letter and replay",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 7699
+      "durationMs": 5917
     },
     {
-      "title": "polaroid: alternate data, reduced motion, accessibility",
+      "title": "polaroid: one and eight memories with long Thai content stay readable",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 3178
+      "durationMs": 10770
     },
     {
-      "title": "cinema: real interaction and final content",
+      "title": "cinema: personalized complete story, every memory, full letter and replay",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 5843
+      "durationMs": 4580
     },
     {
-      "title": "cinema: alternate data, reduced motion, accessibility",
+      "title": "cinema: one and eight memories with long Thai content stay readable",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 3734
+      "durationMs": 6825
     },
     {
-      "title": "stars: real interaction and final content",
+      "title": "stars: personalized complete story, every memory, full letter and replay",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 4784
+      "durationMs": 4531
     },
     {
-      "title": "stars: alternate data, reduced motion, accessibility",
+      "title": "stars: one and eight memories with long Thai content stay readable",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 2861
+      "durationMs": 5659
     },
     {
-      "title": "garden: real interaction and final content",
+      "title": "garden: personalized complete story, every memory, full letter and replay",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 4885
+      "durationMs": 4462
     },
     {
-      "title": "garden: alternate data, reduced motion, accessibility",
+      "title": "garden: one and eight memories with long Thai content stay readable",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 2859
+      "durationMs": 6364
     },
     {
-      "title": "capsule: real interaction and final content",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 5806
-    },
-    {
-      "title": "capsule: alternate data, reduced motion, accessibility",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 3401
-    },
-    {
-      "title": "scrapbook: real interaction and final content",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 6483
-    },
-    {
-      "title": "scrapbook: alternate data, reduced motion, accessibility",
-      "project": "webkit",
-      "status": "expected",
-      "durationMs": 3089
-    },
-    {
-      "title": "world: real interaction and final content",
+      "title": "capsule: personalized complete story, every memory, full letter and replay",
       "project": "webkit",
       "status": "expected",
       "durationMs": 4806
     },
     {
+      "title": "capsule: one and eight memories with long Thai content stay readable",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 7368
+    },
+    {
+      "title": "scrapbook: personalized complete story, every memory, full letter and replay",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 4860
+    },
+    {
+      "title": "scrapbook: one and eight memories with long Thai content stay readable",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 7228
+    },
+    {
+      "title": "world: personalized complete story, every memory, full letter and replay",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 4128
+    },
+    {
+      "title": "world: one and eight memories with long Thai content stay readable",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 5876
+    },
+    {
+      "title": "choose: personalized complete story, every memory, full letter and replay",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 4538
+    },
+    {
+      "title": "choose: one and eight memories with long Thai content stay readable",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 6900
+    },
+    {
+      "title": "diary: personalized complete story, every memory, full letter and replay",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 4895
+    },
+    {
+      "title": "diary: one and eight memories with long Thai content stay readable",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 6968
+    },
+    {
+      "title": "constellation: personalized complete story, every memory, full letter and replay",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 3935
+    },
+    {
+      "title": "constellation: one and eight memories with long Thai content stay readable",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 4879
+    },
+    {
+      "title": "surprise: personalized complete story, every memory, full letter and replay",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 5193
+    },
+    {
+      "title": "surprise: one and eight memories with long Thai content stay readable",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 6627
+    },
+    {
+      "title": "studio: real fields, image upload/reorder/replace/remove, exact saved recipient draft and reload",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 31393
+    },
+    {
+      "title": "studio: imported choices drive four endings; invalid and mismatched drafts remain recoverable",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 8885
+    },
+    {
+      "title": "validator rejects malformed dates, unsafe images, broken choices and oversized drafts",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 445
+    },
+    {
+      "title": "recipient music is opt-in and replay stops playback; provider loads only after a tap",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 2802
+    },
+    {
+      "title": "changing memories recovers from an image error",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1553
+    },
+    {
+      "title": "long Polaroid notes remain scrollable and keyboard accessible",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1583
+    },
+    {
+      "title": "studio uploads an undated Diary memory with a visible, named index entry",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1659
+    },
+    {
+      "title": "eight configurable memories remain reachable in the garden and capsule",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 3709
+    },
+    {
+      "title": "dragging photos, swiping pages and pulling the ribbon",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 3005
+    },
+    {
+      "title": "optional Paper Shader mounts on request and has a static fallback",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1607
+    },
+    {
+      "title": "touch taps and reduced-motion mode preserve the surprise journey",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1018
+    },
+    {
+      "title": "scrapbook pages preserve text contrast throughout the page turn",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 5527
+    },
+    {
+      "title": "changing memories recovers from an image error",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 1650
+    },
+    {
+      "title": "long Polaroid notes remain scrollable and keyboard accessible",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 1531
+    },
+    {
+      "title": "studio uploads an undated Diary memory with a visible, named index entry",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2119
+    },
+    {
+      "title": "eight configurable memories remain reachable in the garden and capsule",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 4331
+    },
+    {
+      "title": "dragging photos, swiping pages and pulling the ribbon",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 3320
+    },
+    {
+      "title": "optional Paper Shader mounts on request and has a static fallback",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 1711
+    },
+    {
+      "title": "touch taps and reduced-motion mode preserve the surprise journey",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 1070
+    },
+    {
+      "title": "scrapbook pages preserve text contrast throughout the page turn",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 5340
+    },
+    {
+      "title": "changing memories recovers from an image error",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1729
+    },
+    {
+      "title": "long Polaroid notes remain scrollable and keyboard accessible",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1737
+    },
+    {
+      "title": "studio uploads an undated Diary memory with a visible, named index entry",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2011
+    },
+    {
+      "title": "eight configurable memories remain reachable in the garden and capsule",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 4367
+    },
+    {
+      "title": "dragging photos, swiping pages and pulling the ribbon",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 3190
+    },
+    {
+      "title": "optional Paper Shader mounts on request and has a static fallback",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1956
+    },
+    {
+      "title": "touch taps and reduced-motion mode preserve the surprise journey",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1069
+    },
+    {
+      "title": "scrapbook pages preserve text contrast throughout the page turn",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 5319
+    },
+    {
+      "title": "changing memories recovers from an image error",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1727
+    },
+    {
+      "title": "long Polaroid notes remain scrollable and keyboard accessible",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1817
+    },
+    {
+      "title": "studio uploads an undated Diary memory with a visible, named index entry",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1719
+    },
+    {
+      "title": "eight configurable memories remain reachable in the garden and capsule",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 4061
+    },
+    {
+      "title": "dragging photos, swiping pages and pulling the ribbon",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 3249
+    },
+    {
+      "title": "optional Paper Shader mounts on request and has a static fallback",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2345
+    },
+    {
+      "title": "touch taps and reduced-motion mode preserve the surprise journey",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1040
+    },
+    {
+      "title": "scrapbook pages preserve text contrast throughout the page turn",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 5981
+    },
+    {
+      "title": "changing memories recovers from an image error",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 3066
+    },
+    {
+      "title": "long Polaroid notes remain scrollable and keyboard accessible",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 3099
+    },
+    {
+      "title": "studio uploads an undated Diary memory with a visible, named index entry",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 13499
+    },
+    {
+      "title": "eight configurable memories remain reachable in the garden and capsule",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 11542
+    },
+    {
+      "title": "dragging photos, swiping pages and pulling the ribbon",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 4900
+    },
+    {
+      "title": "optional Paper Shader mounts on request and has a static fallback",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 2722
+    },
+    {
+      "title": "touch taps and reduced-motion mode preserve the surprise journey",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 2029
+    },
+    {
+      "title": "scrapbook pages preserve text contrast throughout the page turn",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 11601
+    },
+    {
+      "title": "love-letter: real interaction and final content",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2871
+    },
+    {
+      "title": "love-letter: alternate data, reduced motion, accessibility",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1704
+    },
+    {
+      "title": "polaroid: real interaction and final content",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2270
+    },
+    {
+      "title": "polaroid: alternate data, reduced motion, accessibility",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1848
+    },
+    {
+      "title": "cinema: real interaction and final content",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2146
+    },
+    {
+      "title": "cinema: alternate data, reduced motion, accessibility",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2071
+    },
+    {
+      "title": "stars: real interaction and final content",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2066
+    },
+    {
+      "title": "stars: alternate data, reduced motion, accessibility",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1618
+    },
+    {
+      "title": "garden: real interaction and final content",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2022
+    },
+    {
+      "title": "garden: alternate data, reduced motion, accessibility",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1590
+    },
+    {
+      "title": "capsule: real interaction and final content",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2411
+    },
+    {
+      "title": "capsule: alternate data, reduced motion, accessibility",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1739
+    },
+    {
+      "title": "scrapbook: real interaction and final content",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2744
+    },
+    {
+      "title": "scrapbook: alternate data, reduced motion, accessibility",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2107
+    },
+    {
+      "title": "world: real interaction and final content",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2185
+    },
+    {
       "title": "world: alternate data, reduced motion, accessibility",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1787
+    },
+    {
+      "title": "choose: real interaction and final content",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 3788
+    },
+    {
+      "title": "choose: alternate data, reduced motion, accessibility",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1743
+    },
+    {
+      "title": "diary: real interaction and final content",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2036
+    },
+    {
+      "title": "diary: alternate data, reduced motion, accessibility",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1763
+    },
+    {
+      "title": "constellation: real interaction and final content",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2077
+    },
+    {
+      "title": "constellation: alternate data, reduced motion, accessibility",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1844
+    },
+    {
+      "title": "surprise: real interaction and final content",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1850
+    },
+    {
+      "title": "surprise: alternate data, reduced motion, accessibility",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 1754
+    },
+    {
+      "title": "lab: actual previews, filter, comparison, device sizes and reset",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 3559
+    },
+    {
+      "title": "lab: configuration applies, invalid data stays recoverable",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2713
+    },
+    {
+      "title": "legacy data adapter supports no photos and rejects active URL schemes",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 143
+    },
+    {
+      "title": "lab: keyboard navigation and semantic accessibility",
+      "project": "360",
+      "status": "expected",
+      "durationMs": 2235
+    },
+    {
+      "title": "love-letter: real interaction and final content",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 3080
+    },
+    {
+      "title": "love-letter: alternate data, reduced motion, accessibility",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 1882
+    },
+    {
+      "title": "polaroid: real interaction and final content",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2420
+    },
+    {
+      "title": "polaroid: alternate data, reduced motion, accessibility",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2100
+    },
+    {
+      "title": "cinema: real interaction and final content",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2846
+    },
+    {
+      "title": "cinema: alternate data, reduced motion, accessibility",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2524
+    },
+    {
+      "title": "stars: real interaction and final content",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2441
+    },
+    {
+      "title": "stars: alternate data, reduced motion, accessibility",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2128
+    },
+    {
+      "title": "garden: real interaction and final content",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2320
+    },
+    {
+      "title": "garden: alternate data, reduced motion, accessibility",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 1744
+    },
+    {
+      "title": "capsule: real interaction and final content",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2745
+    },
+    {
+      "title": "capsule: alternate data, reduced motion, accessibility",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2012
+    },
+    {
+      "title": "scrapbook: real interaction and final content",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2415
+    },
+    {
+      "title": "scrapbook: alternate data, reduced motion, accessibility",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 1847
+    },
+    {
+      "title": "world: real interaction and final content",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2260
+    },
+    {
+      "title": "world: alternate data, reduced motion, accessibility",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 1982
+    },
+    {
+      "title": "choose: real interaction and final content",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 3981
+    },
+    {
+      "title": "choose: alternate data, reduced motion, accessibility",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2009
+    },
+    {
+      "title": "diary: real interaction and final content",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2273
+    },
+    {
+      "title": "diary: alternate data, reduced motion, accessibility",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 1909
+    },
+    {
+      "title": "constellation: real interaction and final content",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2108
+    },
+    {
+      "title": "constellation: alternate data, reduced motion, accessibility",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 1806
+    },
+    {
+      "title": "surprise: real interaction and final content",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 1903
+    },
+    {
+      "title": "surprise: alternate data, reduced motion, accessibility",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 1853
+    },
+    {
+      "title": "lab: actual previews, filter, comparison, device sizes and reset",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 3714
+    },
+    {
+      "title": "lab: configuration applies, invalid data stays recoverable",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2959
+    },
+    {
+      "title": "legacy data adapter supports no photos and rejects active URL schemes",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 229
+    },
+    {
+      "title": "lab: keyboard navigation and semantic accessibility",
+      "project": "390",
+      "status": "expected",
+      "durationMs": 2577
+    },
+    {
+      "title": "love-letter: real interaction and final content",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2975
+    },
+    {
+      "title": "love-letter: alternate data, reduced motion, accessibility",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1822
+    },
+    {
+      "title": "polaroid: real interaction and final content",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2220
+    },
+    {
+      "title": "polaroid: alternate data, reduced motion, accessibility",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2008
+    },
+    {
+      "title": "cinema: real interaction and final content",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2383
+    },
+    {
+      "title": "cinema: alternate data, reduced motion, accessibility",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2160
+    },
+    {
+      "title": "stars: real interaction and final content",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2180
+    },
+    {
+      "title": "stars: alternate data, reduced motion, accessibility",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1891
+    },
+    {
+      "title": "garden: real interaction and final content",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2101
+    },
+    {
+      "title": "garden: alternate data, reduced motion, accessibility",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1655
+    },
+    {
+      "title": "capsule: real interaction and final content",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2686
+    },
+    {
+      "title": "capsule: alternate data, reduced motion, accessibility",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2007
+    },
+    {
+      "title": "scrapbook: real interaction and final content",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2324
+    },
+    {
+      "title": "scrapbook: alternate data, reduced motion, accessibility",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1745
+    },
+    {
+      "title": "world: real interaction and final content",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2233
+    },
+    {
+      "title": "world: alternate data, reduced motion, accessibility",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1907
+    },
+    {
+      "title": "choose: real interaction and final content",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 4160
+    },
+    {
+      "title": "choose: alternate data, reduced motion, accessibility",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1697
+    },
+    {
+      "title": "diary: real interaction and final content",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2114
+    },
+    {
+      "title": "diary: alternate data, reduced motion, accessibility",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1804
+    },
+    {
+      "title": "constellation: real interaction and final content",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2110
+    },
+    {
+      "title": "constellation: alternate data, reduced motion, accessibility",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1755
+    },
+    {
+      "title": "surprise: real interaction and final content",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1860
+    },
+    {
+      "title": "surprise: alternate data, reduced motion, accessibility",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 1774
+    },
+    {
+      "title": "lab: actual previews, filter, comparison, device sizes and reset",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 3823
+    },
+    {
+      "title": "lab: configuration applies, invalid data stays recoverable",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2891
+    },
+    {
+      "title": "legacy data adapter supports no photos and rejects active URL schemes",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 154
+    },
+    {
+      "title": "lab: keyboard navigation and semantic accessibility",
+      "project": "768",
+      "status": "expected",
+      "durationMs": 2435
+    },
+    {
+      "title": "love-letter: real interaction and final content",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 3193
+    },
+    {
+      "title": "love-letter: alternate data, reduced motion, accessibility",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1670
+    },
+    {
+      "title": "polaroid: real interaction and final content",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2320
+    },
+    {
+      "title": "polaroid: alternate data, reduced motion, accessibility",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1974
+    },
+    {
+      "title": "cinema: real interaction and final content",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2570
+    },
+    {
+      "title": "cinema: alternate data, reduced motion, accessibility",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2200
+    },
+    {
+      "title": "stars: real interaction and final content",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2238
+    },
+    {
+      "title": "stars: alternate data, reduced motion, accessibility",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1918
+    },
+    {
+      "title": "garden: real interaction and final content",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2065
+    },
+    {
+      "title": "garden: alternate data, reduced motion, accessibility",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1592
+    },
+    {
+      "title": "capsule: real interaction and final content",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2497
+    },
+    {
+      "title": "capsule: alternate data, reduced motion, accessibility",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1869
+    },
+    {
+      "title": "scrapbook: real interaction and final content",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2394
+    },
+    {
+      "title": "scrapbook: alternate data, reduced motion, accessibility",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1798
+    },
+    {
+      "title": "world: real interaction and final content",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2190
+    },
+    {
+      "title": "world: alternate data, reduced motion, accessibility",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1737
+    },
+    {
+      "title": "choose: real interaction and final content",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 3936
+    },
+    {
+      "title": "choose: alternate data, reduced motion, accessibility",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1677
+    },
+    {
+      "title": "diary: real interaction and final content",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2258
+    },
+    {
+      "title": "diary: alternate data, reduced motion, accessibility",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2104
+    },
+    {
+      "title": "constellation: real interaction and final content",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2315
+    },
+    {
+      "title": "constellation: alternate data, reduced motion, accessibility",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1902
+    },
+    {
+      "title": "surprise: real interaction and final content",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1966
+    },
+    {
+      "title": "surprise: alternate data, reduced motion, accessibility",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 1837
+    },
+    {
+      "title": "lab: actual previews, filter, comparison, device sizes and reset",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 3959
+    },
+    {
+      "title": "lab: configuration applies, invalid data stays recoverable",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2892
+    },
+    {
+      "title": "legacy data adapter supports no photos and rejects active URL schemes",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 202
+    },
+    {
+      "title": "lab: keyboard navigation and semantic accessibility",
+      "project": "desktop",
+      "status": "expected",
+      "durationMs": 2329
+    },
+    {
+      "title": "love-letter: real interaction and final content",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 4711
+    },
+    {
+      "title": "love-letter: alternate data, reduced motion, accessibility",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 3397
+    },
+    {
+      "title": "polaroid: real interaction and final content",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 7908
+    },
+    {
+      "title": "polaroid: alternate data, reduced motion, accessibility",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 3266
+    },
+    {
+      "title": "cinema: real interaction and final content",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 4996
+    },
+    {
+      "title": "cinema: alternate data, reduced motion, accessibility",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 3289
+    },
+    {
+      "title": "stars: real interaction and final content",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 4563
+    },
+    {
+      "title": "stars: alternate data, reduced motion, accessibility",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 2881
+    },
+    {
+      "title": "garden: real interaction and final content",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 5083
+    },
+    {
+      "title": "garden: alternate data, reduced motion, accessibility",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 2896
+    },
+    {
+      "title": "capsule: real interaction and final content",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 5814
+    },
+    {
+      "title": "capsule: alternate data, reduced motion, accessibility",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 3570
+    },
+    {
+      "title": "scrapbook: real interaction and final content",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 6361
+    },
+    {
+      "title": "scrapbook: alternate data, reduced motion, accessibility",
       "project": "webkit",
       "status": "expected",
       "durationMs": 3105
     },
     {
+      "title": "world: real interaction and final content",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 4918
+    },
+    {
+      "title": "world: alternate data, reduced motion, accessibility",
+      "project": "webkit",
+      "status": "expected",
+      "durationMs": 3322
+    },
+    {
       "title": "choose: real interaction and final content",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 7128
+      "durationMs": 7452
     },
     {
       "title": "choose: alternate data, reduced motion, accessibility",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 2845
+      "durationMs": 3062
     },
     {
       "title": "diary: real interaction and final content",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 5155
+      "durationMs": 4768
     },
     {
       "title": "diary: alternate data, reduced motion, accessibility",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 3079
+      "durationMs": 3182
     },
     {
       "title": "constellation: real interaction and final content",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 4402
+      "durationMs": 4466
     },
     {
       "title": "constellation: alternate data, reduced motion, accessibility",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 2999
+      "durationMs": 3194
     },
     {
       "title": "surprise: real interaction and final content",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 4823
+      "durationMs": 4960
     },
     {
       "title": "surprise: alternate data, reduced motion, accessibility",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 3082
+      "durationMs": 2771
     },
     {
       "title": "lab: actual previews, filter, comparison, device sizes and reset",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 9477
+      "durationMs": 14147
     },
     {
       "title": "lab: configuration applies, invalid data stays recoverable",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 5181
+      "durationMs": 5012
     },
     {
       "title": "legacy data adapter supports no photos and rejects active URL schemes",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 536
+      "durationMs": 587
     },
     {
       "title": "lab: keyboard navigation and semantic accessibility",
       "project": "webkit",
       "status": "expected",
-      "durationMs": 3808
+      "durationMs": 4005
     }
   ],
   "review": {
     "disposition": "ship",
     "scope": "Isolated Lab reviewed finish and closure of material findings",
-    "evidence": "creative-experiences-review.md"
+    "evidence": "creative-experiences-review.md",
+    "followup": {
+      "implementationCommit": "62d68e52346c4ac6c732611d1990e4acabc03c83",
+      "disposition": "ship",
+      "scope": "Both Scrapbook contrast corrections resolved",
+      "manifest": "creative-experiences-review/scrapbook-contrast-manifest.json"
+    }
   },
   "screenshots": {
     "count": 48,
     "manifest": "../../template-lab/public/previews/screenshots.json",
-    "additionalReviewCaptures": 14
+    "additionalReviewCaptures": 18
   },
   "customerIsolation": {
     "normalBuildFiles": 25,
@@ -2114,8 +2150,8 @@
     "status": "PASS",
     "command": "LAB_BASE_PATH=/mylab/ npm run lab:build; node scripts/package-template-lab.mjs; npx playwright test --config playwright.mylab.config.ts",
     "stats": {
-      "startTime": "2026-11-02T06:17:41.656Z",
-      "duration": 45742.087999999996,
+      "startTime": "2026-11-02T06:42:23.287Z",
+      "duration": 45320.117999999995,
       "expected": 56,
       "skipped": 0,
       "unexpected": 0,
@@ -2126,5 +2162,13 @@
   "physicalDevicesVerified": false,
   "customerPublishingVerified": false,
   "externalMusicPlaybackVerified": false,
-  "newDependencies": 0
+  "newDependencies": 0,
+  "ciDiagnostic": {
+    "run": "https://github.com/cmyanything/luvnote/actions/runs/41399327485",
+    "source": "4001917e1840d945fba29e95434881930fdc58fa",
+    "passed": 311,
+    "failed": 4,
+    "cause": "Scrapbook page opacity and odd-page note contrast",
+    "fixedBy": "62d68e52346c4ac6c732611d1990e4acabc03c83"
+  }
 }

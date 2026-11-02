@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-02T06:07:58.839Z",
-  "sourceCommit": "2f2c341d40acbe91ec6929b2f55c17c0750c0dd6",
+  "date": "2026-11-02T06:41:26.227Z",
+  "sourceCommit": "62d68e52346c4ac6c732611d1990e4acabc03c83",
   "note": "Working tree captures; compare report for final source commit. Real rendered viewports, no generated mockups.",
   "evidence": [
     {
@@ -138,7 +138,7 @@
         "height": 844
       },
       "file": "capsule-complete-mobile.jpg",
-      "sha256": "cfa75609ae2e2b1dec4834645d853caf3136c125505dcd64d250b01af50701db",
+      "sha256": "f346d638a2d9c75102261f5cafc9d8013fcd55f9cfca104010195e1496ed1ca0",
       "errors": []
     },
     {
@@ -161,7 +161,7 @@
         "height": 844
       },
       "file": "scrapbook-complete-mobile.jpg",
-      "sha256": "f21f6ecf9e3cd03748705e2ade5d17a0ecf343e459e50fd0412bb9bde0e34caf",
+      "sha256": "3d2915711a915d1c76239acbe212e499207010257e10dda42f6f782606649141",
       "errors": []
     },
     {
@@ -253,7 +253,7 @@
         "height": 844
       },
       "file": "constellation-complete-mobile.jpg",
-      "sha256": "155a8544923e6399bfdcfc3c04127f097801e23a7ae1b5ef4e500bcae9b67496",
+      "sha256": "80a31c2e81ba93ed7df6a6d1eb1cc8c7ab139517400ce4e79b5b024fa576c320",
       "errors": []
     },
     {
@@ -414,7 +414,7 @@
         "height": 900
       },
       "file": "capsule-complete-desktop.jpg",
-      "sha256": "a30f9605fe3bb6f5c3c73e4df8365e8757f1a4962726a40e8e4e08da119ba366",
+      "sha256": "c53af92b9d6702de09291b1d8564d6d78ac7b06374aa18edde600a184cc4f76b",
       "errors": []
     },
     {
@@ -437,7 +437,7 @@
         "height": 900
       },
       "file": "scrapbook-complete-desktop.jpg",
-      "sha256": "c1a469e25235dbd9c5fd3424c74cd8ba20cdc7f8b6eb5a0d0f2f9b5f139cac20",
+      "sha256": "dc4288ace665e342decc55a769a258338e9fbe0f6d5446fb42ac0c322eacf609",
       "errors": []
     },
     {
@@ -529,7 +529,7 @@
         "height": 900
       },
       "file": "constellation-complete-desktop.jpg",
-      "sha256": "bf996042c83e76d592a5e33500a5d906ebb26f68e355e1f2e7360b04b8ef0895",
+      "sha256": "47a8ef70f97a18e8ee73c70abfcddf0921c5f965f848f270ff48797b149cf947",
       "errors": []
     },
     {

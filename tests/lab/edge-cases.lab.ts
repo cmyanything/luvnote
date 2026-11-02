@@ -81,6 +81,23 @@ test('long Polaroid notes remain scrollable and keyboard accessible', async ({
   ).toBeVisible();
 });
 
+test('studio uploads an undated Diary memory with a visible, named index entry', async ({page}) => {
+  await page.goto('/template-lab/?template=diary');
+  await page.getByLabel('เพิ่มรูปความทรงจำ', {exact:true}).setInputFiles('template-lab/public/images/cabin.jpg');
+  await expect(page.locator('.studio-memory')).toHaveCount(5);
+  await page.getByRole('textbox', {name:'ชื่อความทรงจำ 5',exact:true}).fill('รูปใหม่ที่ยังไม่ได้ใส่วันที่');
+  await page.getByRole('textbox', {name:'เรื่องเล่ารูป 5',exact:true}).fill('วันธรรมดาที่อยากจดจำ');
+  await page.getByRole('button',{name:'อัปเดตตัวอย่าง',exact:true}).click();
+  const frame=page.frameLocator('iframe');
+  const entry=frame.getByRole('button',{name:'อ่านบันทึก 5: รูปใหม่ที่ยังไม่ได้ใส่วันที่',exact:true});
+  await expect(entry).toContainText('บันทึก 5');
+  await expect(entry.locator('strong')).toHaveText('ไม่ระบุวันที่');
+  await entry.click();
+  await expect(frame.locator('.diary-entry h2')).toContainText('รูปใหม่ที่ยังไม่ได้ใส่วันที่');
+  await expect(frame.locator('.diary-note')).toHaveText('วันธรรมดาที่อยากจดจำ');
+  await expect(frame.locator('.diary-entry-date')).toContainText('ความทรงจำที่ 5');
+});
+
 test('eight configurable memories remain reachable in the garden and capsule', async ({
   page,
 }) => {

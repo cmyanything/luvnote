@@ -37,15 +37,16 @@ export default function Diary({ story }: { story: Story }) {
           {story.moments.map((m, i) => (
             <button
               key={m.id}
+              aria-label={`อ่านบันทึก ${i + 1}: ${m.title}${m.date ? ` · ${shortDate(m.date)}` : ''}`}
               aria-current={entry === i ? 'date' : undefined}
               onClick={() => {
                 setEntry(i);
                 setUnfold(false);
               }}
             >
-              <span>{m.date.slice(0, 4)}</span>
+              <span>{m.date ? m.date.slice(0, 4) : `บันทึก ${i + 1}`}</span>
               <strong>
-                {shortDate(m.date).split(' ').slice(0, 2).join(' ')}
+                {m.date ? shortDate(m.date).split(' ').slice(0, 2).join(' ') : 'ไม่ระบุวันที่'}
               </strong>
               <span className="diary-tab-title">{m.title}</span>
             </button>
@@ -56,7 +57,7 @@ export default function Diary({ story }: { story: Story }) {
           key={moment.id}
         >
           <div className="diary-entry-date">
-            <span>{shortDate(moment.date)}</span>
+            <span>{moment.date ? shortDate(moment.date) : `ความทรงจำที่ ${entry + 1}`}</span>
             <span>Dear diary,</span>
           </div>
           <h2>

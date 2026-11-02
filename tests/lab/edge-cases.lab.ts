@@ -1,4 +1,5 @@
 import { test, expect, type Page, type FrameLocator } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 import { demo, type Story } from '../../src/template-lab/data';
 
 async function configure(
@@ -228,4 +229,25 @@ test('touch taps and reduced-motion mode preserve the surprise journey', async (
   await expect(page.getByRole('status')).toHaveText(demo.secret);
   await expect(page.locator('.surprise-confetti')).toHaveCount(0);
   await expect(page.locator('.curtain').first()).toBeHidden();
+});
+
+test('scrapbook pages preserve text contrast throughout the page turn', async ({ page }) => {
+  await page.goto('/template-lab/?play=scrapbook');
+  await page.locator('.scrapbook-page').waitFor();
+  await page.evaluate(() => document.fonts.ready);
+  // Pin the animation rather than letting faster/slower CI machines miss its start.
+  for (let i = 0; i < 2; i++) {
+    await page.getByRole('button', { name: 'หน้าถัดไป', exact: true }).click();
+    for (const time of [0, 190, 380]) {
+      await page.locator('.scrapbook-page').evaluate((el, time) => {
+        for (const animation of el.getAnimations()) {
+          animation.pause();
+          animation.currentTime = time;
+        }
+      }, time);
+      await expect(page.locator('.scrapbook-page')).toHaveCSS('opacity', '1');
+      const audit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+      expect(audit.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => ({ target: n.target, summary: n.failureSummary })) }))).toEqual([]);
+    }
+  }
 });

@@ -13,11 +13,11 @@ npm run lab:dev
 
 เปิด **http://127.0.0.1:4317/template-lab/**
 
-เว็บทดลองสำหรับผู้พัฒนา: **https://luvnote-template-lab.brsblack79.chatgpt.site/template-lab/** — ลงชื่อเข้าใช้ด้วยบัญชี ChatGPT ของเจ้าของ ปัจจุบันอนุญาตเฉพาะเจ้าของ ไม่มีผู้ใช้หรือกลุ่มอื่น และตรวจสิทธิ์ทั้งหน้าเว็บกับไฟล์ประกอบ ไม่ได้ใช้การซ่อน URL แทน authentication. รายละเอียดใน [hosting operations](docs/CREATIVE-LAB-HOSTING.md) และ [หลักฐานเว็บจริง](docs/evidence/creative-lab-hosting.json)
+เว็บทดลองสำหรับผู้พัฒนา: **https://luvnote-template-lab.brsblack79.chatgpt.site/template-lab/** — เปิดเป็น public ตามคำขอ Owner ล่าสุด ผู้มีลิงก์ดูได้ทุกแบบโดยไม่ต้องใส่รหัสหรือลงชื่อเข้าใช้ ยังคง noindex แต่ไม่ได้จำกัดสิทธิ์ผู้ชม. รายละเอียดใน [hosting operations](docs/CREATIVE-LAB-HOSTING.md) และ [หลักฐาน anonymous access ล่าสุด](docs/evidence/creative-lab-public-access.json)
 
 คู่มือ: [template-lab/README.md](template-lab/README.md) · โค้ด: [src/template-lab](src/template-lab) · ภาพ: [template-lab/public/previews](template-lab/public/previews)
 
-**สถานะ:** Working prototypes สำหรับเลือก Creative Direction และพัฒนาต่อ เผยแพร่เว็บทดลองแยกแบบ owner-only ตามคำขอแล้ว ยังไม่ได้เชื่อมเผยแพร่การ์ดหรือเปิดให้ลูกค้า และไม่ได้ deploy เว็บหรือ backend production ของ LuvNote
+**สถานะ:** Working prototypes สำหรับเลือก Creative Direction และพัฒนาต่อ เผยแพร่เว็บทดลองแยกและเปิดให้ผู้มีลิงก์เข้าชมตามคำขอ Owner แล้ว ยังไม่ได้เชื่อมเผยแพร่การ์ดหรือเปิดเป็นธีมให้ลูกค้า และไม่ได้ deploy เว็บหรือ backend production ของ LuvNote
 
 **LAB_PROTOTYPE_ACCEPTANCE = PASS** — `npm run test:lab`: **170 passed, 0 failed, 0 skipped, 0 flaky** (34 checks x 5 projects, 216.6 วินาที). TypeScript, production build และ Lab build ผ่าน; production isolation ตรวจ 25 output files ผ่าน.
 
@@ -259,12 +259,12 @@ Lab main JS ประมาณ **122.5 kB gzip** รวม React/Motion; CSS ท
 
 เก็บ MIT notices สำหรับ source adaptations, Paper Apache License/NOTICE และ OFL fonts ใน [public/licenses](template-lab/public/licenses). ภาพประกอบอยู่ภายใต้ [Unsplash License](https://unsplash.com/license) พร้อม source URL/hash ใน [asset-sources.json](template-lab/public/asset-sources.json) ใช้เป็นภาพทดลอง ไม่มีการอ้างว่าคือภาพคู่รัก/ลูกค้าจริง ห้ามนำภาพ stock ไปขายเป็น asset pack โดยลำพัง
 
-ไม่มี React Bits component/export ที่เสี่ยงต่อ template redistribution; ไม่มีการซื้อ Pro, ใช้ generation credits, เปลี่ยน billing หรือเปิดบริการ paid. เพิ่มเพียง static Site แยกตามคำขอเพื่อให้เจ้าของเข้าเล่น Lab ผ่านเว็บ โดยใช้ authentication ของแพลตฟอร์ม ไม่มี backend ใหม่
+ไม่มี React Bits component/export ที่เสี่ยงต่อ template redistribution; ไม่มีการซื้อ Pro, ใช้ generation credits, เปลี่ยน billing หรือเปิดบริการ paid. เพิ่มเพียง static Site แยกตามคำขอ ไม่มี backend ใหม่ ปัจจุบันเปิดให้ผู้มีลิงก์เข้าชมโดยไม่ต้องล็อกอินตามคำขอ Owner ล่าสุด
 
 ## 9. สิ่งที่ยังไม่ได้ยืนยัน / ก่อน Production
 
 1. ยังไม่ได้ทดสอบเครื่อง iPhone/Android จริง, VoiceOver/TalkBack, LINE in-app browser หรือ user study; ต้องทดลองแรงปัด การอ่านข้อความ และอุปกรณ์สมรรถนะต่ำกับข้อมูลจริงที่ได้รับอนุญาตก่อน promote
-2. ตัว Lab ไม่สร้างระบบ auth เอง: เว็บทดลองที่เผยแพร่ใช้ Sites owner-only policy ตรวจสิทธิ์ทั้ง HTML และ assets; local server ยังเป็น loopback. `noindex` ไม่ใช่การป้องกันสิทธิ์ ห้ามเปลี่ยนเป็น public เพียงเพื่อให้เปิด URL ได้ ยังไม่ทดสอบ login ผ่านบัญชีผู้เยี่ยมชมจริงหรือ physical device; browser QA ใช้ platform service access ที่จำกัดเฉพาะ Site นี้
+2. ตัว Lab ไม่สร้างระบบ auth เอง: เริ่มเผยแพร่แบบ owner-only ก่อน แล้ว Owner ขอเปิด public โดยไม่ต้องล็อกอินอย่างชัดเจน จึงเปลี่ยน policy เป็น public revision 2 และทดสอบ anonymous access ใหม่. Local server ยังเป็น loopback; `noindex` ไม่ใช่การป้องกันสิทธิ์. หลักฐาน private acceptance ด้านล่างเป็นประวัติก่อนเปลี่ยนสิทธิ์
 3. Skills บางส่วนใช้ด้วยการอ่าน/ปรับคำแนะนำ ไม่ใช่ CLI ทั้ง workflow; Lottie และ React Bits ไม่ได้ runtime trial ตามเหตุผลใน matrix
 4. JSON config ยังเป็นเครื่องมือทีมภายใน; Choose มีเส้นเรื่องต้นแบบ, World มีตำแหน่ง/รูปทรงแผนที่กำหนดไว้ ไม่ใช่ authoring tool ที่ให้ลูกค้าแต่งได้ทุกจุด
 5. `Intl.Segmenter` ต้องมี fallback หากจะรองรับ WebView เก่ากว่ากลุ่ม browser ที่ทดสอบ
@@ -284,7 +284,7 @@ Lab main JS ประมาณ **122.5 kB gzip** รวม React/Motion; CSS ท
 - รายงานและ final acceptance evidence บันทึกใน documentation commits ถัดจาก implementation; ไม่แก้ runtime หลังรอบ final
 - ไม่มี merge หรือ deploy customer production; private developer Site เผยแพร่แยกตามคำขอแล้ว
 
-## Private hosted acceptance — 2 พฤศจิกายน 2026
+## Private hosted acceptance — ประวัติก่อน Owner ขอเปิด public
 
 Native private publish สำเร็จสำหรับ [Developer Lab](https://luvnote-template-lab.brsblack79.chatgpt.site/template-lab/), deployment `appgdep_6ae80c84c7d88191acda3283e33bcd1b`, version 1. ใช้ Lab source `11571be49a7ad8e2b619a5e8a7bc63e4a9911170`; static Site snapshot commit `6dc6ba7c8474c5a0903bba78a521381fb8bf31c2`. ไม่มีการเปลี่ยน runtime ของต้นแบบจาก source ที่ CI ผ่าน
 
@@ -295,3 +295,11 @@ Native private publish สำเร็จสำหรับ [Developer Lab](http
 - Browser QA ใช้ platform service credential เฉพาะ origin นี้ผ่าน hidden stdin; ไม่เก็บ token/cookie/trace/HAR และไม่ได้อ้างว่าทดสอบ interactive owner login หรือเครื่องจริง
 
 **HOSTED_DEVELOPER_PREVIEW = PASS** สำหรับขอบเขตข้างต้น. หลักฐานและ SHA ของ screenshots: [creative-lab-hosting.json](docs/evidence/creative-lab-hosting.json). วิธี update/rollback แยกจากเว็บลูกค้า: [CREATIVE-LAB-HOSTING.md](docs/CREATIVE-LAB-HOSTING.md)
+
+## Public developer preview — สถานะล่าสุดตามคำขอ Owner
+
+Owner ขอให้ผู้พัฒนาคนอื่นดูได้ทั้งหมดโดยไม่ต้องใส่รหัส จึงเปลี่ยน audience เป็น `public`, policy revision 2 และ redeploy **saved version 1 เดิม** โดยไม่เปลี่ยนโค้ดหรือสร้าง Site ใหม่. Deployment `appgdep_6ae80ee1c4b8819183828af3b51011a5` สำเร็จเมื่อ `2026-11-02T04:17:55.585161+00:00`.
+
+ตรวจแบบไม่มี token, cookie หรือ sign-in: **7/7 HTTP checks ได้ 200**, catalogue มี 12 รายการ และ player **12/12 เปิดได้**, iframe เปิดจดหมายและ Reset ผ่าน, browser runtime errors 0. รอบนี้ไม่ได้ทดสอบ interaction ทุกแบบซ้ำ; ผล interaction ครบ 12 แบบอยู่ใน private acceptance ก่อนหน้า ซึ่งใช้ runtime version เดียวกัน. `robots.txt` และ noindex ยังอยู่ แต่ไม่ได้จำกัดสิทธิ์เข้าชม.
+
+หลักฐานปัจจุบัน: [creative-lab-public-access.json](docs/evidence/creative-lab-public-access.json). เปลี่ยนเฉพาะเว็บ Lab แยก ไม่ได้แก้เว็บลูกค้า ฐานข้อมูล หรือ backend ของ LuvNote.

@@ -3,6 +3,7 @@ dist/
 dist-lab/
 lab-results/
 lab-playwright-report/
+.impeccable/review/
 test-results/
 playwright-report/
 .env

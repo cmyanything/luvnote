@@ -369,6 +369,8 @@ test('lab: keyboard navigation and semantic accessibility', async ({
   page,
 }) => {
   await page.goto('/template-lab/?template=polaroid');
+  await page.evaluate(() => document.fonts.ready);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
   const result = await new AxeBuilder({ page })
     .exclude('iframe')
     .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])

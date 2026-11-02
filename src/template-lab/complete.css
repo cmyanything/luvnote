@@ -10,6 +10,11 @@
   font-size: 14px;
   white-space: pre-wrap;
 }
+/* Hover feedback must retain the same readable text contrast as resting buttons. */
+.experience .t-button:hover:not(:disabled) {
+  opacity: 1;
+  filter: brightness(0.94);
+}
 .experience small {
   font-size: 12px;
   line-height: 1.8;
@@ -556,8 +561,13 @@
   object-fit: cover;
   opacity: 0.2;
 }
-.capsule-lid > span {
+.capsule-lid > .box-stamp {
   position: relative;
+  max-width: 58%;
+}
+.capsule-lid > .box-for {
+  max-width: 36%;
+  overflow-wrap: anywhere;
 }
 .capsule-readout > .memory-view {
   flex: 0 0 120px;
@@ -841,6 +851,9 @@
   width: 100%;
   aspect-ratio: 1.15;
 }
+.diary .diary-photo {
+  height: auto;
+}
 .diary-photo .memory-view .photo {
   width: 100%;
   height: 100%;
@@ -1115,10 +1128,14 @@
   align-items: flex-start;
   gap: 9px;
   flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
   color: var(--wine);
   font-size: 13px !important;
 }
 .studio-upload input[type='file'] {
+  width: 100%;
+  min-width: 0;
   max-width: 100%;
   min-height: 44px;
   font-size: 12px;
@@ -1152,6 +1169,10 @@
   gap: 30px;
   padding-block: 25px;
   border-bottom: 1px solid #ded2c8;
+}
+.studio-memory-fields,
+.studio-cover > div {
+  min-width: 0;
 }
 .studio-memory-photo > img {
   width: 100%;
@@ -1259,13 +1280,16 @@
     gap: 0;
   }
   .studio-memory {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 10px;
   }
   .studio-memory-photo {
     display: flex;
     align-items: center;
     gap: 20px;
+  }
+  .studio-memory-photo > .studio-upload {
+    flex: 1;
   }
   .studio-memory-photo > img {
     width: 110px;

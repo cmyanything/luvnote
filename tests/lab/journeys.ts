@@ -126,6 +126,11 @@ export async function finishStory(
     for (let i = 0; i < story.moments.length; i++) {
       await page.locator('.diary-index button').nth(i).click();
       await check(i);
+      if (inspect) {
+        const image = await page.locator('.diary-photo').boundingBox();
+        const note = await page.locator('.diary-note').boundingBox();
+        expect(note!.y).toBeGreaterThanOrEqual(image!.y + image!.height - 1);
+      }
     }
     await page.getByRole('button', { name: 'เปิดกระดาษโน้ตที่พับไว้' }).click();
     await page.getByRole('button', { name: 'อ่านหน้าสุดท้ายของสมุด' }).click();

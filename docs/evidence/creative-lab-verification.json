@@ -1,0 +1,179 @@
+{
+  "date": "2026-11-02T03:52:44.779663+00:00",
+  "sourceBranch": "lab/creative-templates",
+  "baseCommit": "a8bc1f386c14f9e48f154573a010b17e07dc6901",
+  "sourceSnapshotSha256": "044e2ca99cf41e4e13642d225f72a41bb7c210ada80ec820a94d548877e033c4",
+  "snapshotAlgorithm": "SHA256 of compact sorted-key JSON array of path + LF-normalized file SHA256, paths sorted lexicographically",
+  "sourceFiles": [
+    {
+      "path": "package-lock.json",
+      "sha256NormalizedLF": "9893f20fbbb75cb114fe1d2ed21829e1f8cbaa7fee1ee2cbe3015265206e5415"
+    },
+    {
+      "path": "package.json",
+      "sha256NormalizedLF": "0af8911c4fe5fa40fe73e56cca9df42eb6810cbb1ca5a6a41cf4337dd95a496a"
+    },
+    {
+      "path": "playwright.lab.config.ts",
+      "sha256NormalizedLF": "611dff820819e5a87f20cb6dc0af1cfd1c62b1c1f62b2e89222c4eb001771500"
+    },
+    {
+      "path": "src/template-lab/Aurora.tsx",
+      "sha256NormalizedLF": "67334c59c24cbd7854f373e8c5613a7a08d76a16d480460e53716396fd316ecb"
+    },
+    {
+      "path": "src/template-lab/data.ts",
+      "sha256NormalizedLF": "1bd3c25f0f7874aa0a30e286a2636d6c962e0d268f5ee4d2f5bee9011fca8a4e"
+    },
+    {
+      "path": "src/template-lab/lab.css",
+      "sha256NormalizedLF": "325625b539000e43283c88b45accfbb207df5d9720f178cbfa401cc3be1c6359"
+    },
+    {
+      "path": "src/template-lab/main.tsx",
+      "sha256NormalizedLF": "1b7ff0535b84c555decdebad9e4a483312c7f2e2cefc4bf466ea2a5f51ace9db"
+    },
+    {
+      "path": "src/template-lab/registry.ts",
+      "sha256NormalizedLF": "3e959cb8e222d021eaccb56ae69826402d5dc0aaf7cff35ca3988e38ef892b77"
+    },
+    {
+      "path": "src/template-lab/shared.tsx",
+      "sha256NormalizedLF": "e131d01280854d094c79d3dd9d3825cce10ffc66ad9ce45d5eff71ff9580f491"
+    },
+    {
+      "path": "src/template-lab/templates.css",
+      "sha256NormalizedLF": "5d1efd74c14bd0af48d3726cde70547ad1af4f7dd4b4e54ae40a7ae686bbd232"
+    },
+    {
+      "path": "src/template-lab/templates/Capsule.tsx",
+      "sha256NormalizedLF": "03e1d47852a73cb047d431e0d5e4790a414f7bd744bfe06811d0c33def8beacd"
+    },
+    {
+      "path": "src/template-lab/templates/Choose.tsx",
+      "sha256NormalizedLF": "71448851a2fba9ce913e92f1dbdf359fa7ef91774dd9940ee3f1fd014762b9c7"
+    },
+    {
+      "path": "src/template-lab/templates/Cinema.tsx",
+      "sha256NormalizedLF": "7ecf3e4140a9a593f2330e91aa7a056e1bbabccbd8fa182fb987b4ad78dd7847"
+    },
+    {
+      "path": "src/template-lab/templates/Constellation.tsx",
+      "sha256NormalizedLF": "5eeacf267adbed76c43c4346055396652eaf3a169a9a2a59d3e5d39e4cdeafa1"
+    },
+    {
+      "path": "src/template-lab/templates/Diary.tsx",
+      "sha256NormalizedLF": "159c6b6d9082c2a301633d68260a88176deff4750ccd79ebb44ff2cbb2ca85df"
+    },
+    {
+      "path": "src/template-lab/templates/Garden.tsx",
+      "sha256NormalizedLF": "e34704fc42998698e7856b3184cabe1f5acab46e7bd6ae361189b0a150660a8c"
+    },
+    {
+      "path": "src/template-lab/templates/Letter.tsx",
+      "sha256NormalizedLF": "353492db56a63ddf99e31074b3a61f8303c86b56425dfe6687ec659c1c070fda"
+    },
+    {
+      "path": "src/template-lab/templates/Polaroid.tsx",
+      "sha256NormalizedLF": "71571c91f8ec0202a131cdbf4c86bbbace3fadc69d73c707df8a6f2b97e95a7c"
+    },
+    {
+      "path": "src/template-lab/templates/Scrapbook.tsx",
+      "sha256NormalizedLF": "5cb885a61bafc3088440108f97a1556d1d46ec6b92822a3bb1ea2df0325d97e1"
+    },
+    {
+      "path": "src/template-lab/templates/Stars.tsx",
+      "sha256NormalizedLF": "0f9f0a3c065cbfbd9f30ae69da102e78b4b38efc2a5abb22fbcd15a6605f5734"
+    },
+    {
+      "path": "src/template-lab/templates/Surprise.tsx",
+      "sha256NormalizedLF": "c3c7bf6365c5dbc57aee7384079a12d9603bbca8972bfaf3da38e431ce530337"
+    },
+    {
+      "path": "src/template-lab/templates/World.tsx",
+      "sha256NormalizedLF": "0f0722b8f03421d6717d5352d3a20337258cb7af0fcc87bf55fa1e84c67ae3e6"
+    },
+    {
+      "path": "template-lab/index.html",
+      "sha256NormalizedLF": "081bcea26779e9376015d1c5b0f05829b4fa1c89e29eaa6a86161733b0d53bf5"
+    },
+    {
+      "path": "tests/lab/edge-cases.lab.ts",
+      "sha256NormalizedLF": "d47f46710c4d8c4c23d2d8d1f93bccb21d0f137c705713a797799cff50915afe"
+    },
+    {
+      "path": "tests/lab/interactions.lab.ts",
+      "sha256NormalizedLF": "38e5419ad24957a8d35e6ec2fd4dd06a95d7a455b80f911d641683ecd26e4f67"
+    },
+    {
+      "path": "vite.lab.config.ts",
+      "sha256NormalizedLF": "c54ae2ce56db9126eb6efe72a429c95f2aac54cee23d1afb1e11b981922bac9f"
+    }
+  ],
+  "command": "npm run test:lab",
+  "stats": {
+    "startTime": "2026-11-02T03:46:44.162Z",
+    "duration": 216568.411,
+    "expected": 170,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "projects": {
+    "360": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    "390": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    "768": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    "desktop": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    "webkit": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "resultJsonSha256": "4c13fd4ba8a3bb890099a16d6d41b8dd325da5b134e06ecdd9b469fce0e9a542",
+  "productionIsolation": {
+    "command": "npm run build && node scripts/check-template-lab-isolation.mjs",
+    "filesChecked": 25,
+    "result": "PASS"
+  },
+  "otherSuites": {
+    "api": {
+      "passed": 61
+    },
+    "defaultFrontend": {
+      "passed": 84,
+      "skipped": 66
+    },
+    "r2V3Frontend": {
+      "passed": 39
+    },
+    "exploratorySystemAudit": {
+      "passed": 18,
+      "failed": 1,
+      "didNotRun": 8,
+      "failure": "WebKit Pink Coquette: no share sheet after publication; media_v3_error from existing unchanged runtime"
+    }
+  },
+  "limitations": [
+    "Browser emulation, not physical devices",
+    "Extra legacy exploratory audit is not all green",
+    "No production deployment or customer data used"
+  ],
+  "implementationCommit": "c555b7f6e9ecb7521526a5a1a596372e07b0c9f6"
+}

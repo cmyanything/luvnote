@@ -1,0 +1,273 @@
+# LuvNote Creative Template Lab
+
+วันที่ตรวจ: 2 พฤศจิกายน 2026 · Branch: `lab/creative-templates`
+
+## ผลส่งมอบและวิธีเปิด
+
+สร้างต้นแบบ Interactive 12 แบบในพื้นที่ทดลองแยก พร้อม Catalogue, เปรียบเทียบสองแบบ, Mobile / Tablet / Desktop, Reset, ข้อมูลตัวอย่างสองชุด, JSON configuration, ข้อมูลที่มาของ Skills และภาพหน้าจอจากหน้าเว็บจริง
+
+```sh
+npm ci
+npm run lab:dev
+```
+
+เปิด **http://127.0.0.1:4317/template-lab/**
+
+คู่มือ: [template-lab/README.md](template-lab/README.md) · โค้ด: [src/template-lab](src/template-lab) · ภาพ: [template-lab/public/previews](template-lab/public/previews)
+
+**สถานะ:** Working prototypes สำหรับเลือก Creative Direction และพัฒนาต่อ ยังไม่ได้เชื่อมเผยแพร่การ์ดหรือเปิดให้ลูกค้า ยังไม่มีการ Deploy Production
+
+<!-- FINAL_VERIFICATION -->
+ผลรอบสุดท้ายกำลังบันทึกใน `docs/evidence/creative-lab-verification.json` ก่อนปิดงาน
+<!-- /FINAL_VERIFICATION -->
+
+## 1. Repository audit
+
+- ก่อนเริ่ม: branch `perf/r2-native-jpeg-validation`, commit `bfe6bfde407fa763998d352b8ef60507196804c5`, working tree สะอาด ทำ `git fetch origin` แล้วสร้าง branch ทดลองจาก `origin/main` ที่ **`a8bc1f386c14f9e48f154573a010b17e07dc6901`** ไม่ย้อนกลับไปพัฒนาจาก R2 branch เก่า
+- ระบบจริง: React 19 + TypeScript + Vite 8; CSS ปกติ ไม่มี Tailwind หรือ React Router; หน้า HTML หลาย entry และ URL/hash สำหรับลิงก์เดิม
+- ปัจจุบันมี **6 ธีม**: Pink Coquette, Coquette Dream, Little Memories, Birthday Chat, Velvet Gift และ Anniversary Journey/Our Story ซึ่งมี Journal กับ Movie ที่ใช้ GSAP 3.15 อยู่แล้ว
+- `src/themes.ts` กำหนด editor/config, `src/types.ts` มี `CardData`, `Photo`, `EditorState`; `src/lib/card.ts` สร้าง payload/ลิงก์; `src/lib/api.ts` และ `media-v3.ts` ติดต่อ API ส่วน card runtime เดิมส่วนใหญ่ยังเป็น standalone HTML; Anniversary ใช้ React
+- การจัดเก็บเดิมเป็น Worker/D1/R2 ตามเส้นทาง API ที่มีอยู่ การทำ Lab ไม่เปลี่ยนวิธีสร้าง เก็บ แก้ไข หรือตรวจสิทธิ์การ์ดเหล่านั้น
+- พบฉาก `.scene`/`inUp` และลำดับเปิดของขวัญ → อัลบั้ม → จดหมาย/ความลับคล้ายกันในธีมเดิมหลายแบบ จึงแยก interaction model ของต้นแบบใหม่ตั้งแต่ระดับ state และ composition
+- ไม่มีไฟล์เดิมใน `worker/`, `themes/`, `src/Editor.tsx`, `src/components/`, `src/lib/`, `src/anniversary/`, `wrangler.toml` หรือ `vite.config.ts` ถูกแก้จาก base ดังกล่าว
+
+## 2. โครงสร้างที่เลือก
+
+`vite.lab.config.ts` มี entry และ public directory ของตัวเอง → `dist-lab/`; build ปกติยังออก `dist/` และไม่มี Lab ไม่มีการเพิ่ม route หรือปุ่ม Lab ในหน้าเว็บลูกค้า
+
+แต่ละเทมเพลตเป็น React component แยกไฟล์ รับ `Story` เดียวกันผ่าน props ไม่อ่านข้อมูลลูกค้าหรือเรียก API. `fromCardData()` เป็น adapter ขนาดเล็กสำหรับทดลองนำข้อมูลจากระบบจริงมาใช้ในอนาคตโดยไม่ต้องเขียน renderer ใหม่ รองรับไม่มีรูปและกรอง scheme ของ URL ภาพ
+
+Shared code: `Button`, `Icon`, `Photo` พร้อม fallback, native `Modal`, `AnimatedGroup`, `Words`, `Flower`, live reduced-motion subscription และ `useScrollParallax` ที่ cleanup ด้วย GSAP context ไม่มี plugin engine, template database, queue หรือ Marketplace
+
+ข้อมูลตัวอย่างเก็บเฉพาะในหน่วยความจำของหน้า Lab: เปลี่ยนผู้ส่ง ผู้รับ ข้อความ วันที่ และ moments 1–8 รายการได้; ตรวจ JSON, id ไม่ซ้ำ และ URL ภาพก่อนส่งให้ iframe. Preview แจ้งพร้อมรับข้อมูลแล้วจึงรับ configuration โดยตรวจ origin และ source. ไม่มี persistence หรือ export ลิงก์ข้อมูลแก้ไขข้ามหน้าต่าง
+
+Dependencies ใหม่เป็น dev dependencies: `motion@14.9.0`, `@paper-design/shaders-react@0.0.82`, `@axe-core/playwright@4.14.0` ไม่ถูก import จาก entry ของเว็บจริง ติดตั้งด้วย `--ignore-scripts`; ไม่รัน installation hooks จาก repository ภายนอก
+
+## 3. Sources verification และ Skills Coverage Matrix
+
+ตรวจครบ 14 repositories ผ่าน GitHub, README/แนวติดตั้ง, SKILL ที่เกี่ยวข้อง และ License. ทุก repository มีอยู่จริงและไม่ archived ณ เวลาตรวจ; ไม่ได้หมายความว่าทุก CLI หรือทุก component ถูกติดตั้ง/ทดสอบ
+
+บันทึก commit เต็ม, SHA-256 ของไฟล์คำแนะนำที่ตรวจ, ขอบเขตการนำมาใช้ และข้อยกเว้นใน [creative-lab-sources.json](docs/evidence/creative-lab-sources.json). อ่าน Markdown โดยตรงใน Codex ได้ ไม่ต้องติดตั้ง Claude marketplace
+
+| Source | ประเภท / License ที่ตรวจ | ทดลองใช้จริงใน | ขอบเขต / ข้อจำกัด |
+|---|---|---|---|
+| [UI UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | Agent Skill · MIT | 02, 07, 11; review ทั้งชุด | ใช้ priority/defaults เรื่อง touch, focus, contrast, responsive. **ไม่รัน search CLI หรืออ้างผลจาก design-system database** |
+| [Impeccable](https://github.com/pbakaus/impeccable) | Agent Skill · Apache-2.0 | 01, 02, 06, 10; review ทั้งชุด | อ่าน core, craft floor, new-work และ audit. ไม่รัน context launcher/binary; ใช้บริบทโค้ดจริงและ browser QA ตามที่แจ้งไว้ ไม่อ้างว่า detector ผ่าน |
+| [Anthropic Frontend Design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | Agent Skill · Apache-2.0 เฉพาะ skill นี้ | 01, 05, 07, 12 | วางวัสดุ องค์ประกอบและ typography ตามเรื่อง แทนการเปลี่ยนสีบน layout เดียวกัน |
+| [Vercel Agent Skills](https://github.com/vercel-labs/agent-skills) | Agent Skills · React skill ระบุ MIT; root ไม่มี LICENSE | 03, 09; review ทั้งชุด | อ่าน Web Guidelines และ React Practices, โหลด guidelines สด; lazy chunks, semantics, focus, forms. ไม่คัดลอก framework/server code |
+| [Emil Kowalski](https://github.com/emilkowalski/skills) | Agent Skills · MIT | 01, 02, 06, 10, 12 | Animate / Prototype / Design Engineering: motion ที่ตอบการกระทำ, transform/opacity, springs สำหรับ drag, มีทางเลือก keyboard/tap. Brief ของผู้ใช้กำหนด Lab 12 แบบแทน default picker/scope |
+| [MengTo](https://github.com/MengTo/Skills) | Agent Skills · MIT | 03 cinematic, 07 masked reveal, 08 scroll world, 10 word reveal | เลือก HTML/SVG และ native scrolling; ไม่มี Lenis/Three.js. ใช้ผู้ตรวจแยกจากผู้พัฒนา |
+| [GSAP ScrollTrigger Skill](https://github.com/freshtechbro/claudedesignskills) | Agent Skill · MIT | 03, 08 | ทดลอง scoped parallax/scrub ด้วย GSAP ที่มีอยู่แล้ว; cleanup เมื่อ unmount/ลด motion |
+| [Diffusion Studio Lottie](https://github.com/diffusionstudio/lottie) | Agent Skill + player · MIT | **อ่านแล้ว ยังไม่ได้ทดลอง runtime** | Skill กำหนดให้ตรวจด้วย official Skottie player. รอบนี้ไม่ได้สร้าง Lottie/ติดตั้ง player จึงไม่อ้างการใช้หรือผลผ่าน; SVG/CSS เพียงพอกับ interaction ที่เลือก |
+| [SvaraNova Web Motion](https://github.com/SvaraNova/skills/tree/main/frontend/web-motion) | Agent Skill · MIT | 03, 04, 11 | CSS ก่อน, ไม่บังคับ scroll, readable static fallback, live preference, diagnostic performance sample |
+| [Motion Design Agent](https://github.com/soilmass/motion-design-agent) | Agent Skill · MIT | 04, 05, 06, 08, 09, 11, 12 | ประยุกต์ cause/effect, anticipation/reveal, emotional arc และ reduced-motion override. **ไม่ได้ติดตั้งทั้ง token-resolution/export engine** |
+| [React Bits](https://github.com/DavidHDev/react-bits) | Component library · MIT + Commons Clause | **ศึกษาแล้ว ไม่รวม source/runtime trial** | Source อนุญาต end product แต่จำกัดการขาย/แจก component และ template pack จึงไม่คัดลอกเข้าชุดที่อาจพัฒนาเป็น Catalog/Marketplace |
+| [Motion Primitives](https://github.com/ibelick/motion-primitives) | Component source · MIT | 01, 06, 09, 10 | ดัดแปลง AnimatedGroup จริงใน `shared.tsx`: wrapper คงที่, stagger มีเพดาน, reduced motion. TextEffect อ่านแต่ไม่ได้คัดลอก; ไม่ติดตั้ง Tailwind/ทั้ง kit |
+| [Paper Shaders](https://github.com/paper-design/shaders) | Runtime library · Apache-2.0 | 04 | ทดลอง MeshGradient จริงแบบ opt-in, `speed=0`; static SVG/CSS เป็นค่าเริ่มต้น ทดสอบ mount/unmount และ live reduced motion |
+| [shadcn/ui](https://github.com/shadcn-ui/ui) | Component source · MIT | 09 และ shared Button | ปรับ composable Button API ให้เป็น native CSS button จริง; **ไม่ได้ติดตั้ง shadcn CLI, Radix, CVA หรือ Tailwind** |
+
+สิ่งที่นำมาใช้มีทั้งการประยุกต์คำแนะนำและการดัดแปลง source ตามตาราง ไม่อ้างว่าเรียกคำสั่งหรือผ่าน workflow เต็มของทุก Skill. ไม่ใช้ Lottie/React Bits เป็นเพียงชื่อประดับเทมเพลต
+
+## 4. Template matrix
+
+| Template | Design Skills | Motion Skills | Libraries / components ที่ใช้จริง | Signature Interaction | Status |
+|---|---|---|---|---|---|
+| 01 The Love Letter | Frontend Design, Impeccable | Emil Animate | CSS/SVG, adapted AnimatedGroup | เปิดตราประทับ → จดหมายเลื่อนออก → ป.ล. | Working prototype |
+| 02 Polaroid Memories | UI UX defaults, Impeccable | Emil Prototype/Animate | Motion, native dialog | ลาก/ปัดกองภาพ พลิกหลังรูป ขยายภาพ | Working prototype |
+| 03 Our Cinematic Journey | MengTo Cinematic, Vercel | GSAP Skill, SvaraNova | GSAP/ScrollTrigger | scroll เชื่อมฉากภาพและบทบรรยาย | Working prototype |
+| 04 Written in the Stars | Motion Design | SvaraNova | SVG/CSS, optional Paper Shaders | แตะดาวอิสระ เชื่อมกลุ่มดาว ปลดล็อกคำลับ | Working prototype |
+| 05 The Secret Garden | Frontend Design | Motion Design | SVG/CSS | ดอกตูมบานและรวมเป็นช่อเมื่อเก็บครบ | Working prototype |
+| 06 The Time Capsule | Impeccable | Motion Design, Emil | CSS 3D, adapted AnimatedGroup | เปิดฝา หยิบสิ่งของ ช่องลับใต้กล่อง | Working prototype |
+| 07 Our Scrapbook | Frontend Design, UI UX defaults | MengTo Masked Reveal | CSS, Pointer Events, Words | พลิกหน้าคู่และลอกเทปเผยภาพ | Working prototype |
+| 08 Our Little World | MengTo Scroll World | GSAP Skill, Motion Design | SVG, GSAP/ScrollTrigger | แผนที่ สถานที่ และการเก็บตราความทรงจำ | Working prototype |
+| 09 Choose Our Story | Vercel React | Motion Design | native Button adaptation, adapted AnimatedGroup | สองคำถาม สี่ตอนจบ ย้อนคำตอบได้ | Working prototype |
+| 10 A Diary of Us | Impeccable, Emil Design Engineering | MengTo Staggered Word Reveal | Words, adapted AnimatedGroup | สารบัญวันที่และโน้ตพับในหน้าบันทึกต่างรูปแบบ | Working prototype |
+| 11 Constellation of Moments | UI UX defaults | SvaraNova, Motion Design | SVG/CSS, native range | ควบคุมเส้นทางเวลาด้วย slider/keyboard | Working prototype |
+| 12 The Grand Surprise | Frontend Design | Emil, Motion Design | CSS/SVG, Pointer Events | ดึงริบบิ้น เปิดม่าน และจังหวะเฉลย | Working prototype |
+
+## 5. ความแตกต่างของประสบการณ์
+
+| Template | Composition / navigation | Typography / hierarchy | Animation language | Emotional journey |
+|---|---|---|---|---|
+| Letter | โต๊ะกับวัตถุเดียว; เปิดตามลำดับ | italic letter heading + ลายมืออ่านยาว | flap hinge / paper translation | รอ → ใกล้ชิด → ข้อความส่วนตัว |
+| Polaroid | กองภาพซ้อน; วนหน้า/ย้อนภาพได้ | heading ลายมือ + caption ใต้รูป | drag spring / rotateY | เล่น → คิดถึง → อ่านสิ่งที่ซ่อนไว้ |
+| Cinema | ฉากภาพเต็มจอใน document flow | display ใหญ่ + caption เงียบ | parallax ที่ผูก native scroll | เปิดเรื่อง → เดินทาง → ช่วงพัก → คำสัญญา |
+| Stars | แผนที่ดาวอิสระ; ไม่มีลำดับบังคับ | แสงชื่อเรื่อง + readout ด้านล่าง | line connection / selected star | สงสัย → สำรวจ → เห็นภาพรวม |
+| Garden | สนามดอกไม้; เก็บได้อิสระ | botanical serif + ป้ายดอกไม้ | bloom scale / bouquet assembly | ดูแล → สะสม → มอบให้ |
+| Capsule | กล่องสามมิติและสิ่งของต่างชนิด | box stamp + tag ผู้รับ | lid rotation / object reveal | เปิดของเก่า → จดจำ → พบของลับ |
+| Scrapbook | desktop สองหน้า, mobile หน้าตั้ง | ลายมือไม่สมมาตร + เลขหน้า | page turn / mask peel | จับต้อง → เปิดดู → เก็บรูป |
+| World | แผนที่ geographic + สถานที่ต่อกัน | sans ชัด + ป้ายสถานที่ | scroll glide / stamp state | ออกเดิน → สำรวจ → กลับบ้าน |
+| Choose | คำถามใหญ่และทางเลือก; แตกแขนง | sans หนัก + คำกริยาขนาดใหญ่ | responsive state transition | ตัดสินใจ → มีส่วนร่วม → ตอนจบของตัวเอง |
+| Diary | date index + บันทึกคนละ composition | date serif + หัวข้อลายมือ | word mask / folded note | อ่านช้า ๆ → ย้อนวัน → พบความในใจ |
+| Constellation | เส้นทางอิสระ + time control | sans + ตัวเลขเวลาเด่น | stroke progression / time scrub | ย้อนมอง → เชื่อมเหตุการณ์ → รู้สึกเป็นเรา |
+| Surprise | ห่อของขวัญ → ฉากเฉลย | display มากขึ้นตามจังหวะ | ribbon drag / curtains / finite confetti | สงบ → คาดหวัง → ประทับใจ |
+
+## 6. บันทึกแต่ละเทมเพลต
+
+### 01 — The Love Letter
+
+- **แนวคิด / ความต่าง:** จดหมายเป็นวัตถุหลักบนโต๊ะ ไม่มี gallery; จังหวะสำคัญคือการเปิดพื้นที่ส่วนตัวให้ผู้รับ
+- **Skills / เทคนิคจริง:** Frontend Design ใช้วัสดุกระดาษกับลายมือ; Emil ใช้ transform-origin บนฝาซองและ motion ที่ตอบการแตะ; Impeccable ใช้ลำดับการอ่านและความสงบ
+- **Runtime / interaction:** CSS flap + SVG seal, AnimatedGroup ที่ดัดแปลง; เปิดซอง อ่านข้อความหลายบรรทัด และเปิด ป.ล. ได้จริง
+- **ปัญหา / mobile:** ข้อมูล custom เคยส่งก่อน iframe พร้อม แก้ ready handshake; เพิ่มขนาดข้อความจดหมายและตรวจการเลื่อนบนมือถือ
+- **License / ต่อระบบ:** ต้นแบบเขียนเอง + MIT adaptation; เหมาะเป็นตัวแรกที่นำเข้าระบบด้วย CardData adapter หลังเพิ่มขั้นตอนเผยแพร่/เพลงจากระบบเดิม
+
+### 02 — Polaroid Memories
+
+- **แนวคิด / ความต่าง:** โต๊ะกับกองภาพ วนสำรวจได้โดยไม่บังคับลำดับ เปิดอ่านข้อความหลังรูปเป็นอีกมิติของเรื่อง
+- **Skills / เทคนิคจริง:** UI UX defaults ให้ปุ่มแทน gesture; Emil ให้ spring และ feedback; Impeccable ใช้ material hierarchy. ไม่คัดลอก React Bits
+- **Runtime / interaction:** Motion drag, CSS flip และ native dialog; ปัด/ลูกศร พลิกกลับ ขยายภาพ Escape ปิด และคืน focus
+- **ปัญหา / mobile:** contrast ของคำแนะนำต่ำ แก้แล้ว; note ยาวเคยถูกตัด แก้เป็น scroll region ที่ focus/End ได้ ผู้ตรวจแยกยืนยันทั้ง Chromium และ WebKit
+- **License / ต่อระบบ:** Motion MIT ไม่มี Commons Clause code; พร้อมคัดเลือกพัฒนาต่อ ควรลองแรงปัดบนเครื่องจริงก่อนเปิดขาย
+
+### 03 — Our Cinematic Journey
+
+- **แนวคิด / ความต่าง:** ฉากภาพเต็มจอและบทบรรยายที่สลับจังหวะ ไม่ใช้ลำดับการ์ดกริด
+- **Skills / เทคนิคจริง:** MengTo ใช้ scene beats และช่วงพัก; GSAP Skill ใช้ scrub/context cleanup; SvaraNova/Vercel รักษา native scroll และ static-readable content
+- **Runtime / interaction:** GSAP/ScrollTrigger โหลดเมื่อจำเป็น; เลื่อนเดินหน้า/ย้อนฉาก ใช้ chapter anchors และเปิดฉากสุดท้ายได้
+- **ปัญหา / mobile:** word wrapper เคยใช้ ARIA ไม่ตรง role แก้เป็นข้อความอ่านสำหรับ screen reader; ลด motion แล้วไม่มี parallax เนื้อหายังครบ
+- **License / ต่อระบบ:** ใช้ GSAP ที่มีอยู่แล้วภายใต้ license ของ package; ต้องเลือกภาพ cover/crop และลอง scroll บนอุปกรณ์จริงก่อนนำออกให้ลูกค้า
+
+### 04 — Written in the Stars
+
+- **แนวคิด / ความต่าง:** ท้องฟ้าแบบค้นหาอิสระ แตกต่างจาก Constellation ซึ่งขับเคลื่อนด้วยเวลา
+- **Skills / เทคนิคจริง:** Motion Design ใช้การตอบสนองจากการค้นพบ; SvaraNova ให้ fallback และเลี่ยง loop ไม่จำเป็น
+- **Runtime / interaction:** SVG เชื่อมดาวที่แตะ, readout รูป/ข้อความ, เก็บครบเปิดความลับ; Paper MeshGradient เป็น opt-in/static render
+- **ปัญหา / mobile:** ภาพเสียเคยทำให้ภาพถัดไปเสียตาม แก้ failedSource; Motion hook เดิมไม่อัปเดต OS preference สด แก้ native subscription แล้ว; controls ใช้ได้โดยไม่เปิด GPU
+- **License / ต่อระบบ:** Paper Apache-2.0 พร้อม NOTICE; ไม่ใช้ React Bits. ควรนำเข้าโดยปิด GPU เป็นค่าเริ่มต้นและตรวจ hardware จริงก่อนเปิดตัวเลือกนี้
+
+### 05 — The Secret Garden
+
+- **แนวคิด / ความต่าง:** การผลิบานคือความคืบหน้า ตอนจบเปลี่ยนสนามดอกไม้เป็นช่อที่มอบให้ผู้รับ
+- **Skills / เทคนิคจริง:** Frontend Design ใช้ระบบ botanical; Motion Design แยก anticipation, bloom และ reward โดยไม่เล่น animation ตลอดเวลา
+- **Runtime / interaction:** SVG ดอกไม้เปลี่ยน state ด้วย CSS, แตะอ่านความทรงจำ เก็บครบแล้วผูกเป็นช่อ
+- **ปัญหา / mobile:** เพิ่ม contrast ป้ายดอกไม้; ปรับตำแหน่งเมื่อมี 5–8 ความทรงจำ ทดสอบครบ 8 ดอกและเปิดตอนจบจริง
+- **License / ต่อระบบ:** SVG เขียนเอง; Lottie ศึกษาแต่ไม่ได้ใช้หรืออ้าง Skottie verification. เหมาะพัฒนาต่อสำหรับวันครบรอบ/ขอบคุณหลังลอง touch targets บนเครื่องจริง
+
+### 06 — The Time Capsule
+
+- **แนวคิด / ความต่าง:** เรื่องผ่านสิ่งของต่างชนิดในกล่อง เลือกหยิบตามใจแทนการไล่รูป
+- **Skills / เทคนิคจริง:** Motion Design ใช้ curiosity/reveal; Emil ใช้ origin ของฝา; Impeccable แยก tag, วัตถุ, readout เป็นลำดับชัดเจน
+- **Runtime / interaction:** CSS 3D lid, SVG keepsakes, adapted AnimatedGroup; เก็บสิ่งของและเปิดช่องลับใต้กล่อง
+- **ปัญหา / mobile:** แก้ contrast บนสีน้ำตาลและขยายกล่องเมื่อมี 8 ชิ้น; ตรวจการหยิบครบจริง ไม่ใช้ปุ่มลวง
+- **License / ต่อระบบ:** native code + MIT AnimatedGroup; ต้องให้ editor ระบุชนิด/ชื่อ keepsake ได้ละเอียดขึ้นก่อนเป็นสินค้าจริง
+
+### 07 — Our Scrapbook
+
+- **แนวคิด / ความต่าง:** หน้าสมุดที่วางรูปกับข้อความไม่สมมาตร มีจุดปิดทับให้ลอกเทป แทนการเปิดอัลบั้มลำดับเดิม
+- **Skills / เทคนิคจริง:** MengTo ใช้ mask reveal, Frontend Design ใช้วัตถุทำมือ, UI UX defaults ให้ปุ่มแทนการปัด
+- **Runtime / interaction:** CSS mask, Pointer Events, word reveal; ปัด/ปุ่มพลิกหน้า ลอกเทป อ่านหน้าสุดท้ายและย้อนกลับ
+- **ปัญหา / mobile:** native Chromium เคยส่ง pointercancel ให้ horizontal swipe; ตรวจแบบเปลี่ยน CSS ค่าเดียวแล้วแก้ `touch-action:pan-y` โดยยังเลื่อนแนวตั้งได้; แก้ contrast บนเทป
+- **License / ต่อระบบ:** เขียนเอง/แนวทาง MIT ไม่มี React Bits; พร้อมคัดเลือก ต้องพิจารณาความต่างจาก Little Memories ใน catalog จริงก่อนวางขาย
+
+### 08 — Our Little World
+
+- **แนวคิด / ความต่าง:** สถานที่เป็นตัวนำเรื่องในแผนที่เดียว ผู้ชมกระโดดไปจุดหมายหรือเดินผ่านด้วย scroll
+- **Skills / เทคนิคจริง:** MengTo เลือก HTML/SVG mode, GSAP ให้ cloud parallax แบบเล็ก, Motion Design ใช้ stamp เป็นผลตอบรับ
+- **Runtime / interaction:** authored SVG map, native scroll, IntersectionObserver; แตะ pin ไปยังสถานที่และเก็บตราครบเพื่อพบข้อความท้ายเรื่อง
+- **ปัญหา / mobile:** test เดิมค้นชื่อปุ่มก่อนเปลี่ยน state แม้ pin เก็บสถานที่นั้นแล้ว แก้ locator ให้ทดสอบ idempotency; แก้ contrast ของข้อความกลับบ้าน
+- **License / ต่อระบบ:** ไม่มี Three.js หรือบริการแผนที่; ต้องเพิ่ม editor สำหรับชื่อสถานที่/ตำแหน่งและตรวจภาพรวม 8 จุดบนมือถือจริงก่อน promote
+
+### 09 — Choose Our Story
+
+- **แนวคิด / ความต่าง:** ผู้ชมมีผลกับตอนจบ ไม่ใช่เพียงเลื่อนเปิดเนื้อหาที่กำหนดไว้
+- **Skills / เทคนิคจริง:** Motion Design ให้ทางเลือกมีผลตอบรับทันที; Vercel ให้ state เฉพาะ interaction และ lazy component
+- **Runtime / interaction:** adapted native Button/AnimatedGroup; สองคำถามสร้างสี่ตอนจบที่ทดสอบครบ ย้อนคำตอบและเริ่มใหม่ได้
+- **ปัญหา / mobile:** final progress group เคยมี label บน generic div แก้ role ที่ถูกต้อง; แก้ contrast คำแนะนำท้ายหน้า
+- **License / ต่อระบบ:** MIT API/source adaptations พร้อม notice ไม่ติดตั้งชุด shadcn เต็ม; ต้องทำ authoring schema สำหรับคำถาม/ผลลัพธ์ก่อนให้ลูกค้าปรับเส้นเรื่องเอง ปัจจุบัน branch copy เป็น narrative ของต้นแบบ
+
+### 10 — A Diary of Us
+
+- **แนวคิด / ความต่าง:** date index สำหรับกลับมาอ่านซ้ำ หน้าภาพ/ข้อความเปลี่ยน composition ตามบันทึก ไม่ใช้ timeline ของการ์ดหน้าตาเดียวกัน
+- **Skills / เทคนิคจริง:** MengTo staggered words ผ่าน mask; Emil ให้ motion เล็กและ readable; Impeccable ใช้ hierarchy ของวันที่กับเนื้อหา
+- **Runtime / interaction:** Words ใช้ `Intl.Segmenter('th')`, IntersectionObserver และ CSS; เลือกวัน เปิด/พับโน้ต และย้อนอ่าน
+- **ปัญหา / mobile:** แก้ contrast วันที่และ ARIA ของข้อความแยกคำ; mobile เปลี่ยน index เป็นแถบเลื่อนแนวนอนที่กดได้
+- **License / ต่อระบบ:** own Words + MIT AnimatedGroup; พร้อมคัดเลือกและใช้ข้อมูล photo.date ของระบบเดิมได้ ต้องเพิ่ม fallback หากจะรองรับ WebView เก่าที่ไม่มี Intl.Segmenter
+
+### 11 — Constellation of Moments
+
+- **แนวคิด / ความต่าง:** แผนภาพเส้นทางของเวลา ไม่ใช่ท้องฟ้าค้นหาอิสระแบบ 04; แกนหลักเป็นช่วงเวลาที่ควบคุมได้
+- **Skills / เทคนิคจริง:** UI UX defaults ให้ range/keyboard และปุ่มแทนการลาก; SvaraNova/Motion Design ใช้เส้นทางเชื่อมเหตุและผล
+- **Runtime / interaction:** SVG stroke, native range, dialog; Home/End/Arrow/ปุ่มช่วงถัดไป เปลี่ยนข้อความ เปิดรายละเอียด และถึงบทสรุป
+- **ปัญหา / mobile:** เก็บข้อความไว้ใน DOM และใช้ label/value text ให้ slider; ไม่มี canvas loop หรือการปรับมุมมองที่แย่งการเลื่อนหน้า
+- **License / ต่อระบบ:** native code; ไม่อ้าง Paper/GSAP เพราะไม่ได้ใช้ในเทมเพลตนี้ ต้องให้ลูกค้าจัดลำดับ/วันที่และตรวจจุดที่อยู่ใกล้กันก่อน promote
+
+### 12 — The Grand Surprise
+
+- **แนวคิด / ความต่าง:** สามจังหวะสงบ → คาดหวัง → เปิดเผย ผ่านห่อของขวัญแทนการใช้ confetti ทุกหน้า
+- **Skills / เทคนิคจริง:** Frontend Design ให้ข้อความโตตาม climax; Emil ใช้ pointer capture และ motion ที่ตอบ gesture; Motion Design ให้ anticipation/reward
+- **Runtime / interaction:** Pointer Events, CSS curtain และ confetti รอบเดียว; ลากริบบิ้นหรือใช้ปุ่ม เปิดเฉลย และเล่นใหม่ได้
+- **ปัญหา / mobile:** ป้องกัน pointer ตัวที่สองแทรกระหว่างลาก; still/reduced motion ไม่มี confetti/ม่านเคลื่อนแต่ยังพบข้อความและเล่นซ้ำได้
+- **License / ต่อระบบ:** authored SVG/CSS ไม่อ้างการใช้ Lottie; เหมาะเป็นตัวลำดับต้นสำหรับวันเกิด โดยใช้เพลง/การแชร์ของระบบจริงในขั้น integration แยก
+
+## 7. QA และหลักฐาน
+
+Test source: `tests/lab/interactions.lab.ts`, `tests/lab/edge-cases.lab.ts` · Config: `playwright.lab.config.ts`
+
+ทดสอบ UI จริง ไม่ใช่เฉพาะ mount: การเปิด/เก็บ/เลือก/ย้อนกลับ/รีเซ็ต, สี่ branch endings, dialog Escape, slider keyboard, custom data, invalid JSON, ภาพเสียแล้วเปลี่ยนภาพ, note ยาว, 8 memories, drag/swipe/ribbon และ shader opt-in/unmount/live preference
+
+โปรเจกต์ browser:
+
+| Project | Viewport | สิ่งที่ยืนยันได้ |
+|---|---|---|
+| 360 | 360×800 Chromium | narrow layout และ interaction |
+| 390 | 390×844 Pixel 7 emulation | layout, touch tap และ CDP touch gesture |
+| 768 | 768×1024 Chromium | tablet-sized viewport; ไม่ใช่ tablet จริง |
+| desktop | 1280×900 Chromium | mouse/keyboard และ desktop composition |
+| webkit | 390×844 iPhone emulation | WebKit + tap, button fallback; drag ใช้ mouse automation ไม่ใช่นิ้วบน iPhone จริง |
+
+ทุกแบบตรวจ axe WCAG A/AA tags ใน interaction state ปลายทางและ alternate/reduced-motion state; ไม่ใช่ใบรับรอง accessibility หรือผล screen-reader testing จริง. ตรวจไม่มี horizontal overflow และไม่อนุญาต outbound requests ในชุดหลัก. รูป/ฟอนต์ sample self-hosted
+
+ประวัติปัญหาและการยืนยันจากผู้ตรวจแยก: [creative-lab-review.md](docs/evidence/creative-lab-review.md). เก็บ exploratory failures แยกจาก final acceptance ไม่รวม rerun เป็นจำนวน test cases ใหม่
+
+### คำสั่งและผลที่รันจริง
+
+| Command / mode | ผล |
+|---|---|
+| `npm run typecheck` | PASS |
+| `npm run build` | PASS, ใช้ config เว็บจริง |
+| `npm run test:api` | **61 passed**, local unit/workerd ไม่มี Cloudflare production proof |
+| `npm test` / default build | **84 passed, 66 skipped** ตาม opt-in gates ของ suite เดิม |
+| V3 test-only build แล้ว `npx playwright test tests/media-v3.spec.ts tests/r2-acceptance.spec.ts` | **39 passed** ในรอบเต็มล่าสุด; ก่อนหน้านั้นมี WebKit Little Memories publish timeout หนึ่งครั้งและ isolated rerun ผ่าน |
+| `AUDIT=1 VITE_R2_MEDIA_ENABLED=true npx playwright test tests/system-audit.spec.ts` | **18 passed, 1 failed, 8 did not run**; WebKit Pink Coquette ไม่ได้ share sheet หลัง publish, มี `media_v3_error`. เป็น exploratory suite ของ source เดิมที่ไม่ถูกแก้ ยังไม่ถือว่าปิดปัญหา |
+| `npm run lab:build` | PASS, แยก output และ chunks |
+| `npm run test:lab` | ดู final acceptance block / evidence JSON ด้านบน |
+| `npm run lab:capture` | ภาพจริง mobile/desktop และ opened states; รายการ/แฮชใน `previews/screenshots.json` |
+| `node scripts/check-template-lab-isolation.mjs` | ดู final evidence; ตรวจ production output ไม่มี Lab |
+
+การทดสอบ V3 ใช้ genuine local workerd bindings และ mocked browser routes ตาม suite เดิม ไม่ใช่การเปิด Cloudflare staging/production. ไม่มีการแก้ code/backend เพื่อกลบผล exploratory audit และไม่เรียกรวม regression ทั้งหมดว่า PASS. หลังทดสอบ restore build ปกติ ไม่ใช้ test Turnstile key ใน artifact ที่ตั้งใจส่งต่อ
+
+### Performance และ loading
+
+`scripts/measure-template-lab.mjs` บันทึก [creative-lab-performance.json](docs/evidence/creative-lab-performance.json): local built preview, Chromium Pixel 7 emulation 390×844, 4× CPU throttle, หน้าต่อเนื่อง/cache อุ่นหลังหน้าแรก, frame window ประมาณ 900ms ต่อแบบ. เป็น diagnostic sample ไม่ใช่การรับรอง 60fps, mobile hardware, battery หรือ network capacity
+
+<!-- FINAL_PERFORMANCE -->
+บันทึกค่ารอบสุดท้ายหลัง acceptance; รายงาน long tasks ตามจริง ไม่ใช้ตัวเลข wall time แทน CPU
+<!-- /FINAL_PERFORMANCE -->
+
+Lab main JS ประมาณ **122.5 kB gzip** รวม React/Motion; CSS ทุกเทมเพลตประมาณ **12 kB gzip**. Template chunks ราว 0.9–2 kB gzip ต่อแบบ; GSAP + ScrollTrigger ราว 45 kB gzip โหลดเฉพาะ cinematic/world เมื่อมี motion; Paper chunk ราว 8.3 kB gzip โหลดหลัง opt-in เท่านั้น. ตัวเลขจาก Vite build รอบนี้ ไม่ใช่ขนาดเพิ่มของเว็บ production ซึ่งไม่ได้ import Lab
+
+รูปประกอบสี่ภาพรวมประมาณ 1.26 MB ที่ 1200px, โหลดตามหน้า/ใช้ lazy loading เมื่อเหมาะสม; ฟอนต์เฉพาะ Latin/Thai รวมประมาณ 141 kB self-hosted. กำหนดมิติภาพและขนาดพื้นที่ล่วงหน้า, จำกัด confetti, ไม่มี infinite animation loop ในค่าเริ่มต้น, fallback เมื่อภาพโหลดไม่สำเร็จ/GPU ไม่พร้อม และ cleanup listeners/observers/tweens
+
+## 8. License และขอบเขตการนำไปใช้
+
+เก็บ MIT notices สำหรับ source adaptations, Paper Apache License/NOTICE และ OFL fonts ใน [public/licenses](template-lab/public/licenses). ภาพประกอบอยู่ภายใต้ [Unsplash License](https://unsplash.com/license) พร้อม source URL/hash ใน [asset-sources.json](template-lab/public/asset-sources.json) ใช้เป็นภาพทดลอง ไม่มีการอ้างว่าคือภาพคู่รัก/ลูกค้าจริง ห้ามนำภาพ stock ไปขายเป็น asset pack โดยลำพัง
+
+ไม่มี React Bits component/export ที่เสี่ยงต่อ template redistribution; ไม่มีการซื้อ Pro, ใช้ generation credits, เพิ่ม infrastructure, เปลี่ยน billing หรือเปิดบริการ paid
+
+## 9. สิ่งที่ยังไม่ได้ยืนยัน / ก่อน Production
+
+1. ยังไม่ได้ทดสอบเครื่อง iPhone/Android จริง, VoiceOver/TalkBack, LINE in-app browser หรือ user study; ต้องทดลองแรงปัด การอ่านข้อความ และอุปกรณ์สมรรถนะต่ำกับข้อมูลจริงที่ได้รับอนุญาตก่อน promote
+2. Lab ไม่ใช่ระบบ auth: loopback และการไม่รวมใน `dist` คือขอบเขตปัจจุบัน `noindex` ไม่ใช่การป้องกันสิทธิ์ ห้าม deploy `dist-lab` สาธารณะโดยถือว่าปลอดภัยเพราะซ่อนลิงก์
+3. Skills บางส่วนใช้ด้วยการอ่าน/ปรับคำแนะนำ ไม่ใช่ CLI ทั้ง workflow; Lottie และ React Bits ไม่ได้ runtime trial ตามเหตุผลใน matrix
+4. JSON config ยังเป็นเครื่องมือทีมภายใน; Choose มีเส้นเรื่องต้นแบบ, World มีตำแหน่ง/รูปทรงแผนที่กำหนดไว้ ไม่ใช่ authoring tool ที่ให้ลูกค้าแต่งได้ทุกจุด
+5. `Intl.Segmenter` ต้องมี fallback หากจะรองรับ WebView เก่ากว่ากลุ่ม browser ที่ทดสอบ
+6. เพลง การแชร์ LINE การบันทึก/แก้ไข/หมดอายุ และ V3 uploads ของ **ต้นแบบใหม่** ยังไม่ได้เชื่อมระบบจริง; ไม่อ้าง production acceptance จากการทดสอบ prototype. ระบบเดิมไม่ได้ถูกเปลี่ยน
+7. Exploratory system audit เดิมบน WebKit ยังมี publish failure ตามตาราง ไม่ซ่อนหรือถือว่าเป็นผลผ่าน; แยก triage ในงานระบบเดิมก่อน rollout ที่เกี่ยวข้อง
+8. CI ใหม่ตรวจ Lab และ upload evidence เท่านั้น ยังไม่มี deploy job. สถานะ CI ที่ exact commit ตรวจแยกจากผล local ไม่อ้างว่าผ่านก่อน run เสร็จ
+
+## 10. แนะนำลำดับพัฒนาต่อ
+
+**The Love Letter → Polaroid Memories → The Grand Surprise**: interaction เข้าใจง่ายเหมาะกับ touch, ข้อมูลใกล้ CardData เดิม และไม่ต้องพึ่ง GPU/scroll orchestration. Garden เหมาะเป็นตัวเลือกเพิ่มสำหรับวันครบรอบ ส่วน Cinema/World/Stars ควรผ่านการทดสอบอุปกรณ์จริงเพิ่มก่อน
+
+ขั้นต่อไปคือให้ทีมลองเล่นและเลือกแบบที่จะนำเข้า editor จากนั้นทำ integration เฉพาะแบบที่เลือก รวมเพลง/preview/share/retention tests และ review ก่อนเผยแพร่. ไม่จำเป็นต้องสร้าง Marketplace หรือรื้อระบบเทมเพลตตอนนี้

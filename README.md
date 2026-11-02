@@ -78,6 +78,14 @@ The Worker now advertises supported themes at `/health`. Frontend deployment wai
 for the anniversary capability so the new editor cannot go live before the updated
 Worker. Both existing deployment workflows are triggered when this feature merges.
 
+**Short film mode.** The cover and the last page offer "ดูเป็นหนังสั้น": a 9:16 film
+(book opening, names, day counter, each photo as a Polaroid, film strip, the letter written
+line by line, collage, end card) built from the card's own data with GSAP and a synthesized
+music box (`src/anniversary/Movie.tsx`, `movieTimeline.ts`, `musicBox.ts`). The film and GSAP
+load only when someone presses play (about 32 kB gzipped). With reduced motion it plays as
+gentle fades. The same film exists as a HyperFrames project for rendering MP4s on the
+`claude/our-story-film` branch (`film/our-story/`).
+
 Tests cover anniversary dates, leap days, photo ordering, preview handoff, saved-card
 loading, letter/PIN interactions, error states, catalog links, and an in-memory D1
 round-trip through the real Worker. No production cards are written during tests.

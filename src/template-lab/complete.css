@@ -384,10 +384,9 @@
 
 /* The completed sky opens into a quiet observatory, with a way back outside. */
 .star-portrait {
-  position: absolute;
+  position: relative;
   width: 95px;
-  left: 42%;
-  top: 42%;
+  margin-top: 24px;
   border: 1px solid #d5bf8c;
   padding: 7px;
   border-radius: 50%;

@@ -75,13 +75,13 @@ export default function Stars({ story }: { story: Story }) {
           )}
         </h1>
         <p>{story.intro || 'แตะดาวสักดวง มีความทรงจำรออยู่'}</p>
-      </header>
-      <div className="star-map" aria-label="ท้องฟ้าความทรงจำ">
         {story.cover && (
           <div className="star-portrait">
             <MemoryView moment={coverMoment(story)} />
           </div>
         )}
+      </header>
+      <div className="star-map" aria-label="ท้องฟ้าความทรงจำ">
         <svg
           viewBox="0 0 100 100"
           preserveAspectRatio="none"

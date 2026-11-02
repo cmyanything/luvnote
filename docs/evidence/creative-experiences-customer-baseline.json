@@ -1,0 +1,308 @@
+{
+  "checkedAt": "2026-11-02T05:37:08.428Z",
+  "build": "repository production frontend vars, read-only static assets",
+  "checks": [
+    {
+      "path": ".nojekyll",
+      "status": 404,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matchesLive": false,
+      "note": "Pages marker; not served as a public route"
+    },
+    {
+      "path": "admin/index.html",
+      "status": 200,
+      "sha256": "2d9672aab08a466fd8641257c953b44b2cb421bfde045f645fc8b1c50acf6f80",
+      "matchesLive": false,
+      "liveSha256": "e4754a6966fde16ea839b45e1b2de9e5ff96630c2f0267db8188df4f7d91fcc6",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "app/index.html",
+      "status": 200,
+      "sha256": "7041c7612d0d29085af8e09e3369ea27a21c0e7e9f5fef6b574b906a2df1f04b",
+      "matchesLive": false,
+      "liveSha256": "dfd9cdb1207c147e768d68b116c159227051ce01b94e9e6fd2879d858ae707ec",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "assets/anniversary-card-C1lEMhvj.js",
+      "status": 200,
+      "sha256": "93127a7f378df9d4a9b154ef30b113c31395640feba7b37b688b1a6dd818f0ef",
+      "matchesLive": true,
+      "liveSha256": "93127a7f378df9d4a9b154ef30b113c31395640feba7b37b688b1a6dd818f0ef",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "assets/anniversary-card-C_FVWsGe.css",
+      "status": 200,
+      "sha256": "befe7021bfb9511151c2a4c749c29fcabf6c6d8334848abfaa7182959f44c3b7",
+      "matchesLive": true,
+      "liveSha256": "befe7021bfb9511151c2a4c749c29fcabf6c6d8334848abfaa7182959f44c3b7",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "assets/main-DT-9bCOm.js",
+      "status": 200,
+      "sha256": "ce029bf0f9238533a7cc0436f4247cbcd46b2d40b0bab4cd537ef812445c3a4f",
+      "matchesLive": true,
+      "liveSha256": "ce029bf0f9238533a7cc0436f4247cbcd46b2d40b0bab4cd537ef812445c3a4f",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "assets/main-R7HSOh5u.css",
+      "status": 200,
+      "sha256": "48b921db3789cdfe1c4550fb6d5afd81461d45cde920bc0aac6738cedffe634b",
+      "matchesLive": true,
+      "liveSha256": "48b921db3789cdfe1c4550fb6d5afd81461d45cde920bc0aac6738cedffe634b",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "assets/Movie-ChBPoml_.js",
+      "status": 200,
+      "sha256": "29dbd832c0855a587f6820488e212146299abd18e5c38c53e0c6ed20e037989e",
+      "matchesLive": true,
+      "liveSha256": "29dbd832c0855a587f6820488e212146299abd18e5c38c53e0c6ed20e037989e",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "assets/Movie-XTKNR66R.css",
+      "status": 200,
+      "sha256": "55c7a4b4308ce1c9aaa2c38b5311c8d7648a95b8bc2fc016cf1acc6405da1615",
+      "matchesLive": true,
+      "liveSha256": "55c7a4b4308ce1c9aaa2c38b5311c8d7648a95b8bc2fc016cf1acc6405da1615",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "assets/useModal-CRwibxRu.js",
+      "status": 200,
+      "sha256": "92988e9cb5553db42f789d3b9ac1a355f35de10b9b278a178262c4d4bd4f8fab",
+      "matchesLive": true,
+      "liveSha256": "92988e9cb5553db42f789d3b9ac1a355f35de10b9b278a178262c4d4bd4f8fab",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "CNAME",
+      "status": 200,
+      "sha256": "33d8aa761ee9f7be5de25648e9bc3ce59c81041b4b05b01a6ed28d07c2317359",
+      "matchesLive": true,
+      "liveSha256": "33d8aa761ee9f7be5de25648e9bc3ce59c81041b4b05b01a6ed28d07c2317359",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "adfe05fa250f65f0af3a50d5e41e9e8c573d2d339a7c245c23bc0ac67c301b96",
+      "matchesLive": false,
+      "liveSha256": "36f08f30d9da263c9e3844dcddde051db664694d0ef75b6a6165c7a1d337e81e",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "intro-preview.html",
+      "status": 200,
+      "sha256": "2d4cb94c17924b853b9fdd901c5a6e2a101b447667a66cb39607fb1bc03f6b50",
+      "matchesLive": false,
+      "liveSha256": "bd44ab6adfc26f1a41fed3f0ace6b4c75de1d507776564c9073aa2c2a34d6977",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "themes/anniversary-journey/card.html",
+      "status": 200,
+      "sha256": "b39a5386bccdb1081f8fc2b7b8019b14da7718f0f124a3a36a29649514296037",
+      "matchesLive": false,
+      "liveSha256": "d40cc2a673b30afa6152a46ce83214d4b6e2dd18b55e0604f589a5037c85baf7",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "themes/anniversary-journey/index.html",
+      "status": 200,
+      "sha256": "c343d498e10cc14c62bca31cb4440cf0a0b31aee70b255241942c8e9429bf80b",
+      "matchesLive": false,
+      "liveSha256": "6ec5a5c4c746c44f17dab17f4bb73bea970fcc26530a0c7a6620bab8c11d9991",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "themes/birthday-chat/card.html",
+      "status": 200,
+      "sha256": "c4cfc2032aa9672b1b852ffc030e4befac79ebddee607f2f02a7290ef6c3a0fb",
+      "matchesLive": false,
+      "liveSha256": "56b9b6d35f8a89ca134a2a196577392f2163c3a6b60b44d7325cc1299240374c",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "themes/birthday-chat/index.html",
+      "status": 200,
+      "sha256": "490014e8cc8a50f358273eaa86e789f2a850254a85226988f89b8f6ad7186147",
+      "matchesLive": false,
+      "liveSha256": "1d183f63201652e642f9f8fabdb458f1204aef7726e14ab9094e26cb8dc581b2",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "themes/coquette-dream/card.html",
+      "status": 200,
+      "sha256": "d3258999a11e3c5279adae5c57d021b4da4e7d3d4919ed0a6b2b30b0f6578626",
+      "matchesLive": false,
+      "liveSha256": "4e08e474cf230ddaac6a35dba55537b030bccfe31b2ee4fc6054050b6c461493",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "themes/coquette-dream/index.html",
+      "status": 200,
+      "sha256": "ef5d8b50112eac4b2a106b043a35c20b53c2d3fe556147b22cd7ecb6cab05a2e",
+      "matchesLive": false,
+      "liveSha256": "0a36d6cf17ee50c4b90fa0e7a758c469503bfa8a999f05363ce86bd8907a540c",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "themes/little-memories/card.html",
+      "status": 200,
+      "sha256": "8371754d979fff6cb8e18c77ecf345aae678627e1ca1ff5e47978f1b56087c52",
+      "matchesLive": false,
+      "liveSha256": "939ded67f0524020446a8a1ed561b691eae323a5cf2de6a70992dec4e4f9d41e",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "themes/little-memories/index.html",
+      "status": 200,
+      "sha256": "7a1ffe61737d988c0714d3d67cc4b6de4ff9da030b555b67410c996f56a3602e",
+      "matchesLive": false,
+      "liveSha256": "5cb28f8d79ebd1007c44d217c76aa6dce26f241e76820074bb4056545df1c4c1",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "themes/pink-coquette/card.html",
+      "status": 200,
+      "sha256": "fb6105c87cd8a9f4df72bb86e9d251d739db6e4860062a8dbf014d5a4ddc6279",
+      "matchesLive": false,
+      "liveSha256": "8485150fbcb300bacb0d4577f6e6c1f374fd397f1fbcee03c34d5dbbb44a5110",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "themes/pink-coquette/index.html",
+      "status": 200,
+      "sha256": "f8920d7ba7893b74a36315301300fdafbc23a54fd59378b89896743ff7648fe0",
+      "matchesLive": false,
+      "liveSha256": "eceb6569f5294c86e853a1cb8806c12937d0897fc8f726cdef2017e16da39662",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "themes/velvet-gift/card.html",
+      "status": 200,
+      "sha256": "c53251acce1814a8eb822f6994bc79de60b339fd10acb970021654455038d068",
+      "matchesLive": false,
+      "liveSha256": "d5667a456681f7969da2956b2799eae8f9939b3150b0123ceea4116e7b475a97",
+      "matchesNormalizedLF": true
+    },
+    {
+      "path": "themes/velvet-gift/index.html",
+      "status": 200,
+      "sha256": "b74ec61e285cc8eb60d3616c4583fed45aff53920a565cf25ee151d2667507fe",
+      "matchesLive": false,
+      "liveSha256": "bded2a2f413eee4b14fae64a18896627f7f4c25a3de1c94bcca4d6d16d55d426",
+      "matchesNormalizedLF": true
+    }
+  ],
+  "note": "Windows CRLF checkout and Vite output retain carriage returns in copied/transformed HTML. Removing CR confirms content equality, separately from byte equality. Linux deployment artifact must be checked before updating the live Lab.",
+  "lfArchiveVerification": {
+    "source": "ee073903d3ee0c50cc5b3955179d74a2faf09061",
+    "method": "git -c core.autocrlf=false archive HEAD, build with repository production vars, SHA256 compare to live public static bytes",
+    "checks": [
+      {
+        "path": "admin/index.html",
+        "matchesLive": true
+      },
+      {
+        "path": "app/index.html",
+        "matchesLive": true
+      },
+      {
+        "path": "assets/anniversary-card-C1lEMhvj.js",
+        "matchesLive": true
+      },
+      {
+        "path": "assets/anniversary-card-C_FVWsGe.css",
+        "matchesLive": true
+      },
+      {
+        "path": "assets/main-DT-9bCOm.js",
+        "matchesLive": true
+      },
+      {
+        "path": "assets/main-R7HSOh5u.css",
+        "matchesLive": true
+      },
+      {
+        "path": "assets/Movie-ChBPoml_.js",
+        "matchesLive": true
+      },
+      {
+        "path": "assets/Movie-XTKNR66R.css",
+        "matchesLive": true
+      },
+      {
+        "path": "assets/useModal-CRwibxRu.js",
+        "matchesLive": true
+      },
+      {
+        "path": "CNAME",
+        "matchesLive": true
+      },
+      {
+        "path": "index.html",
+        "matchesLive": true
+      },
+      {
+        "path": "intro-preview.html",
+        "matchesLive": true
+      },
+      {
+        "path": "themes/anniversary-journey/card.html",
+        "matchesLive": true
+      },
+      {
+        "path": "themes/anniversary-journey/index.html",
+        "matchesLive": true
+      },
+      {
+        "path": "themes/birthday-chat/card.html",
+        "matchesLive": true
+      },
+      {
+        "path": "themes/birthday-chat/index.html",
+        "matchesLive": true
+      },
+      {
+        "path": "themes/coquette-dream/card.html",
+        "matchesLive": true
+      },
+      {
+        "path": "themes/coquette-dream/index.html",
+        "matchesLive": true
+      },
+      {
+        "path": "themes/little-memories/card.html",
+        "matchesLive": true
+      },
+      {
+        "path": "themes/little-memories/index.html",
+        "matchesLive": true
+      },
+      {
+        "path": "themes/pink-coquette/card.html",
+        "matchesLive": true
+      },
+      {
+        "path": "themes/pink-coquette/index.html",
+        "matchesLive": true
+      },
+      {
+        "path": "themes/velvet-gift/card.html",
+        "matchesLive": true
+      },
+      {
+        "path": "themes/velvet-gift/index.html",
+        "matchesLive": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "implementationCommit": "9991e805232ce7d1bd53f563082dca29e761e6bb",
+  "note": "Full 310-check baseline before adding the final undated-Diary regression; not a substitute for the final315 run",
+  "stats": {
+    "startTime": "2026-11-02T05:51:42.006Z",
+    "duration": 504566.77999999997,
+    "expected": 310,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

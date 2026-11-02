@@ -1,0 +1,11 @@
+{
+  "stats": {
+    "startTime": "2026-11-02T06:17:41.656Z",
+    "duration": 45742.087999999996,
+    "expected": 56,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "note": "Four browser projects, fourteen nested-route checks each, no external requests"
+}

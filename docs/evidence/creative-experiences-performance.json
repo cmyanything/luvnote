@@ -1,0 +1,178 @@
+{
+  "date": "2026-11-02T06:16:20.839Z",
+  "configuration": "Chromium Pixel 7 browser emulation, 390x844, 4x CPU throttle, local built preview; sequential samples with warm cache after first page, approximately 900ms frame windows. Default SVG/CSS paths only; no new shader benchmark in this run. No claim of physical mobile performance.",
+  "results": [
+    {
+      "id": "love-letter",
+      "cls": 0,
+      "lcpMs": 964,
+      "loadLongTasks": [
+        {
+          "start": 102.80000001192093,
+          "duration": 202
+        },
+        {
+          "start": 311.30000001192093,
+          "duration": 76
+        },
+        {
+          "start": 504.5,
+          "duration": 117
+        }
+      ],
+      "interactionLongTasks": [
+        {
+          "start": 1735.7000000178814,
+          "duration": 133
+        }
+      ],
+      "runningInfiniteAnimations": 0,
+      "frameSamples": 47,
+      "frameIntervalP95Ms": 16.700000000000273,
+      "framesOver34ms": 1
+    },
+    {
+      "id": "polaroid",
+      "cls": 0,
+      "lcpMs": 992,
+      "loadLongTasks": [
+        {
+          "start": 782,
+          "duration": 105
+        }
+      ],
+      "interactionLongTasks": [],
+      "runningInfiniteAnimations": 0,
+      "frameSamples": 52,
+      "frameIntervalP95Ms": 16.799999999999955,
+      "framesOver34ms": 1
+    },
+    {
+      "id": "cinema",
+      "cls": 0,
+      "lcpMs": 956,
+      "loadLongTasks": [
+        {
+          "start": 957.0999999940395,
+          "duration": 87
+        }
+      ],
+      "interactionLongTasks": [],
+      "runningInfiniteAnimations": 0,
+      "frameSamples": 53,
+      "frameIntervalP95Ms": 16.799999999999955,
+      "framesOver34ms": 0
+    },
+    {
+      "id": "stars",
+      "cls": 0,
+      "lcpMs": 792,
+      "loadLongTasks": [],
+      "interactionLongTasks": [],
+      "runningInfiniteAnimations": 0,
+      "frameSamples": 54,
+      "frameIntervalP95Ms": 16.700000000000045,
+      "framesOver34ms": 0
+    },
+    {
+      "id": "garden",
+      "cls": 0,
+      "lcpMs": 564,
+      "loadLongTasks": [],
+      "interactionLongTasks": [],
+      "runningInfiniteAnimations": 0,
+      "frameSamples": 54,
+      "frameIntervalP95Ms": 16.799999999999955,
+      "framesOver34ms": 0
+    },
+    {
+      "id": "capsule",
+      "cls": 0,
+      "lcpMs": 668,
+      "loadLongTasks": [],
+      "interactionLongTasks": [
+        {
+          "start": 837.3000000119209,
+          "duration": 60
+        }
+      ],
+      "runningInfiniteAnimations": 0,
+      "frameSamples": 51,
+      "frameIntervalP95Ms": 16.799999999999955,
+      "framesOver34ms": 1
+    },
+    {
+      "id": "scrapbook",
+      "cls": 0,
+      "lcpMs": 660,
+      "loadLongTasks": [],
+      "interactionLongTasks": [],
+      "runningInfiniteAnimations": 0,
+      "frameSamples": 53,
+      "frameIntervalP95Ms": 16.799999999999955,
+      "framesOver34ms": 0
+    },
+    {
+      "id": "world",
+      "cls": 0,
+      "lcpMs": 856,
+      "loadLongTasks": [],
+      "interactionLongTasks": [],
+      "runningInfiniteAnimations": 0,
+      "frameSamples": 54,
+      "frameIntervalP95Ms": 16.799999999999955,
+      "framesOver34ms": 0
+    },
+    {
+      "id": "choose",
+      "cls": 0,
+      "lcpMs": 828,
+      "loadLongTasks": [],
+      "interactionLongTasks": [
+        {
+          "start": 1125.0999999940395,
+          "duration": 50
+        }
+      ],
+      "runningInfiniteAnimations": 0,
+      "frameSamples": 52,
+      "frameIntervalP95Ms": 16.799999999999955,
+      "framesOver34ms": 1
+    },
+    {
+      "id": "diary",
+      "cls": 0,
+      "lcpMs": 548,
+      "loadLongTasks": [],
+      "interactionLongTasks": [],
+      "runningInfiniteAnimations": 0,
+      "frameSamples": 52,
+      "frameIntervalP95Ms": 16.799999999999955,
+      "framesOver34ms": 1
+    },
+    {
+      "id": "constellation",
+      "cls": 0,
+      "lcpMs": 788,
+      "loadLongTasks": [],
+      "interactionLongTasks": [],
+      "runningInfiniteAnimations": 0,
+      "frameSamples": 54,
+      "frameIntervalP95Ms": 16.799999999999955,
+      "framesOver34ms": 0
+    },
+    {
+      "id": "surprise",
+      "cls": 0,
+      "lcpMs": 580,
+      "loadLongTasks": [],
+      "interactionLongTasks": [],
+      "runningInfiniteAnimations": 0,
+      "frameSamples": 55,
+      "frameIntervalP95Ms": 16.799999999999955,
+      "framesOver34ms": 0
+    }
+  ],
+  "implementationCommit": "2f2c341d40acbe91ec6929b2f55c17c0750c0dd6",
+  "limitations": "Small local diagnostic samples after the full browser suite completed; not physical-device or sustained capacity certification."
+}

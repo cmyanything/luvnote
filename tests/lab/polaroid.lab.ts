@@ -22,6 +22,18 @@ async function open(page: Page) {
   await expect(page.locator('.pm-development')).toBeVisible();
 }
 
+test('polaroid: the photo stays visible under the reveal and its keepsake stays beside it', async ({page}) => {
+  await open(page);
+  const canvas = page.locator('.pm-development canvas');
+  await expect.poll(() => canvas.evaluate((element: HTMLCanvasElement) => element.getContext('2d')!.getImageData(1, 1, 1, 1).data[3])).toBeGreaterThan(0);
+  const alpha = await canvas.evaluate((element: HTMLCanvasElement) => element.getContext('2d')!.getImageData(1, 1, 1, 1).data[3]);
+  expect(alpha).toBeLessThan(255);
+  await expect(page.locator('.polaroid-table').locator('..').locator('.pm-treasure')).toHaveCount(1);
+  await page.getByRole('button', {name: /มีอะไรแอบอยู่ตรงนี้นะ/}).click();
+  await expect(page.locator('.pm-treasure-paper')).toBeVisible();
+  await expect(page.locator('.recipient-tools')).toHaveCSS('position', 'relative');
+});
+
 test('polaroid: real rub gesture, folded note, favorite and revisiting retain discoveries', async ({page,browserName,isMobile}) => {
   await open(page);
   const canvas=page.locator('.pm-development canvas');

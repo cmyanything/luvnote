@@ -293,3 +293,50 @@ html[data-still='true'] .pm-remembering .print-front { animation: none; }
 .pm-found-treasures li strong { display: block; font-size: 15px; font-weight: 400; line-height: 1.9; margin-top: 8px; }
 @media (prefers-reduced-motion: reduce) { .pm-surprise-sparkles i { animation: none; } }
 html[data-still='true'] .pm-surprise-sparkles i { animation: none; }
+
+/* A quieter table keeps the photo, controls and its little pocket together. */
+.recipient-tools:has(+ .polaroid-evening) { position: relative; inset: auto; justify-content: flex-end; padding: 12px 18px 0; margin-bottom: -12px; background: #c8d3c5; }
+.recipient-tools:has(+ .polaroid-evening) > button { box-shadow: none; }
+.recipient-tools:has(+ .polaroid-evening) .recipient-youtube { top: 54px; bottom: auto; }
+.polaroid-evening { background: #c8d3c5; }
+.polaroid-evening .polaroid-heading h1 { font-size: clamp(44px, 6vw, 78px); line-height: 1.05; }
+.pm-chapters { margin-block: 22px 32px; border-block-color: #9cad9c; }
+.pm-chapters button[aria-current] { background: #f4f2e6; color: #304c3e; border-radius: 30px; }
+.pm-scene-heading { margin-bottom: 16px; }
+.pm-scene-heading h2 { line-height: 1.45; }
+.pm-scene-heading p { line-height: 1.75; }
+.pm-desk { align-items: start; gap: 46px; }
+.pm-desk-note { margin-top: 80px; padding: 24px; background: #ede8d3; box-shadow: 0 8px 20px #34473216; }
+.polaroid-evening .polaroid-table { margin-top: 12px; }
+.polaroid-evening .polaroid-print { transition: transform 520ms cubic-bezier(.22, 1, .36, 1); }
+.pm-rub-hint { left: 50%; right: auto; bottom: 12px; width: max-content; max-width: calc(100% - 24px); transform: translateX(-50%); border-radius: 24px; background: #fffaf0e8; }
+.pm-develop-action { min-height: 36px; }
+.pm-develop-action button { min-height: 36px; }
+.polaroid-evening .polaroid-controls { margin-top: 8px; }
+.polaroid-evening .polaroid-controls .t-button { padding: 10px 18px; background: #f8f5e9; border-radius: 30px; }
+.pm-secondary-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 12px; margin-top: 8px; }
+.pm-secondary-actions .pm-revisit, .pm-secondary-actions .pm-save-favorite { width: auto; min-height: 44px; margin: 0; padding: 8px 9px; border: 0; background: transparent; color: #304c3e; border-radius: 0; font-size: 12px !important; }
+.pm-secondary-actions .pm-revisit > span:first-child { font-size: 18px; }
+.pm-secondary-actions .pm-save-favorite[aria-pressed='true'] { color: #874c43; }
+.pm-treasure { max-width: 330px; margin: 24px auto 0; padding: 12px; background: #d7c6a4; box-shadow: 0 8px 18px #3447321a; transform: rotate(1deg); }
+.pm-treasure-tab { min-height: 96px; border: 1px solid #e1d2b3; background: #f5edda; box-shadow: 0 2px 6px #66563b12; }
+.pm-treasure-paper { margin-top: -4px; padding: 16px; box-shadow: 0 5px 12px #66563b24; }
+.pm-remember-option { margin-top: 12px; }
+.polaroid-evening .polaroid-hint { margin-top: 24px; }
+.pm-returned-memories { background: #385547; }
+@media (max-width: 700px) {
+  .polaroid-evening { padding: 20px 20px 100px; }
+  .recipient-tools:has(+ .polaroid-evening) { padding: 10px 12px 0; }
+  .pm-chapters { display: flex; overflow-x: auto; gap: 4px; margin-block: 20px 24px; padding-block: 6px; scrollbar-width: none; }
+  .pm-chapters::-webkit-scrollbar { display: none; }
+  .pm-chapters button { flex: 0 0 auto; min-height: 44px; padding: 6px 12px; }
+  .pm-chapters button span { width: 22px; height: 22px; }
+  .pm-desk { gap: 20px; }
+  .pm-desk-note { width: 100%; margin-top: 0; padding: 18px 20px; }
+  .polaroid-evening .polaroid-table { margin-block: 16px 8px; }
+  .pm-treasure { margin-top: 20px; }
+  .polaroid-evening .polaroid-contact { gap: 10px; }
+  .polaroid-evening .polaroid-contact button { width: 62px; min-height: 78px; }
+}
+@media (prefers-reduced-motion: reduce) { .polaroid-evening .polaroid-print { transition: none; } }
+html[data-still='true'] .polaroid-evening .polaroid-print { transition: none; }

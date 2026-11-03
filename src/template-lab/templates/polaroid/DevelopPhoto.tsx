@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type PointerEvent } from 'react';
 
-/** Only a local opaque mask. Source photos never enter this canvas. */
+/** A translucent local veil. Source photos never enter this canvas. */
 export function DevelopPhoto({ onComplete }: { onComplete: () => void }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const active = useRef<number | null>(null);
@@ -10,7 +10,7 @@ export function DevelopPhoto({ onComplete }: { onComplete: () => void }) {
   const [progress, setProgress] = useState(0);
   useEffect(() => {
     const ctx = canvas.current?.getContext('2d');
-    if (ctx) { ctx.fillStyle = '#d1cbb9'; ctx.fillRect(0, 0, 300, 280); }
+    if (ctx) { ctx.fillStyle = 'rgba(209, 203, 185, 0.56)'; ctx.fillRect(0, 0, 300, 280); }
   }, []);
   function rub(event: PointerEvent<HTMLCanvasElement>) {
     if (active.current !== event.pointerId || completed.current) return;

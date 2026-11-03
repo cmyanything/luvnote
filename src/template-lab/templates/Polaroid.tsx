@@ -238,7 +238,7 @@ export default function Polaroid({ story }: { story: Story }) {
         <div className="pm-replay-scene">
           <Photo moment={moment} eager />
           <span className="pm-replay-date">{shortDate(moment.date) || 'วันหนึ่งของเรา'}</span>
-          <motion.div key={replayScene} className="pm-replay-words" initial={still ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }} aria-live="polite">
+          <motion.div key={replayScene} className="pm-replay-words" initial={still ? false : { y: 12 }} animate={{ y: 0 }} transition={{ duration: 0.45 }} aria-live="polite">
             <span className="hand">{replayScene === 0 ? 'ลองนึกภาพตัวเองกลับไปตรงนั้น' : replayScene === scenePages.length - 1 && moment.aside ? 'มีอีกอย่างที่อยากให้รู้' : `จากความทรงจำของ ${story.from}`}</span><p>{scenePages[replayScene]}</p>
           </motion.div>
           <div className="pm-replay-controls"><button disabled={replayScene === 0} onClick={() => setReplayScene((p) => Math.max(0, p! - 1))}>ย้อนกลับ</button><span role="img" aria-label={`ช่วงที่ ${replayScene + 1} จาก ${scenePages.length}`}>{scenePages.map((_, i) => <i key={i} className={i <= replayScene ? 'seen' : ''} />)}</span><button onClick={() => {

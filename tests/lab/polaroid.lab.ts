@@ -253,6 +253,7 @@ test('polaroid: memory screening shows every original paragraph, aside and close
   }
   await dialog.getByRole('button', {name:'แล้ววันนั้น…', exact:true}).click();
   await expect(dialog.locator('.pm-replay-words p')).toHaveText(polaroidDemo.moments[0].aside!);
+  await expect(dialog.locator('.pm-replay-words')).toHaveCSS('opacity', '1');
   const audit = await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
   expect(audit.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)}))).toEqual([]);
   await dialog.getByRole('button', {name:'เก็บวันนี้ไว้ในใจ', exact:true}).click();

@@ -31,6 +31,8 @@ export default function Polaroid({ story }: { story: Story }) {
   const [lastPrint, setLastPrint] = useState(false);
   const [remembered, setRemembered] = useState<Record<string, string>>({});
   const [remembering, setRemembering] = useState(false);
+  const [foundKeepsakes, setFoundKeepsakes] = useState<string[]>([]);
+  const [openKeepsakes, setOpenKeepsakes] = useState<string[]>([]);
   const [replayScene, setReplayScene] = useState<number | null>(null);
   const [notice, setNotice] = useState('');
   const [saving, setSaving] = useState(false);
@@ -42,6 +44,8 @@ export default function Polaroid({ story }: { story: Story }) {
   const selected = favorites.map((i) => story.moments[i]);
   const prompt = recollections[index % recollections.length];
   const echoes = story.moments.filter((m) => remembered[m.id]);
+  const foundItems = story.moments.filter((m) => foundKeepsakes.includes(m.id) && m.keepsake);
+  const hasKeepsakes = story.moments.some((m) => m.keepsake);
   const scenePages = [
     moment.place || moment.title,
     ...moment.note.split(/\n\s*\n/).filter(Boolean),
@@ -70,6 +74,14 @@ export default function Polaroid({ story }: { story: Story }) {
     setRemembered((items) => ({ ...items, [moment.id]: value }));
     develop();
     setRemembering(true);
+  }
+  function showKeepsake(id: string) {
+    setFoundKeepsakes(items => items.includes(id) ? items : [...items, id]);
+    setOpenKeepsakes(items => items.includes(id) ? items : [...items, id]);
+  }
+  function toggleKeepsake(id: string) {
+    if (openKeepsakes.includes(id)) setOpenKeepsakes(items => items.filter(item => item !== id));
+    else showKeepsake(id);
   }
   function flip() {
     develop();
@@ -130,19 +142,26 @@ export default function Polaroid({ story }: { story: Story }) {
           transition={{ duration: still ? 0 : 0.48, ease: MOTION.ease }}
           onAnimationComplete={() => { if (opening) setChapter(1); }}>
           <span className="pm-string horizontal" aria-hidden="true" /><span className="pm-string vertical" aria-hidden="true" />
-          <div className="pm-parcel-label">{story.cover && <img className="pm-parcel-cover" src={story.cover} alt={`ปกอัลบั้มถึง ${story.to}`} />}<span className="hand">เปิดเมื่อคิดถึงกัน</span><h2>ถึง {story.to}</h2><p>เก็บมาฝาก {story.moments.length} ความทรงจำ</p><span className="hand">— {story.from}</span></div>
+          <div className="pm-parcel-label">{story.cover && <img className="pm-parcel-cover" src={story.cover} alt={`ปกอัลบั้มถึง ${story.to}`} />}<span className="hand">กล่องนี้มีคนแอบคิดถึง</span><h2>ถึง {story.to}</h2><p>ข้างในมี {story.moments.length} ความทรงจำ<br />กับอะไรบางอย่างที่แอบซ่อนไว้</p><span className="hand">— {story.from}</span></div>
           <button className="pm-knot" onClick={openParcel} disabled={opening} aria-label="แกะห่อรูปความทรงจำ"><span aria-hidden="true" /><span aria-hidden="true" /><Icon name="heart" size={25} /></button>
         </motion.div>
-        <div className="pm-arrival-note"><p className="hand">มีบางวันที่เราอยากเก็บไว้ในมือ</p><p>ลากห่อเบา ๆ หรือแตะปมเชือกเพื่อเปิด<br />ให้เวลาตัวเองกับรูปกองนี้สักหน่อยนะ</p></div>
+        <div className="pm-arrival-note"><p className="hand">แกะเลย มีคนตั้งใจเก็บมาให้ ♡</p><p>ลากห่อเบา ๆ หรือแตะปมเชือกเพื่อเปิด<br />{hasKeepsakes ? 'ค่อย ๆ ค้นดูนะ มีของชิ้นเล็กซ่อนอยู่ด้วย' : 'ค่อย ๆ เปิดดูเรื่องของเราทีละรูปนะ'}</p></div>
       </section>}
 
       {chapter === 1 && <section className="pm-darkroom" aria-labelledby="pm-memory-heading">
-        <div className="pm-scene-heading"><h2 ref={heading} tabIndex={-1} id="pm-memory-heading">วันนั้น… ยังจำได้ไหม</h2><p>ไม่ต้องจำเหมือนกันทุกอย่างก็ได้ ลองนึกถึงวันนั้นในแบบของเธอ</p></div>
+        <div className="pm-scene-heading"><h2 ref={heading} tabIndex={-1} id="pm-memory-heading">ค้นกล่องความทรงจำกัน</h2><p>{hasKeepsakes ? 'ลูบรูป พลิกดูด้านหลัง แล้วลองค้นของชิ้นเล็กที่แอบเก็บไว้' : 'ลูบรูปให้ชัด แล้วพลิกดูเรื่องที่เขียนไว้ด้านหลัง'}</p></div>
         <div className="pm-desk">
-          <aside className="pm-desk-note"><span className="hand">ลองหลับตานึกถึง…</span><p>{moment.place || 'ที่ไหนก็พิเศษ เมื่อมีเราอยู่ด้วยกัน'}</p><span>{shortDate(moment.date) || 'วันหนึ่งที่อยากจำ'}</span>
-            <fieldset className="pm-recollection"><legend>{prompt.question}</legend>{prompt.options.map((option) => <button key={option} aria-pressed={remembered[moment.id] === option} onClick={() => remember(option)}>{option}</button>)}</fieldset>
-            <p className="pm-memory-privacy">เลือกได้ตามความรู้สึก ไม่มีคำตอบผิด<br />คำตอบอยู่ในหน้านี้ ไม่ได้ส่งให้ผู้ส่ง</p>
-            {remembered[moment.id] && <p className="hand pm-echo" role="status">เก็บความรู้สึกนี้ไว้แล้ว<br />เดี๋ยวเราจะได้เจอมันอีกครั้ง</p>}
+          <aside className="pm-desk-note"><span className="hand">จากวันนั้น…</span><p>{moment.place || 'ที่ไหนก็พิเศษ เมื่อมีเราอยู่ด้วยกัน'}</p><span>{shortDate(moment.date) || 'วันหนึ่งที่อยากจำ'}</span>
+            {moment.keepsake && <div className={`pm-treasure ${foundKeepsakes.includes(moment.id) ? 'is-found' : ''}`}>
+              <motion.button type="button" className="pm-treasure-tab" aria-expanded={openKeepsakes.includes(moment.id)} onClick={() => toggleKeepsake(moment.id)} drag="y" dragConstraints={{top:0,bottom:0}} dragElastic={0.2} onDragEnd={(_, info) => { if (info.offset.y < -30) showKeepsake(moment.id); }} style={{touchAction:'pan-x'}}>
+                <span className="pm-treasure-seal" aria-hidden="true">✦</span><span className="hand">{foundKeepsakes.includes(moment.id) ? 'เจอของชิ้นเล็กแล้ว!' : 'มีอะไรแอบอยู่ตรงนี้นะ?'}</span><span>{openKeepsakes.includes(moment.id) ? 'แตะเพื่อเก็บกลับ' : foundKeepsakes.includes(moment.id) ? 'แตะเพื่อหยิบดูอีกครั้ง' : 'ดึงขึ้น หรือแตะเพื่อหยิบออกมา'}</span>
+              </motion.button>
+              {openKeepsakes.includes(moment.id) && <motion.div className={`pm-treasure-paper pm-treasure-${moment.keepsakeType || 'photo'}`} initial={still ? false : { y: 20, rotate: -5, opacity: 0 }} animate={{ y: 0, rotate: -3, opacity: 1 }} transition={{ duration: .4, ease: MOTION.ease }}><span>ของที่เก็บจากวันนั้น</span><p className="hand">{moment.keepsake}</p><small>{shortDate(moment.date) || 'วันของเรา'}</small></motion.div>}
+            </div>}
+            <details className="pm-remember-option"><summary>อยากเก็บความรู้สึกวันนี้ไว้ด้วยไหม?</summary><fieldset className="pm-recollection"><legend>{prompt.question}</legend>{prompt.options.map((option) => <button key={option} aria-pressed={remembered[moment.id] === option} onClick={() => remember(option)}>{option}</button>)}</fieldset>
+              <p className="pm-memory-privacy">เลือกได้ตามความรู้สึก ไม่มีคำตอบผิด<br />คำตอบอยู่ในหน้านี้ ไม่ได้ส่งให้ผู้ส่ง</p>
+              {remembered[moment.id] && <p className="hand pm-echo" role="status">เก็บความรู้สึกนี้ไว้แล้ว<br />เดี๋ยวเราจะได้เจอมันอีกครั้ง</p>}
+            </details>
           </aside>
           <div>
             <div className={`polaroid-table ${remembering ? 'pm-remembering' : ''}`}>
@@ -177,7 +196,7 @@ export default function Polaroid({ story }: { story: Story }) {
         </div>
         <p className="polaroid-hint" aria-live="polite">{index + 1} / {story.moments.length}<span>{clear ? 'ปัดรูป หรือแตะลูกศร' : 'ใช้นิ้วลูบบนภาพ หรือกดเปิดภาพทันที'}</span></p>
         <div className="polaroid-contact" aria-label="รูปทั้งหมดในกอง">{story.moments.map((m, i) => <button key={m.id} onClick={() => { setIndex(i); setFlipped(false); setRemembering(false); }} aria-label={`เลือกรูป ${i + 1}: ${m.title}`} aria-pressed={index === i}><img src={m.image} alt="" loading="lazy" /><span>{i + 1}{read.includes(i) && <Icon name="check" size={12} />}</span></button>)}</div>
-        <div className="pm-next-chapter"><p>อ่านข้อความหลังรูปแล้ว {read.length} / {story.moments.length}</p><Button onClick={() => setChapter(3)}>ยังมีรูปใบสุดท้ายถึงเธอ <Icon name="arrow" size={18} /></Button><button className="pm-text-link" onClick={() => setChapter(2)}>ไปจัดมุมความทรงจำ</button></div>
+        <div className="pm-next-chapter"><p>อ่านข้อความหลังรูปแล้ว {read.length} / {story.moments.length}{story.moments.some(m => m.keepsake) && <> · เจอของที่ซ่อน {foundItems.length} ชิ้น</>}</p><Button onClick={() => setChapter(3)}>ยังมีรูปใบสุดท้ายถึงเธอ <Icon name="arrow" size={18} /></Button><button className="pm-text-link" onClick={() => setChapter(2)}>ไปจัดมุมความทรงจำ</button></div>
       </section>}
 
       {chapter === 2 && <section className="pm-curation" aria-labelledby="pm-wall-heading">
@@ -202,12 +221,13 @@ export default function Polaroid({ story }: { story: Story }) {
         <div className="polaroid-letter-print"><span className="hand">{story.title}</span><LetterCopy story={story} />
           <div className={`pm-last-pocket ${lastPrint ? 'pulled' : ''}`}>
             {!lastPrint && <motion.button className="pm-last-tab" drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={0.3} onDragEnd={(_, info) => { if (info.offset.y < -35) setLastPrint(true); }} onClick={() => setLastPrint(true)} style={{ touchAction: 'pan-x' }}><span className="hand">รูปใบที่ยังไม่ได้ถ่าย</span><Icon name="arrow" size={22} /><span>ดึงขึ้น หรือแตะเปิดรูปใบสุดท้าย</span></motion.button>}
-            {lastPrint && <motion.div className="pm-future-print" initial={still ? false : { y: 30, rotate: -4 }} animate={{ y: 0, rotate: 2 }} transition={{ duration: 0.48, ease: MOTION.ease }}><div><Icon name="heart" size={40} /><p className="hand">รูปต่อไป… อยากถ่ายกับเธอ</p></div><p className="hand" role="status">{story.secret}</p><p>{story.closing}</p></motion.div>}
+            {lastPrint && <motion.div className="pm-future-print" initial={still ? false : { y: 30, rotate: -4 }} animate={{ y: 0, rotate: 2 }} transition={{ duration: 0.48, ease: MOTION.ease }}><div className="pm-surprise-window"><span className="pm-surprise-sparkles" aria-hidden="true"><i>✦</i><i>♡</i><i>✳</i><i>✦</i></span><Icon name="heart" size={40} /><p className="hand">เซอร์ไพรส์! มีเรื่องอยากบอกเธอ</p></div><p className="hand" role="status">{story.secret}</p><p>{story.closing}</p></motion.div>}
           </div>
         </div>
         {lastPrint && <section className="pm-returned-memories" aria-label="ความรู้สึกที่กลับมาหาเธอ">
           <div className="pm-returned-heading"><span className="hand">ถึง {story.to}</span><h3>ที่เก็บไว้… ไม่ได้มีแค่รูป</h3><p>{echoes.length ? 'ความรู้สึกที่เธอเลือกเมื่อกี้ กลับมาอยู่ตรงนี้ด้วยกันแล้ว' : 'รูปที่เปิดดูเมื่อกี้ กลับมาอยู่ด้วยกันอีกครั้ง'}</p></div>
           <div className="pm-echo-line">{(echoes.length ? echoes : story.moments).map((m, i) => <motion.figure key={m.id} initial={still ? false : { opacity: 0, y: 55, rotate: i % 2 ? 12 : -12 }} animate={{ opacity: 1, y: 0, rotate: i % 2 ? 3 : -3 }} transition={{ duration: 0.5, delay: still ? 0 : i * 0.13, ease: MOTION.ease }}><Photo moment={m} /><figcaption><span>{m.title}</span><p className="hand">{remembered[m.id] || m.aside || m.note}</p></figcaption></motion.figure>)}</div>
+          {foundItems.length > 0 && <div className="pm-found-treasures" aria-label="ของที่ค้นเจอในกล่อง"><p className="hand">แล้วก็นี่… ของเล็ก ๆ ที่เธอเจอระหว่างทาง</p><ul>{foundItems.map(m => <li key={m.id}><span>{m.title}</span><strong className="hand">{m.keepsake}</strong></li>)}</ul></div>}
           <div className="pm-next-photo"><div className="pm-empty-photo"><span>{story.from} + {story.to}</span><Icon name="heart" size={32} /><p className="hand">เว้นไว้ให้วันต่อไปของเรา</p></div><p>ยังไม่ต้องเลือกรูปตอนนี้ก็ได้<br />ขอแค่วันนั้น เรายังอยู่ข้างกัน</p><Button variant="quiet" onClick={() => setChapter(2)}>เขียนถึงวันต่อไปของเรา</Button></div>
         </section>}
         {selected.length > 0 && <div className="pm-ending-prints" aria-label="รูปโปรดที่เลือกไว้">{selected.map((m) => <figure key={m.id}><Photo moment={m} /><figcaption className="hand">{m.title}</figcaption></figure>)}{reply && <p className="hand pm-ending-reply">คราวหน้าของเรา<br />{reply}</p>}</div>}

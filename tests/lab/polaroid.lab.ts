@@ -151,9 +151,56 @@ test('polaroid: failed export remains recoverable with another local photo',asyn
   expect(await download.failure()).toBeNull();
 });
 
+test('polaroid: find sender keepsakes, revisit, reveal and reset', async ({page}) => {
+  await open(page);
+  const pocket=page.getByRole('button',{name:/มีอะไรแอบอยู่ตรงนี้นะ/});
+  await expect(pocket).toHaveAttribute('aria-expanded','false');
+  await pocket.click();
+  await expect(page.locator('.pm-treasure-paper')).toContainText(polaroidDemo.moments[0].keepsake!);
+  await page.getByRole('button',{name:/เจอของชิ้นเล็กแล้ว/}).click();
+  await expect(page.locator('.pm-treasure-paper')).toHaveCount(0);
+  await page.getByRole('button',{name:/เจอของชิ้นเล็กแล้ว/}).click();
+  await page.getByRole('button',{name:'รูปถัดไป',exact:true}).click();
+  const secondPocket=page.getByRole('button',{name:/มีอะไรแอบอยู่ตรงนี้นะ/});
+  await secondPocket.scrollIntoViewIfNeeded();
+  const pocketBounds=(await secondPocket.boundingBox())!;
+  await page.mouse.move(pocketBounds.x+pocketBounds.width/2,pocketBounds.y+pocketBounds.height/2);
+  await page.mouse.down();await page.mouse.move(pocketBounds.x+pocketBounds.width/2,pocketBounds.y+pocketBounds.height/2-65,{steps:8});await page.mouse.up();
+  await expect(page.locator('.pm-treasure-paper')).toContainText(polaroidDemo.moments[1].keepsake!);
+  await page.getByRole('button',{name:'รูปก่อนหน้า',exact:true}).click();
+  await expect(page.locator('.pm-treasure-paper')).toContainText(polaroidDemo.moments[0].keepsake!);
+  await page.getByRole('button',{name:'ยังมีรูปใบสุดท้ายถึงเธอ',exact:true}).click();
+  await expect(page.locator('.pm-found-treasures')).toHaveCount(0);
+  await page.getByRole('button',{name:/ดึงขึ้น หรือแตะเปิดรูปใบสุดท้าย/}).click();
+  await expect(page.locator('.pm-found-treasures li')).toHaveCount(2);
+  await expect(page.locator('.pm-found-treasures')).toContainText(polaroidDemo.moments[0].keepsake!);
+  await expect(page.locator('.pm-future-print [role=status]')).toHaveText(polaroidDemo.secret);
+  await page.getByRole('button',{name:'เริ่มอ่านการ์ดใหม่',exact:true}).click();
+  await page.getByRole('button',{name:'แกะห่อรูปความทรงจำ',exact:true}).click();
+  await expect(page.getByRole('button',{name:/มีอะไรแอบอยู่ตรงนี้นะ/})).toHaveAttribute('aria-expanded','false');
+});
+
+test('polaroid: sender can edit hidden keepsake and surprise in Studio', async ({page}) => {
+  await page.goto('/template-lab/?template=polaroid');
+  await page.getByLabel('ชื่อของที่ระลึก 1', {exact:true}).fill('ตั๋วหนังใบแรกของเรา');
+  await page.getByRole('combobox', {name:'ชนิดของที่ระลึก 1',exact:true}).selectOption('ticket');
+  await page.getByRole('textbox', {name:'ข้อความเซอร์ไพรส์',exact:true}).fill('เจอกันร้านโปรดเย็นวันเสาร์นะ');
+  await page.getByRole('button', {name:'บันทึกร่างในเครื่อง',exact:true}).click();
+  await page.goto('/template-lab/?play=polaroid&draft=1&still=1');
+  await page.getByRole('button', {name:'แกะห่อรูปความทรงจำ',exact:true}).click();
+  await page.getByRole('button', {name:/มีอะไรแอบอยู่ตรงนี้นะ/}).click();
+  await expect(page.locator('.pm-treasure-paper')).toContainText('ตั๋วหนังใบแรกของเรา');
+  await expect(page.locator('.pm-treasure-paper')).toHaveClass(/pm-treasure-ticket/);
+  await page.getByRole('button', {name:'ยังมีรูปใบสุดท้ายถึงเธอ',exact:true}).click();
+  await expect(page.locator('.pm-future-print')).toHaveCount(0);
+  await page.getByRole('button', {name:/ดึงขึ้น หรือแตะเปิดรูปใบสุดท้าย/}).click();
+  await expect(page.locator('.pm-future-print [role=status]')).toHaveText('เจอกันร้านโปรดเย็นวันเสาร์นะ');
+});
+
 test('polaroid: remembered feelings return with their own photos, can change, and reset', async ({page}) => {
   await open(page);
   const first = 'ขออยู่ตรงนั้นนานอีกหน่อย';
+  await page.getByText('อยากเก็บความรู้สึกวันนี้ไว้ด้วยไหม?', {exact:true}).click();
   await page.getByRole('button', {name:first, exact:true}).click();
   await expect(page.locator('.pm-development')).toHaveCount(0);
   await page.getByRole('button', {name:'อยากกอดคนข้าง ๆ', exact:true}).click();

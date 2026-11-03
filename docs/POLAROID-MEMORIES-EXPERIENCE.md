@@ -1,5 +1,17 @@
 # Polaroid Memories — an evening with our photographs
 
+## Playful memory box — 2026-11-03
+
+Runtime source: `0463191c4216edb19c097c5fcef8519bf197af37`. Following the owner's preference for a playful experience with a final surprise, each memory can contain a sender-authored keepsake. The recipient can pull or tap the little pocket, return the item to its pocket, and revisit it later; discoveries return in the finale after revealing the existing sender-authored secret. Feelings are now an optional collapsed section rather than a required questionnaire. The secret receives a small one-shot celebration, and stories with no keepsakes do not promise hidden items.
+
+Polaroid Studio now exposes the already-supported `keepsake` and `keepsakeType` fields as well as the existing secret field; these remain local Studio drafts and do not imply customer publishing is enabled. Photos, notes, music, replay, favorites and the PNG keepsake use the existing flow. Images of the actual UI are in [`evidence/polaroid-playful/`](evidence/polaroid-playful/). Design review used the existing Frontend Design guidance on subject-specific materials and motion tied to a visitor action.
+
+Local validation: `npm run lab:build` and `npm run build` passed; `node scripts/check-template-lab-isolation.mjs` passed for 25 production output files; `npx playwright test --config playwright.lab.config.ts tests/lab/polaroid.lab.ts` passed **50/50** checks over 360, 390, 768, desktop and WebKit emulation. This covers editing the keepsake and surprise in Studio, pocket tap/drag/revisit/reset, optional recollections, finale, accessibility checks and existing PNG export. An earlier test selector timed out; the selector was corrected to use the control's accessible role and the final suite reran cleanly. Full release checks are recorded in the associated pull request.
+
+The intended 3–5 minute duration and emotional impact have not been measured with people. Browser emulation is not physical-device testing. No API, database, billing or production customer card integration was changed.
+
+---
+
 ## Follow-up: nostalgia and personal surprise — 2026-11-02
 
 Runtime source: `462ad67246794225eebc7b1065809284cedc90bd`, branch `feat/polaroid-nostalgia`. The previous release below remains a historical acceptance record.

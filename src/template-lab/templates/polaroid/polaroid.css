@@ -260,3 +260,36 @@ html[data-still='true'] .pm-fold-corner { transition: none; }
 }
 @media (prefers-reduced-motion: reduce) { .pm-remembering .print-front { animation: none; } }
 html[data-still='true'] .pm-remembering .print-front { animation: none; }
+
+/* A small pocket turns the sender's own keepsake into a tactile discovery. */
+.pm-treasure { position: relative; margin: 22px -8px 16px; padding: 12px; background: #cdbb91; box-shadow: 2px 5px 12px #52604722; }
+.pm-treasure-tab { position: relative; width: 100%; min-height: 118px; padding: 14px; border: 1px dashed #957e56; background: #f5e7c8; color: #4b4938; display: grid; justify-items: center; gap: 5px; }
+.pm-treasure-tab .hand { font-size: 16px; }
+.pm-treasure-tab > span:last-child { font-size: 12px; }
+.pm-treasure-seal { color: #a45146; font-size: 21px; line-height: 1; }
+.pm-treasure-paper { position: relative; z-index: 1; width: 90%; margin: 8px auto -3px; padding: 18px 16px; background: #fffaf0; color: #51483b; box-shadow: 2px 5px 12px #66563b33; border: 1px solid #d9c8a5; text-align: center; overflow-wrap: anywhere; }
+.pm-treasure-paper > span, .pm-treasure-paper small { font: 12px/1.7 var(--body); }
+.polaroid-evening .pm-treasure-paper p { margin: 9px 0; font: 18px/1.8 var(--hand); }
+.pm-treasure-ticket { border-style: dashed; background: #fff3d3; }
+.pm-treasure-letter { background: #fff9ee; }
+.pm-treasure-key { background: #eef1df; }
+.pm-remember-option { margin-top: 20px; border-top: 1px dashed #a9ac82; padding-top: 12px; }
+.pm-remember-option summary { min-height: 44px; cursor: pointer; font-size: 13px; line-height: 1.7; }
+.pm-remember-option .pm-recollection { margin-top: 12px; }
+.pm-surprise-window { position: relative; overflow: hidden; }
+.pm-surprise-sparkles { position: absolute; inset: 0; pointer-events: none; color: #a45146; }
+.pm-surprise-sparkles i { position: absolute; font: normal 22px/1 var(--body); animation: pm-sparkle-pop .7s both; }
+.pm-surprise-sparkles i:nth-child(1) { left: 12%; top: 20%; transform: rotate(-18deg); }
+.pm-surprise-sparkles i:nth-child(2) { right: 14%; top: 18%; animation-delay: .1s; }
+.pm-surprise-sparkles i:nth-child(3) { left: 20%; bottom: 18%; animation-delay: .18s; }
+.pm-surprise-sparkles i:nth-child(4) { right: 19%; bottom: 14%; animation-delay: .26s; }
+@keyframes pm-sparkle-pop { from { opacity: 0; scale: .3; } to { opacity: 1; scale: 1; } }
+.pm-found-treasures { max-width: 700px; margin: 34px auto; text-align: center; }
+.pm-found-treasures > p { font-size: 18px; }
+.pm-found-treasures ul { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin: 22px 0 0; padding: 0; }
+.pm-found-treasures li { flex: 1 1 160px; max-width: 240px; background: #fff3d3; color: #51483b; padding: 16px; border: 1px dashed #a88c5c; transform: rotate(-2deg); overflow-wrap: anywhere; }
+.pm-found-treasures li:nth-child(even) { transform: rotate(2deg); }
+.pm-found-treasures li span { display: block; font-size: 12px; }
+.pm-found-treasures li strong { display: block; font-size: 15px; font-weight: 400; line-height: 1.9; margin-top: 8px; }
+@media (prefers-reduced-motion: reduce) { .pm-surprise-sparkles i { animation: none; } }
+html[data-still='true'] .pm-surprise-sparkles i { animation: none; }

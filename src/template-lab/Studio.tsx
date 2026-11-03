@@ -375,7 +375,7 @@ export default function Studio({
                     onChange={(e) => moment(i, 'aside', e.target.value)}
                   />
                 </label>
-                {id === 'capsule' && (
+                {(id === 'capsule' || id === 'polaroid') && (
                   <div className="studio-two">
                     <label className="studio-field">
                       <span>ชื่อของที่ระลึก {i + 1}</span>

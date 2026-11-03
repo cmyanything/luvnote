@@ -1,44 +1,9 @@
 {
-  "date": "2026-11-02",
-  "summary": "Polaroid รอบความคิดถึง · ผลตรวจล่าสุดใน PR #17",
-  "implementationCommit": "206925d38b63778aed47a605f2a78984854c8ebf",
-  "projects": {
-    "360": {
-      "passed": 8,
-      "failed": 0,
-      "skipped": 0
-    },
-    "390": {
-      "passed": 8,
-      "failed": 0,
-      "skipped": 0
-    },
-    "768": {
-      "passed": 8,
-      "failed": 0,
-      "skipped": 0
-    },
-    "desktop": {
-      "passed": 8,
-      "failed": 0,
-      "skipped": 0
-    },
-    "webkit": {
-      "passed": 8,
-      "failed": 0,
-      "skipped": 0
-    }
-  },
+  "date": "2026-11-03",
+  "summary": "Polaroid กล่องความทรงจำ · 50 การตรวจเฉพาะธีมผ่าน",
+  "implementationCommit": "0463191c4216edb19c097c5fcef8519bf197af37",
+  "reviewScope": "50 targeted Polaroid checks across 360, 390, 768, desktop and WebKit emulation; release regression tracked in PR",
   "physicalDevicesVerified": false,
   "customerThemesEnabled": false,
-  "reviewScope": "40 targeted checks passed at 462ad67; mobile ordering follow-up 206925d and release results tracked in PR #17",
-  "pacingTarget": {
-    "template": "polaroid",
-    "minutes": [
-      3,
-      5
-    ],
-    "measuredHumanSessions": false
-  },
-  "resultsUrl": "https://github.com/cmyanything/luvnote/pull/17"
+  "pacingTarget": { "template": "polaroid", "minutes": [3, 5], "measuredHumanSessions": false }
 }

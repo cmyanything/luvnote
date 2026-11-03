@@ -152,12 +152,6 @@ export default function Polaroid({ story }: { story: Story }) {
         <div className="pm-scene-heading"><h2 ref={heading} tabIndex={-1} id="pm-memory-heading">ค้นกล่องความทรงจำกัน</h2><p>{hasKeepsakes ? 'ลูบรูป พลิกดูด้านหลัง แล้วลองค้นของชิ้นเล็กที่แอบเก็บไว้' : 'ลูบรูปให้ชัด แล้วพลิกดูเรื่องที่เขียนไว้ด้านหลัง'}</p></div>
         <div className="pm-desk">
           <aside className="pm-desk-note"><span className="hand">จากวันนั้น…</span><p>{moment.place || 'ที่ไหนก็พิเศษ เมื่อมีเราอยู่ด้วยกัน'}</p><span>{shortDate(moment.date) || 'วันหนึ่งที่อยากจำ'}</span>
-            {moment.keepsake && <div className={`pm-treasure ${foundKeepsakes.includes(moment.id) ? 'is-found' : ''}`}>
-              <motion.button type="button" className="pm-treasure-tab" aria-expanded={openKeepsakes.includes(moment.id)} onClick={() => toggleKeepsake(moment.id)} drag="y" dragConstraints={{top:0,bottom:0}} dragElastic={0.2} onDragEnd={(_, info) => { if (info.offset.y < -30) showKeepsake(moment.id); }} style={{touchAction:'pan-x'}}>
-                <span className="pm-treasure-seal" aria-hidden="true">✦</span><span className="hand">{foundKeepsakes.includes(moment.id) ? 'เจอของชิ้นเล็กแล้ว!' : 'มีอะไรแอบอยู่ตรงนี้นะ?'}</span><span>{openKeepsakes.includes(moment.id) ? 'แตะเพื่อเก็บกลับ' : foundKeepsakes.includes(moment.id) ? 'แตะเพื่อหยิบดูอีกครั้ง' : 'ดึงขึ้น หรือแตะเพื่อหยิบออกมา'}</span>
-              </motion.button>
-              {openKeepsakes.includes(moment.id) && <motion.div className={`pm-treasure-paper pm-treasure-${moment.keepsakeType || 'photo'}`} initial={still ? false : { y: 20, rotate: -5, opacity: 0 }} animate={{ y: 0, rotate: -3, opacity: 1 }} transition={{ duration: .4, ease: MOTION.ease }}><span>ของที่เก็บจากวันนั้น</span><p className="hand">{moment.keepsake}</p><small>{shortDate(moment.date) || 'วันของเรา'}</small></motion.div>}
-            </div>}
             <details className="pm-remember-option"><summary>อยากเก็บความรู้สึกวันนี้ไว้ด้วยไหม?</summary><fieldset className="pm-recollection"><legend>{prompt.question}</legend>{prompt.options.map((option) => <button key={option} aria-pressed={remembered[moment.id] === option} onClick={() => remember(option)}>{option}</button>)}</fieldset>
               <p className="pm-memory-privacy">เลือกได้ตามความรู้สึก ไม่มีคำตอบผิด<br />คำตอบอยู่ในหน้านี้ ไม่ได้ส่งให้ผู้ส่ง</p>
               {remembered[moment.id] && <p className="hand pm-echo" role="status">เก็บความรู้สึกนี้ไว้แล้ว<br />เดี๋ยวเราจะได้เจอมันอีกครั้ง</p>}
@@ -189,9 +183,15 @@ export default function Polaroid({ story }: { story: Story }) {
               </motion.div>
             </div>
             <div className="pm-develop-action">{!clear ? <button onClick={develop}>เปิดภาพทันที</button> : <span className="hand">ชัดเท่าเดิม เพิ่มเติมคือคิดถึง</span>}</div>
-            <button className="pm-revisit" onClick={() => { develop(); setReplayScene(0); }}><span aria-hidden="true">↶</span> กลับไปอยู่ในวันนั้น <span className="hand">เปิดรูป แล้วค่อย ๆ อ่านเรื่องของเรา</span></button>
             <div className="polaroid-controls"><button aria-label="รูปก่อนหน้า" onClick={() => move(-1)}><Icon name="back" /></button><Button variant="quiet" onClick={flip} aria-pressed={flipped}>{flipped ? 'กลับมาดูรูป' : 'พลิกอ่านข้อความ'}</Button><button aria-label="รูปถัดไป" onClick={() => move(1)}><Icon name="arrow" /></button></div>
-            <button className="pm-save-favorite" aria-pressed={favorites.includes(index)} onClick={() => favorite(index)}><Icon name="heart" size={18} />{favorites.includes(index) ? 'เก็บเป็นรูปโปรดแล้ว' : 'เก็บรูปนี้ไว้ในมุมโปรด'}</button>
+            <div className="pm-secondary-actions"><button className="pm-revisit" onClick={() => { develop(); setReplayScene(0); }}><span aria-hidden="true">↶</span> กลับไปอยู่ในวันนั้น</button>
+            <button className="pm-save-favorite" aria-pressed={favorites.includes(index)} onClick={() => favorite(index)}><Icon name="heart" size={18} />{favorites.includes(index) ? 'เก็บเป็นรูปโปรดแล้ว' : 'เก็บรูปนี้ไว้ในมุมโปรด'}</button></div>
+            {moment.keepsake && <div className={`pm-treasure ${foundKeepsakes.includes(moment.id) ? 'is-found' : ''}`}>
+              <motion.button type="button" className="pm-treasure-tab" aria-expanded={openKeepsakes.includes(moment.id)} onClick={() => toggleKeepsake(moment.id)} drag="y" dragConstraints={{top:0,bottom:0}} dragElastic={0.2} onDragEnd={(_, info) => { if (info.offset.y < -30) showKeepsake(moment.id); }} style={{touchAction:'pan-x'}}>
+                <span className="pm-treasure-seal" aria-hidden="true">✦</span><span className="hand">{foundKeepsakes.includes(moment.id) ? 'เจอของชิ้นเล็กแล้ว!' : 'มีอะไรแอบอยู่ตรงนี้นะ?'}</span><span>{openKeepsakes.includes(moment.id) ? 'แตะเพื่อเก็บกลับ' : foundKeepsakes.includes(moment.id) ? 'แตะเพื่อหยิบดูอีกครั้ง' : 'ดึงขึ้น หรือแตะเพื่อหยิบออกมา'}</span>
+              </motion.button>
+              {openKeepsakes.includes(moment.id) && <motion.div className={`pm-treasure-paper pm-treasure-${moment.keepsakeType || 'photo'}`} initial={still ? false : { y: 18, rotate: -3, opacity: 0 }} animate={{ y: 0, rotate: -2, opacity: 1 }} transition={{ type: 'spring', stiffness: 220, damping: 23 }}><span>ของที่เก็บจากวันนั้น</span><p className="hand">{moment.keepsake}</p><small>{shortDate(moment.date) || 'วันของเรา'}</small></motion.div>}
+            </div>}
           </div>
         </div>
         <p className="polaroid-hint" aria-live="polite">{index + 1} / {story.moments.length}<span>{clear ? 'ปัดรูป หรือแตะลูกศร' : 'ใช้นิ้วลูบบนภาพ หรือกดเปิดภาพทันที'}</span></p>
@@ -238,7 +238,7 @@ export default function Polaroid({ story }: { story: Story }) {
         <div className="pm-replay-scene">
           <Photo moment={moment} eager />
           <span className="pm-replay-date">{shortDate(moment.date) || 'วันหนึ่งของเรา'}</span>
-          <motion.div key={replayScene} className="pm-replay-words" initial={still ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }} aria-live="polite">
+          <motion.div key={replayScene} className="pm-replay-words" initial={still ? false : { y: 12 }} animate={{ y: 0 }} transition={{ duration: 0.45 }} aria-live="polite">
             <span className="hand">{replayScene === 0 ? 'ลองนึกภาพตัวเองกลับไปตรงนั้น' : replayScene === scenePages.length - 1 && moment.aside ? 'มีอีกอย่างที่อยากให้รู้' : `จากความทรงจำของ ${story.from}`}</span><p>{scenePages[replayScene]}</p>
           </motion.div>
           <div className="pm-replay-controls"><button disabled={replayScene === 0} onClick={() => setReplayScene((p) => Math.max(0, p! - 1))}>ย้อนกลับ</button><span role="img" aria-label={`ช่วงที่ ${replayScene + 1} จาก ${scenePages.length}`}>{scenePages.map((_, i) => <i key={i} className={i <= replayScene ? 'seen' : ''} />)}</span><button onClick={() => {

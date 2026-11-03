@@ -1,9 +1,16 @@
 {
   "date": "2026-11-03",
-  "summary": "Polaroid กล่องความทรงจำ · 50 การตรวจเฉพาะธีมผ่าน",
-  "implementationCommit": "0463191c4216edb19c097c5fcef8519bf197af37",
-  "reviewScope": "50 targeted Polaroid checks across 360, 390, 768, desktop and WebKit emulation; release regression tracked in PR",
+  "summary": "Polaroid กล่องความทรงจำ · ปรับการจัดวางและการเผยภาพ",
+  "implementationCommit": "4aecc899af02030ceea34760ec18b8d4ab65dd66",
+  "reviewScope": "Polaroid checks across 360, 390, 768, desktop and WebKit emulation; current release regression tracked in PR",
   "physicalDevicesVerified": false,
   "customerThemesEnabled": false,
-  "pacingTarget": { "template": "polaroid", "minutes": [3, 5], "measuredHumanSessions": false }
+  "pacingTarget": {
+    "template": "polaroid",
+    "minutes": [
+      3,
+      5
+    ],
+    "measuredHumanSessions": false
+  }
 }

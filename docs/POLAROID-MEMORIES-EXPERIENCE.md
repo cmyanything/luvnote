@@ -69,7 +69,7 @@ Total intended path:185–275seconds. Direct chapter navigation and immediate im
 ## Implementation and boundaries
 
 - Motion uses the existing Motion package, spring drag and3D/CSS transitions. There is no autoplay loop, new timeline engine, Lottie player or new asset service.
-- The300×280scratch canvas erases only an opaque local mask. Original images remain ordinary images underneath; no repeated JPEG conversion or photo pixel sampling occurs during rubbing. Coverage is bounded to400cells.
+- The300×280scratch canvas erases only a translucent local mask. Original images remain ordinary images underneath; no repeated JPEG conversion or photo pixel sampling occurs during rubbing. Coverage is bounded to400cells.
 - Each gesture has a native button alternative. Notes retain keyboard scrolling; hidden print faces are inert; chapter changes move focus to their heading. Reduced motion removes staged movement while retaining content and controls.
 - PNG export loads only the chosen1–3images after a deliberate download action, draws a1200px-wide keepsake and preserves all wrapped recipient reply lines by growing its paper/height. The canvas uses existing self-hosted Mali fonts.
 - Missing photos or remote images without CORS permission can prevent export. The error remains recoverable: the visitor can change the selection and retry. The actual negative test uses a missing synthetic local image; real external CORS providers and physical iPhone download behavior remain unverified.

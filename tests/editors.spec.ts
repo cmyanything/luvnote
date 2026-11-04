@@ -27,11 +27,12 @@ test.beforeEach(async ({ page }) => {
   );
 });
 
-async function fillRequired(page: Page) {
+async function fillRequired(page: Page, noSecret = false) {
   await page.getByLabel('ชื่อผู้รับ').fill('น้องพลอย 💗');
   await page.getByLabel('ชื่อผู้ส่ง').fill('พี่ต้นข้าว');
   await page.locator('#letter').fill('สุขสันต์วันเกิดนะ\nรักเธอมาก <3');
-  await page.locator('#secret').fill('ของขวัญอยู่ใต้หมอน 🤫');
+  if (noSecret) await expect(page.locator('#secret')).toHaveCount(0);
+  else await page.locator('#secret').fill('ของขวัญอยู่ใต้หมอน 🤫');
 }
 
 for (const theme of themes) {
@@ -65,7 +66,7 @@ for (const theme of themes) {
       'true',
     );
     expect(requests).toHaveLength(0);
-    await fillRequired(page);
+    await fillRequired(page, !!theme.noSecret);
     if (theme.occasion === 'anniversary')
       await page.getByLabel('วันที่เราเริ่มคบกัน').fill('2022-06-14');
     else await page.getByLabel('ครบกี่ปี').fill('25');
@@ -73,12 +74,14 @@ for (const theme of themes) {
     await expect(page.locator('#pc')).toHaveText('1');
     await page.getByLabel('คำบรรยายรูปที่ 1').fill('ความทรงจำของเรา');
     if (theme.coverLabel) await page.locator('#covFile').setInputFiles(photo);
-    await page.locator('#lockSeg button').nth(1).click();
-    await page.getByLabel('รหัส 4 หลัก').fill('14ab');
-    await expect(page.getByLabel('รหัส 4 หลัก')).toHaveValue('14');
-    await page.getByLabel('รหัส 4 หลัก').fill('1402');
-    await expect(page.getByLabel('รหัส 4 หลัก')).toHaveValue('1402');
-    await page.getByLabel('คำใบ้').fill('วันครบรอบ');
+    if (!theme.noSecret) {
+      await page.locator('#lockSeg button').nth(1).click();
+      await page.getByLabel('รหัส 4 หลัก').fill('14ab');
+      await expect(page.getByLabel('รหัส 4 หลัก')).toHaveValue('14');
+      await page.getByLabel('รหัส 4 หลัก').fill('1402');
+      await expect(page.getByLabel('รหัส 4 หลัก')).toHaveValue('1402');
+      await page.getByLabel('คำใบ้').fill('วันครบรอบ');
+    }
     await page.locator('#endMsg').fill('รักเสมอ ♡');
     await page.locator('#fxs button').last().click();
     await page.locator('#pvBtn').click();
@@ -110,7 +113,9 @@ for (const theme of themes) {
           to: 'น้องพลอย 💗',
           from: 'พี่ต้นข้าว',
           letter: 'สุขสันต์วันเกิดนะ\nรักเธอมาก <3',
-          lock: { type: 'code', code: '1402', hint: 'วันครบรอบ' },
+          ...(theme.noSecret
+            ? {}
+            : { lock: { type: 'code', code: '1402', hint: 'วันครบรอบ' } }),
           endMsg: 'รักเสมอ ♡',
           photos: [{ cap: 'ความทรงจำของเรา' }],
         });
@@ -138,7 +143,7 @@ for (const theme of themes) {
             cap: 'ความทรงจำของเรา',
           },
         ],
-        lock: { type: 'code', code: '1402' },
+        ...(theme.noSecret ? {} : { lock: { type: 'code', code: '1402' } }),
         music: { type: 'demo' },
         ...(theme.coverLabel
           ? { cover: expect.stringMatching(/^data:image\/jpeg;base64,/) }

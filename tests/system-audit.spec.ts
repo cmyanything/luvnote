@@ -51,7 +51,7 @@ async function fill(page: Page, theme: (typeof themes)[number], to: string) {
   await page.getByLabel('ชื่อผู้ส่ง').fill('ผู้ส่งทดสอบ');
   if (theme.occasion === 'anniversary') await page.getByLabel('วันที่เราเริ่มคบกัน').fill('2023-02-14');
   await page.locator('#letter').fill('จดหมายฉบับแรก');
-  await page.locator('#secret').fill('ความลับ');
+  if (!theme.noSecret) await page.locator('#secret').fill('ความลับ');
   await page.locator('#file').setInputFiles([fileA, fileB]);
   await expect(page.locator('.ph')).toHaveCount(2);
   if (theme.coverLabel) await page.locator('#covFile').setInputFiles(fileA);

@@ -1,4 +1,4 @@
-import { readJson, guardWrite, reserveBudget, digest, civilDate } from './guards.js';
+import { readJson, guardWrite, reserveBudget, digest, civilDate, isThemeId, needsStartDate } from './guards.js';
 import { QUOTAS } from './quotas.js';
 import { handleMediaV3, materializeV3Card, cleanupMediaV3 } from "./media-v3.js";
 // LuvNote card API — Cloudflare Worker + D1
@@ -112,8 +112,6 @@ async function getImage(req, env, id) {
 }
 
 /* ---------- theme cards (v2) ---------- */
-const THEMES = ["pink-coquette", "coquette-dream", "little-memories", "birthday-chat", "velvet-gift", "anniversary-journey", "villa-amore"];
-const ANNIVERSARY_THEMES = ["anniversary-journey", "villa-amore"];
 const STICKERS = ["heart", "cake", "gift", "hug"];
 const V2_MAX = 1900000; // bytes of JSON body
 const DAY = 864e5;
@@ -161,10 +159,10 @@ function cleanV2(d) {
 async function createV2(req, env) {
   const body = await readJson(req, V2_MAX);
   const theme = String(body.theme || "");
-  if (!THEMES.includes(theme)) return json(req, env, { error: "bad_theme" }, 400);
+  if (!isThemeId(theme)) return json(req, env, { error: "bad_theme" }, 400);
   const data = cleanV2(body.data || {});
   if (!data.to || !data.from || !data.letter) return json(req, env, { error: "missing" }, 400);
-  if (ANNIVERSARY_THEMES.includes(theme) && !data.startDate) return json(req, env, { error: "missing_start_date" }, 400);
+  if (needsStartDate(body) && !data.startDate) return json(req, env, { error: "missing_start_date" }, 400);
   const now = Date.now(), exp = now + LIFE_DAYS * DAY;
   for (let i = 0; i < 5; i++) {
     const id = newId();
@@ -221,7 +219,7 @@ export default {
       }
     }
 
-    if (url.pathname === "/" || url.pathname === "/health") return json(req, env, { ok: true, service: "luvnote-api", themes: THEMES });
+    if (url.pathname === "/" || url.pathname === "/health") return json(req, env, { ok: true, service: "luvnote-api", themes: "any" });
 
     const v2 = url.pathname.match(/^\/v2\/cards(?:\/([a-z0-9]{7}))?\/?$/);
     if (v2) {

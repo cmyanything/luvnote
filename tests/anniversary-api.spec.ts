@@ -11,7 +11,7 @@ test('Worker round-trips anniversary dates, captions and photo order through D1'
       body: JSON.stringify(body),
     });
   const health = await f.request('/health');
-  expect((await health.json()).themes).toContain('anniversary-journey');
+  expect((await health.json()).ok).toBe(true);
   const data = {
     to: 'เธอ',
     from: 'เรา',
@@ -33,4 +33,21 @@ test('Worker round-trips anniversary dates, captions and photo order through D1'
   const invalid = await create({ theme: 'anniversary-journey', data: { ...data, startDate: '2025-02-29' } });
   expect(invalid.status).toBe(400);
   expect(await invalid.json()).toEqual({ error: 'missing_start_date' });
+
+});
+
+test('Worker accepts a brand-new template id without an API change', async () => {
+  const f = await fixture();
+  const create = (body: object) =>
+    f.request('/v2/cards', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Origin: 'https://luvnote.fun' },
+      body: JSON.stringify(body),
+    });
+  const data = { to: 'เธอ', from: 'เรา', letter: 'รักเสมอ' };
+  expect((await create({ theme: 'future-template', occasion: 'birthday', data })).status).toBe(201);
+  const noDate = await create({ theme: 'future-anniversary', occasion: 'anniversary', data });
+  expect(await noDate.json()).toEqual({ error: 'missing_start_date' });
+  expect((await create({ theme: 'future-anniversary', occasion: 'anniversary', data: { ...data, startDate: '2024-02-29' } })).status).toBe(201);
+  expect((await create({ theme: '../bad', data })).status).toBe(400);
 });

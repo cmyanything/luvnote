@@ -1,4 +1,4 @@
-import { readLimitedBody, readJson, digest, reserveBudget, civilDate } from './guards.js';
+import { readLimitedBody, readJson, digest, reserveBudget, civilDate, isThemeId, needsStartDate } from './guards.js';
 import { validateJpeg } from './jpeg.js';
 import { QUOTAS } from './quotas.js';
 // LuvNote Media API V3: private R2 images with short-lived guest upload capabilities.
@@ -8,7 +8,6 @@ const SESSION_MS = 30 * 60 * 1000;
 // Cards stay readable for 90 days; owners can pay to extend (see .github/workflows/extend-card.yml).
 export const CARD_LIFE_MS = 90 * DAY;
 const MAX_JPEG = 1_500_000;
-const THEMES = new Set(["pink-coquette", "coquette-dream", "little-memories", "birthday-chat", "velvet-gift", "anniversary-journey", "villa-amore"]);
 const SID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const ASSET = SID;
 const CARD = /^[a-z0-9]{7}$/;
@@ -159,7 +158,7 @@ async function parseCardBody(body, cleanV2) {
   if (new Set(all).size !== all.length) return { error: "duplicate_media" };
   const safe = cleanV2({ ...rawData, photos: [], cover: null });
   if (!safe.to || !safe.from || !safe.letter) return { error: "missing" };
-  if ((body.theme === "anniversary-journey" || body.theme === "villa-amore") && !safe.startDate) return { error: "missing_start_date" };
+  if (needsStartDate(body) && !safe.startDate) return { error: "missing_start_date" };
   const data = { ...safe, media_version: 3, photos: cleanPhotos };
   if (coverId) data.cover_id = coverId;
   const payloadHash = await digest(JSON.stringify({ theme: body.theme, data }));
@@ -180,7 +179,7 @@ async function checkSessionAssets(env, sid, all, coverId) {
 async function publishCard(req, env, json, cleanV2, newId) {
   const body = await readJson(req, 50000);
   const { sessionId: sid, theme } = body || {};
-  if (!SID.test(sid || "") || !THEMES.has(theme))
+  if (!SID.test(sid || "") || !isThemeId(theme))
     return json(req, { error: "bad_request" }, 400);
   if (!await sessionFor(req, env, sid, true)) return json(req, { error: "session_invalid" }, 403);
   const parsed = await parseCardBody(body, cleanV2);
@@ -236,7 +235,7 @@ async function publishCard(req, env, json, cleanV2, newId) {
 async function editCard(req, env, json, cleanV2, cardId) {
   const body = await readJson(req, 50000);
   const { sessionId: sid, theme, editKey } = body || {};
-  if (!SID.test(sid || "") || !THEMES.has(theme) || !/^[0-9a-f]{64}$/.test(editKey || ""))
+  if (!SID.test(sid || "") || !isThemeId(theme) || !/^[0-9a-f]{64}$/.test(editKey || ""))
     return json(req, { error: "bad_request" }, 400);
   if (!await sessionFor(req, env, sid, true)) return json(req, { error: "session_invalid" }, 403);
   const keyHash = await tokenHash(editKey);
@@ -318,7 +317,7 @@ async function adminReissueEditKey(req, env, json) {
   const card = await env.DB.prepare('SELECT theme,expires_at FROM theme_cards WHERE id=?').bind(cardId).first();
   if (!card) return json(req, { error: 'not_found' }, 404);
   if (card.expires_at <= Date.now()) return json(req, { error: 'expired', expires: card.expires_at }, 410);
-  if (!THEMES.has(card.theme)) return json(req, { error: 'not_editable' }, 400);
+  if (!isThemeId(card.theme)) return json(req, { error: 'not_editable' }, 400);
   const editKey = randomSecret(), now = Date.now();
   await env.DB.prepare(
     'INSERT INTO card_edit_keys(card_id,key_hash,created_at) VALUES(?,?,?) ' +

@@ -1,4 +1,5 @@
 import type { CardData, CreatedCard, ThemeId } from '../types';
+import { occasionOf } from './occasion';
 import { jpeg } from './images';
 
 const API = (import.meta.env.VITE_API_URL || 'https://api.luvnote.fun').replace(/\/$/, '');
@@ -108,7 +109,7 @@ export async function createR2Card(
     fetch(API + '/v3/cards', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + session.uploadToken },
-      body: JSON.stringify({ theme, sessionId: session.sessionId, data: payload }),
+      body: JSON.stringify({ theme, occasion: occasionOf(theme), sessionId: session.sessionId, data: payload }),
       signal,
     }));
   // The publishing token becomes the owner's edit key; the server keeps only its hash.
@@ -122,7 +123,7 @@ export async function editR2Card(
     fetch(API + '/v3/cards/' + cardId + '/edit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + session.uploadToken },
-      body: JSON.stringify({ theme, sessionId: session.sessionId, editKey, data: payload }),
+      body: JSON.stringify({ theme, occasion: occasionOf(theme), sessionId: session.sessionId, editKey, data: payload }),
       signal,
     }));
   return { id: card.id, expires: card.expires, editKey };

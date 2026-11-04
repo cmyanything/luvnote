@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@v7
       - name: Card API is healthy
         run: |
           body=$(curl -fsS --retry 3 --retry-delay 10 --retry-all-errors https://api.luvnote.fun/health)
@@ -33,7 +34,8 @@ jobs:
         run: |
           curl -fsS --retry 3 --retry-delay 10 -o home.html https://luvnote.fun/
           grep -q 'LuvNote' home.html
-          for theme in pink-coquette coquette-dream little-memories birthday-chat velvet-gift anniversary-journey villa-amore; do
+          # Every template listed in src/themes.ts, so new templates are checked automatically.
+          for theme in $(grep -oE "^    id: '[a-z0-9-]+'" src/themes.ts | cut -d"'" -f2); do
             page=$(curl -fsS --retry 3 --retry-delay 10 "https://luvnote.fun/themes/$theme/")
             asset=$(printf '%s' "$page" | grep -oE 'src="[^"]*assets/[^"]+\.js"' | head -1 | sed -E 's/^src="(\.\.\/)*\.?\/?//; s/"$//')
             [ -n "$asset" ] || { echo "::error::$theme editor has no script"; exit 1; }

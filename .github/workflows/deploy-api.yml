@@ -15,10 +15,6 @@ on:
         description: Explicitly approve the additive production D1 migration
         type: boolean
         default: false
-      verified_backup_reference:
-        description: Reference to encrypted backup and successful isolated restore drill (no secrets)
-        required: true
-        type: string
 
 permissions:
   contents: read
@@ -52,6 +48,22 @@ jobs:
           test -n "$PRODUCTION_D1_ID"
           test -n "$CLOUDFLARE_API_TOKEN"
           node --input-type=module -e 'import fs from "node:fs"; const id=process.env.PRODUCTION_D1_ID;if(!/^[0-9a-f-]{36}$/.test(id))process.exit(1);fs.writeFileSync("wrangler.toml",fs.readFileSync("wrangler.toml","utf8").replace("__D1_ID__",id));'
+      # Back up the database automatically before touching production (same as the weekly backup).
+      - name: Back up the database first
+        env:
+          WRANGLER_SEND_METRICS: 'false'
+        run: |
+          set -euo pipefail
+          umask 077
+          name="d1/luvnote-$(date -u +%Y-%m-%dT%H%MZ)-predeploy.sql.gz"
+          npx wrangler d1 export luvnote --remote --output "$RUNNER_TEMP/backup.sql" --config wrangler.toml > /dev/null
+          grep -q 'CREATE TABLE' "$RUNNER_TEMP/backup.sql"
+          gzip -9 "$RUNNER_TEMP/backup.sql"
+          npx wrangler r2 object put "luvnote-backups/$name" --file "$RUNNER_TEMP/backup.sql.gz" --content-type application/gzip --remote > /dev/null
+          npx wrangler r2 object get "luvnote-backups/$name" --file "$RUNNER_TEMP/check.sql.gz" --remote > /dev/null
+          cmp "$RUNNER_TEMP/backup.sql.gz" "$RUNNER_TEMP/check.sql.gz"
+          rm -f "$RUNNER_TEMP"/backup.sql* "$RUNNER_TEMP"/check.sql.gz
+          echo "Backup stored: luvnote-backups/$name" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Verify provisioned bucket and secret names
         run: |
           npx wrangler r2 bucket info luvnote-media

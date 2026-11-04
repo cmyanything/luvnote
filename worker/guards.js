@@ -68,3 +68,15 @@ export function civilDate(value) {
   const date = new Date(value + "T00:00:00Z");
   return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value ? value : "";
 }
+
+// Any well-formed template id is accepted, so a new template needs no API deploy.
+// Unknown ids are harmless: the site only routes link prefixes it knows.
+export function isThemeId(value) {
+  return typeof value === "string" && value.length <= 40 && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
+}
+// Anniversary cards need the date the couple started. New clients send occasion;
+// the two names below cover editors cached before that field existed (never extend this list).
+const LEGACY_ANNIVERSARY = ["anniversary-journey", "villa-amore"];
+export function needsStartDate(body) {
+  return body?.occasion === "anniversary" || LEGACY_ANNIVERSARY.includes(body?.theme);
+}

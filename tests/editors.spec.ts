@@ -91,7 +91,8 @@ for (const theme of themes) {
     const previewFrame = page
       .frames()
       .find((f) => f.url().includes('#preview'))!;
-    if (theme.occasion === 'anniversary') {
+    // Our Story is a React viewer; every other theme exposes its CARD global.
+    if (theme.id === 'anniversary-journey') {
       await frame
         .getByRole('button', { name: 'เปิดสมุดความทรงจำ', exact: true })
         .click();

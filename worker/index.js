@@ -112,7 +112,8 @@ async function getImage(req, env, id) {
 }
 
 /* ---------- theme cards (v2) ---------- */
-const THEMES = ["pink-coquette", "coquette-dream", "little-memories", "birthday-chat", "velvet-gift", "anniversary-journey"];
+const THEMES = ["pink-coquette", "coquette-dream", "little-memories", "birthday-chat", "velvet-gift", "anniversary-journey", "villa-amore"];
+const ANNIVERSARY_THEMES = ["anniversary-journey", "villa-amore"];
 const STICKERS = ["heart", "cake", "gift", "hug"];
 const V2_MAX = 1900000; // bytes of JSON body
 const DAY = 864e5;
@@ -163,7 +164,7 @@ async function createV2(req, env) {
   if (!THEMES.includes(theme)) return json(req, env, { error: "bad_theme" }, 400);
   const data = cleanV2(body.data || {});
   if (!data.to || !data.from || !data.letter) return json(req, env, { error: "missing" }, 400);
-  if (theme === "anniversary-journey" && !data.startDate) return json(req, env, { error: "missing_start_date" }, 400);
+  if (ANNIVERSARY_THEMES.includes(theme) && !data.startDate) return json(req, env, { error: "missing_start_date" }, 400);
   const now = Date.now(), exp = now + LIFE_DAYS * DAY;
   for (let i = 0; i < 5; i++) {
     const id = newId();

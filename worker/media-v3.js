@@ -8,7 +8,7 @@ const SESSION_MS = 30 * 60 * 1000;
 // Cards stay readable for 90 days; owners can pay to extend (see .github/workflows/extend-card.yml).
 export const CARD_LIFE_MS = 90 * DAY;
 const MAX_JPEG = 1_500_000;
-const THEMES = new Set(["pink-coquette", "coquette-dream", "little-memories", "birthday-chat", "velvet-gift", "anniversary-journey"]);
+const THEMES = new Set(["pink-coquette", "coquette-dream", "little-memories", "birthday-chat", "velvet-gift", "anniversary-journey", "villa-amore"]);
 const SID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const ASSET = SID;
 const CARD = /^[a-z0-9]{7}$/;
@@ -159,7 +159,7 @@ async function parseCardBody(body, cleanV2) {
   if (new Set(all).size !== all.length) return { error: "duplicate_media" };
   const safe = cleanV2({ ...rawData, photos: [], cover: null });
   if (!safe.to || !safe.from || !safe.letter) return { error: "missing" };
-  if (body.theme === "anniversary-journey" && !safe.startDate) return { error: "missing_start_date" };
+  if ((body.theme === "anniversary-journey" || body.theme === "villa-amore") && !safe.startDate) return { error: "missing_start_date" };
   const data = { ...safe, media_version: 3, photos: cleanPhotos };
   if (coverId) data.cover_id = coverId;
   const payloadHash = await digest(JSON.stringify({ theme: body.theme, data }));

@@ -95,7 +95,7 @@ jobs:
             try {
               const response = await fetch('https://api.luvnote.fun/health', { signal: AbortSignal.timeout(5000) });
               const health = await response.json();
-              if (response.ok && health.themes?.includes('anniversary-journey')) process.exit(0);
+              if (response.ok && health.themes?.includes('anniversary-journey') && health.themes?.includes('villa-amore')) process.exit(0);
             } catch {}
             await new Promise(resolve => setTimeout(resolve, 5000));
           }

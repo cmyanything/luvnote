@@ -84,9 +84,9 @@ for (const theme of themes) {
     // recipient opens the card
     await page.goto('about:blank'); await page.goto('/' + new URL(cardUrl!).hash);
     await expect(page.locator('.js-to').first()).toContainText('ผู้รับ', { timeout: 15000 });
-    if (theme.occasion === 'anniversary') await page.getByRole('button', { name: 'เปิดสมุดความทรงจำ', exact: true }).click();
+    if (theme.id === 'anniversary-journey') await page.getByRole('button', { name: 'เปิดสมุดความทรงจำ', exact: true }).click();
     const loaded1 = await mediaLoaded(page);
-    if (theme.occasion === 'anniversary' && loaded1.filter(Boolean).length < 2) note(`${theme.id}: viewer shows ${loaded1.filter(Boolean).length}/2 photos`);
+    if (theme.id === 'anniversary-journey' && loaded1.filter(Boolean).length < 2) note(`${theme.id}: viewer shows ${loaded1.filter(Boolean).length}/2 photos`);
 
     // owner edits: change letter, remove one photo, add one
     for (const round of [1, 2]) {

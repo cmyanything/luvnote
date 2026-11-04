@@ -98,7 +98,7 @@ for (const theme of themes) {
       await expect(page.locator('.js-to').first()).toHaveText('Synthetic Recipient');
       await page.reload();
       await expect(page.locator('.js-to').first()).toHaveText('Synthetic Recipient');
-      if (theme.occasion === 'anniversary') {
+      if (theme.id === 'anniversary-journey') {
         // The customer's R2 photos must actually render in the journal, not only exist in the API.
         await page.getByRole('button', { name: 'เปิดสมุดความทรงจำ', exact: true }).click();
         const photo = page.locator('.moments img').first();
@@ -107,7 +107,7 @@ for (const theme of themes) {
         await expect.poll(() => photo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth)).toBe(24);
       }
       // The Our Story viewer is React and has no CARD global; read what it loaded from the API.
-      const card=theme.occasion === 'anniversary'
+      const card=theme.id === 'anniversary-journey'
         ? (await (await f.request('/v2/cards/'+id)).json() as {data:{photos:{src:string}[];cover?:string}}).data
         : await page.evaluate<{photos:{src:string}[];cover?:string}>('CARD');
       for (const source of [card.photos[0].src,...card.cover?[card.cover]:[]]) {

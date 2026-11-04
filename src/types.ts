@@ -4,7 +4,8 @@ export type ThemeId =
   | 'little-memories'
   | 'birthday-chat'
   | 'velvet-gift'
-  | 'anniversary-journey';
+  | 'anniversary-journey'
+  | 'villa-amore';
 export type ChatRow =
   | { w: 'f' | 'oops'; x: string }
   | { w: 't'; o: string[] }

@@ -101,3 +101,25 @@ body[data-theme='anniversary-journey'] {
   width: 24px;
   height: 28px;
 }
+
+/* Villa Amore: same anniversary fields, blush-and-wine villa palette */
+body[data-theme='villa-amore'] {
+  background: #fbf6f2;
+}
+body[data-theme='villa-amore'] .anniversary-editor {
+  --wine: #800020;
+  --wine2: #c46f70;
+  --soft: #f7e4dd;
+  --cream: #fdf7f2;
+  --ink: #5b2c33;
+  --mute: #8c6a6a;
+  --line: #efd6cf;
+  --pink: #efcbc3;
+}
+body[data-theme='villa-amore'] .anniversary-editor .hero {
+  background: linear-gradient(130deg, #f7e4dd, #f3d7b5);
+}
+body[data-theme='villa-amore'] .anniversary-editor .phone {
+  background: #800020;
+  box-shadow: 0 12px 24px #80002026;
+}

@@ -13,6 +13,7 @@ const themes = [
   'birthday-chat',
   'velvet-gift',
   'villa-amore',
+  'sweet-cake',
 ];
 
 export default defineConfig({

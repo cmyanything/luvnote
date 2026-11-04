@@ -65,7 +65,7 @@ for (const theme of themes) {
       await page.getByLabel('ชื่อผู้รับ').fill('Synthetic Recipient');
       await page.getByLabel('ชื่อผู้ส่ง').fill('Synthetic Sender');
       await page.locator('#letter').fill('A synthetic memory');
-      await page.locator('#secret').fill('Synthetic secret');
+      if (!theme.noSecret) await page.locator('#secret').fill('Synthetic secret');
       if (theme.occasion === 'anniversary') await page.getByLabel('วันที่เราเริ่มคบกัน').fill('2022-06-14');
       await page.locator('#file').setInputFiles([file,{...file,name:'second.jpg'}]);
       await expect(page.locator('#pc')).toHaveText('2');

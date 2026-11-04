@@ -70,6 +70,7 @@ export function invalidFields(
   state: EditorState,
   hasChat: boolean,
   anniversary = false,
+  noSecret = false,
 ): InvalidField[] {
   const errors: InvalidField[] = [];
   if (!state.to.trim()) errors.push('to');
@@ -79,8 +80,10 @@ export function invalidFields(
   if (hasChat && !cleanChat(state.chat).some((row) => row.w === 'f'))
     errors.push('chat');
   if (!state.letter.trim()) errors.push('letter');
-  if (!state.secret.trim()) errors.push('secret');
-  if (state.lock === 'code' && !/^\d{4}$/.test(state.code)) errors.push('code');
+  if (!noSecret) {
+    if (!state.secret.trim()) errors.push('secret');
+    if (state.lock === 'code' && !/^\d{4}$/.test(state.code)) errors.push('code');
+  }
   return errors;
 }
 

@@ -5,7 +5,8 @@ export type ThemeId =
   | 'birthday-chat'
   | 'velvet-gift'
   | 'anniversary-journey'
-  | 'villa-amore';
+  | 'villa-amore'
+  | 'sweet-cake';
 export type ChatRow =
   | { w: 'f' | 'oops'; x: string }
   | { w: 't'; o: string[] }
@@ -31,6 +32,8 @@ export interface ThemeConfig {
   coverLabel: string | null;
   coverHelp: string | null;
   letterTitle: string;
+  /** Theme has no secret-message scene, so the editor hides that step. */
+  noSecret?: boolean;
   secretTitle: string;
   secretPlaceholder: string;
   defaultLock: 'scratch' | 'seal';

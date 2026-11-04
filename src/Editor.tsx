@@ -112,9 +112,13 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
         (validDate(state.startDate) && state.startDate <= today())),
     photos: state.photos.length > 0,
     letter: !!state.letter.trim(),
-    secret:
-      !!state.secret.trim() &&
-      (state.lock !== 'code' || /^\d{4}$/.test(state.code)),
+    ...(theme.noSecret
+      ? {}
+      : {
+          secret:
+            !!state.secret.trim() &&
+            (state.lock !== 'code' || /^\d{4}$/.test(state.code)),
+        }),
     music: !!youtubeId(state.youtube),
     fx: true,
     end: !!state.endMsg.trim(),
@@ -127,7 +131,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
       Object.values(complete).length) *
     100;
   function validate() {
-    const bad = invalidFields(state, hasChat, anniversary);
+    const bad = invalidFields(state, hasChat, anniversary, !!theme.noSecret);
     setErrors(bad);
     if (!bad.length) return true;
     const element =
@@ -147,7 +151,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     if (
       !state.to.trim() ||
       !state.from.trim() ||
-      (anniversary && invalidFields(state, hasChat, true).includes('startDate'))
+      (anniversary && invalidFields(state, hasChat, true, !!theme.noSecret).includes('startDate'))
     ) {
       validate();
       return;
@@ -236,6 +240,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     </Section>
   );
   const offset = hasChat ? 1 : 0;
+  const after = offset - (theme.noSecret ? 1 : 0);
   return (
     <div
       className={anniversary ? 'anniversary-editor' : undefined}
@@ -462,7 +467,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
             </p>
           </>,
         )}
-        {section(
+        {!theme.noSecret && section(
           'secret',
           4 + offset,
           theme.secretTitle,
@@ -552,7 +557,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
         )}
         {section(
           'music',
-          5 + offset,
+          5 + after,
           'เพลงประกอบ',
           <MusicPicker
             value={state.youtube}
@@ -566,7 +571,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
         )}
         {section(
           'fx',
-          6 + offset,
+          6 + after,
           'เอฟเฟกต์ลอยบนการ์ด',
           <div className="fxs" id="fxs">
             {theme.effects.map((effect) => (
@@ -589,7 +594,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
         )}
         {section(
           'end',
-          7 + offset,
+          7 + after,
           'คำปิดท้าย',
           <textarea
             id="endMsg"

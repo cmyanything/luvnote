@@ -331,11 +331,14 @@ function initYT(){if(!useYT()||yt)return;yt=1;
   const w=document.createElement('div');w.className='ytwrap';w.innerHTML='<div id="ytPlayer"></div>';$('#mus').appendChild(w);
   window.onYouTubeIframeAPIReady=()=>{yt=new YT.Player('ytPlayer',{width:200,height:200,videoId:CARD.music.id,
     playerVars:{playsinline:1,controls:0,disablekb:1,rel:0,fs:0,iv_load_policy:3,start:CARD.music.start||0},
-    events:{onReady:()=>{ytReady=true;try{yt.cueVideoById({videoId:CARD.music.id,startSeconds:CARD.music.start||0})}catch(_){}if(ytWant)ytPlay()},
+    events:{onReady:()=>{ytReady=true;if(ytWant)ytPlay()},
       onError:()=>{ytFailed=true;w.remove();$('#mus').classList.remove('need');if(ytWant)startBox()},
       onStateChange:e=>{const ST=CARD.music.start||0;if(e.data===0){try{yt.seekTo(ST,true);yt.playVideo()}catch(_){}return}if(e.data===1&&!yt._sk){yt._sk=1;try{if(ST&&yt.getCurrentTime()<ST-1)yt.seekTo(ST,true)}catch(_){}}const v=$('#mus');if(e.data===1){playing=true;v.classList.add('play');v.classList.remove('need')}else if(e.data===2||e.data===0){playing=false;v.classList.remove('play')}}}})};
-  const fail=()=>{if(ytReady)return;ytFailed=true;w.remove()};const sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';sc.onerror=fail;document.head.appendChild(sc);setTimeout(fail,9000)}
-function ytPlay(){try{yt.playVideo()}catch(e){}setTimeout(()=>{if(!playing)$('#mus').classList.add('need')},1800)}
+  const fail=()=>{if(ytReady)return;ytFailed=true;if(ytWant)$('#mus').classList.add('show','need');w.remove()};const sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';sc.onerror=fail;document.head.appendChild(sc);setTimeout(fail,20000)}
+
+/* Android/LINE: เล่นเพลงเมื่อผู้รับแตะหน้าจอครั้งถัดไป ถ้าเบราว์เซอร์บล็อกเล่นอัตโนมัติ */
+document.addEventListener('pointerdown',e=>{if(e.target.closest&&e.target.closest('#mus'))return;if(yt&&ytReady&&ytWant&&!playing){try{yt.unMute();yt.playVideo()}catch(_){}}},true);
+function ytPlay(){try{yt.unMute();yt.playVideo()}catch(e){}setTimeout(()=>{if(!playing)$('#mus').classList.add('need')},1800)}
 let musicOn=false;
 function startMusic(){if(musicOn)return;musicOn=true;$('#mus').classList.add('show');if(AUTO){$('#mus').classList.add('play');return}
   if(useYT()){ytWant=true;if(ytReady)ytPlay();else setTimeout(()=>{if(!playing&&useYT())$('#mus').classList.add('need')},2500);return}

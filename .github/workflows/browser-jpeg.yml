@@ -1,0 +1,33 @@
+name: Browser JPEG upload compatibility
+
+on:
+  pull_request:
+    paths:
+      - 'src/lib/images.ts'
+      - 'worker/jpeg.js'
+      - 'tests/browser-jpeg.test.mjs'
+      - '.github/workflows/browser-jpeg.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/lib/images.ts'
+      - 'worker/jpeg.js'
+      - 'tests/browser-jpeg.test.mjs'
+      - '.github/workflows/browser-jpeg.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  apple-jpeg:
+    runs-on: macos-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install chromium webkit
+      - run: node --test tests/browser-jpeg.test.mjs

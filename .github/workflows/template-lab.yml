@@ -21,14 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - { project: '360', shard: '1/1', label: '360' }
-          - { project: '390', shard: '1/1', label: '390' }
-          - { project: '768', shard: '1/1', label: '768' }
-          - { project: 'desktop', shard: '1/1', label: 'desktop' }
-          - { project: 'webkit', shard: '1/3', label: 'webkit-1' }
-          - { project: 'webkit', shard: '2/3', label: 'webkit-2' }
-          - { project: 'webkit', shard: '3/3', label: 'webkit-3' }
+        project: ['360', '390', '768', 'desktop', 'webkit']
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
@@ -41,11 +34,11 @@ jobs:
       - run: node scripts/check-template-lab-isolation.mjs
       - run: npm run lab:build
       - run: npx playwright install --with-deps chromium webkit
-      - run: npx playwright test --config playwright.lab.config.ts --project=${{ matrix.project }} --shard=${{ matrix.shard }}
+      - run: npx playwright test --config playwright.lab.config.ts --project=${{ matrix.project }}
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: creative-lab-test-evidence-${{ matrix.label }}
+          name: creative-lab-test-evidence-${{ matrix.project }}
           path: |
             lab-results/
             lab-playwright-report/

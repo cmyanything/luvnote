@@ -9,7 +9,7 @@ export const themes: ThemeConfig[] = [
     description:
       'การ์ดวันเกิดโทนชมพูโบว์ละมุน เปิดซอง แกะกล่อง เป่าเทียน ครบจบในลิงก์เดียว',
     price: 99,
-    version: 6,
+    version: 7,
     prefix: 'p',
     features: [
       '🎀 ซองผูกโบว์',
@@ -72,7 +72,7 @@ export const themes: ThemeConfig[] = [
     description:
       'การ์ดวันเกิดโทนชมพูครีม ลูกไม้ ไข่มุก แกะริบบิ้น เปิดกล่องฝัน เป่าเทียนเค้กวินเทจ',
     price: 99,
-    version: 3,
+    version: 4,
     prefix: 'd',
     features: [
       '🎀 แกะริบบิ้นซาติน',
@@ -135,7 +135,7 @@ export const themes: ThemeConfig[] = [
     description:
       'การ์ดวันเกิดแบบสมุดอัลบั้มน่ารัก ถ่ายรูปด้วยกล้องดิจิทัล แปะโพลารอยด์ พลิกหน้ากระดาษไปทีละหน้า',
     price: 99,
-    version: 4,
+    version: 5,
     prefix: 'm',
     features: [
       '📒 เปิดปกอัลบั้ม',
@@ -199,7 +199,7 @@ export const themes: ThemeConfig[] = [
     description:
       'การ์ดวันเกิดแบบแชทมือถือ ข้อความเด้งทีละบับเบิล ผู้รับกดตอบเอง มีวิดีโอคอลเป่าเทียน กวนๆ น่ารักๆ',
     price: 69,
-    version: 1,
+    version: 2,
     prefix: 'c',
     features: [
       '🔔 แจ้งเตือนเด้งหน้าจอล็อก',
@@ -266,7 +266,7 @@ export const themes: ThemeConfig[] = [
     description:
       'เค้กชมพูสีน้ำผูกโบว์ซาติน มีน้องกระต่ายโผล่หลังโบว์ ให้เขาแตะเค้กเป่าเทียน ปัดดูรูป แล้วเปิดการ์ดอวยพร',
     price: 69,
-    version: 1,
+    version: 2,
     prefix: 'k',
     features: [
       '🎂 แตะเค้ก เทียนโผล่ กดค้าง/เป่าไมค์ดับเทียน',
@@ -316,7 +316,7 @@ export const themes: ThemeConfig[] = [
     description:
       'กล่องของขวัญเบอร์กันดีประกายทอง ให้เขาดึงริบบิ้นแกะของขวัญเองทีละชิ้น',
     price: 59,
-    version: 7,
+    version: 8,
     prefix: 'v',
     features: [
       '🎀 ดึงริบบิ้นแกะกล่อง',
@@ -431,7 +431,7 @@ export const themes: ThemeConfig[] = [
     description:
       'สวนวิลล่าสไตล์อิตาลีภาพสีน้ำ ดึงพู่เปิดม่าน ชนแก้วนับวันที่รักกัน และโยนเหรียญลงน้ำพุเปิดความลับ',
     price: 99,
-    version: 1,
+    version: 2,
     prefix: 'r',
     features: [
       '🎭 ดึงพู่ทองเปิดม่าน',

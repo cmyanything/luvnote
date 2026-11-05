@@ -3,6 +3,7 @@ import { seconds, youtubeId, youtubeStart } from '../lib/card';
 
 interface Player {
   destroy(): void;
+  cueVideoById?(options: { videoId: string; startSeconds: number }): void;
 }
 interface YouTubeAPI {
   Player: new (
@@ -60,6 +61,8 @@ export function MusicPicker({
   const startValue = useRef(start);
   startValue.current = start;
   const id = youtubeId(value);
+  const playerRef = useRef<Player | undefined>(undefined);
+  const ready = useRef(false);
   const [status, setStatus] = useState<{ kind: string; text: string }>({
     kind: '',
     text: '',
@@ -85,6 +88,7 @@ export function MusicPicker({
         }
         const target = document.createElement('div');
         host.current.appendChild(target);
+        ready.current = false;
         player = new YT.Player(target, {
           videoId: id,
           playerVars: {
@@ -94,6 +98,8 @@ export function MusicPicker({
           },
           events: {
             onReady() {
+              playerRef.current = player;
+              ready.current = true;
               if (active)
                 setStatus({
                   kind: 'ok',
@@ -122,6 +128,20 @@ export function MusicPicker({
       element?.replaceChildren();
     };
   }, [id, onAllowed]);
+  useEffect(() => {
+    if (!id || !ready.current) return;
+    const timer = setTimeout(() => {
+      try {
+        playerRef.current?.cueVideoById?.({
+          videoId: id,
+          startSeconds: seconds(start),
+        });
+      } catch {
+        /* player not ready */
+      }
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [id, start]);
   const shown = !value.trim()
     ? { kind: '', text: 'คัดลอกลิงก์จากแอป YouTube (กดแชร์ › คัดลอกลิงก์)' }
     : !id

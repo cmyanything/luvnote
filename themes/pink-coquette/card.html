@@ -506,10 +506,10 @@ const useYT=()=>!AUTO&&!ytFailed&&CARD.music&&CARD.music.type==='youtube'&&CARD.
 function initYT(){if(!useYT()||yt)return;yt=1;
   const w=document.createElement('div');w.className='ytwrap';w.innerHTML='<div id="ytPlayer"></div>';$('#vinyl').appendChild(w);
   window.onYouTubeIframeAPIReady=()=>{yt=new YT.Player('ytPlayer',{width:200,height:200,videoId:CARD.music.id,
-    playerVars:{playsinline:1,controls:0,disablekb:1,rel:0,fs:0,iv_load_policy:3,start:CARD.music.start||0,loop:1,playlist:CARD.music.id},
-    events:{onReady:()=>{ytReady=true;$('#vinyl').classList.add('show');if(ytWant)ytPlay()},
+    playerVars:{playsinline:1,controls:0,disablekb:1,rel:0,fs:0,iv_load_policy:3,start:CARD.music.start||0},
+    events:{onReady:()=>{ytReady=true;try{yt.cueVideoById({videoId:CARD.music.id,startSeconds:CARD.music.start||0})}catch(_){}$('#vinyl').classList.add('show');if(ytWant)ytPlay()},
       onError:()=>{ytFailed=true;w.remove();$('#vinyl').classList.remove('need');if(ytWant)startBox()},
-      onStateChange:e=>{const v=$('#vinyl');if(e.data===1){playing=true;v.classList.add('play');v.classList.remove('need')}
+      onStateChange:e=>{const ST=CARD.music.start||0;if(e.data===0){try{yt.seekTo(ST,true);yt.playVideo()}catch(_){}return}if(e.data===1&&!yt._sk){yt._sk=1;try{if(ST&&yt.getCurrentTime()<ST-1)yt.seekTo(ST,true)}catch(_){}}const v=$('#vinyl');if(e.data===1){playing=true;v.classList.add('play');v.classList.remove('need')}
         else if(e.data===2||e.data===0){playing=false;v.classList.remove('play')}}}})};
   const fail=()=>{if(ytReady)return;ytFailed=true;w.remove()};const sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';sc.onerror=fail;document.head.appendChild(sc);setTimeout(fail,9000)}
 function ytPlay(){try{yt.playVideo()}catch(e){}setTimeout(()=>{if(!playing)$('#vinyl').classList.add('need')},1800)}

@@ -4,6 +4,7 @@ import { build } from 'esbuild';
 import { chromium, webkit } from 'playwright';
 import jpeg from 'jpeg-js';
 import { fixture } from './helpers/media-env.mjs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 
 const bundle = await build({ entryPoints: ['src/lib/images.ts'], bundle: true, write: false, format: 'iife', globalName: 'LuvNoteImages' });
 const pixels = new Uint8Array(1200 * 800 * 4).fill(180);
@@ -23,6 +24,10 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
         const f = await fixture();
         const response = await f.upload(bytes);
         const result = await response.json();
+        if (response.status !== 201) {
+          mkdirSync('test-results/jpeg', { recursive: true });
+          writeFileSync(`test-results/jpeg/${name}-${process.platform}-${max}.jpg`, bytes);
+        }
         // Diagnostics contain only the synthetic image's metadata, never customer data.
         console.log(JSON.stringify({ engine: name, platform: process.platform, max, bytes: bytes.length, status: response.status, result }));
         assert.equal(response.status, 201, `${name} ${max}px: ${JSON.stringify(result)}`);

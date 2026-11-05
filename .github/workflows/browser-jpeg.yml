@@ -31,3 +31,9 @@ jobs:
       - run: npm ci
       - run: npx playwright install chromium webkit
       - run: node --test tests/browser-jpeg.test.mjs
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: synthetic-browser-jpeg
+          path: test-results/jpeg/
+          retention-days: 7

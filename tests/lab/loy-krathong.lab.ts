@@ -1,0 +1,38 @@
+import { test, expect } from '@playwright/test';
+
+test('Loy Krathong personalizes, completes, replays and respects reduced motion', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/template-lab/?experiment=creative-studio&theme=loy-krathong');
+  await expect(page.locator('.loy-art')).toBeVisible();
+  expect(await page.locator('.loy-art').evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBeTruthy();
+  await page.getByText('ปรับข้อความตัวอย่างใน Lab').click();
+  await page.getByLabel('ชื่อผู้รับ').fill('น้องดาวที่น่ารัก');
+  await page.getByLabel('ชื่อผู้ส่ง').fill('คนคิดถึง');
+  await page.getByLabel('คำอธิษฐาน').fill('ขอให้เธอมีความสุขในทุกวัน ✨');
+  await page.getByLabel('ข้อความจากใจ').fill('ขอบคุณที่อยู่ด้วยกัน\nในทุกช่วงเวลาของเรา');
+  await page.getByRole('button', {name: 'ดูตัวอย่างตั้งแต่ต้น'}).click();
+  const candle = page.getByRole('button', {name: 'จุดเทียนบนกระทง'});
+  await candle.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.loy-scene')).toHaveClass(/is-lit/);
+  await page.getByRole('button', {name: 'ความสบายใจ'}).click();
+  await expect(page.getByText('ฝาก “ความสบายใจ” ไปกับกระทงของเรา')).toBeVisible();
+  await page.getByRole('button', {name: 'ปล่อยกระทงของเรา'}).click();
+  await expect(page.getByText('A WISH FOR YOU')).toBeVisible();
+  await expect(page.locator('.loy-letter h3')).toBeVisible();
+  await expect(page.locator('.loy-sign')).toContainText('คนคิดถึง');
+  await expect(page.locator('.loy-recipient')).toContainText('ความสบายใจ');
+  await expect(page.locator('.loy-scene')).toHaveClass(/is-floating/);
+  expect(await page.locator('.loy-art').evaluate(e => getComputedStyle(e).transitionDuration)).toBe('0s');
+  expect(await page.locator('.loy-fireflies i').first().evaluate(e => getComputedStyle(e).animationName)).toBe('none');
+  await page.getByRole('button', {name: 'เก็บคำอธิษฐานไว้ด้วยกัน'}).click();
+  await expect(page.getByText('UNDER THE SAME MOON')).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+  await page.getByRole('button', {name: 'เริ่มต้นอีกครั้ง'}).click();
+  await expect(page.getByText('A WISH FOR YOU')).toHaveCount(0);
+  await expect(candle).toBeVisible();
+  await expect(page.locator('.loy-to')).toContainText('น้องดาวที่น่ารัก');
+  expect(errors).toEqual([]);
+});

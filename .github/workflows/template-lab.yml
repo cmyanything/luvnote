@@ -10,8 +10,7 @@ on:
       - 'scripts/*template-lab*'
       - 'package*.json'
       - '.github/workflows/template-lab.yml'
-  push:
-    branches: ['lab/**']
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -19,6 +18,10 @@ permissions:
 jobs:
   preview-checks:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ['360', '390', '768', 'desktop', 'webkit']
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
@@ -31,11 +34,11 @@ jobs:
       - run: node scripts/check-template-lab-isolation.mjs
       - run: npm run lab:build
       - run: npx playwright install --with-deps chromium webkit
-      - run: npm run test:lab
+      - run: npx playwright test --config playwright.lab.config.ts --project=${{ matrix.project }}
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: creative-lab-test-evidence
+          name: creative-lab-test-evidence-${{ matrix.project }}
           path: |
             lab-results/
             lab-playwright-report/

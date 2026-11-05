@@ -1,6 +1,6 @@
 import type { CardData, CreatedCard, ThemeId } from '../types';
 import { occasionOf } from './occasion';
-import { jpeg } from './images';
+import { jpeg, stripJpegMetadata } from './images';
 
 const API = (import.meta.env.VITE_API_URL || 'https://api.luvnote.fun').replace(/\/$/, '');
 const ENABLED = import.meta.env.VITE_R2_MEDIA_ENABLED === 'true';
@@ -30,7 +30,8 @@ async function uploadJpeg(
   const dataUrl = source.startsWith('data:image/jpeg;base64,')
     ? source
     : await jpeg(source, kind === 'cover' ? 700 : 900, 0.78);
-  const binary = await fetch(dataUrl, { signal }).then((res) => res.blob());
+  const raw = new Uint8Array(await fetch(dataUrl, { signal }).then((res) => res.arrayBuffer()));
+  const binary = new Blob([stripJpegMetadata(raw)], { type: 'image/jpeg' });
   if (binary.size > 1_500_000) throw new Error('too_large');
   const res = await fetch(
     API + '/v3/upload-sessions/' + session.sessionId + '/media?kind=' + kind,

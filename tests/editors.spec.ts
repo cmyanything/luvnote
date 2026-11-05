@@ -243,7 +243,7 @@ test('API errors and network failures allow retry without losing form data', asy
   await expect(page.locator('#mkBtn')).toBeEnabled();
   await page.locator('#mkBtn').click();
   await expect(page.locator('#toast')).toHaveText(
-    'สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ',
+    /^สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ \([a-z0-9_]+\)$/,
   );
   await page.locator('#mkBtn').click();
   await expect(page.locator('#sheet')).toBeVisible();

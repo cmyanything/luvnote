@@ -80,7 +80,7 @@ for (const theme of themes) {
       await expect(page.getByRole('dialog',{name:'พรีวิวการ์ด'})).toBeVisible();
       await page.locator('#closePv').click();
       await page.locator('#mkBtn').click();
-      await expect(page.locator('#toast')).toHaveText('สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ');
+      await expect(page.locator('#toast')).toHaveText(/^สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ( \([a-z0-9_]+\))?$/);
       await expect(page.locator('#mkBtn')).toBeEnabled();
       await expect(page.getByLabel('ชื่อผู้รับ')).toHaveValue('Synthetic Recipient');
       await page.locator('#mkBtn').click();

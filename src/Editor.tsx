@@ -192,7 +192,10 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
         } catch { /* the address bar is optional */ }
       }
     } catch (error) {
-      const reason = error instanceof Error ? error.message : '';
+      const aborted = error instanceof DOMException && (error.name === 'AbortError' || error.name === 'TimeoutError');
+      const reason = aborted ? 'timeout' : error instanceof Error ? error.message : '';
+      // A short code on the generic message lets the shop tell what failed from a screenshot.
+      const code = reason && /^[\w ]{1,40}$/.test(reason) ? ` (${reason.toLowerCase().replace(/\s+/g, '_')})` : '';
       if (reason === 'edit_denied') setLoadState('denied');
       if (reason === 'expired') setLoadState('expired');
       toast(
@@ -206,9 +209,11 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
             ? 'การ์ดใบนี้หมดอายุแล้ว แก้ไขไม่ได้'
           : reason === 'verification_failed'
             ? 'ยืนยันความปลอดภัยไม่ผ่าน ลองกดอีกครั้งนะ'
+          : reason === 'timeout'
+            ? 'เน็ตช้าไปหน่อย ส่งรูปไม่ทัน ลองกดอีกครั้งนะ'
           : editing
-            ? 'บันทึกไม่สำเร็จ ลองใหม่อีกครั้งนะ'
-            : 'สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ',
+            ? 'บันทึกไม่สำเร็จ ลองใหม่อีกครั้งนะ' + code
+            : 'สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ' + code,
       );
     } finally {
       clearTimeout(timer);

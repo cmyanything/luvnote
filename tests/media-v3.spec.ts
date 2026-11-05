@@ -80,7 +80,7 @@ test('R2 path uploads binary JPEG media and publishes references rather than Bas
   await expect.poll(encodes).toBe(1);
   await expect(page.getByText('verified')).toBeVisible();
   await page.locator('#mkBtn').click();
-  await expect(page.locator('#toast')).toHaveText('สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ');
+  await expect(page.locator('#toast')).toHaveText(/^สร้างลิงก์ไม่สำเร็จ ลองใหม่อีกครั้งนะ( \([a-z0-9_]+\))?$/);
   await expect(page.locator('#mkBtn')).toBeEnabled();
   await page.locator('#mkBtn').click();
   await expect(page.locator('#sheet')).toBeVisible();

@@ -1,3 +1,36 @@
+// Apple canvas JPEGs can contain newly generated EXIF/IPTC even though drawImage
+// already normalized orientation. Remove those headers AFTER encoding; never
+// strip orientation from the original photo before the browser draws it.
+function stripCanvasMetadata(dataUrl: string): string {
+  const prefix = 'data:image/jpeg;base64,';
+  if (!dataUrl.startsWith(prefix)) throw new Error('image_unreadable');
+  const bytes = atob(dataUrl.slice(prefix.length));
+  if (bytes.charCodeAt(0) !== 255 || bytes.charCodeAt(1) !== 216)
+    throw new Error('image_unreadable');
+  const parts: string[] = [];
+  let offset = 2, keepFrom = 0;
+  while (offset < bytes.length) {
+    const start = offset;
+    if (bytes.charCodeAt(offset++) !== 255) throw new Error('image_unreadable');
+    while (bytes.charCodeAt(offset) === 255) offset++;
+    const marker = bytes.charCodeAt(offset++);
+    // Preserve the encoded pixels and all scan data byte-for-byte.
+    if (marker === 0xda) {
+      if (!parts.length) return dataUrl;
+      parts.push(bytes.slice(keepFrom));
+      return prefix + btoa(parts.join(''));
+    }
+    const length = (bytes.charCodeAt(offset) << 8) | bytes.charCodeAt(offset + 1);
+    if (length < 2 || offset + length > bytes.length) throw new Error('image_unreadable');
+    if (marker === 0xe1 || marker === 0xed) {
+      parts.push(bytes.slice(keepFrom, start));
+      keepFrom = offset + length;
+    }
+    offset += length;
+  }
+  throw new Error('image_unreadable');
+}
+
 export async function jpeg(
   source: string,
   max: number,
@@ -14,7 +47,7 @@ export async function jpeg(
         const context = canvas.getContext('2d');
         if (!context) throw new Error('canvas_unavailable');
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL('image/jpeg', quality));
+        resolve(stripCanvasMetadata(canvas.toDataURL('image/jpeg', quality)));
       } catch (error) {
         reject(error);
       }

@@ -23,6 +23,8 @@ import './lab.css';
 import './templates.css';
 import './complete.css';
 
+const CreativeExperiments = lazy(() => import('./CreativeExperiments'));
+
 const players = {
   'love-letter': lazy(() => import('./templates/Letter')),
   polaroid: lazy(() => import('./templates/Polaroid')),
@@ -316,6 +318,7 @@ function Lab() {
               Every story opens differently.
             </span>
           </section>
+          <section style={{ padding: "24px 5%", background: "#e9e1d4" }}><a href="?experiment=creative-studio">ทดลองต้นแบบใหม่จาก Creative Studio →</a></section>
           <section className="lab-catalog" aria-label="ต้นแบบทั้งหมด">
             <div className="catalog-heading">
               <h2>Find your kind of feeling.</h2>
@@ -546,6 +549,7 @@ function Lab() {
   );
 }
 
+const experiment = new URLSearchParams(location.search).get('experiment') === 'creative-studio';
 const requested = new URLSearchParams(location.search).get('play');
 const template = findTemplate(requested);
 document.documentElement.dataset.labPlayer = template ? 'true' : 'false';
@@ -554,7 +558,7 @@ if (still) document.documentElement.dataset.still = 'true';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <MotionConfig reducedMotion={still ? 'always' : 'user'}>
-      {template ? <Player id={template.id} /> : <Lab />}
+      {experiment ? <Suspense fallback={<p>กำลังเปิดต้นแบบ…</p>}><CreativeExperiments /></Suspense> : template ? <Player id={template.id} /> : <Lab />}
     </MotionConfig>
   </StrictMode>,
 );

@@ -15,7 +15,8 @@ let pending: { fingerprint: string; session: Session; ids: Map<string,string>; k
 async function responseJson<T>(res: Response): Promise<T> {
   const data = (await res.json().catch(() => ({}))) as Record<string, unknown>;
   if (!res.ok) {
-    if (['session_invalid','upload_failed','upload_limit_or_conflict'].includes(String(data.error))) pending = null;
+    // These mean the cached upload session can never succeed: start a fresh one on the next tap.
+    if (['session_invalid','session_used','upload_failed','upload_limit_or_conflict','invalid_media_reference','media_missing','idempotency_conflict','bad_request'].includes(String(data.error))) pending = null;
     throw new Error(typeof data.error === 'string' ? data.error : 'http_' + res.status);
   }
   return data as unknown as T;

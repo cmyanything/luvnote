@@ -30,8 +30,8 @@ async function uploadJpeg(
   const dataUrl = source.startsWith('data:image/jpeg;base64,')
     ? source
     : await jpeg(source, kind === 'cover' ? 700 : 900, 0.78);
-  const raw = new Uint8Array(await fetch(dataUrl, { signal }).then((res) => res.arrayBuffer()));
-  const binary = new Blob([stripJpegMetadata(raw)], { type: 'image/jpeg' });
+  const buffer: ArrayBuffer = await (await fetch(dataUrl, { signal })).arrayBuffer();
+  const binary = new Blob([stripJpegMetadata(new Uint8Array(buffer))], { type: 'image/jpeg' });
   if (binary.size > 1_500_000) throw new Error('too_large');
   const res = await fetch(
     API + '/v3/upload-sessions/' + session.sessionId + '/media?kind=' + kind,

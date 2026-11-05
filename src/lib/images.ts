@@ -40,9 +40,9 @@ export async function readPhoto(file: File, max = 1080): Promise<string> {
 // Safari on iPhone/iPad writes an Exif (APP1) block into canvas JPEGs, and the
 // upload API rejects any APP1/APP13 segment (it can carry GPS or orientation).
 // Canvas already applied orientation, so drop those segments before uploading.
-export function stripJpegMetadata(bytes: Uint8Array): Uint8Array {
+export function stripJpegMetadata(bytes: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer> {
   if (bytes.length < 4 || bytes[0] !== 0xff || bytes[1] !== 0xd8) return bytes;
-  const keep: Uint8Array[] = [bytes.subarray(0, 2)];
+  const keep: Uint8Array<ArrayBuffer>[] = [bytes.subarray(0, 2)];
   let offset = 2;
   while (offset + 4 <= bytes.length) {
     if (bytes[offset] !== 0xff) return bytes;

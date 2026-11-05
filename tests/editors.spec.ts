@@ -35,7 +35,7 @@ async function fillRequired(page: Page, noSecret = false) {
   else await page.locator('#secret').fill('ของขวัญอยู่ใต้หมอน 🤫');
 }
 
-for (const theme of themes) {
+for (const theme of themes.filter((t) => !t.couple)) {
   test(`${theme.id}: validate, edit, preview and create a shareable card`, async ({
     page,
   }) => {
@@ -171,6 +171,60 @@ for (const theme of themes) {
     expect(errors).toEqual([]);
   });
 }
+
+test('loy-together: faces on the krathongs, free card, and a premium request with memories', async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  const requests: { theme: string; occasion: string; data: Record<string, unknown> }[] = [];
+  await page.route('https://api.luvnote.fun/v2/cards', async (route) => {
+    requests.push(route.request().postDataJSON());
+    await route.fulfill({
+      status: 201,
+      json: { id: 'abc2345', expires },
+      headers: { 'access-control-allow-origin': '*' },
+    });
+  });
+  await page.goto('/themes/loy-together/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Loy Together');
+  await expect(page.locator('#age')).toHaveCount(0);
+  await expect(page.locator('#secret')).toHaveCount(0);
+  await page.getByLabel('ชื่อผู้รับ').fill('น้องมายด์');
+  await page.getByLabel('ชื่อผู้ส่ง').fill('พี่ภูมิ');
+  await page.getByLabel('รูปผู้ส่ง').setInputFiles(photo);
+  await expect(page.locator('#face-from img')).toHaveCount(1);
+  await page.getByLabel('รูปผู้รับ').setInputFiles(photo);
+  await expect(page.locator('#face-to img')).toHaveCount(1);
+  await page.locator('#tpls button').first().click();
+  // Free: memory photos and YouTube are not offered.
+  await expect(page.locator('#file')).toHaveCount(0);
+  await page.locator('#mkBtn').click();
+  await expect(page.getByRole('dialog', { name: 'การ์ดของคุณพร้อมแล้ว!' })).toBeVisible();
+  expect(requests[0]).toMatchObject({
+    theme: 'loy-together',
+    occasion: 'festival',
+    data: { to: 'น้องมายด์', from: 'พี่ภูมิ', faces: ['from', 'to'], music: { type: 'demo' } },
+  });
+  expect(requests[0].data.photos).toHaveLength(2);
+  expect(requests[0].data.wantPremium).toBeUndefined();
+  await expect(page.locator('#payBox')).toHaveCount(0);
+  await expect(page.locator('#openBtn')).toHaveAttribute('href', 'https://luvnote.fun/#labc2345');
+  await page.locator('#again').click();
+  // Premium: up to three memory lanterns; preview shows the premium card.
+  await page.locator('#plans button').nth(1).click();
+  await page.locator('#file').setInputFiles([photo, photo, photo, photo]);
+  await expect(page.locator('#photos .ph')).toHaveCount(3);
+  await page.locator('#pvBtn').click();
+  const previewFrame = () => page.frames().find((f) => f.url().includes('#preview'))!;
+  await expect.poll(() => previewFrame()?.evaluate('[PREMIUM, MEM.length]')).toEqual([true, 3]);
+  await page.locator('#closePv').click();
+  await page.locator('#mkBtn').click();
+  await expect(page.locator('#payBox')).toBeVisible();
+  expect(requests[1].data).toMatchObject({ faces: ['from', 'to'], wantPremium: true });
+  expect(requests[1].data.photos).toHaveLength(5);
+  expect(errors).toEqual([]);
+});
 
 test('rejects very large original photos and covers before decoding', async ({ page }) => {
   await page.goto('/themes/little-memories/');

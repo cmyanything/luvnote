@@ -6,6 +6,7 @@ import {
   cleanChat,
   editTarget,
   invalidFields,
+  MEMORY_LIMIT,
   stateFromCard,
   youtubeId,
   type InvalidField,
@@ -18,6 +19,7 @@ import { Section } from './components/Section';
 import { PhotoPicker } from './components/PhotoPicker';
 import { MusicPicker } from './components/MusicPicker';
 import { ChatEditor } from './components/ChatEditor';
+import { FacePicker } from './components/FacePicker';
 import { PreviewDialog } from './components/PreviewDialog';
 import { ShareDialog } from './components/ShareDialog';
 import { dateLabel, daysTogether, today, validDate } from './lib/dates';
@@ -25,6 +27,7 @@ import { dateLabel, daysTogether, today, validDate } from './lib/dates';
 export function Editor({ theme }: { theme: ThemeConfig }) {
   const hasChat = theme.id === 'birthday-chat';
   const anniversary = theme.occasion === 'anniversary';
+  const couple = !!theme.couple;
   const [state, setState] = useState<EditorState>(() => ({
     to: '',
     from: '',
@@ -42,6 +45,9 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     photos: [],
     cover: null,
     chat: hasChat ? structuredClone(CHAT_TEMPLATES[0]) : [],
+    faceFrom: null,
+    faceTo: null,
+    premium: false,
   }));
   // Owner edit mode: `?edit=<card>#key=<secret>` loads the card and saves over it.
   // After a new card is created the editor switches to editing that card, so a second click on
@@ -62,6 +68,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     result: CreatedCard;
     recipient: string;
     edited: boolean;
+    premium: boolean;
   } | null>(null);
   const [message, setMessage] = useState('');
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
@@ -105,7 +112,16 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     setState((previous) => ({ ...previous, [key]: value }));
     setErrors((previous) => previous.filter((field) => field !== key));
   }
-  const complete = {
+  const complete: Record<string, boolean> = couple
+    ? {
+        names: !!(state.to.trim() && state.from.trim()),
+        faces: !!(state.faceFrom || state.faceTo),
+        letter: !!state.letter.trim(),
+        plan: !state.premium || state.photos.length > 0 || !!youtubeId(state.youtube),
+        fx: true,
+        end: !!state.endMsg.trim(),
+      }
+    : {
     names:
       !!(state.to.trim() && state.from.trim()) &&
       (!anniversary ||
@@ -183,7 +199,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
       const result = editing
         ? await editR2Card(theme.id, editing.id, editing.key, data, verificationToken || '', controller.signal)
         : await createCard(theme.id, data, controller.signal, verificationToken || undefined);
-      setCreated({ result, recipient: data.to, edited: wasEditing });
+      setCreated({ result, recipient: data.to, edited: wasEditing, premium: !!data.wantPremium });
       if (!wasEditing && result.editKey) {
         setEditing({ id: result.id, key: result.editKey });
         setLoadState('ready');
@@ -228,7 +244,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
   const fieldClass = (field: InvalidField) =>
     `f${errors.includes(field) ? ' err' : ''}`;
   const section = (
-    name: keyof typeof complete,
+    name: string,
     number: number,
     title: string,
     children: ReactNode,
@@ -335,7 +351,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
                   ใส่ชื่อผู้ส่งด้วยนะ
                 </p>
               </div>
-              {!anniversary && (
+              {!anniversary && !couple && (
                 <div style={{ flex: 0.55 }}>
                   <label htmlFor="age">ครบกี่ปี</label>
                   <input
@@ -401,7 +417,25 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
               /16
             </>,
           )}
-        {section(
+        {couple &&
+          section(
+            'faces',
+            2,
+            'รูปคู่บนกระทง',
+            <FacePicker
+              from={state.faceFrom}
+              to={state.faceTo}
+              fromName={state.from}
+              toName={state.to}
+              onChange={(who, src) =>
+                update(who === 'from' ? 'faceFrom' : 'faceTo', src)
+              }
+              toast={toast}
+              onBusy={setPhotosBusy}
+            />,
+            'ไม่ใส่ก็ได้',
+          )}
+        {!couple && section(
           'photos',
           2 + offset,
           theme.photoTitle,
@@ -432,7 +466,9 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
           theme.letterTitle,
           <>
             <div className="tpls" id="tpls">
-              {(anniversary
+              {(couple
+                ? ['🪷 หวาน ๆ', '🥹 ซึ้ง ๆ', '😆 ขำ ๆ', '🌕 อยู่ไกลกัน']
+                : anniversary
                 ? [
                     '♡ รักเรียบง่าย',
                     '✎ จากใจ',
@@ -560,7 +596,74 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
             </div>
           </>,
         )}
-        {section(
+        {couple &&
+          section(
+            'plan',
+            4,
+            'เลือกแบบการ์ด',
+            <>
+              <div className="plans" id="plans" role="group" aria-label="แบบการ์ด">
+                <button
+                  type="button"
+                  className={`plan${state.premium ? '' : ' on'}`}
+                  aria-pressed={!state.premium}
+                  onClick={() => update('premium', false)}
+                >
+                  <span className="plan-h">ฟรี</span>
+                  <span className="plan-p en">0 ฿</span>
+                  <span className="plan-l">ชื่อ · รูปคู่บนกระทง · ข้อความบนฟ้า · เพลงบรรเลง</span>
+                </button>
+                <button
+                  type="button"
+                  className={`plan pro${state.premium ? ' on' : ''}`}
+                  aria-pressed={state.premium}
+                  onClick={() => update('premium', true)}
+                >
+                  <span className="plan-h">พรีเมียม ✨</span>
+                  <span className="plan-p en">{theme.premiumPrice} ฿</span>
+                  <span className="plan-l">ทุกอย่างในแบบฟรี + โคมลอยรูปความทรงจำ · เพลงจาก YouTube · ไม่มีโฆษณาท้ายการ์ด</span>
+                </button>
+              </div>
+              {state.premium ? (
+                <>
+                  <h3 className="plan-sub">🏮 รูปความทรงจำในโคมลอย</h3>
+                  <PhotoPicker
+                    photos={state.photos}
+                    cover={null}
+                    theme={theme}
+                    max={MEMORY_LIMIT}
+                    onPhotos={(fn) =>
+                      setState((previous) => ({
+                        ...previous,
+                        photos: fn(previous.photos).slice(0, MEMORY_LIMIT),
+                      }))
+                    }
+                    onCover={() => {}}
+                    toast={toast}
+                    onBusy={setPhotosBusy}
+                  />
+                  <h3 className="plan-sub">🎵 เพลงประกอบ</h3>
+                  <MusicPicker
+                    value={state.youtube}
+                    start={state.musicStart}
+                    help={theme.musicHelp}
+                    onValue={(value) => update('youtube', value)}
+                    onStart={(value) => update('musicStart', value)}
+                    onAllowed={setMusicAllowed}
+                  />
+                  <p className="help plan-pay">
+                    กดสร้างลิงก์ได้เลย ลิงก์จะเปิดเป็นแบบฟรีไปก่อน · โอน {theme.premiumPrice} บาท แล้วส่งสลิปพร้อมลิงก์ทาง LINE ร้าน
+                    เราจะปลดล็อกพรีเมียมบนลิงก์เดิมให้ ไม่ต้องส่งลิงก์ใหม่
+                  </p>
+                </>
+              ) : (
+                <p className="help">
+                  แบบฟรีจะมีป้าย LuvNote เล็ก ๆ ท้ายการ์ด · อยากใส่รูปความทรงจำหรือเพลงของเรา เลือกพรีเมียมได้เลย
+                </p>
+              )}
+            </>,
+          )}
+        {!couple && section(
           'music',
           5 + after,
           'เพลงประกอบ',
@@ -660,6 +763,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
           result={created.result}
           recipient={created.recipient}
           edited={created.edited}
+          premium={created.premium}
           onClose={() => setCreated(null)}
           toast={toast}
         />

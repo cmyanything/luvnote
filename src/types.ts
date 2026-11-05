@@ -6,7 +6,8 @@ export type ThemeId =
   | 'velvet-gift'
   | 'anniversary-journey'
   | 'villa-amore'
-  | 'sweet-cake';
+  | 'sweet-cake'
+  | 'loy-together';
 export type ChatRow =
   | { w: 'f' | 'oops'; x: string }
   | { w: 't'; o: string[] }
@@ -18,7 +19,11 @@ export interface ThemeConfig {
   name: string;
   title: string;
   category: string;
-  occasion?: 'birthday' | 'anniversary';
+  occasion?: 'birthday' | 'anniversary' | 'festival';
+  /** Couple theme (Loy Together): a face photo for each person, free card plus a paid premium tier. */
+  couple?: boolean;
+  /** Premium price in baht for couple themes (unlocked by the owner after LINE payment). */
+  premiumPrice?: number;
   description: string;
   price: number;
   version: number;
@@ -69,6 +74,9 @@ export interface EditorState {
   photos: Photo[];
   cover: string | null;
   chat: ChatRow[];
+  faceFrom: string | null;
+  faceTo: string | null;
+  premium: boolean;
 }
 
 export interface CardData {
@@ -85,6 +93,12 @@ export interface CardData {
   startDate?: string;
   cover?: string | null;
   chat?: ChatRow[];
+  /** Whose faces the leading photos are (couple themes), in order. */
+  faces?: ('from' | 'to')[];
+  /** The customer asked for premium; the owner unlocks it after payment. */
+  wantPremium?: boolean;
+  /** Set only by the owner's admin unlock. */
+  premium?: boolean;
   expires?: string | number;
 }
 

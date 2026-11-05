@@ -135,6 +135,13 @@ function cleanV2(d) {
   };
   const startDate = civilDate(d.startDate);
   if (startDate) out.startDate = startDate;
+  // Loy Together: the first photos are the couple's faces, in this order ("from"/"to").
+  if (Array.isArray(d.faces)) {
+    const faces = d.faces.filter((k, i, all) => (k === "from" || k === "to") && all.indexOf(k) === i);
+    if (faces.length) out.faces = faces;
+  }
+  // The customer may ask for premium; only the owner's admin unlock sets `premium` (never accepted here).
+  if (d.wantPremium === true) out.wantPremium = true;
   if (typeof d.cover === "string" && d.cover.length < 400000 && /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(d.cover)) out.cover = d.cover;
   if (Array.isArray(d.chat)) {
     out.chat = d.chat.slice(0, 20).map((r) => {

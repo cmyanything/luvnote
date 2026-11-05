@@ -90,7 +90,24 @@ Tests cover anniversary dates, leap days, photo ordering, preview handoff, saved
 loading, letter/PIN interactions, error states, catalog links, and an in-memory D1
 round-trip through the real Worker. No production cards are written during tests.
 
-## Card lifetime, owner edits and paid renewal
+## Loy Together: free card with a paid premium unlock
+
+`/themes/loy-together/` (prefix `/#l`, festival category) is the first free template. The editor
+asks for a face photo of each person (`faceFrom`/`faceTo`), sent as the **leading photos** with
+`data.faces` (`["from","to"]`) saying whose they are. Choosing **premium (49 THB)** adds up to three
+memory-lantern photos and a YouTube song, and sends `wantPremium: true`.
+
+The card stays free until the owner unlocks it: the customer pays via LINE, then the owner opens
+`/admin/`, pastes the card link and presses **ปลดล็อกพรีเมียม** (`POST /v3/admin/premium`, same
+`X-Admin-Key`). The Worker never accepts `premium` from a client and keeps it through owner edits.
+Free cards skip the lantern scene, play the built-in melody and end with a LuvNote invitation;
+premium cards show everything without it. The krathong illustration (`krathong.webp`) was supplied
+by the shop and is copied into `dist` with the card page.
+
+**Deploy order:** the Worker must be deployed (Owner-approved card API deployment) for `faces`,
+`wantPremium` and the admin unlock to work; until then new cards lose their face photos.
+
+
 
 - New cards open for **90 days** (`LIFE_DAYS` in `worker/index.js`, `CARD_LIFE_MS` in `worker/media-v3.js`).
 - **Owner edits (R2 cards):** after creating a card, the share sheet shows a private edit link

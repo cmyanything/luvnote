@@ -59,13 +59,22 @@ export function Hero({
           <span className="chip">{theme.category}</span>
           <h1>{theme.name}</h1>
           <p>{theme.description}</p>
-          <div className="price">
-            <span className="pp">
-              <b>{theme.price}</b>
-              <i>฿</i>
-            </span>
-            <small>ต่อ 1 ใบ</small>
-          </div>
+          {theme.couple ? (
+            <div className="price">
+              <span className="pp">
+                <b>ฟรี</b>
+              </span>
+              <small>พรีเมียม {theme.premiumPrice} ฿</small>
+            </div>
+          ) : (
+            <div className="price">
+              <span className="pp">
+                <b>{theme.price}</b>
+                <i>฿</i>
+              </span>
+              <small>ต่อ 1 ใบ</small>
+            </div>
+          )}
         </div>
       </div>
       <div className="feats">

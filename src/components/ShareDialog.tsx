@@ -9,9 +9,11 @@ export function ShareDialog({
   result,
   recipient,
   edited = false,
+  premium = false,
   onClose,
   toast,
 }: {
+  premium?: boolean;
   theme: ThemeConfig;
   result: CreatedCard;
   recipient: string;
@@ -125,6 +127,23 @@ export function ShareDialog({
           year: 'numeric',
         })}
       </p>
+      {premium && (
+        <div className="paybox" id="payBox">
+          <p className="owner-title">✨ ปลดล็อกพรีเมียม {theme.premiumPrice} บาท</p>
+          <p className="owner-note">
+            ตอนนี้ลิงก์เปิดเป็นแบบฟรีไปก่อน · โอน {theme.premiumPrice} บาท แล้วส่ง <b>สลิป + ลิงก์การ์ดนี้</b> ทาง LINE
+            ร้านจะปลดล็อกโคมลอยรูปความทรงจำ เพลงของคุณ และเอาโฆษณาท้ายการ์ดออกบนลิงก์เดิม
+          </p>
+          <div className="share">
+            <button type="button" className="open" id="copyForShop" onClick={() => void copy(`ขอปลดล็อกพรีเมียม ${theme.name} ${url}`)}>
+              คัดลอกข้อความถึงร้าน
+            </button>
+            <a className="line" id="payLine" href="https://line.me/ti/p/~yingchonstom39" target="_blank" rel="noopener noreferrer">
+              ทัก LINE ร้าน
+            </a>
+          </div>
+        </div>
+      )}
       {ownerLink && (
         <div className="owner" id="ownerBox">
           <p className="owner-title">🔒 ลิงก์แก้ไขการ์ด (สำหรับคุณคนเดียว)</p>

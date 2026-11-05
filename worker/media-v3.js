@@ -240,7 +240,7 @@ async function editCard(req, env, json, cleanV2, cardId) {
   if (!await sessionFor(req, env, sid, true)) return json(req, { error: "session_invalid" }, 403);
   const keyHash = await tokenHash(editKey);
   const card = await env.DB.prepare(
-    "SELECT c.theme,c.expires_at FROM theme_cards c JOIN card_edit_keys k ON k.card_id=c.id WHERE c.id=? AND k.key_hash=?"
+    "SELECT c.theme,c.expires_at,json_extract(c.data,'$.premium') AS premium FROM theme_cards c JOIN card_edit_keys k ON k.card_id=c.id WHERE c.id=? AND k.key_hash=?"
   ).bind(cardId, keyHash).first();
   if (!card) return json(req, { error: "edit_denied" }, 403);
   if (card.expires_at <= Date.now()) return json(req, { error: "expired" }, 410);
@@ -248,6 +248,8 @@ async function editCard(req, env, json, cleanV2, cardId) {
   const parsed = await parseCardBody(body, cleanV2);
   if (parsed.error) return json(req, { error: parsed.error }, 400);
   const { data, all, coverId, payloadHash } = parsed;
+  // A paid premium unlock survives the owner's own edits (the hash covers only what the client sent).
+  if (card.premium === 1 || card.premium === true) data.premium = true;
   const replay = async () => {
     const previous = await env.DB.prepare('SELECT card_id,payload_hash FROM card_edits WHERE session_id=?').bind(sid).first();
     if (!previous) return null;
@@ -327,6 +329,31 @@ async function adminReissueEditKey(req, env, json) {
   return json(req, { cardId, theme: card.theme, editKey, expires: card.expires_at }, 200, { 'Cache-Control': 'no-store' });
 }
 
+// POST /v3/admin/premium {cardId, premium?} with X-Admin-Key: the owner unlocks (or removes) the
+// premium extras of a card after the customer has paid via LINE. Works for R2 and legacy cards.
+async function adminSetPremium(req, env, json) {
+  const configured = typeof env.ADMIN_KEY === 'string' && env.ADMIN_KEY.length >= 32 ? env.ADMIN_KEY : '';
+  if (!configured) return json(req, { error: 'admin_not_configured' }, 503);
+  const supplied = req.headers.get('X-Admin-Key') || '';
+  if (!supplied || supplied.length > 256 || !await sameSecret(supplied, configured))
+    return json(req, { error: 'admin_denied' }, 403);
+  const body = await readJson(req, 1024);
+  const cardId = String(body.cardId || '');
+  if (!CARD.test(cardId)) return json(req, { error: 'bad_request' }, 400);
+  const on = body.premium !== false;
+  const card = await env.DB.prepare(
+    "SELECT theme,expires_at,json_extract(data,'$.wantPremium') AS want FROM theme_cards WHERE id=?"
+  ).bind(cardId).first();
+  if (!card) return json(req, { error: 'not_found' }, 404);
+  if (card.expires_at <= Date.now()) return json(req, { error: 'expired', expires: card.expires_at }, 410);
+  await env.DB.prepare(
+    on ? "UPDATE theme_cards SET data=json_set(data,'$.premium',json('true')) WHERE id=?"
+       : "UPDATE theme_cards SET data=json_remove(data,'$.premium') WHERE id=?"
+  ).bind(cardId).run();
+  console.log(JSON.stringify({ event: on ? 'admin_premium_unlocked' : 'admin_premium_removed', card: cardId }));
+  return json(req, { cardId, theme: card.theme, premium: on, requested: card.want === 1 || card.want === true, expires: card.expires_at }, 200, { 'Cache-Control': 'no-store' });
+}
+
 export function materializeV3Card(data, cardId, origin) {
   if (data?.media_version !== 3) return data;
   const mediaUrl = id => origin + "/v3/cards/" + cardId + "/media/" + id;
@@ -369,6 +396,8 @@ export async function handleMediaV3(req, env, url, helpers) {
     return publishCard(req, env, json, cleanV2, newId);
   if (url.pathname === "/v3/admin/edit-key" && req.method === "POST")
     return adminReissueEditKey(req, env, json);
+  if (url.pathname === "/v3/admin/premium" && req.method === "POST")
+    return adminSetPremium(req, env, json);
   const check = /^\/v3\/cards\/([a-z0-9]{7})\/edit-check$/.exec(url.pathname);
   if (check && req.method === "POST")
     return editCheck(req, env, json, check[1]);

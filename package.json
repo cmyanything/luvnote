@@ -11,7 +11,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "tsc --noEmit",
-    "test:api": "node --test tests/card-edit.test.mjs tests/media-v3.test.mjs tests/media-v3.integration.test.mjs tests/media-v3.workerd.test.mjs tests/staging-safety.test.mjs",
+    "test:api": "node --test tests/card-edit.test.mjs tests/loy-together-premium.test.mjs tests/media-v3.test.mjs tests/media-v3.integration.test.mjs tests/media-v3.workerd.test.mjs tests/staging-safety.test.mjs",
     "test": "playwright test",
     "lab:dev": "vite --config vite.lab.config.ts",
     "lab:build": "tsc --noEmit && vite build --config vite.lab.config.ts",

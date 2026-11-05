@@ -18,7 +18,9 @@ export function PhotoPicker({
   onCover,
   toast,
   onBusy,
+  max = 5,
 }: {
+  max?: number;
   photos: Photo[];
   cover: string | null;
   theme: ThemeConfig;
@@ -39,9 +41,9 @@ export function PhotoPicker({
   }
   async function add(files: File[]) {
     if (pending.current) return;
-    const selected = files.slice(0, 5 - photos.length);
+    const selected = files.slice(0, max - photos.length);
     if (!selected.length) {
-      toast('ใส่ได้สูงสุด 5 รูปนะ');
+      toast(`ใส่ได้สูงสุด ${max} รูปนะ`);
       return;
     }
     pending.current = true;
@@ -57,7 +59,7 @@ export function PhotoPicker({
           toast(imageReadError(error));
         }
       }
-      onPhotos((previous) => [...previous, ...added].slice(0, 5));
+      onPhotos((previous) => [...previous, ...added].slice(0, max));
     } finally {
       pending.current = false;
       setBusy(false);
@@ -156,12 +158,12 @@ export function PhotoPicker({
         <label
           className={`add${busy ? ' busy' : ''}`}
           id="addBtn"
-          style={{ display: photos.length >= 5 ? 'none' : undefined }}
+          style={{ display: photos.length >= max ? 'none' : undefined }}
         >
           <b>+</b>
           {busy ? 'กำลังอ่านรูป…' : 'เพิ่มรูป'}{' '}
           <span className="en" style={{ opacity: 0.6, fontSize: 13 }}>
-            (สูงสุด 5)
+            (สูงสุด {max})
           </span>
           <input
             type="file"

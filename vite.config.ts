@@ -14,6 +14,7 @@ const themes = [
   'velvet-gift',
   'villa-amore',
   'sweet-cake',
+  'loy-together',
 ];
 
 export default defineConfig({
@@ -31,6 +32,8 @@ export default defineConfig({
           'admin/index.html',
           'CNAME',
           ...themes.map((t) => `themes/${t}/card.html`),
+          // Loy Together's krathong illustration (supplied by the shop), loaded by its card.html.
+          'themes/loy-together/krathong.webp',
         ]) {
           const destination = resolve(root, 'dist', path);
           mkdirSync(dirname(destination), { recursive: true });

@@ -22,3 +22,29 @@ a.again{display:block;text-align:center}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
   .sec{opacity:1;transform:none}
 }
+
+/* ===== Loy Together: couple faces + free/premium plans ===== */
+.faces{display:flex;justify-content:center;gap:28px;margin:6px 0 4px}
+.face{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;width:118px}
+.face-btn{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;cursor:pointer;overflow:hidden;font-size:28px;
+  background:var(--soft);border:2px dashed var(--pink);transition:transform .2s}
+.face-btn:active{transform:scale(.96)}
+.face-btn.has{border:3px solid #fff;box-shadow:0 0 0 2px #E9B25E,0 6px 14px rgba(128,0,32,.18)}
+.face-btn img{width:100%;height:100%;object-fit:cover;display:block}
+.face-name{font-family:'Mitr';font-weight:400;font-size:15px;color:var(--wine);max-width:118px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.face-act{font-family:'Athiti';font-weight:600;font-size:13px;color:var(--mute)}
+.face .x{position:absolute;top:-2px;right:6px}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+.plan{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:12px 12px 13px;border-radius:16px;cursor:pointer;
+  background:#fff;border:1.5px solid var(--line);color:var(--ink);font:inherit;transition:border-color .2s,box-shadow .2s,transform .15s}
+.plan:active{transform:scale(.98)}
+.plan.on{border-color:var(--wine);box-shadow:0 0 0 2px rgba(128,0,32,.12)}
+.plan.pro.on{background:linear-gradient(180deg,#FFF8EC,#fff)}
+.plan-h{font-family:'Mitr';font-weight:500;font-size:16px;color:var(--wine)}
+.plan-p{font-family:'Fredoka';font-weight:600;font-size:20px;color:var(--wine)}
+.plan-l{font-family:'Athiti';font-weight:600;font-size:13.5px;line-height:1.4;color:var(--mute)}
+.plan-sub{font-family:'Mitr';font-weight:500;font-size:15px;color:var(--wine);margin:16px 0 8px}
+.plan-pay{background:#FFF8EC;border-radius:12px;padding:10px 12px}
+.paybox{margin:14px 0 4px;padding:12px 14px;border-radius:16px;background:#FFF8EC;border:1.5px solid #F2D9A6;text-align:left}
+.paybox .share{margin-top:10px}
+.paybox button.open{border:none;cursor:pointer;font:inherit}

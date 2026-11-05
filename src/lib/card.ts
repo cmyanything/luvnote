@@ -93,6 +93,7 @@ export function cardData(
   musicAllowed: boolean,
 ): CardData {
   const id = youtubeId(state.youtube);
+  if (theme.couple) return coupleCardData(state, theme, musicAllowed, id);
   return {
     to: state.to.trim(),
     from: state.from.trim(),
@@ -112,6 +113,51 @@ export function cardData(
     ...(theme.id === 'birthday-chat' ? { chat: cleanChat(state.chat) } : {}),
   };
 }
+
+// Loy Together: faces lead the photo list, memories (premium) follow; music and memories only for premium.
+function coupleCardData(
+  state: EditorState,
+  theme: ThemeConfig,
+  musicAllowed: boolean,
+  id: string | null,
+): CardData {
+  const faces: ('from' | 'to')[] = [];
+  const photos: CardData['photos'] = [];
+  if (state.faceFrom) {
+    faces.push('from');
+    photos.push({ src: state.faceFrom, cap: '' });
+  }
+  if (state.faceTo) {
+    faces.push('to');
+    photos.push({ src: state.faceTo, cap: '' });
+  }
+  if (state.premium)
+    photos.push(
+      ...state.photos
+        .slice(0, MEMORY_LIMIT)
+        .map((photo) => ({ ...photo, cap: photo.cap.trim() })),
+    );
+  return {
+    to: state.to.trim(),
+    from: state.from.trim(),
+    age: null,
+    letter: state.letter.trim(),
+    secret: '',
+    photos,
+    lock: { type: theme.defaultLock, code: '', hint: '' },
+    endMsg: state.endMsg.trim() || theme.defaultEnd,
+    effect: state.effect,
+    music:
+      state.premium && id && musicAllowed
+        ? { type: 'youtube', id, start: seconds(state.musicStart) }
+        : { type: 'demo' },
+    ...(faces.length ? { faces } : {}),
+    ...(state.premium ? { wantPremium: true } : {}),
+  };
+}
+
+/** Memory lanterns in a premium couple card (2 faces + 3 memories = the 5-photo upload limit). */
+export const MEMORY_LIMIT = 3;
 
 export function cardLink(theme: ThemeConfig, id: string): string {
   const base = (import.meta.env.VITE_SITE_URL || 'https://luvnote.fun').replace(
@@ -146,9 +192,18 @@ export function stateFromCard(
   theme: ThemeConfig,
   fallbackChat: ChatRow[],
 ): EditorState {
+  const faces = theme.couple && Array.isArray(data.faces) ? data.faces : [];
+  const allPhotos = (data.photos || []).map((p) => ({ src: p.src, cap: p.cap || '', ...(p.date ? { date: p.date } : {}) }));
+  const face = (who: 'from' | 'to') => {
+    const index = faces.indexOf(who);
+    return index >= 0 && allPhotos[index] ? allPhotos[index].src : null;
+  };
   return {
     to: data.to || '',
     from: data.from || '',
+    faceFrom: face('from'),
+    faceTo: face('to'),
+    premium: !!(data.wantPremium || data.premium),
     age: data.age ? String(data.age) : '',
     startDate: data.startDate || '',
     letter: data.letter || '',
@@ -160,7 +215,7 @@ export function stateFromCard(
     musicStart: data.music?.type === 'youtube' ? clock(data.music.start) : '',
     effect: theme.effects.some((e) => e.value === data.effect) ? data.effect : theme.effects[0].value,
     endMsg: data.endMsg && data.endMsg !== theme.defaultEnd ? data.endMsg : '',
-    photos: (data.photos || []).map((p) => ({ src: p.src, cap: p.cap || '', ...(p.date ? { date: p.date } : {}) })),
+    photos: allPhotos.slice(faces.length),
     cover: data.cover || null,
     chat: data.chat?.length ? data.chat : fallbackChat,
   };

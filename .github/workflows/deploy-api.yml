@@ -1,6 +1,14 @@
 name: Owner-approved card API deployment
 
 on:
+  # Automatic: every change to the Worker that lands on main deploys itself once the API
+  # tests pass (the database is backed up first). Schema migrations still need the manual run.
+  push:
+    branches: [main]
+    paths:
+      - 'worker/**'
+      - 'wrangler.toml'
+      - '.github/workflows/deploy-api.yml'
   workflow_dispatch:
     inputs:
       approval:
@@ -25,7 +33,9 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.ref == 'refs/heads/main' && github.actor == github.repository_owner && inputs.approval == 'OWNER_APPROVED_PRODUCTION' && inputs.approved_commit == github.sha
+    if: >-
+      github.ref == 'refs/heads/main' && (github.event_name == 'push' ||
+      (github.actor == github.repository_owner && inputs.approval == 'OWNER_APPROVED_PRODUCTION' && inputs.approved_commit == github.sha))
     environment: production
     runs-on: ubuntu-latest
     env:

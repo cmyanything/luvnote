@@ -104,8 +104,9 @@ Free cards skip the lantern scene, play the built-in melody and end with a LuvNo
 premium cards show everything without it. The krathong illustration (`krathong.webp`) was supplied
 by the shop and is copied into `dist` with the card page.
 
-**Deploy order:** the Worker must be deployed (Owner-approved card API deployment) for `faces`,
-`wantPremium` and the admin unlock to work; until then new cards lose their face photos.
+**Deploys:** once merged, a push to `main` that changes `worker/**` deploys the Worker
+automatically (API tests, D1 backup, deploy, health check). Schema migrations still need the
+manual run with `apply_schema`.
 
 
 

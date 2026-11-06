@@ -61,16 +61,20 @@ for (const theme of themes) {
           return original(input,init);
         };
       },{endpoint});
-      await page.goto(`/themes/${theme.id}/`);
+      // Loy Together's memory photos live in its premium plan.
+      await page.goto(`/themes/${theme.id}/${theme.couple?'?plan=premium':''}`);
       await page.getByLabel('ชื่อผู้รับ').fill('Synthetic Recipient');
       await page.getByLabel('ชื่อผู้ส่ง').fill('Synthetic Sender');
-      await page.locator('#letter').fill('A synthetic memory');
+      if (!theme.couple) await page.locator('#letter').fill('A synthetic memory');
       if (!theme.noSecret) await page.locator('#secret').fill('Synthetic secret');
       if (theme.occasion === 'anniversary') await page.getByLabel('วันที่เราเริ่มคบกัน').fill('2022-06-14');
       await page.locator('#file').setInputFiles([file,{...file,name:'second.jpg'}]);
-      await expect(page.locator('#pc')).toHaveText('2');
+      const photoCount=async(n:number)=>theme.couple
+        ? expect(page.locator('#photos .ph')).toHaveCount(n)
+        : expect(page.locator('#pc')).toHaveText(String(n));
+      await photoCount(2);
       await page.getByLabel('ลบรูปที่ 2',{exact:true}).click();
-      await expect(page.locator('#pc')).toHaveText('1');
+      await photoCount(1);
       if (theme.coverLabel) {
         await page.locator('#covFile').setInputFiles(file);
         await page.locator('#covFile').setInputFiles({...file,name:'replacement.jpg'});

@@ -167,11 +167,6 @@ header{position:absolute;top:0;left:0;right:0;z-index:40;display:flex;justify-co
 #bigLan.dim .glow,#bigLan.dim .flame{opacity:0}
 #bigLan.dim .names{opacity:.75}
 #bigLan:not(.dim) .h{animation:pmBeat 1.6s ease-in-out infinite}
-#hn{position:absolute;left:0;right:0;top:150px;display:flex;flex-direction:column;align-items:center;gap:5px;opacity:0;transform:scale(.8);transition:opacity 1.4s,transform 1.6s cubic-bezier(.2,.9,.3,1.2);pointer-events:none}
-#hn::before{content:'';position:absolute;left:50%;top:50%;width:190px;height:120px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(24,10,38,.55),rgba(24,10,38,0));z-index:-1}
-#hn.show{opacity:1;transform:none}
-#hn b{font-family:'Mitr';font-weight:400;font-size:19px;line-height:1.3;letter-spacing:.3px;color:#FFF6E8;max-width:170px;text-align:center;overflow-wrap:anywhere;text-shadow:0 0 12px rgba(255,214,140,.75)}
-#hn svg{width:20px;height:18px;filter:drop-shadow(0 0 8px rgba(247,185,201,.95));animation:pmBeat 1.6s ease-in-out infinite}
 #s4 .st.fin>.kick,#s4 .st.fin>.ttl,#s4 .st.fin>.sub{animation:fadeOut .9s ease forwards}
 @keyframes fadeOut{from{opacity:1}to{opacity:0}}
 #s4 #endBox{position:absolute;left:24px;right:24px;top:440px;gap:10px}
@@ -185,7 +180,7 @@ header{position:absolute;top:0;left:0;right:0;z-index:40;display:flex;justify-co
 .btn2{font-family:'Mitr';font-size:14px;border:none;border-radius:30px;padding:9px 18px;cursor:pointer;text-decoration:none}
 .btn2.a{background:var(--wine);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(244,205,134,.55)}.btn2.b{background:rgba(255,244,226,.08);color:var(--cream);box-shadow:inset 0 0 0 1.5px rgba(255,244,226,.35)}
 #exp{font-family:'Athiti';font-weight:600;font-size:13px;color:rgba(255,236,214,.6)}
-#s4 .st>#endBox,#s4 .st>#hn{animation:none!important}
+#s4 .st>#endBox{animation:none!important}
 #ad{display:flex;align-items:center;gap:10px;width:100%;margin-top:6px;padding:10px 12px;border-radius:20px;text-decoration:none;text-align:left;
   background:linear-gradient(135deg,rgba(255,244,226,.14),rgba(255,244,226,.05));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
   box-shadow:inset 0 0 0 1px rgba(244,205,134,.45),0 10px 26px rgba(0,0,0,.3)}
@@ -317,7 +312,6 @@ body.premium #ad{display:none}
       <div class="names"><span class="n js-from"></span><svg class="h" viewBox="0 0 100 90"><path d="M50 84 C18 64 4 48 4 30 C4 14 16 4 30 4 C40 4 46 10 50 17 C54 10 60 4 70 4 C84 4 96 14 96 30 C96 48 82 64 50 84Z"/></svg><span class="n js-to"></span></div>
     </div>
     <div class="sub" id="sub4">แตะโคมเพื่อจุดไฟ</div>
-    <div id="hn"><b class="js-from"></b><svg viewBox="0 0 100 90" fill="#F7B9C9"><path d="M50 84 C18 64 4 48 4 30 C4 14 16 4 30 4 C40 4 46 10 50 17 C54 10 60 4 70 4 C84 4 96 14 96 30 C96 48 82 64 50 84Z"/></svg><b class="js-to"></b></div>
     <div id="endBox"><div class="orn">✦ ─── ✦ ─── ✦</div><div id="endMsg" class="js-end"></div>
       <button class="btn2 b" id="replay">↺ ดูอีกครั้ง</button>
       <a id="ad" href="https://luvnote.fun/themes/loy-together/" target="_blank" rel="noopener"><img src="krathong.webp" alt=""><span class="ad-t"><span class="ad-k">LuvNote</span><b>ส่งกระทงให้คนพิเศษของคุณ</b></span><span class="ad-b">ฟรี ›</span></a>
@@ -398,7 +392,7 @@ function drawBG(){const c=ac,HZ=H/2;
   /* lanterns */
   for(let i=lans.length-1;i>=0;i--){const l=lans[i];l.y+=l.vy*S;l.x+=Math.sin(tick*.01+l.ph)*.2;l.a=Math.min(1,l.a+.01);
     const fade=Math.min(1,(l.y+40)/(H*.25));if(l.y<-40){if(lans.length>14)lans.splice(i,1);else{l.y=HZ-10;l.x=Math.random()*W;l.a=0}continue}
-    drawLantern(c,l.x,l.y,l.s,l.a*fade*.9)}
+    drawLantern(c,l.x,l.y,l.s,l.a*fade*.9*(heart&&heart.length?0:1))}
   for(let i=ambP.length-1;i>=0;i--){const p=ambP[i];p.vx*=.985;p.vy=p.vy*.985+p.g;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.life-=p.decay;p.a=Math.max(0,Math.min(1,p.life*1.6))*.85;if(p.life<=0||p.y<-40)ambP.splice(i,1);else drawP(c,p)}
   drawHeart(c);
   /* far bank */
@@ -604,10 +598,10 @@ function fly4(){if(flown)return;flown=true;vib([20,40,20]);big.classList.remove(
   big.style.transition='transform 3.6s cubic-bezier(.5,0,.3,1),opacity 2.4s ease 1.2s';big.style.transform='translateY(-560px) scale(.3)';big.style.opacity=0;
   $('#s4 .st').classList.add('fin');
   // lanterns rise from the river and settle into a heart around the sky
-  const N=36,cx=sx(195),cy=sy(186),k=8.6*S;
+  const N=40,cx=sx(195),cy=sy(186),k=8.6*S;
   heart=Array.from({length:N},(_,i)=>{const t=i/N*Math.PI*2,hx=16*Math.pow(Math.sin(t),3),hy=-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
     return{x0:Math.random()*W,y0:H/2+(20+Math.random()*120)*S,tx:cx+hx*k,ty:cy+hy*k,t0:performance.now()+900+i*70+Math.random()*200,ph:Math.random()*7,s:.62+Math.random()*.12}});
-  setTimeout(()=>{flash();moonBoost=1.2;$('#hn').classList.add('show');const[x,y]=[sx(195),sy(186)];heartFW(x,y,'#FFE6B0');vib([30,30,60])},5600);
+  setTimeout(()=>{flash();moonBoost=1.2;const[x,y]=[sx(195),sy(186)];heartFW(x,y,'#FFE6B0');vib([30,30,60])},5600);
   setTimeout(()=>{const eb=$('#endBox');eb.classList.add('on');setTimeout(()=>eb.classList.add('show'),300);
     let n=0;const iv=setInterval(()=>{firework(W*(.15+Math.random()*.7),H*(.08+Math.random()*.2));if(++n>5)clearInterval(iv)},800);
     if(!PREMIUM&&!AUTO)setTimeout(showPromo,7000)},6600)}

@@ -25,6 +25,7 @@ import './complete.css';
 
 const CreativeExperiments = lazy(() => import('./CreativeExperiments'));
 const Flagship = lazy(() => import('./Flagship'));
+const ImpossiblePostcard = lazy(() => import('./ImpossiblePostcard'));
 
 const players = {
   'love-letter': lazy(() => import('./templates/Letter')),
@@ -552,6 +553,7 @@ function Lab() {
 
 const experiment = new URLSearchParams(location.search).get('experiment') === 'creative-studio';
 const flagship = new URLSearchParams(location.search).get('experiment') === 'flagship';
+const impossible = new URLSearchParams(location.search).get('experiment') === 'impossible';
 const requested = new URLSearchParams(location.search).get('play');
 const template = findTemplate(requested);
 document.documentElement.dataset.labPlayer = template ? 'true' : 'false';
@@ -560,7 +562,7 @@ if (still) document.documentElement.dataset.still = 'true';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <MotionConfig reducedMotion={still ? 'always' : 'user'}>
-      {flagship ? <Suspense fallback={<p>กำลังเตรียมแสงให้เธอ…</p>}><Flagship /></Suspense> : experiment ? <Suspense fallback={<p>กำลังเปิดต้นแบบ…</p>}><CreativeExperiments /></Suspense> : template ? <Player id={template.id} /> : <Lab />}
+      {impossible ? <Suspense fallback={<p>กำลังเตรียมโปสการ์ด…</p>}><ImpossiblePostcard /></Suspense> : flagship ? <Suspense fallback={<p>กำลังเตรียมแสงให้เธอ…</p>}><Flagship /></Suspense> : experiment ? <Suspense fallback={<p>กำลังเปิดต้นแบบ…</p>}><CreativeExperiments /></Suspense> : template ? <Player id={template.id} /> : <Lab />}
     </MotionConfig>
   </StrictMode>,
 );

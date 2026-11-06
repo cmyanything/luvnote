@@ -27,7 +27,7 @@ for (let i = 0; i < 6; i++) { const p = await page.evaluate(i => { const q = win
 await wait(3200); mark('act now ' + await act()); await shot('04-krathong-done');
 // Act 3: hold to light
 await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 195, y: 560 }] }); await wait(1000); await shot('05-lighting'); await wait(1500);
-await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); await wait(2500); await shot('06-living-flame-name'); await wait(5000); await shot('07-message'); await wait(3000); mark('act now ' + await act());
+await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); await wait(2500); await shot('06-living-flame-name'); await wait(5000); await shot('07-message'); await wait(1000); await shot('07b-name-crisp'); await wait(2000); mark('act now ' + await act());
 // Act 4: draw on water
 for (let s = 0; s < 4; s++) { const y = 420 + s * 70; await drag(40, y, 350, y + (s % 2 ? 40 : -40), 26, 18); await wait(250); if (s === 1) await shot('08-echo-trails'); }
 await wait(2500); await shot('09-echo-forming'); await wait(4500); await shot('10-echo-name'); await wait(3500); mark('act now ' + await act());
@@ -36,7 +36,7 @@ await shot('11-impossible-start'); await cdp.send('Input.dispatchTouchEvent', { 
 for (let i = 1; i <= 30; i++) { await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 195 + Math.sin(i / 4) * 25, y: 650 - i * 14 }] }); await wait(40); if (i === 12) await shot('12-impossible-mid'); }
 await shot('13-impossible-swapped'); await wait(4200); await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); await wait(1500); mark('act now ' + await act());
 // Act 6: wish + swipe
-await shot('14-wish'); await page.getByRole('button', { name: 'ขอบคุณที่อยู่ข้างกัน' }).click(); await wait(800); await shot('15-ready-release');
+await shot('14-wish'); await page.getByRole('button', { name: 'ขอบคุณที่อยู่ข้างกัน' }).click(); await wait(800); await page.waitForFunction(() => window.__river.at > 4.8); await shot('15-ready-release');
 await drag(195, 600, 250, 380, 8, 12); await wait(2500); await shot('16-sailing'); await wait(2500); await shot('16b-sailing-far'); await wait(4500); mark('act now ' + await act());
 // Act 7
 await wait(4000); await shot('17-finale'); await wait(6000); await shot('18-finale-later'); mark('final act ' + await act());

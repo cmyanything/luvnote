@@ -20,3 +20,4 @@
 @media (prefers-reduced-motion:reduce){.river-prog i{transition:none}}
 
 .river-mute{position:absolute;right:12px;top:max(52px,calc(env(safe-area-inset-top) + 40px));width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff0de;font-size:18px;cursor:pointer}
+.river-hint{animation:riverHint .8s ease both}@keyframes riverHint{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}@media (prefers-reduced-motion:reduce){.river-hint{animation:none}}

@@ -18,7 +18,7 @@ const ACTS = [
   { title: 'ประกอบกระทง', hint: 'ลากกลีบดอกไม้มาวางบนกระทง' },
   { title: 'เปลวที่มีชีวิต', hint: 'กดค้างเพื่อจุดเทียน' },
   { title: 'เสียงสะท้อนความทรงจำ', hint: 'ลากนิ้ววาดบนผิวน้ำ ให้สายน้ำจำไว้' },
-  { title: 'สายน้ำที่เป็นไปไม่ได้', hint: 'ลากขึ้น เพื่อสลับน้ำกับท้องฟ้า' },
+  { title: 'สายน้ำที่เป็นไปไม่ได้', hint: 'ลากขึ้น ให้แสงลอยขึ้นฟ้า ดาวจมลงน้ำ' },
   { title: 'ปล่อยคำอธิษฐาน', hint: 'เขียนพรของเธอ แล้วปัดกระทงออกไป' },
   { title: 'ราตรีของเรา', hint: 'ร่องรอยของเธอกลับมาเป็นท้องฟ้า' },
 ];
@@ -29,18 +29,6 @@ const clamp = (n: number, a = 0, b = 1) => Math.max(a, Math.min(b, n));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const ease = (t: number) => 1 - Math.pow(1 - clamp(t), 3);
 const rnd = (a: number, b: number) => a + Math.random() * (b - a);
-
-function sampleText(text: string, cx: number, cy: number, maxW: number, size: number): Pt[] {
-  const c = document.createElement('canvas'); c.width = 600; c.height = 220;
-  const g = c.getContext('2d', { willReadFrequently: true })!;
-  g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle';
-  let s = 120; g.font = `600 ${s}px Mali, "Noto Sans Thai", sans-serif`;
-  while (g.measureText(text).width > 560 && s > 24) { s -= 4; g.font = `600 ${s}px Mali, "Noto Sans Thai", sans-serif`; }
-  g.fillText(text, 300, 110);
-  const d = g.getImageData(0, 0, 600, 220).data, out: Pt[] = [], k = maxW / 600;
-  for (let y = 0; y < 220; y += 3) for (let x = 0; x < 600; x += 3) if (d[(y * 600 + x) * 4 + 3] > 140) out.push({ x: cx + (x - 300) * k * (size / 100), y: cy + (y - 110) * k * (size / 100) });
-  return out;
-}
 
 export default function RiverRemembers() {
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -74,6 +62,7 @@ export default function RiverRemembers() {
       strokes: [] as Pt[][], cur: null as Pt[] | null, strokeLen: 0, upT: 0, echo: -1, echoSrc: [] as Pt[], echoDst: [] as Pt[],
       swap: 0, swapHold: 0, drag: null as null | { id: number; x: number; y: number; px: number; py: number; t: number; vx: number; vy: number; down: number }, petalDrag: null as Petal | null,
       kx: 0, ky: 0, ks: 0, kv: { x: 0, y: 0 }, released: false, relT: 0, wish: '', finT: 0, hold: false, dpr: 1,
+      nextT: 0, crisp: 0, nameA: 0, msgA: 0, readT: 0, kr: { x: 0, y: 0, s: 1, rot: 0, a: 0 }, risers: [] as Lantern[], riseT: 0,
     };
     const dbg = (window as unknown as { __river?: unknown });
     dbg.__river = S; (window as unknown as { __riverAudio?: unknown }).__riverAudio = audio.current;
@@ -98,10 +87,11 @@ export default function RiverRemembers() {
     const switchAct = (n: number) => {
       S.act = n; S.at = 0; setAct(n); setProg(0); au.actTransition(n); if (n === 6) au.ignite(false); if (n === 3) hitSwap = false;
       if (n === 1) { S.petals = []; for (let i = 0; i < 6; i++) S.petals.push({ kind: i, x: W * (0.14 + 0.72 * (i / 5)), y: H * (0.58 + (i % 2) * 0.09), vx: 0, vy: 0, ph: rnd(0, 6.28), placed: false, drag: false, fly: 0, fx: 0, fy: 0, rot: rnd(-0.6, 0.6) }); }
-      if (n === 2) { S.nameTargets = sampleText(S.name, W / 2, H * 0.22, W * 0.8, 100); S.formed = 0; S.textShown = 0; S.parts = []; }
+      if (n === 2) { S.nameTargets = nameLayout().pts; S.formed = 0; S.textShown = 0; S.parts = []; }
       if (n === 3) { S.parts = []; S.strokes = []; S.strokeLen = 0; S.echo = -1; }
-      if (n === 4) { S.swap = 0; S.swapHold = 0; }
+      if (n === 4) { S.swap = 0; S.swapHold = 0; S.riseT = 0; }
       if (n === 5) { S.released = false; S.relT = 0; layout(); }
+      if (n === 6 && !S.released) { S.released = true; S.relT = 0; S.kx = S.kr.x; S.ky = S.kr.y; S.kv = { x: 18, y: -45 }; }
       if (n === 6) {
         S.finT = 0; S.lanterns = []; const cnt = Math.min(28, 8 + S.log.length); for (let i = 0; i < cnt; i++) S.lanterns.push({ x: rnd(0.05, 0.95), y: rnd(0.55, 1.2), v: rnd(0.012, 0.03), s: rnd(0.05, 0.1), ph: rnd(0, 6.28) });
         setStats({ touches: S.log.filter(l => l.act === 0).length, lit: Math.round(S.litSec), strokes: S.strokes.length, petals: S.order.map(k => PETAL_NAMES[k]).join(' · ') });
@@ -109,7 +99,7 @@ export default function RiverRemembers() {
     };
     api.current.start = (n, m) => { S.name = n; S.msg = m; S.started = true; S.t = 0; };
     api.current.release = (w: string) => { S.wish = w; };
-    api.current.restart = () => { S.log = []; S.awake = 0; S.stars.forEach(s => s.awake = false); S.placed = 0; S.order = []; S.lit = 0; S.litSec = 0; S.ripples = []; S.parts = []; S.strokes = []; S.wish = ''; S.fade = 1; S.next = 0; };
+    api.current.restart = () => { S.log = []; S.awake = 0; S.stars.forEach(s => s.awake = false); S.placed = 0; S.order = []; S.lit = 0; S.litSec = 0; S.ripples = []; S.parts = []; S.strokes = []; S.wish = ''; S.next = 0; S.swap = 0; S.released = false; S.echo = -1; S.textShown = 0; S.readT = 0; S.nameA = 0; S.msgA = 0; S.risers = []; S.kr.a = 0; };
     api.current.skip = () => goto(Math.min(6, S.act + 1));
 
     /* ---------- input ---------- */
@@ -140,7 +130,7 @@ export default function RiverRemembers() {
       if (S.act === 1 && S.petalDrag) { const q = S.petalDrag; S.petalDrag = null; q.drag = false; if (Math.hypot(q.x - S.kx, q.y - S.ky) < S.ks * 0.5) { q.placed = true; au.petal(q.kind); if (S.placed === 5) au.krathongDone(); q.fx = q.x; q.fy = q.y; q.fly = 0; S.placed++; S.order.push(q.kind); for (let i = 0; i < 14 * cap + 2; i++) newPart({ x: S.kx, y: S.ky - S.ks * 0.1 * S.placed / 2, vx: rnd(-80, 80), vy: rnd(-90, 10), max: rnd(0.8, 1.6), size: rnd(2, 5), hue: 330 }); ripple(S.kx, S.ky + S.ks * 0.38, 0); if (S.placed >= 6) setTimeout(() => goto(2), 1400); } }
       if (S.act === 3) { S.cur = null; S.upT = 0; }
       if (S.act === 4) { if (S.swap < 0.98) S.swap = S.swap; }
-      if (S.act === 5 && !S.released && S.wish) { const sp = Math.hypot(d.vx, d.vy); if (sp > 420 || (performance.now() - d.down < 500 && sp > 260)) { S.released = true; au.release(); S.relT = 0; S.kv = { x: d.vx / sp * 55, y: Math.min(d.vy / sp * 70, -35) }; } }
+      if (S.act === 5 && !S.released && S.wish && S.at > 4.5) { const sp = Math.hypot(d.vx, d.vy); if (sp > 420 || (performance.now() - d.down < 500 && sp > 260)) { S.released = true; au.release(); S.relT = 0; S.kv = { x: d.vx / sp * 55, y: Math.min(d.vy / sp * 70, -35) }; } }
     };
     el.addEventListener('pointerdown', down); el.addEventListener('pointermove', move); el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
 
@@ -166,7 +156,7 @@ export default function RiverRemembers() {
       ctx.save(); ctx.globalCompositeOperation = 'lighter';
       S.parts = S.parts.filter(p => {
         p.life += dt; if (p.seek !== undefined && p.tx !== undefined && p.ty !== undefined) { const k = clamp((p.life - p.seek) / 1.6); if (k > 0) { const e = ease(k); p.x = lerp(p.x, p.tx, e * 0.12 + 0.02); p.y = lerp(p.y, p.ty, e * 0.12 + 0.02); if (k >= 1) p.set = true; } else { p.x += p.vx * dt; p.y += p.vy * dt; } } else { p.x += p.vx * dt; p.y += p.vy * dt; }
-        const a = p.set ? 0.95 : clamp(1 - p.life / p.max) * 0.9; if (a <= 0) return false;
+        const a = p.set ? 0.95 * (1 - S.crisp * 0.92) : clamp(1 - p.life / p.max) * 0.9; if (a <= 0) return !!p.set;
         glow(p.x, p.y, p.size * (p.set ? 1.6 : 3), p.hue > 300 ? '255,170,210' : p.hue < 50 ? '255,215,140' : '255,200,120', a); return true;
       });
       ctx.restore();
@@ -207,99 +197,124 @@ export default function RiverRemembers() {
       wrapText(text, maxW).forEach((l, i) => ctx.fillText(l, x, y + i * size * 1.45)); ctx.restore();
     };
 
+    let nameCache = { key: '', size: 40, pts: [] as Pt[] };
+    document.fonts?.ready.then(() => { nameCache.key = ''; });
+    const nameY = () => H * 0.24;
+    // One layout shared by the particle name and the crisp name, so they always coincide.
+    const nameLayout = () => {
+      const key = `${S.name}|${W}|${H}`; if (nameCache.key === key) return nameCache;
+      let size = Math.min(64, W * 0.15); const font = (z: number) => `${z}px Mali, "Noto Sans Thai", sans-serif`;
+      ctx.save(); ctx.font = font(size); while (ctx.measureText(S.name).width > W * 0.84 && size > 18) { size -= 2; ctx.font = font(size); } ctx.restore();
+      const w = Math.ceil(W), h = Math.ceil(size * 2.2), c = document.createElement('canvas'); c.width = w; c.height = h;
+      const g = c.getContext('2d', { willReadFrequently: true })!; g.font = font(size); g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#fff'; g.fillText(S.name, w / 2, h / 2);
+      const d = g.getImageData(0, 0, w, h).data, all: Pt[] = [];
+      for (let y = 0; y < h; y += 2) for (let x = 0; x < w; x += 2) if (d[(y * w + x) * 4 + 3] > 120) all.push({ x, y: nameY() - h / 2 + y });
+      const k = Math.max(1, Math.ceil(all.length / 520)), pts = all.filter((_, i) => i % k === 0);
+      nameCache = { key, size, pts: pts.length ? pts : [{ x: W / 2, y: nameY() }] }; return nameCache;
+    };
+    const drawSwapWorld = (sw: number) => {
+      const sky = imgs['sky-world'], bg = imgs['river-night'];
+      if (sky) { const c = cover(sky), step = 6; for (let y = 0; y < H; y += step) { const ph = y * 0.045 + S.t * 1.6, al = clamp(sw * 1.7 - (1 - y / H) * 0.7 + Math.sin(ph) * 0.12 * (1 - Math.abs(sw * 2 - 1))), dx = Math.sin(ph) * sw * (1 - sw) * 46; if (al <= 0) continue; const sy = (y - c.y) / c.h * sky.naturalHeight; ctx.globalAlpha = al; ctx.drawImage(sky, 0, Math.max(0, sy), sky.naturalWidth, step / c.h * sky.naturalHeight + 1, c.x + dx, y, c.w, step + 1); } ctx.globalAlpha = 1; }
+      else if (bg) { ctx.save(); ctx.globalAlpha = sw; ctx.translate(0, H); ctx.scale(1, -1); const c = cover(bg); ctx.drawImage(bg, c.x, c.y, c.w, c.h); ctx.restore(); }
+    };
+
     /* ---------- update + render per act ---------- */
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame); if (disposed) return; const dt = Math.min(0.05, (now - last) / 1000); last = now; S.t += dt; S.at += dt;
       if (!W) return; ctx.clearRect(0, 0, W, H);
-      // transition
-      if (S.next >= 0) { S.fade = Math.min(1, S.fade + dt / 0.9); if (S.fade >= 1) { const n = S.next; S.next = -1; switchAct(n); } } else if (S.fade > 0) S.fade = Math.max(0, S.fade - dt / 0.9);
+      // a short breath between acts - the world never goes dark, everything simply carries on
+      if (S.next >= 0) { S.nextT += dt; if (S.nextT >= 0.6) { const n = S.next; S.next = -1; S.nextT = 0; switchAct(n); } }
 
-      const a = S.act;
+      const a = S.act, nl = nameLayout(), msgY = nameY() + nl.size * 1.15 + 10;
       if (a === 0) { setProg(S.awake / 8); if (S.awake >= 8 && S.next < 0 && S.at > 1) goto(1); }
       if (a === 2) {
         if (S.hold && S.next < 0) S.lit = Math.min(1, S.lit + dt / 1.6); else if (!S.hold && S.lit < 1) S.lit = Math.max(0, S.lit - dt * 0.6);
         if (S.lit >= 1 && prevLit < 1) au.lit(); prevLit = S.lit;
         if (S.lit >= 1) { S.litSec += dt; S.nameT += dt; }
         if (S.hold) S.litSec += dt;
-        if (S.lit >= 1 && S.formed < S.nameTargets.length * 0.3 && S.nameTargets.length) { const n = Math.min(10, Math.ceil(S.nameTargets.length * 0.3) - S.formed + 0); for (let i = 0; i < n * Math.max(cap, 0.5); i++) { const tg = S.nameTargets[Math.floor(Math.random() * S.nameTargets.length)]; newPart({ x: S.kx + rnd(-4, 4), y: S.ky - S.ks * 0.4, vx: rnd(-40, 40), vy: rnd(-120, -40), max: 99, size: 1.5, hue: 40, tx: tg.x, ty: tg.y, seek: rnd(0.2, 1.4) }); S.formed++; } }
-        const setCount = S.parts.filter(p => p.set).length; S.textShown = S.nameTargets.length ? clamp(setCount / (S.nameTargets.length * 0.26)) : 0;
+        const want = Math.min(S.nameTargets.length, Math.floor(520 * Math.max(cap, 0.5)));
+        if (S.lit >= 1 && S.formed < want) { for (let i = 0; i < 8 && S.formed < want; i++) { const tg = S.nameTargets[Math.floor(S.formed * S.nameTargets.length / want)]; newPart({ x: S.kx + rnd(-4, 4), y: S.ky - S.ks * 0.4, vx: rnd(-40, 40), vy: rnd(-120, -40), max: 99, size: 1.5, hue: 40, tx: tg.x, ty: tg.y, seek: rnd(0.2, 1.8) }); S.formed++; } }
+        const setCount = S.parts.filter(q => q.set).length; S.textShown = want ? clamp(setCount / (want * 0.85)) : 0;
         setProg(S.lit * 0.5 + S.textShown * 0.5);
         if (S.lit >= 1 && Math.random() < 0.3 * cap) newPart({ x: S.kx + rnd(-3, 3), y: S.ky - S.ks * 0.45, vx: rnd(-12, 12), vy: rnd(-50, -20), max: 2.4, size: 2, hue: 20 });
-                if (S.textShown > 0.99) { (S as unknown as { rd: number }).rd = ((S as unknown as { rd: number }).rd || 0) + dt; if ((S as unknown as { rd: number }).rd > 5.5 && S.next < 0) { (S as unknown as { rd: number }).rd = 0; goto(3); } }
+        if (S.textShown > 0.99) { S.readT += dt; if (S.readT > 5 && S.next < 0) { S.readT = 0; goto(3); } }
       }
       if (a === 3) {
-        if (S.echo < 0 && !S.cur) { S.upT += dt; if (S.strokeLen > W * 2 && S.upT > 0.9 && S.strokes.length >= 2) { // gather points
+        if (S.echo < 0 && !S.cur) { S.upT += dt; if (S.strokeLen > W * 2 && S.upT > 0.9 && S.strokes.length >= 2) {
           const all = S.strokes.flat(); const n = Math.min(360, Math.max(160, all.length)); S.echoSrc = []; for (let i = 0; i < n; i++) S.echoSrc.push(all[Math.floor(i * (all.length - 1) / (n - 1))]);
-          const tg = sampleText(S.name, W / 2, H * 0.3, W * 0.8, 100); S.echoDst = S.echoSrc.map((_, i) => tg[Math.floor(i * (tg.length - 1) / (n - 1))] || { x: W / 2, y: H * 0.3 }); S.echo = 0; au.echo(); } }
-        else if (S.echo >= 0) { S.echo += dt; if (S.echo > 7 && S.next < 0) goto(4); }
+          const tg = nl.pts; S.echoDst = S.echoSrc.map((_, i) => tg[Math.floor(i * (tg.length - 1) / (n - 1))]); S.echo = 0; au.echo(); } }
+        else if (S.echo >= 0) { S.echo += dt; if (S.echo > 6.5 && S.next < 0) goto(4); }
         setProg(S.echo >= 0 ? 1 : clamp(S.strokeLen / (W * 2)));
       }
       if (a === 4) {
         if (!S.drag) { S.swap = S.swap >= 0.98 ? 1 : Math.max(0, S.swap - dt * 0.05); }
+        // the krathong's light rises as lanterns while the stars sink into the water
+        if (S.swap > 0.12) { S.riseT += dt; if (S.riseT > 0.55 - S.swap * 0.25) { S.riseT = 0; S.risers.push({ x: S.kr.x + rnd(-S.ks * 0.35, S.ks * 0.35), y: S.kr.y - S.ks * 0.3, v: rnd(0.09, 0.15), s: rnd(0.05, 0.09), ph: rnd(0, 6.28) }); if (S.risers.length > 16) S.risers.shift(); } }
         if (S.swap >= 0.98) { S.swapHold += dt; if (S.swapHold > 3.2 && S.next < 0) goto(5); }
         au.swap(S.swap); if (S.swap >= 0.98 && !hitSwap) { hitSwap = true; au.swapHit(); }
         setProg(S.swap);
       }
-      if (a === 5) {
-        if (S.released) { S.relT += dt; S.kx += S.kv.x * dt; S.ky += S.kv.y * dt; S.kv.x *= Math.exp(-dt * 0.05); S.kv.y = Math.min(S.kv.y, -28); if (Math.random() < 0.8 * cap) newPart({ x: S.kx + rnd(-12, 12), y: S.ky + S.ks * 0.3, vx: rnd(-8, 8), vy: rnd(-8, 8), max: 3, size: rnd(2, 4), hue: 40 }); if ((S.kx > W + S.ks * 0.3 || S.ky < horizon() + S.ks * 0.08 || S.relT > 11) && S.next < 0) goto(6); }
-        else { S.ky = H * 0.7 + Math.sin(S.t * 1.4) * 4; }
+      if (a === 5 && !S.released) S.swap = Math.max(0, S.swap - dt * 0.3);
+      if ((a === 5 && S.released) || a === 6) {
+        S.relT += dt; S.kx += S.kv.x * dt; S.ky += S.kv.y * dt; S.kv.x *= Math.exp(-dt * 0.05); S.kv.y = Math.min(S.kv.y, -28);
+        if (a === 5 && Math.random() < 0.8 * cap) newPart({ x: S.kx + rnd(-12, 12), y: S.ky + S.ks * 0.3, vx: rnd(-8, 8), vy: rnd(-8, 8), max: 2.2, size: rnd(1.2, 2.4), hue: 40 });
+        if (a === 5 && (S.relT > 4.5 || S.kx > W + S.ks * 0.3) && S.next < 0) goto(6);
       }
       if (a === 6) S.finT += dt;
+      if (a >= 4) S.risers.forEach(l => { l.y -= l.v * dt * H; });
+
+      // ---- the one krathong that lives through the whole story ----
+      const kr = S.kr, sw = (a === 4 || a === 5) ? S.swap : 0;
+      if (a >= 1) kr.a = Math.min(1, kr.a + dt * 2.5); else kr.a = Math.max(0, kr.a - dt * 2);
+      if (a <= 2) { kr.x = S.kx; kr.y = S.ky; kr.s = 1; kr.rot = 0; }
+      else if (a === 3) { kr.x = S.kx; kr.y = lerp(kr.y, H * 0.8, Math.min(1, dt * 2)); kr.s = lerp(kr.s, 0.6, Math.min(1, dt * 2)); kr.rot = 0; }
+      else if (a === 4 || (a === 5 && !S.released)) { const p5 = a === 5 ? ease(S.at / 4) : 0; kr.x = S.kx; kr.y = lerp(H * 0.8, H * 0.7, p5) + Math.sin(S.t * 1.4) * 3; kr.s = lerp(0.6, 1, p5); kr.rot = Math.sin(S.t * 1.2) * 0.03; if (a === 5) S.ky = H * 0.7; }
+      else { const sc = clamp((S.ky - horizon()) / (H * 0.7 - horizon()), 0.1, 1); kr.x = S.kx; kr.y = S.ky; kr.s = sc; kr.rot = 0; kr.a = clamp((S.ky - horizon()) / (S.ks * 0.2)) * (a === 6 ? clamp(1 - (S.finT - 6) / 4) : 1); }
+
+      // text opacities glide toward their targets so words never pop
+      const tName = a === 2 ? clamp(S.textShown * 1.7 - 0.7) : a === 3 ? (S.echo < 0 ? 0.3 : lerp(0.3, 1, clamp((S.echo - 1.5) / 1.5))) : a === 4 ? 1 - clamp(sw * 3) : a === 6 ? ease(S.finT / 2) : 0;
+      const tMsg = a === 2 ? clamp(S.textShown * 1.6 - 0.8) : a === 3 ? (S.echo < 0 ? 0.35 : Math.max(0.35, clamp((S.echo - 2.5) / 1.2))) : a === 4 ? 1 - clamp(sw * 3) : a === 6 ? clamp((S.finT - 1) / 1.5) : 0;
+      S.nameA += (tName - S.nameA) * Math.min(1, dt * 3); S.msgA += (tMsg - S.msgA) * Math.min(1, dt * 3); S.crisp = S.nameA;
 
       // ---- render ----
       drawBackground();
-      // darkness veil (act 0 wakes the river)
       if (a === 0) { ctx.fillStyle = `rgba(4,6,24,${0.55 * (1 - S.awake / 8)})`; ctx.fillRect(0, 0, W, H); }
-      if (a === 0 || a === 1 || a === 2 || a === 3 || a === 5 || a === 6) drawStars(0);
-      if (a === 4) {
-        const sw = S.swap, sky = imgs['sky-world'], bg = imgs['river-night'];
-        if (sky) { const c = cover(sky), step = 6; for (let y = 0; y < H; y += step) { const ph = y * 0.045 + S.t * 1.6, al = clamp(sw * 1.7 - (1 - y / H) * 0.7 + Math.sin(ph) * 0.12 * (1 - Math.abs(sw * 2 - 1))), dx = Math.sin(ph) * sw * (1 - sw) * 46; if (al <= 0) continue; const sy = (y - c.y) / c.h * sky.naturalHeight; ctx.globalAlpha = al; ctx.drawImage(sky, 0, Math.max(0, sy), sky.naturalWidth, step / c.h * sky.naturalHeight + 1, c.x + dx, y, c.w, step + 1); } ctx.globalAlpha = 1; }
-        else if (bg) { ctx.save(); ctx.globalAlpha = sw; ctx.translate(0, H); ctx.scale(1, -1); const c = cover(bg); ctx.drawImage(bg, c.x, c.y, c.w, c.h); ctx.restore(); }
-        drawStars(sw);
-        // krathong sails into the sky: rotates and rises
-        const ky = lerp(S.ky, H * 0.2, ease(sw)), rot = Math.PI * ease(sw), wob = Math.sin(S.t * 2) * 8 * sw;
-        drawKrathong(1, 1, rot, S.kx + wob, ky, 1 - sw * 0.5);
-        // mirrored reflection that crosses over
-        ctx.save(); ctx.globalAlpha = 0.25 * (1 - sw); ctx.translate(0, horizon() * 2); ctx.scale(1, -1); ctx.restore();
-      }
+      if (sw > 0.001) drawSwapWorld(sw);
+      drawStars(sw);
+      if (kr.a > 0.01) { ctx.save(); ctx.globalAlpha = kr.a; drawKrathong(a === 1 ? clamp(S.placed / 6) : 1, a < 2 ? 0 : a === 2 ? S.lit : 1, kr.rot, kr.x, kr.y, kr.s); ctx.restore(); }
       if (a === 1) {
-        const rv = clamp(S.placed / 6); drawKrathong(rv, 0);
         S.petals.forEach(q => {
           if (q.placed) { q.fly = Math.min(1, q.fly + dt / 0.5); const k = ease(q.fly); const tx = S.kx + Math.cos(q.kind * 1.05) * S.ks * 0.18, ty = S.ky - S.ks * (0.05 + (q.kind % 3) * 0.06); drawPetal(q.kind, lerp(q.fx, tx, k), lerp(q.fy, ty, k), S.ks * 0.3 * (1 - k * 0.7), q.rot * (1 - k), 1 - k); return; }
           if (!q.drag) { q.ph += dt; q.y += Math.sin(q.ph * 1.3) * 0.2; q.x += Math.cos(q.ph) * 0.15; }
           ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(q.x, q.y, S.ks * (q.drag ? 0.32 : 0.2), '255,200,230', q.drag ? 0.3 : 0.14); ctx.restore();
           drawPetal(q.kind, q.x, q.y, S.ks * (q.drag ? 0.44 : 0.36), q.rot + Math.sin(q.ph) * 0.12);
         });
-        // target ring
         if (S.placed < 6) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = `rgba(255,220,160,${0.2 + 0.1 * Math.sin(S.t * 3)})`; ctx.setLineDash([4, 8]); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.ellipse(S.kx, S.ky, S.ks * 0.46, S.ks * 0.2, 0, 0, 6.283); ctx.stroke(); ctx.restore(); }
       }
-      if (a === 2) { drawKrathong(1, S.lit); drawText(S.name, W / 2, H * 0.22, Math.min(64, W * 0.15), W * 0.8, clamp(S.textShown * 1.6 - 0.9) * 0.9); drawText(S.msg, W / 2, H * 0.39, Math.max(14, W * 0.042), W * 0.78, clamp(S.textShown * 1.4 - 0.4)); }
       if (a === 3) {
-        drawKrathong(1, 1, 0, S.kx, S.ky + S.ks * 0.05, 0.55);
         ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-        const e = S.echo < 0 ? 0 : clamp(S.echo / 2.6);
         S.strokes.forEach((st, si) => { if (S.echo >= 0) return; ctx.strokeStyle = `rgba(255,${200 - si * 5},150,0.85)`; ctx.lineWidth = 3; ctx.shadowColor = 'rgba(255,200,120,.9)'; ctx.shadowBlur = 12; ctx.beginPath(); st.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); ctx.stroke(); });
-        if (S.echo >= 0) { ctx.shadowBlur = 0; S.echoSrc.forEach((p, i) => { const q = S.echoDst[i], st = clamp(S.echo / 2.6 * 1.3 - i / S.echoSrc.length * 0.3), k = ease(st), x = lerp(p.x, q.x, k) + Math.sin(S.t * 4 + i) * (1 - k) * 10, y = lerp(p.y, q.y, k) - Math.sin(k * Math.PI) * 70; glow(x, y, 4 + (1 - k) * 4, '255,215,150', 0.9); }); drawText(S.name, W / 2, H * 0.3, Math.min(54, W * 0.12), W * 0.8, clamp((e - 0.8) * 5) * 0.55, '255,240,222'); drawText(S.msg, W / 2, H * 0.5, Math.max(14, W * 0.04), W * 0.78, clamp((S.echo - 3.2) / 1.2)); }
+        if (S.echo >= 0) { ctx.shadowBlur = 0; S.echoSrc.forEach((p, i) => { const q = S.echoDst[i], st = clamp(S.echo / 2.6 * 1.3 - i / S.echoSrc.length * 0.3), k = ease(st), x = lerp(p.x, q.x, k) + Math.sin(S.t * 4 + i) * (1 - k) * 10, y = lerp(p.y, q.y, k) - Math.sin(k * Math.PI) * 70; glow(x, y, 4 + (1 - k) * 4, '255,215,150', 0.9 * (1 - S.nameA * 0.85 * k)); }); }
         ctx.restore();
       }
       if (a === 5) {
-        const sc = S.released ? clamp((S.ky - horizon()) / (H * 0.7 - horizon()), 0.18, 1) : 1;
-        drawKrathong(1, 1, Math.sin(S.t * 1.2) * 0.04, S.kx, S.ky, sc);
-        if (S.wish) drawText(S.wish, S.kx, S.ky - S.ks * 0.62 * sc, Math.max(13, W * 0.036) * (0.6 + 0.4 * sc), W * 0.7, S.released ? clamp(1.1 - S.relT / 9) : 0.9);
-        if (!S.released && S.wish) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; const k = (S.t * 0.8) % 1; ctx.strokeStyle = `rgba(255,220,170,${0.5 * (1 - k)})`; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(W * 0.5, H * 0.9 - k * H * 0.3); ctx.lineTo(W * 0.62, H * 0.9 - k * H * 0.3 - 26); ctx.stroke(); ctx.restore(); }
+        if (S.wish) drawText(S.wish, kr.x, kr.y - S.ks * 0.62 * kr.s, Math.max(13, W * 0.036) * (0.6 + 0.4 * kr.s), W * 0.7, S.released ? clamp(1.1 - S.relT / 7) : 0.9);
+        if (!S.released && S.wish && S.at > 4.5) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; const k = (S.t * 0.8) % 1; ctx.strokeStyle = `rgba(255,220,170,${0.5 * (1 - k)})`; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(W * 0.5, H * 0.9 - k * H * 0.3); ctx.lineTo(W * 0.62, H * 0.9 - k * H * 0.3 - 26); ctx.stroke(); ctx.restore(); }
       }
       if (a === 6) {
-        ctx.fillStyle = 'rgba(4,6,24,0.28)'; ctx.fillRect(0, 0, W, H);
-        // replay of the player's own strokes as a constellation
-        const pts = S.strokes.flat(); if (pts.length) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; const k = ease(S.finT / 3); S.strokes.forEach(st => { ctx.strokeStyle = `rgba(255,225,170,${0.5 * k})`; ctx.lineWidth = 1.4; ctx.beginPath(); st.forEach((p, i) => { const x = W / 2 + (p.x - W / 2) * 0.6, y = H * 0.2 + (p.y - H * 0.7) * 0.5; if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y); }); ctx.stroke(); st.forEach((p, i) => { if (i % 12) return; const x = W / 2 + (p.x - W / 2) * 0.6, y = H * 0.2 + (p.y - H * 0.7) * 0.5; glow(x, y, 8, '255,235,200', 0.8 * k * (0.6 + 0.4 * Math.sin(S.t * 2 + i))); }); }); ctx.restore(); }
-        S.lanterns.forEach(l => { l.y -= l.v * dt; const x = l.x * W + Math.sin(S.t * 0.7 + l.ph) * 14, y = l.y * H; if (y < -0.2 * H) l.y = 1.15; ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(x, y, l.s * W * 0.9, '255,170,90', 0.28); if (imgs['lantern']) ctx.drawImage(imgs['lantern'], x - l.s * W / 2, y - l.s * W / 2, l.s * W, l.s * W); else glow(x, y, l.s * W * 0.3, '255,210,130', 0.9); ctx.restore(); });
-        drawKrathong(1, 1, 0, W * 0.5, H * 0.66, 0.34);
-        const bg = ctx.createLinearGradient(0, H * 0.72, 0, H); bg.addColorStop(0, 'rgba(4,6,24,0)'); bg.addColorStop(0.35, 'rgba(4,6,24,0.85)'); ctx.fillStyle = bg; ctx.fillRect(0, H * 0.72, W, H * 0.28);
-        drawText(`ถึง ${S.name}`, W / 2, H * 0.4, Math.min(46, W * 0.11), W * 0.86, ease(S.finT / 2));
-        drawText(S.msg, W / 2, H * 0.47, Math.max(14, W * 0.04), W * 0.78, clamp((S.finT - 1.5) / 1.5));
+        const fin = ease(S.finT / 2);
+        ctx.fillStyle = `rgba(4,6,24,${0.28 * fin})`; ctx.fillRect(0, 0, W, H);
+        const pts = S.strokes.flat(); if (pts.length) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; const k = ease(S.finT / 3); S.strokes.forEach(st => { ctx.strokeStyle = `rgba(255,225,170,${0.5 * k})`; ctx.lineWidth = 1.4; ctx.beginPath(); st.forEach((p, i) => { const x = W / 2 + (p.x - W / 2) * 0.6, y = H * 0.12 + (p.y - H * 0.7) * 0.3; if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y); }); ctx.stroke(); st.forEach((p, i) => { if (i % 12) return; const x = W / 2 + (p.x - W / 2) * 0.6, y = H * 0.12 + (p.y - H * 0.7) * 0.3; glow(x, y, 8, '255,235,200', 0.8 * k * (0.6 + 0.4 * Math.sin(S.t * 2 + i))); }); }); ctx.restore(); }
+        S.lanterns.forEach(l => { l.y -= l.v * dt; const x = l.x * W + Math.sin(S.t * 0.7 + l.ph) * 14, y = l.y * H; if (y < -0.2 * H) l.y = 1.15; ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = fin; glow(x, y, l.s * W * 0.9, '255,170,90', 0.28); if (imgs['lantern']) ctx.drawImage(imgs['lantern'], x - l.s * W / 2, y - l.s * W / 2, l.s * W, l.s * W); else glow(x, y, l.s * W * 0.3, '255,210,130', 0.9); ctx.restore(); });
+        const bg = ctx.createLinearGradient(0, H * 0.72, 0, H); bg.addColorStop(0, 'rgba(4,6,24,0)'); bg.addColorStop(0.35, `rgba(4,6,24,${0.85 * fin})`); ctx.fillStyle = bg; ctx.fillRect(0, H * 0.72, W, H * 0.28);
+        drawText('ถึง', W / 2, nameY() - nl.size * 0.95, Math.max(14, W * 0.04), W * 0.5, S.nameA * 0.8);
       }
+      // lanterns born from the krathong's light keep rising through the rest of the story
+      if (a >= 4) S.risers.forEach(l => { const x = l.x + Math.sin(S.t * 0.9 + l.ph) * 10, y = l.y, fadeTop = clamp(y / (H * 0.12)); if (fadeTop <= 0) return; ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = fadeTop; glow(x, y, l.s * W * 0.9, '255,170,90', 0.22); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = fadeTop * 0.92; if (imgs['lantern']) ctx.drawImage(imgs['lantern'], x - l.s * W / 2, y - l.s * W / 2, l.s * W, l.s * W); ctx.restore(); });
+      // one name, one message: same place and size in every act
+      drawText(S.name, W / 2, nameY(), nl.size, W * 0.95, S.nameA * 0.95);
+      drawText(S.msg, W / 2, msgY, Math.max(14, W * 0.04), W * 0.78, S.msgA);
       drawRipples(dt); drawParts(dt);
-      if (S.fade > 0) { ctx.fillStyle = `rgba(4,6,24,${S.fade})`; ctx.fillRect(0, 0, W, H); }
     };
     raf = requestAnimationFrame(frame);
     const vis = () => { last = performance.now(); }; document.addEventListener('visibilitychange', vis);
@@ -330,7 +345,7 @@ export default function RiverRemembers() {
         <>
           <header className="river-hud" aria-live="polite">
             <span className="river-act">ฉาก {act + 1}/7 · {ACTS[act].title}</span>
-            <span className="river-hint">{ACTS[act].hint}</span>
+            <span className="river-hint" key={act}>{ACTS[act].hint}</span>
             <span className="river-prog" aria-hidden="true"><i style={{ width: `${Math.round(prog * 100)}%` }} /></span>
           </header>
           <button className="river-mute" onClick={toggleMute} aria-pressed={muted} aria-label={muted ? 'เปิดเสียง' : 'ปิดเสียง'}>{muted ? '🔇' : '🔊'}</button>

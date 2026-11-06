@@ -73,3 +73,13 @@ html[data-still=true] .fl-carry,html[data-still=true] .fl-awakening,html[data-st
 .fl-tools button:disabled{opacity:.45}
 /* Do not replay the generic stage entrance after an authored handoff settles. */
 .fl-stage:not(.fl-stage-out):not(.fl-stage-in){animation:none}
+.fl-pull-light{position:fixed;inset:0;z-index:-4;pointer-events:none;opacity:calc(var(--world-pull,0)*.72);background:radial-gradient(ellipse at 50% 51%,#ffdfa777,transparent 45%);transform:scale(calc(.8 + var(--world-pull,0)*.3));transition:opacity 120ms ease-out,transform 120ms ease-out}
+@media(prefers-reduced-motion:reduce){.fl-pull-light{display:none}}
+.fl-memory-world.is-static{perspective:700px;background:linear-gradient(155deg,#0b3034,#28504a);display:grid;place-items:center}
+.fl-memory-world.is-static img{width:84%;height:84%;object-fit:cover;border:5px solid #eee0c1;box-shadow:0 12px 25px #0009;transition:transform .25s ease-out}
+.fl-memory-world.is-static:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 38%,#fff0bf33 50%,transparent 62%);animation:fl-static-tide 7s ease-in-out infinite alternate}
+.fl-memory-world.is-static[data-flow=freeze]:after{animation-play-state:paused}
+.fl-memory-world.is-static[data-flow=reverse]:after{animation-direction:alternate-reverse}
+@keyframes fl-static-tide{from{transform:translateX(-35%)}to{transform:translateX(35%)}}
+.fl-reality-portal[data-active=false]{opacity:0}
+.fl-finale-world[data-active=false]{opacity:0}

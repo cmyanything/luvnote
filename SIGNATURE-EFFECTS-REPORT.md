@@ -10,7 +10,7 @@ On this Windows 11 i7-7700 / 32 GB machine, before testing: 8 logical processors
 | Prototype | Mechanism | What it establishes | Remaining creative limitation |
 | --- | --- | --- | --- |
 | Living Typography | The browser shapes complete lines before their raster is smoothly displaced by the hand. A longer pull reveals the personal message and a seal constructed from whole, shaped repetitions of the name. | Direct continuous input, Unicode-aware grapheme wrapping, user-selected photo subtly colors the ink, keyboard slider. | The result is still an elastic text and rosette treatment; a general audience has not confirmed it is surprising or distinctive enough. It is not a fluid simulation or a guarantee of perfect shaping for every script/font. |
-| Impossible Physics | Two windows sample a single periodic image field in opposite directions, bend that sampling by horizontal bands, and show a sliver of the photo through a connecting seam. A swipe carries damped inertia. | The opposite directions were measured with a custom striped image: +21 px on the left and −21 px on the right for the same input in the test viewport. The user's photo changes the material. | This is a mirrored/toroidal 2D coordinate illusion, not physical cloth, 3D space or proof against copying. Its visual surprise can still read as two mirrored windows. |
+| Impossible Physics | Two windows sample a single periodic image field in opposite directions, bend that sampling by horizontal bands, and show a sliver of the photo through a connecting seam. A swipe carries damped inertia. | The opposite directions were measured with a custom striped image: +21 px on the left and −21 px on the right for the same input in the test viewport. The user's photo changes the material, and their recipient name and message appear within the composition. | This is a mirrored/toroidal 2D coordinate illusion, not physical cloth, 3D space or proof against copying. Its visual surprise can still read as two mirrored windows. |
 | Memory Echo | Ordered, bounded points from the receiver's gestures interpolate into samples of a browser-shaped name; then the intact name and personal message appear against the selected photograph. | Different gestures produced different retained paths and transition starting positions; reset restores the original canvas. Keyboard users can deliberately add a named curved stroke. | The final name is intentionally the same for the same sender input; the *journey* differs, not an AI interpretation. With very short or repeated strokes, the reveal can look like ordinary point animation. |
 
 No claim that these mechanisms cannot be copied is made: a distinctive experience requires future design and integration, not secrecy of client-side code. Originality, surprise and emotional impact are subjective. My visual review considers Memory Echo the strongest of the three; A and B need further concept and motion refinement before claiming the requested WOW gate. No independent user study was conducted.
@@ -23,8 +23,9 @@ One headless Chromium page at 390×844, DPR 1. An rAF observer collected browser
 
 | Experiment | Samples | Callback interval p50 | p95 | intervals >33.34ms | Long tasks |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Living Typography | 192 | 16.7 ms | 16.7 ms | 0 | 0 |
-| Impossible Physics | 180 | 16.7 ms | 16.8 ms | 0 | 0 |
-| Memory Echo | 251 | 16.7 ms | 16.7 ms | 0 | 0 |
+| Living Typography | 193 | 16.7 ms | 16.7 ms | 0 | 0 |
+| Impossible Physics | 185 | 16.7 ms | 16.8 ms | 0 | 0 |
+| Memory Echo | 250 | 16.7 ms | 16.8 ms | 0 | 0 |
 
 Do not infer 60 FPS on users' devices from these numbers. Actual iOS and Android hardware, GPU/compositor frame presentation, long-duration memory trends, low-memory images and user blind evaluation remain **Not Tested**. This is a Lab prototype: it cannot create or share a real personalized LuvNote card, and personalization is lost on page reload. Before integration, test real touch and accessibility devices and revisit A/B's creative direction.
+

@@ -213,7 +213,8 @@ test('loy-together: faces on the krathongs, free card, and a premium request wit
   await expect(page.locator('#openBtn')).toHaveAttribute('href', 'https://luvnote.fun/#labc2345');
   await page.locator('#again').click();
   // Premium: up to three memory lanterns; preview shows the premium card.
-  await page.locator('#plans button').nth(1).click();
+  await page.locator('#planSwitch').click();
+  await expect(page).toHaveURL(/plan=premium/);
   await page.locator('#file').setInputFiles([photo, photo, photo, photo]);
   await expect(page.locator('#photos .ph')).toHaveCount(3);
   await page.locator('#pvBtn').click();
@@ -225,6 +226,16 @@ test('loy-together: faces on the krathongs, free card, and a premium request wit
   expect(requests[1].data).toMatchObject({ faces: ['from', 'to'], wantPremium: true });
   expect(requests[1].data.photos).toHaveLength(5);
   expect(errors).toEqual([]);
+});
+
+test('loy-together: the premium listing opens the editor on the premium plan', async ({ page }) => {
+  await page.goto('/themes/loy-together/?plan=premium');
+  await expect(page.locator('.hero .price')).toContainText('49');
+  await expect(page.locator('#plans')).toContainText('พรีเมียม');
+  await expect(page.locator('#file')).toHaveCount(1);
+  await page.locator('#planSwitch').click();
+  await expect(page.locator('#file')).toHaveCount(0);
+  await expect(page.locator('.hero .price')).toContainText('ฟรี');
 });
 
 test('rejects very large original photos and covers before decoding', async ({ page }) => {

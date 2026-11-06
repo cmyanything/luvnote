@@ -4,9 +4,11 @@ import type { ThemeConfig } from '../types';
 export function Hero({
   theme,
   onDemo,
+  premium = false,
 }: {
   theme: ThemeConfig;
   onDemo: () => void;
+  premium?: boolean;
 }) {
   const screen = useRef<HTMLDivElement>(null);
   const frame = useRef<HTMLIFrameElement>(null);
@@ -62,9 +64,10 @@ export function Hero({
           {theme.couple ? (
             <div className="price">
               <span className="pp">
-                <b>ฟรี</b>
+                <b>{premium ? theme.premiumPrice : 'ฟรี'}</b>
+                {premium && <i>฿</i>}
               </span>
-              <small>พรีเมียม {theme.premiumPrice} ฿</small>
+              <small>{premium ? 'แบบพรีเมียม' : 'แบบฟรี'}</small>
             </div>
           ) : (
             <div className="price">

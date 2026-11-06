@@ -357,7 +357,8 @@ const DEMO={
 };
 let CARD=DEMO,PREMIUM=true,MEM=[];const PREVIEW=location.hash==='#preview';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const AUTO=location.hash==='#demo';
+const AUTO=location.hash==='#demo'||location.hash==='#demo-free';
+if(location.hash==='#demo-free')DEMO.premium=false;
 const vib=ms=>{if(AUTO)return;try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}};
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const app=$('#app');

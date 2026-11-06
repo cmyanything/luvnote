@@ -48,3 +48,7 @@ a.again{display:block;text-align:center}
 .paybox{margin:14px 0 4px;padding:12px 14px;border-radius:16px;background:#FFF8EC;border:1.5px solid #F2D9A6;text-align:left}
 .paybox .share{margin-top:10px}
 .paybox button.open{border:none;cursor:pointer;font:inherit}
+
+.plan.solo{width:100%;cursor:default;margin-bottom:6px;border-color:var(--wine);box-shadow:0 0 0 2px rgba(128,0,32,.1)}
+.plan.solo.pro{background:linear-gradient(180deg,#FFF8EC,#fff)}
+.plan-switch{align-self:flex-start;margin-top:6px;border:none;background:none;padding:2px 0;font-family:'Mitr';font-weight:500;font-size:14px;color:var(--wine);text-decoration:underline;cursor:pointer}

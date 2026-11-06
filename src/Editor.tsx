@@ -47,7 +47,8 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     chat: hasChat ? structuredClone(CHAT_TEMPLATES[0]) : [],
     faceFrom: null,
     faceTo: null,
-    premium: false,
+    // Loy Together is listed twice in the catalog: ?plan=premium opens the paid version.
+    premium: !!theme.couple && new URLSearchParams(location.search).get('plan') === 'premium',
   }));
   // Owner edit mode: `?edit=<card>#key=<secret>` loads the card and saves over it.
   // After a new card is created the editor switches to editing that card, so a second click on
@@ -305,7 +306,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
               'การ์ดใบนี้หมดอายุแล้ว จึงแก้ไขไม่ได้ ถ้าอยากต่ออายุ ทัก LINE ร้านได้เลย'}
           </p>
         )}
-        <Hero theme={theme} onDemo={() => setPreview({})} />
+        <Hero theme={theme} premium={couple && state.premium} onDemo={() => setPreview({})} />
         {section(
           'names',
           1,
@@ -599,28 +600,34 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
           section(
             'plan',
             3,
-            'เลือกแบบการ์ด',
+            state.premium ? 'แบบพรีเมียม' : 'แบบการ์ด',
             <>
-              <div className="plans" id="plans" role="group" aria-label="แบบการ์ด">
+              <div className={`plan solo${state.premium ? ' pro' : ''}`} id="plans">
+                <span className="plan-h">{state.premium ? 'พรีเมียม ✨' : 'แบบฟรี'}</span>
+                <span className="plan-p en">{state.premium ? theme.premiumPrice : 0} ฿</span>
+                <span className="plan-l">
+                  {state.premium
+                    ? 'ชื่อ · รูปคู่บนกระทง · หัวใจโคมลอย + โคมลอยรูปความทรงจำ · เลือกเพลงเองจาก YouTube · ไม่มีหน้าโฆษณาท้ายการ์ด'
+                    : 'ชื่อ · รูปคู่บนกระทง · ปล่อยโคมเป็นรูปหัวใจ · เพลงลอยกระทง · เล่นจบแล้วมีหน้าแนะนำเว็บ LuvNote'}
+                </span>
                 <button
                   type="button"
-                  className={`plan${state.premium ? '' : ' on'}`}
-                  aria-pressed={!state.premium}
-                  onClick={() => update('premium', false)}
+                  className="plan-switch"
+                  id="planSwitch"
+                  onClick={() => {
+                    const next = !state.premium;
+                    update('premium', next);
+                    try {
+                      const url = new URL(location.href);
+                      if (next) url.searchParams.set('plan', 'premium');
+                      else url.searchParams.delete('plan');
+                      history.replaceState(history.state, '', url);
+                    } catch {
+                      /* the plan still switches */
+                    }
+                  }}
                 >
-                  <span className="plan-h">ฟรี</span>
-                  <span className="plan-p en">0 ฿</span>
-                  <span className="plan-l">ชื่อ · รูปคู่บนกระทง · ปล่อยโคมเป็นรูปหัวใจ · เพลงลอยกระทง</span>
-                </button>
-                <button
-                  type="button"
-                  className={`plan pro${state.premium ? ' on' : ''}`}
-                  aria-pressed={state.premium}
-                  onClick={() => update('premium', true)}
-                >
-                  <span className="plan-h">พรีเมียม ✨</span>
-                  <span className="plan-p en">{theme.premiumPrice} ฿</span>
-                  <span className="plan-l">ทุกอย่างในแบบฟรี + โคมลอยรูปความทรงจำ · เลือกเพลงเองจาก YouTube · ไม่มีหน้าโฆษณาท้ายการ์ด</span>
+                  {state.premium ? 'เปลี่ยนเป็นแบบฟรี' : `อัปเกรดเป็นพรีเมียม ${theme.premiumPrice} ฿ ›`}
                 </button>
               </div>
               {state.premium ? (
@@ -655,11 +662,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
                     เราจะปลดล็อกพรีเมียมบนลิงก์เดิมให้ ไม่ต้องส่งลิงก์ใหม่
                   </p>
                 </>
-              ) : (
-                <p className="help">
-                  แบบฟรีเล่นจบแล้วจะมีหน้าแนะนำเว็บ LuvNote · อยากใส่รูปความทรงจำหรือเลือกเพลงเอง เลือกพรีเมียมได้เลย
-                </p>
-              )}
+              ) : null}
             </>,
           )}
         {!couple && section(

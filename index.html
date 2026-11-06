@@ -223,6 +223,7 @@ footer a{color:var(--wine)}
 .box .bw{position:absolute;width:76%;left:12%;top:-12%;animation:lid 3s ease-in-out infinite}
 /* sweet cake thumbnail */
 .a-loy{background:linear-gradient(180deg,#140A26 0%,#2A1240 45%,#6E1E3C 62%,#2B1238 63%,#13081C 100%);overflow:hidden}
+.a-loy .prem{position:absolute;left:50%;top:7%;transform:translateX(-50%);z-index:2;font:600 9px 'Fredoka',sans-serif;letter-spacing:1.5px;color:#3B1220;background:linear-gradient(90deg,#F4CD86,#FFF1D2,#F4CD86);padding:3px 9px;border-radius:20px;white-space:nowrap;box-shadow:0 2px 10px rgba(244,205,134,.5)}
 .a-loy .moon{position:absolute;right:16%;top:9%;width:15%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 38%,#FFFDF4,#FBE6BE);box-shadow:0 0 22px 8px rgba(255,236,200,.35)}
 .a-loy .lan{position:absolute;width:5%;aspect-ratio:3/4;border-radius:40% 40% 18% 18%;background:linear-gradient(#FFE7BE,#F59A55);box-shadow:0 0 12px 4px rgba(255,180,100,.45);animation:loyUp 7s linear infinite}
 @keyframes loyUp{0%{transform:translateY(40px);opacity:0}15%{opacity:1}100%{transform:translateY(-120px);opacity:0}}
@@ -1018,8 +1019,10 @@ var use=function(id,cls,vb){return '<svg class="'+(cls||"")+'" viewBox="'+(vb||"
 /* ===== catalog: edit here to add cards ===== */
 var COMMON=["ใส่ชื่อ ข้อความ รูป และข้อความลับในซอง","ได้ลิงก์ทันที ส่งทาง LINE, IG หรือ SMS"];
 var CARDS=[
-  {id:"loy", chip:"🪷 ลอยกระทงออนไลน์กับแฟน", price:0, free:true, premium:49, en:"Loy Together", th:"เทศกาล · ลอยกระทงคืนวันเพ็ญ", short:"ลอยกระทงคู่กัน", type:"custom", cats:["fest","love"], page:"themes/loy-together/",ver:1,
-   fx:["ชวนแฟนไปลอยกระทง › กดค้างอธิษฐานพร้อมกัน › ปล่อยกระทงที่มีรูปเราสองคนลอยคู่กัน","ข้อความค่อย ๆ พิมพ์บนท้องฟ้า ปิดท้ายด้วยโคมลอยเต็มฟ้า","ทำฟรีได้เลย · พรีเมียม 49 บาท เพิ่มโคมลอยรูปความทรงจำ เพลงของเรา และไม่มีโฆษณาท้ายการ์ด"]},
+  {id:"loy", chip:"🪷 ลอยกระทงออนไลน์กับแฟน · ฟรี", price:0, free:true, en:"Loy Together", th:"เทศกาล · ลอยกระทงคืนวันเพ็ญ", short:"ลอยกระทงคู่กัน", type:"custom", cats:["fest","love"], page:"themes/loy-together/",ver:2,demo:"demo-free",
+   fx:["ชวนแฟนไปลอยกระทง › กดค้างอธิษฐานพร้อมกัน › ปล่อยกระทงที่มีรูปเราสองคนลอยคู่กัน","ปิดท้ายด้วยโคมลอยทั้งฟ้าเรียงเป็นรูปหัวใจ","ทำฟรีได้เลย · เล่นจบแล้วมีหน้าแนะนำเว็บ LuvNote"]},
+  {id:"loyp", art:"loy", chip:"✨ ลอยกระทงพรีเมียม", price:49, en:"Loy Together Premium", th:"เทศกาล · ลอยกระทงแบบพรีเมียม", short:"ลอยกระทงพรีเมียม", type:"custom", cats:["fest","love"], page:"themes/loy-together/", plan:"premium",ver:2,
+   fx:["ทุกอย่างในแบบฟรี + ฉากปล่อยโคมลอยรูปความทรงจำ 3 รูป","เลือกเพลงประกอบเองจาก YouTube","ไม่มีหน้าโฆษณาท้ายการ์ด · ชำระผ่าน LINE แล้วร้านปลดล็อกบนลิงก์เดิม"]},
   {id:"story", chip:"📖 เส้นทางความรักของเรา", price:99, en:"Our Story", th:"วันครบรอบ · สมุดความทรงจำโทนอุ่น", short:"โพลารอยด์ เส้นทางความรัก", type:"custom", cats:["anniv","love"], page:"themes/anniversary-journey/",ver:1,
    fx:["เปิดสมุดโทนครีม › นับวันตั้งแต่เริ่มคบ › ไล่ดูรูปและวันที่สำคัญ","ภาพโพลารอยด์เรียงเรื่องราว พร้อมจดหมายและซองข้อความลับ","ใส่เพลงของเราได้ และย้อนกลับมาอ่านตั้งแต่หน้าแรก"], hint:"เรื่องราวเล็ก ๆ ที่อยากเก็บไว้ด้วยกัน ♡", burst:"heart"},
   {id:"villa", chip:"🎭 ดึงพู่เปิดม่าน ชนแก้ว", price:99, en:"Villa Amore", th:"วันครบรอบ · สวนวิลล่า", short:"เปิดม่าน ชนแก้ว น้ำพุอธิษฐาน", type:"custom", cats:["anniv","love"], page:"themes/villa-amore/",ver:1,
@@ -1058,7 +1061,7 @@ var CATS=[
 function inCat(c,cat){return c.cats.indexOf(cat)>-1;}
 
 /* ===== video: put a vertical 9:16 MP4 at videos/<id>.mp4 and set  video:"videos/<id>.mp4"  on the card ===== */
-function screen(c,big){if(big&&c.page)return '<iframe class="demo" src="'+c.page+'card.html?v='+(c.ver||1)+'#demo" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe>';return c.video?'<video src="'+c.video+'" muted loop playsinline preload="metadata"'+(big?' autoplay':'')+'></video>':art(c.id,big);}
+function screen(c,big){if(big&&c.page)return '<iframe class="demo" src="'+c.page+'card.html?v='+(c.ver||1)+'#'+(c.demo||'demo')+'" title="ตัวอย่างการ์ด" tabindex="-1" scrolling="no"></iframe>';return c.video?'<video src="'+c.video+'" muted loop playsinline preload="metadata"'+(big?' autoplay':'')+'></video>':art(c.art||c.id,big).replace('<div class="art a-loy">','<div class="art a-loy">'+(c.plan?'<b class="prem">✨ PREMIUM</b>':''));}
 /* ===== card art ===== */
 function petals(n){var h='<div class="petals">';for(var i=0;i<n;i++){h+='<i class="petal" style="left:'+(5+Math.random()*85)+'%;animation-duration:'+(4+Math.random()*3)+'s;animation-delay:'+(-Math.random()*6)+'s;transform:scale('+(.6+Math.random()*.6)+')"></i>';}return h+'</div>';}
 function art(id,big){
@@ -1082,7 +1085,7 @@ function art(id,big){
 
 /* ===== items ===== */
 function badge(c){return '<span class="badge free">'+use("heart")+'฿'+c.price+'</span>';}
-function baht(c){if(c.free)return '<b>ฟรี</b> <small>· พรีเมียม '+c.premium+' ฿</small>';return '<b class="cnt" data-to="'+c.price+'">'+c.price+'</b> <small>฿</small>';}
+function baht(c){if(c.free)return '<b>ฟรี</b>';return '<b class="cnt" data-to="'+c.price+'">'+c.price+'</b> <small>฿</small>';}
 function itemHTML(c,i){
   return '<article class="item enter" style="--i:'+i+'" data-id="'+c.id+'" tabindex="0" role="button" aria-label="ดูตัวอย่างการ์ด '+c.en+'">'+
     '<div class="thumb"><span class="pr">'+(c.free?'ฟรี':c.price+' <small>฿</small>')+'</span><div class="phone"><div class="scr">'+screen(c)+'</div></div></div>'+
@@ -1176,7 +1179,7 @@ function openSheet(id){
       '<p class="thd">'+c.th+'</p>'+
       '<div class="p-row">'+('<span class="price">'+baht(c)+'</span><small>ต่อ 1 ใบ</small>')+'</div>'+
       '<ul class="fx">'+fxList(c)+'</ul>'+
-      '<div class="actions">'+(c.page?'<a class="btn primary" href="'+c.page+'?v='+(c.ver||1)+'">'+use("heart","i")+'สร้างการ์ดนี้</a><a class="btn ghost" href="'+c.page+'card.html?v='+(c.ver||1)+'">ดูตัวอย่างเต็มจอ</a>':'<a class="btn primary" href="'+LINE+'" target="_blank" rel="noopener">'+use("chat","i")+'สั่งการ์ดนี้ ทาง LINE</a>')+
+      '<div class="actions">'+(c.page?'<a class="btn primary" href="'+c.page+'?'+(c.plan?'plan='+c.plan+'&':'')+'v='+(c.ver||1)+'">'+use("heart","i")+'สร้างการ์ดนี้</a><a class="btn ghost" href="'+c.page+'card.html?v='+(c.ver||1)+'">ดูตัวอย่างเต็มจอ</a>':'<a class="btn primary" href="'+LINE+'" target="_blank" rel="noopener">'+use("chat","i")+'สั่งการ์ดนี้ ทาง LINE</a>')+
       '<button class="btn ghost" type="button" data-close>ดูแบบอื่น</button></div>'+
     '</div>';
   sheet.setAttribute("aria-hidden","false");

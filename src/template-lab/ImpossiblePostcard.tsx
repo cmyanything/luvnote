@@ -6,7 +6,7 @@ import './impossible.css';
 const artwork = labAsset('images/flagship-lighthouse-v1.webp');
 const clamp = (v: number, min = 0, max = 1) => Math.max(min, Math.min(max, v));
 
-export default function ImpossiblePostcard() {
+export default function ImpossiblePostcard({ initial }: { initial?: { from: string; to: string; message: string } } = {}) {
   const stage = useRef<HTMLElement>(null);
   const windowRef = useRef<HTMLDivElement>(null);
   const world = useRef<HTMLDivElement>(null);
@@ -21,9 +21,9 @@ export default function ImpossiblePostcard() {
   const [editor, setEditor] = useState(false);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [from, setFrom] = useState('คนที่คิดถึงเธอ');
-  const [to, setTo] = useState('เธอ');
-  const [message, setMessage] = useState('ไม่ว่าเราจะอยู่ไกลกันแค่ไหน ขอให้แสงดวงนี้พาเธอกลับมาหาความทรงจำดี ๆ ของเราเสมอ');
+  const [from, setFrom] = useState(initial?.from ?? 'คนที่คิดถึงเธอ');
+  const [to, setTo] = useState(initial?.to ?? 'เธอ');
+  const [message, setMessage] = useState(initial?.message ?? 'ไม่ว่าเราจะอยู่ไกลกันแค่ไหน ขอให้แสงดวงนี้พาเธอกลับมาหาความทรงจำดี ๆ ของเราเสมอ');
   const audio = useFlagshipAudio();
 
   function paint(p: number) {

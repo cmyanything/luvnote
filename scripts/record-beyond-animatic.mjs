@@ -1,0 +1,3 @@
+import {chromium} from 'playwright';import fs from 'node:fs/promises';
+const b=await chromium.launch(),c=await b.newContext({viewport:{width:390,height:844},recordVideo:{dir:'evidence/beyond-animatic',size:{width:390,height:844}}}),p=await c.newPage(),v=p.video();await p.goto('http://127.0.0.1:4323/experiments/beyond-feasibility/animatic.html');for(const [name,ms] of [['found',500],['opening',3000],['world',3500],['finale',3500],['return',3000]]){await p.waitForTimeout(ms);await p.screenshot({path:`evidence/beyond-animatic/${name}.png`})}await c.close();await fs.copyFile(await v.path(),'evidence/beyond-animatic/animatic.webm');await b.close();
+

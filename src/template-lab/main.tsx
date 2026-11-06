@@ -24,6 +24,7 @@ import './templates.css';
 import './complete.css';
 
 const CreativeExperiments = lazy(() => import('./CreativeExperiments'));
+const RiverRemembers = lazy(() => import('./RiverRemembers'));
 
 const players = {
   'love-letter': lazy(() => import('./templates/Letter')),
@@ -550,6 +551,7 @@ function Lab() {
 }
 
 const experiment = new URLSearchParams(location.search).get('experiment') === 'creative-studio';
+const river = new URLSearchParams(location.search).get('experiment') === 'river';
 const requested = new URLSearchParams(location.search).get('play');
 const template = findTemplate(requested);
 document.documentElement.dataset.labPlayer = template ? 'true' : 'false';
@@ -558,7 +560,7 @@ if (still) document.documentElement.dataset.still = 'true';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <MotionConfig reducedMotion={still ? 'always' : 'user'}>
-      {experiment ? <Suspense fallback={<p>กำลังเปิดต้นแบบ…</p>}><CreativeExperiments /></Suspense> : template ? <Player id={template.id} /> : <Lab />}
+      {river ? <Suspense fallback={<p>กำลังเตรียมสายน้ำ…</p>}><RiverRemembers /></Suspense> : experiment ? <Suspense fallback={<p>กำลังเปิดต้นแบบ…</p>}><CreativeExperiments /></Suspense> : template ? <Player id={template.id} /> : <Lab />}
     </MotionConfig>
   </StrictMode>,
 );

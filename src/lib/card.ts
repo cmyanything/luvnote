@@ -71,6 +71,7 @@ export function invalidFields(
   hasChat: boolean,
   anniversary = false,
   noSecret = false,
+  noLetter = false,
 ): InvalidField[] {
   const errors: InvalidField[] = [];
   if (!state.to.trim()) errors.push('to');
@@ -79,7 +80,7 @@ export function invalidFields(
     errors.push('startDate');
   if (hasChat && !cleanChat(state.chat).some((row) => row.w === 'f'))
     errors.push('chat');
-  if (!state.letter.trim()) errors.push('letter');
+  if (!noLetter && !state.letter.trim()) errors.push('letter');
   if (!noSecret) {
     if (!state.secret.trim()) errors.push('secret');
     if (state.lock === 'code' && !/^\d{4}$/.test(state.code)) errors.push('code');
@@ -141,7 +142,8 @@ function coupleCardData(
     to: state.to.trim(),
     from: state.from.trim(),
     age: null,
-    letter: state.letter.trim(),
+    // No letter scene in Loy Together; the API still requires a letter, so it carries the closing line.
+    letter: state.endMsg.trim() || theme.defaultEnd,
     secret: '',
     photos,
     lock: { type: theme.defaultLock, code: '', hint: '' },

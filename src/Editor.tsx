@@ -116,7 +116,6 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     ? {
         names: !!(state.to.trim() && state.from.trim()),
         faces: !!(state.faceFrom || state.faceTo),
-        letter: !!state.letter.trim(),
         plan: !state.premium || state.photos.length > 0 || !!youtubeId(state.youtube),
         fx: true,
         end: !!state.endMsg.trim(),
@@ -147,7 +146,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
       Object.values(complete).length) *
     100;
   function validate() {
-    const bad = invalidFields(state, hasChat, anniversary, !!theme.noSecret);
+    const bad = invalidFields(state, hasChat, anniversary, !!theme.noSecret, couple);
     setErrors(bad);
     if (!bad.length) return true;
     const element =
@@ -167,7 +166,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
     if (
       !state.to.trim() ||
       !state.from.trim() ||
-      (anniversary && invalidFields(state, hasChat, true, !!theme.noSecret).includes('startDate'))
+      (anniversary && invalidFields(state, hasChat, true, !!theme.noSecret, couple).includes('startDate'))
     ) {
       validate();
       return;
@@ -460,7 +459,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
             /5 รูป
           </>,
         )}
-        {section(
+        {!couple && section(
           'letter',
           3 + offset,
           theme.letterTitle,
@@ -599,7 +598,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
         {couple &&
           section(
             'plan',
-            4,
+            3,
             'เลือกแบบการ์ด',
             <>
               <div className="plans" id="plans" role="group" aria-label="แบบการ์ด">
@@ -611,7 +610,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
                 >
                   <span className="plan-h">ฟรี</span>
                   <span className="plan-p en">0 ฿</span>
-                  <span className="plan-l">ชื่อ · รูปคู่บนกระทง · ข้อความบนฟ้า · เพลงบรรเลง</span>
+                  <span className="plan-l">ชื่อ · รูปคู่บนกระทง · ปล่อยโคมเป็นรูปหัวใจ · เพลงลอยกระทง</span>
                 </button>
                 <button
                   type="button"
@@ -621,7 +620,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
                 >
                   <span className="plan-h">พรีเมียม ✨</span>
                   <span className="plan-p en">{theme.premiumPrice} ฿</span>
-                  <span className="plan-l">ทุกอย่างในแบบฟรี + โคมลอยรูปความทรงจำ · เพลงจาก YouTube · ไม่มีโฆษณาท้ายการ์ด</span>
+                  <span className="plan-l">ทุกอย่างในแบบฟรี + โคมลอยรูปความทรงจำ · เลือกเพลงเองจาก YouTube · ไม่มีหน้าโฆษณาท้ายการ์ด</span>
                 </button>
               </div>
               {state.premium ? (
@@ -658,7 +657,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
                 </>
               ) : (
                 <p className="help">
-                  แบบฟรีจะมีป้าย LuvNote เล็ก ๆ ท้ายการ์ด · อยากใส่รูปความทรงจำหรือเพลงของเรา เลือกพรีเมียมได้เลย
+                  แบบฟรีเล่นจบแล้วจะมีหน้าแนะนำเว็บ LuvNote · อยากใส่รูปความทรงจำหรือเลือกเพลงเอง เลือกพรีเมียมได้เลย
                 </p>
               )}
             </>,
@@ -679,7 +678,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
         )}
         {section(
           'fx',
-          6 + after,
+          6 + after - (couple ? 1 : 0),
           'เอฟเฟกต์ลอยบนการ์ด',
           <div className="fxs" id="fxs">
             {theme.effects.map((effect) => (
@@ -702,7 +701,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
         )}
         {section(
           'end',
-          7 + after,
+          7 + after - (couple ? 1 : 0),
           'คำปิดท้าย',
           <textarea
             id="endMsg"

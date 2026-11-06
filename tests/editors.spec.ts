@@ -196,7 +196,8 @@ test('loy-together: faces on the krathongs, free card, and a premium request wit
   await expect(page.locator('#face-from img')).toHaveCount(1);
   await page.getByLabel('รูปผู้รับ').setInputFiles(photo);
   await expect(page.locator('#face-to img')).toHaveCount(1);
-  await page.locator('#tpls button').first().click();
+  // No letter scene: the closing line is sent as the letter the API requires.
+  await expect(page.locator('#letter')).toHaveCount(0);
   // Free: memory photos and YouTube are not offered.
   await expect(page.locator('#file')).toHaveCount(0);
   await page.locator('#mkBtn').click();

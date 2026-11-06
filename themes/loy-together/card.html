@@ -154,26 +154,28 @@ header{position:absolute;top:0;left:0;right:0;z-index:40;display:flex;justify-co
 #lanN{font-family:'Fredoka';font-weight:600;font-size:15px;color:var(--gold);letter-spacing:1px;min-height:20px}
 
 /* ===== 4 sky lantern finale ===== */
-#bigLan{position:relative;width:190px;height:250px;margin:6px 0 2px;cursor:grab;touch-action:none;will-change:transform,opacity}
-#bigLan .body{position:absolute;inset:0;border-radius:44% 44% 16% 16% / 26% 26% 9% 9%;
-  background:radial-gradient(70% 55% at 50% 48%,#FFF1D6,#FFCB8E 55%,#F2A065);
-  box-shadow:0 0 60px rgba(255,190,110,.6),0 0 140px rgba(255,170,90,.3),inset 0 -14px 24px rgba(200,90,50,.35),inset 0 10px 22px rgba(255,255,255,.4);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0 16px;transition:filter 1s}
-#bigLan .body::before{content:'';position:absolute;inset:9px;border-radius:inherit;border:1px solid rgba(160,70,30,.22)}
-#bigLan .body::after{content:'';position:absolute;left:50%;bottom:-16px;width:46px;height:14px;margin-left:-23px;border-radius:0 0 50% 50%;background:#B5653A;box-shadow:0 6px 18px rgba(255,170,80,.9)}
-#bigLan .n{font-family:'Mitr';font-weight:500;font-size:20px;color:#7A1E32;line-height:1.25;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#bigLan .h{font-size:26px;line-height:1;color:#C2334F}
-#bigLan .fire{position:absolute;left:50%;bottom:-32px;width:14px;height:20px;margin-left:-7px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 50% 70%,#fff,#FFD27A 40%,#FF8A3C);animation:fl .18s ease-in-out infinite alternate;filter:drop-shadow(0 0 10px #FFB255)}
+#bigLan{position:relative;width:170px;height:262px;margin:8px 0 16px;cursor:grab;touch-action:none;will-change:transform,opacity}
+#bigLan>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#bigLan .glow{position:absolute;left:50%;top:46%;width:300px;height:300px;margin:-150px;border-radius:50%;background:radial-gradient(circle,rgba(255,196,120,.42),rgba(255,170,90,.12) 45%,transparent 68%);transition:opacity 1.2s;pointer-events:none}
+#bigLan .names{position:absolute;left:14px;right:14px;top:84px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center}
+#bigLan .n{font-family:'Mitr';font-weight:500;font-size:19px;color:#6E1A2E;line-height:1.25;max-width:132px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
+#bigLan .h{width:22px;height:20px;transition:transform .6s}
+#bigLan .h path{fill:#C2334F}
+#bigLan .flame{transform-box:fill-box;transform-origin:50% 100%;animation:fl .18s ease-in-out infinite alternate;transition:opacity .8s}
 #bigLan.idle{animation:hover 3.4s ease-in-out infinite}
-#bigLan.dim .body{filter:brightness(.6) saturate(.7)}
-#bigLan.dim .fire{opacity:0}
-#hn{position:absolute;left:0;right:0;top:206px;display:flex;flex-direction:column;align-items:center;gap:2px;opacity:0;transform:scale(.8);transition:opacity 1.4s,transform 1.6s cubic-bezier(.2,.9,.3,1.2);pointer-events:none}
+#bigLan.dim svg .paper{filter:brightness(.62) saturate(.7)}
+#bigLan.dim .glow,#bigLan.dim .flame{opacity:0}
+#bigLan.dim .names{opacity:.75}
+#bigLan:not(.dim) .h{animation:pmBeat 1.6s ease-in-out infinite}
+#hn{position:absolute;left:0;right:0;top:142px;display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;transform:scale(.8);transition:opacity 1.4s,transform 1.6s cubic-bezier(.2,.9,.3,1.2);pointer-events:none}
 #hn.show{opacity:1;transform:none}
-#hn b{font-family:'Mitr';font-weight:500;font-size:22px;color:#fff;text-shadow:0 0 14px rgba(255,214,140,.8),0 2px 10px rgba(20,10,34,.9);max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#hn i{font-style:normal;font-size:24px;color:#F7B9C9;text-shadow:0 0 14px rgba(247,185,201,.9);animation:pmBeat 1.6s ease-in-out infinite}
+#hn b{font-family:'Mitr';font-weight:500;font-size:22px;line-height:1.3;color:#fff;padding:0 8px;text-shadow:0 0 16px rgba(255,214,140,.9),0 0 4px rgba(255,236,214,.6);max-width:220px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+#hn svg{width:26px;height:24px;filter:drop-shadow(0 0 10px rgba(247,185,201,.95));animation:pmBeat 1.6s ease-in-out infinite}
 #s4 .st.fin>.kick,#s4 .st.fin>.ttl,#s4 .st.fin>.sub{animation:fadeOut .9s ease forwards}
 @keyframes fadeOut{from{opacity:1}to{opacity:0}}
-#s4 #endBox{position:absolute;left:0;right:0;top:452px}
+#s4 #endBox{position:absolute;left:24px;right:24px;top:440px;gap:10px}
+#endBox .orn{font-family:'Fredoka';font-size:12px;letter-spacing:2px;color:rgba(244,205,134,.65)}
+#s4 #endMsg{font-family:'Mitr';font-weight:400;font-size:19px;line-height:1.55;color:#FFF1D6;text-shadow:0 0 18px rgba(244,205,134,.55),0 2px 10px rgba(20,10,34,.8)}
 #endBox{display:none;flex-direction:column;align-items:center;gap:9px;opacity:0;transform:translateY(14px);transition:1.2s ease;pointer-events:none}
 #endBox.on{display:flex}
 #endBox.show{opacity:1;transform:none;pointer-events:auto}
@@ -183,11 +185,14 @@ header{position:absolute;top:0;left:0;right:0;z-index:40;display:flex;justify-co
 .btn2.a{background:var(--wine);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(244,205,134,.55)}.btn2.b{background:rgba(255,244,226,.08);color:var(--cream);box-shadow:inset 0 0 0 1.5px rgba(255,244,226,.35)}
 #exp{font-family:'Athiti';font-weight:600;font-size:13px;color:rgba(255,236,214,.6)}
 #s4 .st>#endBox,#s4 .st>#hn{animation:none!important}
-#ad{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:4px;padding:12px 20px 13px;border-radius:18px;text-decoration:none;
-  background:linear-gradient(180deg,rgba(128,0,32,.55),rgba(80,10,40,.55));box-shadow:inset 0 0 0 1.5px rgba(244,205,134,.6),0 8px 26px rgba(0,0,0,.35)}
-#ad .ad-k{font-family:'Fredoka';font-weight:600;font-size:13px;color:var(--gold);letter-spacing:.5px}
-#ad b{font-family:'Athiti';font-weight:700;font-size:16px;color:var(--cream)}
-#ad .ad-b{font-family:'Mitr';font-weight:500;font-size:14px;color:#fff;background:var(--wine);border-radius:20px;padding:5px 14px;margin-top:4px;box-shadow:inset 0 0 0 1px rgba(244,205,134,.6)}
+#ad{display:flex;align-items:center;gap:10px;width:100%;margin-top:6px;padding:10px 12px;border-radius:20px;text-decoration:none;text-align:left;
+  background:linear-gradient(135deg,rgba(255,244,226,.14),rgba(255,244,226,.05));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  box-shadow:inset 0 0 0 1px rgba(244,205,134,.45),0 10px 26px rgba(0,0,0,.3)}
+#ad img{width:50px;height:50px;object-fit:contain;flex:none;filter:drop-shadow(0 0 10px rgba(255,200,130,.5))}
+#ad .ad-t{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0}
+#ad .ad-k{font-family:'Fredoka';font-weight:600;font-size:12px;color:var(--gold);letter-spacing:1px}
+#ad b{font-family:'Athiti';font-weight:700;font-size:15.5px;line-height:1.3;color:var(--cream)}
+#ad .ad-b{flex:none;font-family:'Mitr';font-weight:500;font-size:14px;color:#fff;background:linear-gradient(180deg,#A3173D,#800020);border-radius:20px;padding:7px 14px;box-shadow:inset 0 0 0 1px rgba(244,205,134,.6)}
 body.premium #ad{display:none}
 /* ===== free cards: LuvNote promo page after the card ends ===== */
 #promo{position:absolute;inset:0;z-index:80;background:#fff;color:#3B1220;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
@@ -289,12 +294,32 @@ body.premium #ad{display:none}
   <section class="scene" id="s4"><div class="st">
     <span class="kick" id="k4">light up the sky</span>
     <span class="ttl" id="t4">ปล่อยโคมลอยด้วยกันนะ</span>
-    <div id="bigLan" class="dim"><div class="body"><span class="n js-from"></span><span class="h">♡</span><span class="n js-to"></span></div><i class="fire"></i></div>
+    <div id="bigLan" class="dim"><i class="glow"></i>
+      <svg viewBox="0 0 170 262" aria-hidden="true"><defs>
+        <radialGradient id="lp4" cx=".5" cy=".62" r=".7"><stop offset="0" stop-color="#FFF6E3"/><stop offset=".45" stop-color="#FFD9A0"/><stop offset=".85" stop-color="#F4A867"/><stop offset="1" stop-color="#E98D52"/></radialGradient>
+        <linearGradient id="rim4" x1="0" x2="1"><stop offset="0" stop-color="#B9773C"/><stop offset=".5" stop-color="#F4CD86"/><stop offset="1" stop-color="#B9773C"/></linearGradient>
+        <radialGradient id="fl4" cx=".5" cy=".7" r=".6"><stop offset="0" stop-color="#fff"/><stop offset=".4" stop-color="#FFE08A"/><stop offset="1" stop-color="#FF8A3C"/></radialGradient></defs>
+        <g class="paper">
+          <path d="M24 46 C24 14 52 6 85 6 C118 6 146 14 146 46 L136 222 C118 230 52 230 34 222 Z" fill="url(#lp4)"/>
+          <g fill="none" stroke="#C9783F" stroke-opacity=".28" stroke-width="1.4">
+            <path d="M60 9 C54 80 54 160 58 226"/><path d="M85 6 L85 228"/><path d="M110 9 C116 80 116 160 112 226"/>
+            <path d="M38 12 C30 70 32 160 42 224"/><path d="M132 12 C140 70 138 160 128 224"/>
+          </g>
+          <path d="M24 46 C24 14 52 6 85 6 C118 6 146 14 146 46" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2"/>
+          <ellipse cx="85" cy="152" rx="46" ry="62" fill="#fff" opacity=".22"/>
+        </g>
+        <ellipse cx="85" cy="223" rx="51" ry="7" fill="none" stroke="url(#rim4)" stroke-width="4"/>
+        <path d="M40 225 L85 246 L130 225" fill="none" stroke="#9A6A3C" stroke-width="1.4" opacity=".8"/>
+        <path class="flame" d="M85 232 C78 242 79 252 85 256 C91 252 92 242 85 232Z" fill="url(#fl4)"/>
+        <circle cx="85" cy="250" r="4" fill="#7A4A2A"/>
+      </svg>
+      <div class="names"><span class="n js-from"></span><svg class="h" viewBox="0 0 100 90"><path d="M50 84 C18 64 4 48 4 30 C4 14 16 4 30 4 C40 4 46 10 50 17 C54 10 60 4 70 4 C84 4 96 14 96 30 C96 48 82 64 50 84Z"/></svg><span class="n js-to"></span></div>
+    </div>
     <div class="sub" id="sub4">แตะโคมเพื่อจุดไฟ</div>
-    <div id="hn"><b class="js-from"></b><i>♥</i><b class="js-to"></b></div>
-    <div id="endBox"><div id="endMsg" class="js-end"></div>
-      <div class="row"><button class="btn2 b" id="replay">↺ ดูอีกครั้ง</button></div>
-      <a id="ad" href="https://luvnote.fun/themes/loy-together/" target="_blank" rel="noopener"><span class="ad-k">LuvNote</span><b>ส่งกระทงออนไลน์ให้คนพิเศษของคุณบ้าง 🪷</b><span class="ad-b">ทำการ์ดแบบนี้ฟรี ›</span></a>
+    <div id="hn"><b class="js-from"></b><svg viewBox="0 0 100 90" fill="#F7B9C9"><path d="M50 84 C18 64 4 48 4 30 C4 14 16 4 30 4 C40 4 46 10 50 17 C54 10 60 4 70 4 C84 4 96 14 96 30 C96 48 82 64 50 84Z"/></svg><b class="js-to"></b></div>
+    <div id="endBox"><div class="orn">✦ ─── ✦ ─── ✦</div><div id="endMsg" class="js-end"></div>
+      <button class="btn2 b" id="replay">↺ ดูอีกครั้ง</button>
+      <a id="ad" href="https://luvnote.fun/themes/loy-together/" target="_blank" rel="noopener"><img src="krathong.webp" alt=""><span class="ad-t"><span class="ad-k">LuvNote</span><b>ส่งกระทงให้คนพิเศษของคุณ</b></span><span class="ad-b">ฟรี ›</span></a>
       <div id="exp"></div></div>
   </div></section>
 
@@ -373,6 +398,7 @@ function drawBG(){const c=ac,HZ=H/2;
   for(let i=lans.length-1;i>=0;i--){const l=lans[i];l.y+=l.vy*S;l.x+=Math.sin(tick*.01+l.ph)*.2;l.a=Math.min(1,l.a+.01);
     const fade=Math.min(1,(l.y+40)/(H*.25));if(l.y<-40){if(lans.length>14)lans.splice(i,1);else{l.y=HZ-10;l.x=Math.random()*W;l.a=0}continue}
     drawLantern(c,l.x,l.y,l.s,l.a*fade*.9)}
+  for(let i=ambP.length-1;i>=0;i--){const p=ambP[i];p.vx*=.985;p.vy=p.vy*.985+p.g;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.life-=p.decay;p.a=Math.max(0,Math.min(1,p.life*1.6))*.85;if(p.life<=0||p.y<-40)ambP.splice(i,1);else drawP(c,p)}
   drawHeart(c);
   /* far bank */
   c.fillStyle='#1A0A22';c.beginPath();c.moveTo(0,HZ);
@@ -416,7 +442,8 @@ function burst(x,y,n=60,o={}){const T=o.types||['star','heart','dot','dot'];
 function sparkle(x,y,n=7){for(let i=0;i<n;i++){const a=Math.random()*7,s=1+Math.random()*3;bp.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,t:i%3?'star':'dot',c:i%2?'#F4CD86':'#FFF4E2',s:5+Math.random()*7,r:0,vr:.1,a:1,life:.7,g:0,decay:.016})}}
 function firework(x,y){const col=['#F4CD86','#F7B9C9','#FFF1D2'][Math.random()*3|0];for(let i=0;i<46;i++){const a=i/46*Math.PI*2,sp=3+Math.random()*.8;bp.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,t:'dot',c:col,s:3,r:0,vr:0,a:1,life:1,g:.04,decay:.013})}}
 /* customer-chosen ambient effect: floating hearts or shooting stars */
-function ambFx(){const e=CARD&&CARD.effect;
+let ambP=[];
+function ambFx(){const e=CARD&&CARD.effect;const bp=ambP;
   if(e==='stars'){if(Math.random()<.55)return;const x=Math.random()*W*.8+W*.1,y=Math.random()*H*.25+20*S,dir=Math.random()<.5?-1:1;
     for(let i=0;i<14;i++)bp.push({x:x-dir*i*5*S,y:y-i*2.2*S,vx:dir*5*S,vy:2.2*S,t:'dot',c:'#FFF4E2',s:Math.max(.6,3.2-i*.2),r:0,vr:0,a:1,life:1-i*.05,g:0,decay:.03})}
   else{const x=Math.random()*W,y=H/2+(20+Math.random()*200)*S;bp.push({x,y,vx:(Math.random()-.5)*.4,vy:-.6-Math.random()*.5,t:'heart',c:['#F7B9C9','#FFE6B0','#F49AB0'][Math.random()*3|0],s:8+Math.random()*7,r:(Math.random()-.5)*.4,vr:(Math.random()-.5)*.01,a:1,life:1,g:-.002,decay:.0045})}}
@@ -576,10 +603,10 @@ function fly4(){if(flown)return;flown=true;vib([20,40,20]);big.classList.remove(
   big.style.transition='transform 3.6s cubic-bezier(.5,0,.3,1),opacity 2.4s ease 1.2s';big.style.transform='translateY(-560px) scale(.3)';big.style.opacity=0;
   $('#s4 .st').classList.add('fin');
   // lanterns rise from the river and settle into a heart around the sky
-  const N=34,cx=sx(195),cy=sy(212),k=8.2*S;
+  const N=36,cx=sx(195),cy=sy(186),k=8.6*S;
   heart=Array.from({length:N},(_,i)=>{const t=i/N*Math.PI*2,hx=16*Math.pow(Math.sin(t),3),hy=-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
     return{x0:Math.random()*W,y0:H/2+(20+Math.random()*120)*S,tx:cx+hx*k,ty:cy+hy*k,t0:performance.now()+900+i*70+Math.random()*200,ph:Math.random()*7,s:.62+Math.random()*.12}});
-  setTimeout(()=>{flash();moonBoost=1.2;$('#hn').classList.add('show');const[x,y]=[sx(195),sy(212)];heartFW(x,y,'#FFE6B0');vib([30,30,60])},5600);
+  setTimeout(()=>{flash();moonBoost=1.2;$('#hn').classList.add('show');const[x,y]=[sx(195),sy(186)];heartFW(x,y,'#FFE6B0');vib([30,30,60])},5600);
   setTimeout(()=>{const eb=$('#endBox');eb.classList.add('on');setTimeout(()=>eb.classList.add('show'),300);
     let n=0;const iv=setInterval(()=>{firework(W*(.15+Math.random()*.7),H*(.08+Math.random()*.2));if(++n>5)clearInterval(iv)},800);
     if(!PREMIUM&&!AUTO)setTimeout(showPromo,7000)},6600)}

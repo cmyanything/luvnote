@@ -25,7 +25,8 @@ export function FacePicker({
   const [busy, setBusy] = useState<Who | null>(null);
   const pending = useRef(false);
   // The customer frames each face in a circle; keep the full photo to re-frame later.
-  const [framing, setFraming] = useState<{ who: Who; src: string } | null>(null);
+  const [framing, setFraming] = useState<{ who: Who; src: string; id: number } | null>(null);
+  const frameId = useRef(0);
   const originals = useRef(new Map<string, string>());
   async function pick(who: Who, file: File | undefined) {
     if (!file || pending.current) return;
@@ -33,7 +34,7 @@ export function FacePicker({
     setBusy(who);
     onBusy(true);
     try {
-      setFraming({ who, src: await readPhoto(file, 1400) });
+      setFraming({ who, src: await readPhoto(file, 1400), id: ++frameId.current });
     } catch (error) {
       toast(
         error instanceof Error && error.message === 'image_too_large'
@@ -72,7 +73,7 @@ export function FacePicker({
           type="button"
           className="reframe"
           aria-label={`ปรับตำแหน่ง${label}`}
-          onClick={() => setFraming({ who, src: originals.current.get(src) || src })}
+          onClick={() => setFraming({ who, src: originals.current.get(src) || src, id: ++frameId.current })}
         >
           ปรับรูป
         </button>
@@ -97,7 +98,7 @@ export function FacePicker({
       </div>
       {framing && (
         <CropDialog
-          key={framing.src}
+          key={framing.id}
           src={framing.src}
           title={framing.who === 'from' ? 'จัดรูปผู้ส่งให้อยู่ในวงกลม' : 'จัดรูปผู้รับให้อยู่ในวงกลม'}
           onDone={(result) => {

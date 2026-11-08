@@ -36,13 +36,20 @@ export function PhotoPicker({
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
   // Photos waiting for the customer to frame them, and the full photo behind each framed one.
-  const [cropQueue, setCropQueue] = useState<string[]>([]);
+  // Each entry gets its own id: two identical photos must still open two fresh dialogs.
+  const [cropQueue, setCropQueue] = useState<{ id: number; src: string }[]>([]);
+  const nextId = useRef(0);
+  const queueCrop = (srcs: string[]) =>
+    setCropQueue((queue) => [...queue, ...srcs.map((src) => ({ id: ++nextId.current, src }))]);
   const originals = useRef(new Map<string, string>());
   const framing = cropQueue[0];
   function framed(current: string, result: string | null) {
     if (result) {
       originals.current.set(result, originals.current.get(current) || current);
-      onPhotos((previous) => previous.map((p) => (p.src === current ? { ...p, src: result } : p)));
+      onPhotos((previous) => {
+        const index = previous.findIndex((p) => p.src === current);
+        return index < 0 ? previous : previous.map((p, i) => (i === index ? { ...p, src: result } : p));
+      });
     }
     setCropQueue((queue) => queue.slice(1));
   }
@@ -75,7 +82,7 @@ export function PhotoPicker({
         }
       }
       onPhotos((previous) => [...previous, ...added].slice(0, max));
-      if (crop && added.length) setCropQueue((queue) => [...queue, ...added.map((p) => p.src)]);
+      if (crop && added.length) queueCrop(added.map((p) => p.src));
     } finally {
       pending.current = false;
       setBusy(false);
@@ -164,7 +171,7 @@ export function PhotoPicker({
                 type="button"
                 className="reframe"
                 aria-label={`ปรับตำแหน่งรูปที่ ${index + 1}`}
-                onClick={() => setCropQueue((queue) => [...queue, photo.src])}
+                onClick={() => queueCrop([photo.src])}
               >
                 ปรับรูป
               </button>
@@ -253,11 +260,11 @@ export function PhotoPicker({
       ))}
       {framing && (
         <CropDialog
-          key={framing}
-          src={originals.current.get(framing) || framing}
+          key={framing.id}
+          src={originals.current.get(framing.src) || framing.src}
           title="จัดรูปให้อยู่ในโคมลอย"
-          onDone={(result) => framed(framing, result)}
-          onCancel={() => framed(framing, null)}
+          onDone={(result) => framed(framing.src, result)}
+          onCancel={() => framed(framing.src, null)}
         />
       )}
     </>

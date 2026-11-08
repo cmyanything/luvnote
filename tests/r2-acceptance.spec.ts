@@ -118,7 +118,10 @@ for (const theme of themes) {
       for (const source of [card.photos[0].src,...card.cover?[card.cover]:[]]) {
         expect(new URL(source).pathname).toMatch(/^\/v3\/cards\//);
         const response=await f.request(new URL(source).pathname); expect(response.status).toBe(200);
-        const decoded=jpeg.decode(new Uint8Array(await response.arrayBuffer())); expect(decoded.width).toBe(24); expect(decoded.height).toBe(32);
+        const decoded=jpeg.decode(new Uint8Array(await response.arrayBuffer()));
+        // Loy Together saves the customer's framed square; other themes keep the rotated original.
+        if (theme.couple) { expect(decoded.width).toBe(decoded.height); expect(decoded.width).toBeLessThanOrEqual(1024); }
+        else { expect(decoded.width).toBe(24); expect(decoded.height).toBe(32); }
       }
     } finally { server.closeAllConnections(); await new Promise<void>(resolve=>server.close(()=>resolve())); await f.mf.dispose(); }
   });

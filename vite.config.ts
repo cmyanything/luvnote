@@ -1,21 +1,21 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { copyFileSync, mkdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { themes as editorThemes } from './src/themes.ts';
 
 const root = dirname(fileURLToPath(import.meta.url));
-const themes = [
-  'pink-coquette',
-  'coquette-dream',
-  'little-memories',
-  'birthday-chat',
-  'velvet-gift',
-  'villa-amore',
-  'sweet-cake',
-  'loy-together',
-];
+// Every template except the React "Our Story" viewer ships a plain card.html runtime,
+// so a new theme only needs its entry in src/themes.ts (no list to update here).
+const themes = editorThemes.map((theme) => theme.id).filter((id) => id !== 'anniversary-journey');
+// Images/sounds a card loads from its own folder (e.g. Loy Together's krathong) are copied too.
+const ASSET = /\.(webp|png|jpe?g|gif|svg|mp3|m4a|json)$/i;
+const themeAssets = themes.flatMap((id) =>
+  readdirSync(resolve(root, 'themes', id))
+    .filter((name) => ASSET.test(name))
+    .map((name) => `themes/${id}/${name}`),
+);
 
 export default defineConfig({
   plugins: [
@@ -32,8 +32,7 @@ export default defineConfig({
           'admin/index.html',
           'CNAME',
           ...themes.map((t) => `themes/${t}/card.html`),
-          // Loy Together's krathong illustration (supplied by the shop), loaded by its card.html.
-          'themes/loy-together/krathong.webp',
+          ...themeAssets,
         ]) {
           const destination = resolve(root, 'dist', path);
           mkdirSync(dirname(destination), { recursive: true });

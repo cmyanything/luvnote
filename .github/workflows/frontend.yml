@@ -9,9 +9,33 @@ on:
 permissions:
   contents: read
 
+# A newer push replaces an older run that is still testing (the newest code deploys anyway).
+concurrency:
+  group: frontend-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  legacy-tests:
+  # Tests run inside Microsoft's Playwright image (browsers + system libraries preinstalled),
+  # so no job waits on apt/browser downloads (those used to hang for up to an hour).
+  versions:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      playwright: ${{ steps.pw.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: package-lock.json
+          sparse-checkout-cone-mode: false
+      - id: pw
+        run: echo "version=$(node -p "require('./package-lock.json').packages['node_modules/@playwright/test'].version")" >> "$GITHUB_OUTPUT"
+
+  legacy-tests:
+    needs: versions
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.versions.outputs.playwright }}-noble
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -24,7 +48,6 @@ jobs:
       - run: npm run build
         env:
           VITE_R2_MEDIA_ENABLED: 'false'
-      - run: npx playwright install --with-deps chromium webkit
       - run: npm test
       - uses: actions/upload-artifact@v7
         if: failure()
@@ -36,7 +59,11 @@ jobs:
           retention-days: 7
 
   media-tests:
+    needs: versions
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.versions.outputs.playwright }}-noble
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -48,7 +75,6 @@ jobs:
         env:
           VITE_R2_MEDIA_ENABLED: 'true'
           VITE_TURNSTILE_SITE_KEY: '1x00000000000000000000AA'
-      - run: npx playwright install --with-deps chromium webkit
       - run: npx playwright test tests/media-v3.spec.ts tests/r2-acceptance.spec.ts
         env:
           VITE_R2_MEDIA_ENABLED: 'true'
@@ -62,7 +88,11 @@ jobs:
           retention-days: 7
 
   check:
+    needs: versions
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.versions.outputs.playwright }}-noble
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -70,7 +100,6 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium webkit
       # Never ship the Cloudflare testing site key or a missing real key to production.
       - name: Check production Turnstile rollout guard
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
@@ -113,6 +142,7 @@ jobs:
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: [check, legacy-tests, media-tests]
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     permissions:
       pages: write

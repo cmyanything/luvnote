@@ -9,6 +9,11 @@ on:
 permissions:
   contents: read
 
+# Container jobs default to sh; the scripts below use bash syntax.
+defaults:
+  run:
+    shell: bash
+
 # A newer push replaces an older run that is still testing (the newest code deploys anyway).
 concurrency:
   group: frontend-${{ github.ref }}

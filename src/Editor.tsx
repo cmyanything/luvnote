@@ -638,6 +638,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
                     cover={null}
                     theme={theme}
                     max={MEMORY_LIMIT}
+                    crop
                     onPhotos={(fn) =>
                       setState((previous) => ({
                         ...previous,

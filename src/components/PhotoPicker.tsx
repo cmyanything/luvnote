@@ -3,6 +3,7 @@ import type { Photo, ThemeConfig } from '../types';
 import { readPhoto } from '../lib/images';
 import { today } from '../lib/dates';
 import { R2_MEDIA_ENABLED } from '../lib/media-v3';
+import { CropDialog } from './CropDialog';
 
 function imageReadError(error: unknown): string {
   return error instanceof Error && error.message === 'image_too_large'
@@ -19,8 +20,11 @@ export function PhotoPicker({
   toast,
   onBusy,
   max = 5,
+  crop = false,
 }: {
   max?: number;
+  /** Let the customer zoom/drag each new photo into a round frame (Loy Together lanterns). */
+  crop?: boolean;
   photos: Photo[];
   cover: string | null;
   theme: ThemeConfig;
@@ -31,6 +35,17 @@ export function PhotoPicker({
 }) {
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
+  // Photos waiting for the customer to frame them, and the full photo behind each framed one.
+  const [cropQueue, setCropQueue] = useState<string[]>([]);
+  const originals = useRef(new Map<string, string>());
+  const framing = cropQueue[0];
+  function framed(current: string, result: string | null) {
+    if (result) {
+      originals.current.set(result, originals.current.get(current) || current);
+      onPhotos((previous) => previous.map((p) => (p.src === current ? { ...p, src: result } : p)));
+    }
+    setCropQueue((queue) => queue.slice(1));
+  }
   const anniversary = theme.occasion === 'anniversary';
   function move(index: number, delta: number) {
     onPhotos((previous) => {
@@ -54,12 +69,13 @@ export function PhotoPicker({
       for (const file of selected) {
         try {
           // R2 accepts a maximum 1024px JPEG. Prepare 900px only once.
-          added.push({ src: await readPhoto(file, R2_MEDIA_ENABLED ? 900 : 1080), cap: '' });
+          added.push({ src: await readPhoto(file, crop ? 1400 : R2_MEDIA_ENABLED ? 900 : 1080), cap: '' });
         } catch (error) {
           toast(imageReadError(error));
         }
       }
       onPhotos((previous) => [...previous, ...added].slice(0, max));
+      if (crop && added.length) setCropQueue((queue) => [...queue, ...added.map((p) => p.src)]);
     } finally {
       pending.current = false;
       setBusy(false);
@@ -143,6 +159,16 @@ export function PhotoPicker({
                 </button>
               </div>
             )}
+            {crop && (
+              <button
+                type="button"
+                className="reframe"
+                aria-label={`ปรับตำแหน่งรูปที่ ${index + 1}`}
+                onClick={() => setCropQueue((queue) => [...queue, photo.src])}
+              >
+                ปรับรูป
+              </button>
+            )}
             <button
               type="button"
               className="x"
@@ -225,6 +251,15 @@ export function PhotoPicker({
           {help}
         </p>
       ))}
+      {framing && (
+        <CropDialog
+          key={framing}
+          src={originals.current.get(framing) || framing}
+          title="จัดรูปให้อยู่ในโคมลอย"
+          onDone={(result) => framed(framing, result)}
+          onCancel={() => framed(framing, null)}
+        />
+      )}
     </>
   );
 }

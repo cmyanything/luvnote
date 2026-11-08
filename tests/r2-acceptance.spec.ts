@@ -69,6 +69,7 @@ for (const theme of themes) {
       if (!theme.noSecret) await page.locator('#secret').fill('Synthetic secret');
       if (theme.occasion === 'anniversary') await page.getByLabel('วันที่เราเริ่มคบกัน').fill('2022-06-14');
       await page.locator('#file').setInputFiles([file,{...file,name:'second.jpg'}]);
+      if (theme.couple) for (let i=0;i<2;i++) await page.locator('#cropOk').click();
       const photoCount=async(n:number)=>theme.couple
         ? expect(page.locator('#photos .ph')).toHaveCount(n)
         : expect(page.locator('#pc')).toHaveText(String(n));

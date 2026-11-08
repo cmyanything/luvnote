@@ -192,10 +192,16 @@ test('loy-together: faces on the krathongs, free card, and a premium request wit
   await expect(page.locator('#secret')).toHaveCount(0);
   await page.getByLabel('ชื่อผู้รับ').fill('น้องมายด์');
   await page.getByLabel('ชื่อผู้ส่ง').fill('พี่ภูมิ');
+  // Each face opens the framing dialog (zoom + drag) before it is used.
   await page.getByLabel('รูปผู้ส่ง').setInputFiles(photo);
+  await expect(page.locator('#cropView img')).toBeVisible();
+  await page.locator('#cropZoom').fill('2');
+  await page.locator('#cropOk').click();
   await expect(page.locator('#face-from img')).toHaveCount(1);
   await page.getByLabel('รูปผู้รับ').setInputFiles(photo);
+  await page.locator('#cropOk').click();
   await expect(page.locator('#face-to img')).toHaveCount(1);
+  await expect(page.locator('.crop-bg')).toHaveCount(0);
   // No letter scene: the closing line is sent as the letter the API requires.
   await expect(page.locator('#letter')).toHaveCount(0);
   // Free: memory photos and YouTube are not offered.
@@ -217,6 +223,8 @@ test('loy-together: faces on the krathongs, free card, and a premium request wit
   await expect(page).toHaveURL(/plan=premium/);
   await page.locator('#file').setInputFiles([photo, photo, photo, photo]);
   await expect(page.locator('#photos .ph')).toHaveCount(3);
+  for (let i = 0; i < 3; i++) await page.locator('#cropOk').click();
+  await expect(page.locator('.crop-bg')).toHaveCount(0);
   await page.locator('#pvBtn').click();
   const previewFrame = () => page.frames().find((f) => f.url().includes('#preview'))!;
   await expect.poll(() => previewFrame()?.evaluate('[PREMIUM, MEM.length]')).toEqual([true, 3]);

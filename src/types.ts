@@ -1,13 +1,5 @@
-export type ThemeId =
-  | 'pink-coquette'
-  | 'coquette-dream'
-  | 'little-memories'
-  | 'birthday-chat'
-  | 'velvet-gift'
-  | 'anniversary-journey'
-  | 'villa-amore'
-  | 'sweet-cake'
-  | 'loy-together';
+/** A template's folder name under themes/ (any kebab-case id; src/themes.ts is the list). */
+export type ThemeId = string;
 export type ChatRow =
   | { w: 'f' | 'oops'; x: string }
   | { w: 't'; o: string[] }
@@ -20,6 +12,8 @@ export interface ThemeConfig {
   title: string;
   category: string;
   occasion?: 'birthday' | 'anniversary' | 'festival';
+  /** Extra Google Fonts families for the editor page, e.g. 'Dancing+Script:wght@600;700'. */
+  editorFonts?: string;
   /** Couple theme (Loy Together): a face photo for each person, free card plus a paid premium tier. */
   couple?: boolean;
   /** Premium price in baht for couple themes (unlocked by the owner after LINE payment). */

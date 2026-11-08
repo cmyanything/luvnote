@@ -90,6 +90,18 @@ Tests cover anniversary dates, leap days, photo ordering, preview handoff, saved
 loading, letter/PIN interactions, error states, catalog links, and an in-memory D1
 round-trip through the real Worker. No production cards are written during tests.
 
+## Adding a template (3 places)
+
+1. `themes/<id>/card.html` (plain runtime; images/sounds it loads sit in the same folder and are
+   copied automatically).
+2. One entry in `src/themes.ts` (name, price, link prefix, texts; `editorFonts` for extra fonts).
+   The editor page `themes/<id>/index.html` is generated on build when missing.
+3. The catalog card in `index.html` (`CARDS` entry, its `art()` thumbnail, and the `/#<prefix>`
+   route line).
+
+The Worker accepts any kebab-case theme id, the tests loop over `src/themes.ts`, and a push to
+`main` tests and deploys in about 4 minutes.
+
 ## Loy Together: free card with a paid premium unlock
 
 `/themes/loy-together/` (prefix `/#l`, festival category) is the first free template. The editor

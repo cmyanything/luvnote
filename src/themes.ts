@@ -479,6 +479,7 @@ export const themes: ThemeConfig[] = [
     title: 'สร้างการ์ด Loy Together · LuvNote',
     category: '🪷 เทศกาล',
     occasion: 'festival',
+    editorFonts: 'Dancing+Script:wght@600;700',
     couple: true,
     premiumPrice: 49,
     description:

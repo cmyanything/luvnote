@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { copyFileSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { themes as editorThemes } from './src/themes.ts';
@@ -16,6 +16,37 @@ const themeAssets = themes.flatMap((id) =>
     .filter((name) => ASSET.test(name))
     .map((name) => `themes/${id}/${name}`),
 );
+
+// A new template needs no hand-made editor page: themes/<id>/index.html is created from
+// its src/themes.ts entry when missing (existing pages are left exactly as they are).
+for (const theme of editorThemes) {
+  const page = resolve(root, `themes/${theme.id}/index.html`);
+  if (existsSync(page)) continue;
+  const fonts = ['Fredoka:wght@400;500;600', 'Mali:wght@600;700', 'Mitr:wght@300;400;500', 'Athiti:wght@500;600']
+    .concat(theme.editorFonts ? [theme.editorFonts] : [])
+    .map((family) => `family=${family}`)
+    .join('&');
+  mkdirSync(dirname(page), { recursive: true });
+  writeFileSync(
+    page,
+    `<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>สร้างการ์ด ${theme.name} · LuvNote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?${fonts}&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="root" data-theme="${theme.id}"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
+`,
+  );
+}
 
 export default defineConfig({
   plugins: [

@@ -356,6 +356,8 @@ const DEMO={
   endMsg:"ขอให้เราได้ลอยกระทงด้วยกัน\nแบบนี้ไปทุกปีเลยนะ 🌕",
   effect:"hearts", music:{type:"demo"}, expires:null
 };
+// Real and preview cards start from the sample texts but never inherit its premium flag or faces.
+const REAL_BASE={premium:false,wantPremium:false,faces:[]};
 let CARD=DEMO,PREMIUM=true,MEM=[];const PREVIEW=location.hash==='#preview';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const AUTO=location.hash==='#demo'||location.hash==='#demo-free';
@@ -639,13 +641,13 @@ function fill(){fill.done=1;
   $('#exp').textContent='การ์ดนี้เปิดดูได้ถึง '+exp.toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'});
   initYT()}
 if(location.hash==='#preview'){
-  addEventListener('message',e=>{if(e.data&&e.data.type==='luvnote-card'){CARD=Object.assign({},DEMO,e.data.card);fill()}});
+  addEventListener('message',e=>{if(e.data&&e.data.type==='luvnote-card'){CARD=Object.assign({},DEMO,REAL_BASE,e.data.card);fill()}});
   try{parent.postMessage({type:'luvnote-ready'},'*')}catch(e){}
   setTimeout(()=>{if(!fill.done)fill()},1500);
 }else if(/^#[a-z0-9]{7}$/.test(location.hash)){
   const gate=$('#gate');gate.classList.add('show');
   fetch('https://api.luvnote.fun/v2/cards/'+location.hash.slice(1)).then(r=>r.json().then(j=>[r.status,j])).then(([st,j])=>{
-    if(st===200&&j.data){CARD=Object.assign({},DEMO,j.data,{expires:j.expires});fill();gate.classList.remove('show')}
+    if(st===200&&j.data){CARD=Object.assign({},DEMO,REAL_BASE,j.data,{expires:j.expires});fill();gate.classList.remove('show')}
     else{gate.querySelector('.gh').style.animation='none';$('#gateTxt').innerHTML=st===410?'การ์ดใบนี้หมดอายุแล้ว 🥺<br>ขอบคุณที่แวะมานะ':'ไม่พบการ์ดใบนี้<br>ลองเช็กลิงก์อีกครั้งนะ';
       gate.insertAdjacentHTML('beforeend','<a href="https://luvnote.fun/">สร้างการ์ดของคุณที่ LuvNote</a>')}
   }).catch(()=>{$('#gateTxt').innerHTML='เน็ตสะดุดนิดหน่อย<br>ลองรีเฟรชอีกครั้งนะ'});

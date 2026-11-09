@@ -8,7 +8,7 @@
 <script>
 (function(){var h=location.hash.slice(1);
 if(/^a[a-z0-9]{7}$/.test(h)){location.replace("themes/anniversary-journey/card.html?v=1#"+h.slice(1));return;}
-if(/^l[a-z0-9]{7}$/.test(h)){location.replace("themes/loy-together/card.html?v=1#"+h.slice(1));return;}
+if(/^l[a-z0-9]{7}$/.test(h)){location.replace("themes/loy-together/card.html?v=3#"+h.slice(1));return;}
 if(/^k[a-z0-9]{7}$/.test(h)){location.replace("themes/sweet-cake/card.html?v=3#"+h.slice(1));return;}
 if(/^r[a-z0-9]{7}$/.test(h)){location.replace("themes/villa-amore/card.html?v=3#"+h.slice(1));return;}
 if(/^p[a-z0-9]{7}$/.test(h)){location.replace("themes/pink-coquette/card.html?v=8#"+h.slice(1));return;}
@@ -1019,9 +1019,9 @@ var use=function(id,cls,vb){return '<svg class="'+(cls||"")+'" viewBox="'+(vb||"
 /* ===== catalog: edit here to add cards ===== */
 var COMMON=["ใส่ชื่อ ข้อความ รูป และข้อความลับในซอง","ได้ลิงก์ทันที ส่งทาง LINE, IG หรือ SMS"];
 var CARDS=[
-  {id:"loy", chip:"🪷 ลอยกระทงออนไลน์กับแฟน · ฟรี", price:0, free:true, en:"Loy Together", th:"เทศกาล · ลอยกระทงคืนวันเพ็ญ", short:"ลอยกระทงคู่กัน", type:"custom", cats:["fest","love"], page:"themes/loy-together/",ver:2,demo:"demo-free",
+  {id:"loy", chip:"🪷 ลอยกระทงออนไลน์กับแฟน · ฟรี", price:0, free:true, en:"Loy Together", th:"เทศกาล · ลอยกระทงคืนวันเพ็ญ", short:"ลอยกระทงคู่กัน", type:"custom", cats:["fest","love"], page:"themes/loy-together/",ver:3,demo:"demo-free",
    fx:["ชวนแฟนไปลอยกระทง › กดค้างอธิษฐานพร้อมกัน › ปล่อยกระทงที่มีรูปเราสองคนลอยคู่กัน","ปิดท้ายด้วยโคมลอยทั้งฟ้าเรียงเป็นรูปหัวใจ","ทำฟรีได้เลย · เล่นจบแล้วมีหน้าแนะนำเว็บ LuvNote"]},
-  {id:"loyp", art:"loy", chip:"✨ ลอยกระทงพรีเมียม", price:49, en:"Loy Together Premium", th:"เทศกาล · ลอยกระทงแบบพรีเมียม", short:"ลอยกระทงพรีเมียม", type:"custom", cats:["fest","love"], page:"themes/loy-together/", plan:"premium",ver:2,
+  {id:"loyp", art:"loy", chip:"✨ ลอยกระทงพรีเมียม", price:49, en:"Loy Together Premium", th:"เทศกาล · ลอยกระทงแบบพรีเมียม", short:"ลอยกระทงพรีเมียม", type:"custom", cats:["fest","love"], page:"themes/loy-together/", plan:"premium",ver:3,
    fx:["ทุกอย่างในแบบฟรี + ฉากปล่อยโคมลอยรูปความทรงจำ 3 รูป","เลือกเพลงประกอบเองจาก YouTube","ไม่มีหน้าโฆษณาท้ายการ์ด · ชำระผ่าน LINE แล้วร้านปลดล็อกบนลิงก์เดิม"]},
   {id:"story", chip:"📖 เส้นทางความรักของเรา", price:99, en:"Our Story", th:"วันครบรอบ · สมุดความทรงจำโทนอุ่น", short:"โพลารอยด์ เส้นทางความรัก", type:"custom", cats:["anniv","love"], page:"themes/anniversary-journey/",ver:1,
    fx:["เปิดสมุดโทนครีม › นับวันตั้งแต่เริ่มคบ › ไล่ดูรูปและวันที่สำคัญ","ภาพโพลารอยด์เรียงเรื่องราว พร้อมจดหมายและซองข้อความลับ","ใส่เพลงของเราได้ และย้อนกลับมาอ่านตั้งแต่หน้าแรก"], hint:"เรื่องราวเล็ก ๆ ที่อยากเก็บไว้ด้วยกัน ♡", burst:"heart"},

@@ -236,6 +236,18 @@ test('loy-together: faces on the krathongs, free card, and a premium request wit
   expect(errors).toEqual([]);
 });
 
+test('loy-together: a real free card is free (no premium inherited from the sample)', async ({ page }) => {
+  await page.route('https://api.luvnote.fun/v2/cards/abc2345', (route) =>
+    route.fulfill({
+      status: 200,
+      json: { data: { to: 'Mind', from: 'Poom', letter: 'x', photos: [], music: { type: 'demo' } }, expires },
+      headers: { 'access-control-allow-origin': '*' },
+    }),
+  );
+  await page.goto('/#labc2345');
+  await expect.poll(() => page.evaluate('[PREMIUM, MEM.length, document.body.classList.contains("premium")]')).toEqual([false, 0, false]);
+});
+
 test('loy-together: the premium listing opens the editor on the premium plan', async ({ page }) => {
   await page.goto('/themes/loy-together/?plan=premium');
   await expect(page.locator('.hero .price')).toContainText('49');

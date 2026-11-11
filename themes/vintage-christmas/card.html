@@ -18,7 +18,10 @@ body{font-family:'Mitr',sans-serif;color:var(--ink);user-select:none;-webkit-use
 #scroll.free{overflow-y:auto}
 .pg{position:relative;height:100%;overflow:hidden;scroll-snap-align:start;scroll-snap-stop:always}
 .bg{position:absolute;inset:0}
-.st{position:absolute;left:50%;top:50%;width:390px;height:720px;transform:translate(-50%,-50%) scale(var(--s))}
+.st{position:absolute;left:50%;top:50%;width:390px;height:720px;transform:translate(-50%,-50%) translateY(var(--ty,0px)) scale(calc(var(--s)*var(--z,1)));will-change:transform,opacity}
+.pg+.pg{transition:box-shadow .5s}
+#scroll.moving .pg+.pg{box-shadow:0 -2px 0 rgba(244,227,166,.95),0 -5px 0 rgba(40,4,8,.5),0 -6px 0 rgba(214,182,110,.6),0 -22px 40px rgba(255,214,130,.45)}
+.pg .bg{transform:translateY(var(--by,0px)) scale(1.08)}
 canvas#amb,canvas#fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 #amb{z-index:38}#fx{z-index:60}
 #vig{position:absolute;inset:0;z-index:39;pointer-events:none;background:radial-gradient(120% 85% at 50% 45%,transparent 52%,rgba(25,0,3,.5))}
@@ -107,18 +110,19 @@ canvas#amb,canvas#fx{position:absolute;inset:0;width:100%;height:100%;pointer-ev
 #paper{position:absolute;left:55px;top:238px;width:280px;height:320px;z-index:3;background:linear-gradient(#F8F0DE,#EEE1C7);box-shadow:0 8px 20px rgba(0,0,0,.4),inset 0 0 0 1px rgba(194,160,90,.6),inset 0 0 0 5px #F6EDD9,inset 0 0 0 6px rgba(194,160,90,.35);padding:22px 20px;transform:translateY(160px);transition:transform 2.4s cubic-bezier(.3,.7,.2,1) 2.8s}
 #p1.in #paper{transform:none}
 #ltxt{font-family:'Special Elite','Athiti',monospace;font-weight:600;font-size:14.5px;line-height:1.68;color:#7A1A1F;white-space:pre-wrap;max-height:122px;overflow-y:auto;text-align:left;scrollbar-width:none}
-#ltxt::after{content:'';display:inline-block;width:7px;height:15px;margin-left:2px;background:#7A1A1F;vertical-align:-2px;animation:blink 1s steps(1) infinite}
-#ltxt.done::after{display:none}
+#ltxt{position:relative;word-break:normal;overflow-wrap:break-word;line-break:strict}
+.lw{white-space:nowrap}.lc{opacity:0}.lc.on{opacity:1}
+#lcar{display:inline-block;width:7px;height:15px;margin-left:2px;background:#7A1A1F;vertical-align:-2px;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
 
 /* p2 tree */
 #p2 .bg{background:#6A1017}
 #p2 .bg::after{content:'';position:absolute;inset:0;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='170'><g fill='none' stroke='%23F3E6CF' stroke-linecap='round'><g stroke-width='1.6' transform='translate(30 34) rotate(24)'><path d='M0 22V-22M0 12l-8-7M0 12l8-7M0 0l-8-7M0 0l8-7M0-12l-6-6M0-12l6-6'/></g><g stroke-width='1.6' transform='translate(112 118) rotate(-30)'><path d='M0 22V-22M0 12l-8-7M0 12l8-7M0 0l-8-7M0 0l8-7M0-12l-6-6M0-12l6-6'/></g><g transform='translate(104 30) rotate(28)'><path d='M0 22V0a7 7 0 0 1 14 0' stroke-width='5'/><path d='M0 22V0a7 7 0 0 1 14 0' stroke='%23C22532' stroke-width='5' stroke-dasharray='4 6' stroke-linecap='butt'/></g><g transform='translate(34 124) rotate(-36)'><path d='M0 22V0a7 7 0 0 1 14 0' stroke-width='5'/><path d='M0 22V0a7 7 0 0 1 14 0' stroke='%23C22532' stroke-width='5' stroke-dasharray='4 6' stroke-linecap='butt'/></g></g><g fill='%23F3E6CF'><circle cx='72' cy='78' r='2.4'/><circle cx='140' cy='70' r='2'/><circle cx='8' cy='84' r='2'/><circle cx='76' cy='160' r='2'/></g></svg>")}
-#star{position:absolute;left:163px;top:112px;width:64px;height:64px;z-index:5;opacity:.35;transform:scale(.7);transition:opacity 1s,transform 1s cubic-bezier(.3,1.7,.5,1),filter 1s}
+#star{position:absolute;left:163px;top:124px;width:64px;height:64px;z-index:5;opacity:.35;transform:scale(.7);transition:opacity 1s,transform 1s cubic-bezier(.3,1.7,.5,1),filter 1s}
 #star.on{opacity:1;transform:none;filter:drop-shadow(0 0 14px rgba(255,214,102,.95))}
 .tile{position:absolute;width:78px;height:78px;margin:-39px 0 0 -39px;background:#F7EFDF center/cover;border:4px solid #F7EFDF;box-shadow:0 0 0 1px rgba(194,160,90,.8),0 8px 14px rgba(0,0,0,.5);cursor:pointer;opacity:0;transform:translateY(-120px) rotate(40deg) scale(.4);transition:opacity .5s,transform .9s cubic-bezier(.3,1.4,.5,1)}
 .tile.on{opacity:1;transform:rotate(var(--r))}
-#trunk{position:absolute;left:181px;top:480px;width:28px;height:30px;background:#5B3A22;border-radius:3px;box-shadow:0 4px 8px rgba(0,0,0,.3)}
+#trunk{position:absolute;left:181px;top:492px;width:28px;height:30px;background:#5B3A22;border-radius:3px;box-shadow:0 4px 8px rgba(0,0,0,.3)}
 #viewer{position:absolute;inset:0;z-index:65;background:rgba(40,4,8,.82);display:grid;place-items:center;opacity:0;pointer-events:none;transition:.5s}
 #viewer.show{opacity:1;pointer-events:auto}
 #pol{width:min(76%,290px);background:#FBF5E8;padding:12px 12px 14px;box-shadow:0 18px 40px rgba(0,0,0,.5);transform:scale(.7) rotate(-6deg);transition:.6s cubic-bezier(.3,1.4,.5,1)}
@@ -303,9 +307,9 @@ canvas#amb,canvas#fx{position:absolute;inset:0;width:100%;height:100%;pointer-ev
   </div><div class="down" style="color:var(--cream)">เลื่อนลง ↓</div></section>
 
   <section class="pg" id="p2"><div class="bg"></div><div class="st">
-    <div class="c rv" style="top:46px"><div class="scr gold" style="font-size:48px">our little tree</div><div style="font-size:13.5px;font-weight:300;color:var(--cream);opacity:.85">ต้นคริสต์มาสจากรูปที่เค้าแอบเก็บไว้ · แตะรูปเพื่อดู</div></div>
+    <div class="c rv" style="top:46px"><div class="scr gold" style="font-size:48px">our little tree</div><div style="font-size:13.5px;font-weight:300;color:var(--cream);opacity:.85">แตะรูปเพื่อดูใหญ่ ๆ</div></div>
     <div id="star" data-svg="star"></div><div id="tiles"></div><div id="trunk"></div>
-    <div class="c rv" style="top:540px;--d:.5s"><span class="tip tw" id="treeCap"></span></div>
+    <div class="c rv" style="top:548px;--d:.5s"><span class="tip tw" id="treeCap"></span></div>
   </div><div class="down" style="color:var(--cream)">เลื่อนลง ↓</div></section>
 
   <section class="pg" id="p3"><div class="bg"></div><div id="tglow"></div><div class="st">
@@ -429,6 +433,7 @@ Object.assign(DEMO,{to:"มายด์",from:"ต้น",
   letter:"จริงๆ มีเรื่องอยากบอกมานานแล้ว แต่เจอหน้าทีไร พูดไม่ออกทุกที\nเลยขอฝากไว้ในจดหมายฉบับนี้แทนนะ\nขอบคุณที่ทำให้ปีนี้ มีวันดีๆ เพิ่มขึ้นเยอะเลย",
   secret:"เค้าชอบเธอนะ\nชอบมานานแล้วด้วย",endMsg:"คริสต์มาสนี้\nไปเดินดูไฟด้วยกันนะ",
   photos:[{src:ph('#EFE3CF','#D8B8A0','🥰'),cap:'รูปนี้ยิ้มน่ารักสุด'},{src:ph('#DCE6EE','#A9BFD2','⛄'),cap:'วันที่บังเอิญเจอกัน'},{src:ph('#F3E6CF','#C9A24B','☕'),cap:'ร้านกาแฟร้านนั้น'},{src:ph('#E6EBDD','#9FB08A','🎄'),cap:'อยากมีรูปคู่ตรงนี้จัง'},{src:ph('#F1D9D6','#C98A8A','🧣'),cap:'ผ้าพันคอผืนโปรด'}]});
+chime=function(){};noise=function(){};
 const wait=ms=>new Promise(r=>setTimeout(r,ms));const sc=$('#scroll');
 const at=(el,fx=.5,fy=.5)=>{const r=el.getBoundingClientRect(),a=app.getBoundingClientRect();return[r.left-a.left+r.width*fx,r.top-a.top+r.height*fy]};
 [app].forEach(e=>e.addEventListener('scroll',()=>{e.scrollTop=0;e.scrollLeft=0}));
@@ -474,8 +479,13 @@ $$('[data-svg]').forEach(e=>e.innerHTML=SVG[e.dataset.svg]);
 
 /* ---------- page reveal ---------- */
 const seen={};const ENTER={};
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.55){const id=e.target.id;e.target.classList.add('in');gust=1;if(!seen[id]){seen[id]=1;(ENTER[id]||(()=>{}))()}}}),{root:sc,threshold:[.56]});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.55){const id=e.target.id;e.target.classList.add('in');if(curPg&&curPg!==id)sweep();curPg=id;gust=1;if(!seen[id]){seen[id]=1;(ENTER[id]||(()=>{}))()}}}),{root:sc,threshold:[.56]});
 $$('.pg').forEach(p=>io.observe(p));
+const pgs=$$('.pg');let tk=0,curPg='';
+function trans(){const H=sc.clientHeight,y=sc.scrollTop;for(const p of pgs){if(p.style.display==='none')continue;const r=(p.offsetTop-y)/H,st=p.querySelector('.st');if(Math.abs(r)>1.02)continue;const a=Math.min(1,Math.abs(r));
+  st.style.setProperty('--z',(1-a*.16).toFixed(3));st.style.setProperty('--ty',(r*60).toFixed(1)+'px');st.style.opacity=(1-a*.85).toFixed(3);p.style.setProperty('--by',(-r*26).toFixed(1)+'px')}}
+let mvT=0;sc.addEventListener('scroll',()=>{sc.classList.add('moving');clearTimeout(mvT);mvT=setTimeout(()=>sc.classList.remove('moving'),220);if(!tk){tk=1;requestAnimationFrame(()=>{tk=0;trans()})}},{passive:true});
+function sweep(){const a=app.getBoundingClientRect();for(let i=0;i<11;i++)setTimeout(()=>burst(a.width*(.04+i*.092),a.height*(.5+Math.sin(i*1.3)*.32),4,{speed:4,up:true,types:['star','dot'],cols:['#F0C24E','#FBE08E','#fff','#E7C987'],g:.02,decay:.016}),i*38)}
 const goPg=i=>sc.scrollTo({top:sc.clientHeight*i,behavior:'smooth'});const goId=id=>sc.scrollTo({top:$('#'+id).offsetTop,behavior:'smooth'});
 const hint=id=>{const d=$('#'+id+' .down');if(d)d.classList.add('show')};
 
@@ -493,18 +503,26 @@ $('#iYes').addEventListener('click',sayYes);$('#iNo').addEventListener('click',s
 /* ---------- p0 : wax seal ---------- */
 let opened=false;
 function openSeal(){if(opened)return;opened=true;vib([20,40,60]);noise(.25,.4,1200);$('#seal').classList.add('off');const[x,y]=at($('#seal'));burst(x,y,60,{speed:9,types:['star','dot'],g:.08,decay:.01});
-  setTimeout(()=>goId('p1'),900)}
+  setTimeout(()=>goId('p1'),900);setTimeout(()=>{opened=false;$('#seal').classList.remove('off')},2600)}
 $('#seal').addEventListener('click',openSeal);ENTER.p0=()=>setTimeout(()=>{if(!opened)$('#seal').classList.add('rdy')},4300);
 
 /* ---------- p1 : typewriter letter ---------- */
 ENTER.pm=()=>{syncPm();setTimeout(()=>hint('pm'),3500)};
-ENTER.p1=async()=>{const el=$('#ltxt'),txt=[...(CARD.letter||'')];await wait(AUTO?4600:5200);let n=0;
-  for(const ch of txt){el.textContent+=ch;el.scrollTop=el.scrollHeight;if(ch.trim()&&n++%2===0)noise(.025,.1,2600);await wait((ch==='\n'?330:ch===' '?90:52)*(AUTO?.35:1))}
-  el.classList.add('done');const[x,y]=at($('#paper'),.5,.3);burst(x,y,24,{speed:5,up:true,types:['star','dot'],decay:.014});chime(4);hint('p1')};
+const gsplit=w=>{if(window.Intl&&Intl.Segmenter)return[...new Intl.Segmenter('th',{granularity:'grapheme'}).segment(w)].map(x=>x.segment);const o=[];for(const ch of Array.from(w)){if(o.length&&/[ัิ-ฺ็-๎̀-ͯ️‍]/.test(ch))o[o.length-1]+=ch;else o.push(ch)}return o};
+function layLetter(){const el=$('#ltxt'),out=[];el.textContent='';const seg=window.Intl&&Intl.Segmenter?new Intl.Segmenter('th',{granularity:'word'}):null;const lines=String(CARD.letter||'').split('\n');
+  lines.forEach((ln,li)=>{ln=ln.replace(/[ \t]+(?=[ๆฯ!?…,.:;)”’%])/g,' ');const ws=seg?[...seg.segment(ln)].map(x=>x.segment):ln.split(/(\s+)/);let cur=null;
+    ws.forEach(w=>{if(!w)return;if(/^[ \t]+$/.test(w)){el.appendChild(document.createTextNode(w));cur=null;return}
+      const glue=/^[ ๆฯ!?…,.:;)”’%]+$/.test(w)&&cur;const box=glue?cur:document.createElement('span');if(!glue){box.className='lw';el.appendChild(box)}cur=box;
+      for(const g of gsplit(w)){const c=document.createElement('span');c.className='lc';c.textContent=g;box.appendChild(c);out.push(c)}});
+    if(li<lines.length-1){el.appendChild(document.createTextNode('\n'));out.push(null)}});
+  const car=document.createElement('i');car.id='lcar';el.prepend(car);return[out,car]}
+ENTER.p1=async()=>{const el=$('#ltxt'),[cs,car]=layLetter();await wait(AUTO?4600:5200);
+  for(const c of cs){if(!c){await wait(330*(AUTO?.35:1));continue}c.classList.add('on');c.after(car);const need=c.offsetTop+c.offsetHeight-el.clientHeight+6;if(need>el.scrollTop)el.scrollTop=need;await wait((/\s/.test(c.textContent)?90:52)*(AUTO?.35:1))}
+  car.remove();const[x,y]=at($('#paper'),.5,.3);burst(x,y,24,{speed:5,up:true,types:['star','dot'],decay:.014});hint('p1')};
 
 /* ---------- p2 : photo tree ---------- */
 let PH=[];
-function buildTree(){const n=PH.length;if(!n)return;const rows=n<=1?[1]:n<=3?[1,2]:[1,2,3,4],tot=rows.reduce((a,b)=>a+b,0),sz=rows.length===4?78:rows.length===2?112:170,gap=sz*.9,y0=rows.length===4?214:rows.length===2?250:320;let k=0,h='';
+function buildTree(){const n=PH.length;if(!n)return;const rows=n<=1?[1]:n<=3?[1,2]:[1,2,3,4],tot=rows.reduce((a,b)=>a+b,0),sz=rows.length===4?78:rows.length===2?112:170,gap=sz*.9,y0=rows.length===4?226:rows.length===2?258:326;let k=0,h='';
   rows.forEach((c,r)=>{for(let i=0;i<c;i++){const p=PH[k%n],x=195+(i-(c-1)/2)*gap,y=y0+r*(sz*.95),rot=((k*37)%15)-7;h+=`<div class="tile" data-k="${k%n}" style="left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;margin:${-sz/2}px 0 0 ${-sz/2}px;--r:${rot}deg;background-image:url('${p.src}');z-index:${(k*7)%5+1}"></div>`;k++}});
   $('#tiles').innerHTML=h;$('#treeCap').textContent=`${n} รูป ที่เปิดดูบ่อยที่สุดในปีนี้`;
   $$('.tile').forEach(t=>t.addEventListener('click',()=>{const p=PH[+t.dataset.k];$('#vimg').src=p.src;$('#vcap').textContent=p.cap||'';$('#viewer').classList.add('show');vib(10)}))}

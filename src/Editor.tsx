@@ -351,7 +351,7 @@ export function Editor({ theme }: { theme: ThemeConfig }) {
                   ใส่ชื่อผู้ส่งด้วยนะ
                 </p>
               </div>
-              {!anniversary && !couple && (
+              {!anniversary && !couple && theme.occasion !== 'festival' && (
                 <div style={{ flex: 0.55 }}>
                   <label htmlFor="age">ครบกี่ปี</label>
                   <input

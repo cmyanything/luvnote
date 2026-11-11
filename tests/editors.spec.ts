@@ -69,7 +69,8 @@ for (const theme of themes.filter((t) => !t.couple)) {
     await fillRequired(page, !!theme.noSecret);
     if (theme.occasion === 'anniversary')
       await page.getByLabel('วันที่เราเริ่มคบกัน').fill('2022-06-14');
-    else await page.getByLabel('ครบกี่ปี').fill('25');
+    else if (theme.occasion !== 'festival')
+      await page.getByLabel('ครบกี่ปี').fill('25');
     await page.locator('#file').setInputFiles(photo);
     await expect(page.locator('#pc')).toHaveText('1');
     await page.getByLabel('คำบรรยายรูปที่ 1').fill('ความทรงจำของเรา');
@@ -132,7 +133,10 @@ for (const theme of themes.filter((t) => !t.couple)) {
       data: {
         to: 'น้องพลอย 💗',
         from: 'พี่ต้นข้าว',
-        age: theme.occasion === 'anniversary' ? null : 25,
+        age:
+          theme.occasion === 'anniversary' || theme.occasion === 'festival'
+            ? null
+            : 25,
         ...(theme.occasion === 'anniversary'
           ? { startDate: '2022-06-14' }
           : {}),

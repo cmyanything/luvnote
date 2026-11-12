@@ -38,6 +38,11 @@ for (const theme of editorThemes) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?${fonts}&display=swap" rel="stylesheet">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="manifest" href="/icons/site.webmanifest">
+<meta name="apple-mobile-web-app-title" content="LuvNote">
 </head>
 <body>
   <div id="root" data-theme="${theme.id}"></div>
@@ -62,6 +67,13 @@ export default defineConfig({
           'app/index.html',
           'admin/index.html',
           'CNAME',
+          'favicon.ico',
+          'icons/favicon.ico',
+          'icons/favicon-32.png',
+          'icons/apple-touch-icon.png',
+          'icons/icon-192.png',
+          'icons/icon-512.png',
+          'icons/site.webmanifest',
           ...themes.map((t) => `themes/${t}/card.html`),
           ...themeAssets,
         ]) {
